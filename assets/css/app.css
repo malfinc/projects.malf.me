@@ -36,16 +36,30 @@ main {
 header {
   display: grid;
   grid-template-columns: max-content 1fr;
-  grid-column: 1/-1
-}
-
-header {
-  background-color: var(--pink);
+  grid-column: 1/-1;
   border-radius: 5px;
 }
 
 header section {
   background-color: var(--purple-dark);
+  border-radius: 5px;
+  display: flex;
+}
+
+header section img {
+  width: 50px;
+  height: 50px;
+}
+
+header section div {
+  background: var(--purple-dark);
+  background: linear-gradient(135deg, var(--purple-dark) 50%, var(--pink) 51%);
+  width: 50px;
+  height: 50px;
+}
+
+header nav {
+  background-color: var(--pink);
 }
 
 header nav ul {
@@ -66,28 +80,43 @@ header nav li a {
   text-decoration: none;
 }
 
+aside {
+  display: grid;
+  row-gap: 5px;
+}
+
 aside section {
   background-color: var(--purple-light);
-  padding: 15px;
+  padding: 20px;
+  border-radius: 10px;
 }
 
 aside section div {
   background-color: var(--purple-dark);
-  margin: 10px;
+  margin: 5px;
+  padding: 5px;
 }
 
 aside #social-links ul {
+  background-color: var(--purple-dark);
   list-style: none;
+  padding: 5px;
+  display: flex;
+  place-content: space-between;
 }
 
 aside #social-links ul li {
   display: inline-block;
 }
 
-aside section h2 {
+aside section h2 span {
   padding: 5px;
   background-color: var(--cyan);
   border-radius: 10px;
+}
+
+dl dd {
+  margin-bottom: 25px;
 }
 
 dl dt {
