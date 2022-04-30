@@ -71,8 +71,12 @@ aside section {
   padding: 15px;
 }
 
-aside #social-links ul {
+aside section div {
   background-color: var(--purple-dark);
+  margin: 10px;
+}
+
+aside #social-links ul {
   list-style: none;
 }
 
