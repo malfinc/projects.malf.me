@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <%= csrf_meta_tag() %>
+    <%= live_title_tag assigns[:page_title] || "Welcome to", suffix: " · Malf Cinematic Universe" %>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link phx-track-static rel="stylesheet" href={Routes.static_path(@conn, "/assets/app.css")}/>
+    <script defer phx-track-static type="text/javascript" src={Routes.static_path(@conn, "/assets/app.js")}></script>
+  </head>
+  <body>
+    <header>
+      <section>
+        <img src="/images/logo.png" title="the malf logo, which is two triangles arranged in a way that makes a cute fox head with ears" height="100%" />
+      </section>
+      <nav>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="#twitch_link_here">Watch</a></li>
+          <li><a href="#blog_link_here">Blog</a></li>
+          <li><a href="/pages/socials">Socials</a></li>
+          <li><a href="#discord_link_here">Discord</a></li>
+          <li><a href="/pages/about">About</a></li>
+          <li><a href="/pages/projects">Projects</a></li>
+          <li><a href="/pages/contact">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+    <%= @inner_content %>
+    <aside>
+      <section>
+        <h2>Community</h2>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, ipsam fugit! Neque omnis hic impedit cupiditate ex temporibus soluta, eveniet atque doloremque facere voluptates architecto culpa, accusantium iure facilis fuga?</p>
+      </section>
+      <section>
+        <h2>Latet Blog post</h2>
+        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quo, earum ducimus facilis quisquam quos nostrum nemo quibusdam provident debitis. Totam necessitatibus explicabo cumque mollitia tenetur nobis cupiditate quia commodi voluptate?</p>
+      </section>
+      <section>
+        <h2>Twitch Schedule</h2>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium obcaecati fugit, laborum facilis consequuntur officiis dignissimos incidunt velit veritatis porro mollitia, id ab beatae sint sit ad optio? Iusto, corporis.</p>
+      </section>
+      <section id="social-links">
+        <ul>
+          <li><a href="#"><img src="/images/sidebar-social-twitch.png" alt="" width="36px" height="36px"></a></li>
+          <li><a href="#"><img src="/images/sidebar-social-youtube.png" alt="" width="36px" height="36px"></a></li>
+          <li><a href="#"><img src="/images/sidebar-social-twitter.png" alt="" width="36px" height="36px"></a></li>
+          <li><a href="#"><img src="/images/sidebar-social-instagram.png" alt="" width="36px" height="36px"></a></li>
+        </ul>
+        <p>
+          &copy; <%= DateTime.utc_now().year %> Michael Fox · Built by <a href="#">@th3mcnuggetz</a>, <a href="#">@krainboltgreene</a>
+        </p>
+      </section>
+    </aside>
+  </body>
+</html>

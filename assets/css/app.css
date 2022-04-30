@@ -1,0 +1,92 @@
+/* This file is for your main application CSS */
+@import "./normalize.css";
+@import "./topbar.css";
+
+:root {
+  --purple: rgb(60, 4, 86);
+  --purple-dark: rgb(41, 0, 63);
+  --purple-light: rgb(85, 6, 127);
+  --pink: rgb(236, 30, 121);
+  --yellow: rgb(253, 214, 103);
+  --cyan: rgb(0, 218, 255);
+  --purple-twitch: rgb(148, 59, 255);
+}
+
+body {
+  background-image: url("/images/background.png");
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: max-content 1fr;
+  gap: 15px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  max-width: 80vw;
+  min-height: 110vh;
+  color: white;
+  font-family: 'Montserrat', sans-serif;
+}
+
+main {
+  background-image: url("/images/content.png");
+  padding: 15px;
+}
+
+header {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  grid-column: 1/-1
+}
+
+header {
+  background-color: var(--pink);
+  border-radius: 5px;
+}
+
+header section {
+  background-color: var(--purple-dark);
+}
+
+header nav ul {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(8, min-content);
+  column-gap: 15px;
+  padding-left: 15px;
+}
+
+header nav li {
+  display: inline-block;
+}
+
+header nav li a {
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+}
+
+aside section {
+  background-color: var(--purple-light);
+  padding: 15px;
+}
+
+aside #social-links ul {
+  background-color: var(--purple-dark);
+  list-style: none;
+}
+
+aside #social-links ul li {
+  display: inline-block;
+}
+
+aside section h2 {
+  padding: 5px;
+  background-color: var(--cyan);
+  border-radius: 10px;
+}
+
+dl dt {
+  font-weight: bold;
+  color: var(--yellow);
+}
