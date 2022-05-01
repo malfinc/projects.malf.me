@@ -97,22 +97,29 @@ aside section div {
   padding: 5px;
 }
 
+aside section h2 {
+  position: relative;
+  top: -1.50em;
+  text-transform: uppercase;
+}
+
+aside section h2 span {
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: var(--cyan);
+  border-radius: 10px;
+}
+
 aside #social-links ul {
   background-color: var(--purple-dark);
   list-style: none;
   padding: 5px;
   display: flex;
-  place-content: space-between;
+  place-content: space-around;
 }
 
 aside #social-links ul li {
   display: inline-block;
-}
-
-aside section h2 span {
-  padding: 5px;
-  background-color: var(--cyan);
-  border-radius: 10px;
 }
 
 dl dd {
