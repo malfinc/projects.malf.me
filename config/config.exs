@@ -73,6 +73,14 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+# Configure Sentry, the service we use to alert us to issues in the application
+config :sentry,
+  dsn: System.get_env("SENTRY_DSN"),
+  environment_name: Mix.env(),
+  enable_source_code_context: true,
+  root_source_code_path: File.cwd!(),
+  included_environments: [:prod]
+
 config :core, Oban,
   repo: Core.Repo,
   plugins: [Oban.Plugins.Pruner],

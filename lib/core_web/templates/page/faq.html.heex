@@ -1,0 +1,84 @@
+<h1>Frequently Asked Questions</h1>
+
+<h3>What is Dun-Gensis?</h3>
+<p class="indented">
+  Dun-Genesis is a suite of tools for worldbuilders, game-masters, storytellers and anyone else who is interested in fantasy worlds. Designed to be powerful but approachable, it can create an entire universe (Called 'Worlds) at the touch of a button, with each element able to be edited or replaced until it's something you find suitable.
+</p>
+
+<h3>What is a World?</h3>
+<p class="indented">
+  In the Dun-Genesis system, a 'world' is a distinct continutity and container
+  of story. The contents of a world, from its people to its cultures, will be
+  unique to it. While other worlds can generate similar content, this world is
+  particular in its customization and totality.
+</p>
+
+<h3>What is in a World?</h3>
+<p class="indented">As of right now, Dun-Genesis can generate the following:</p>
+<ul>
+  <li>The World.</li>
+  <li>Unique Cultures.</li>
+  <li>Custom Religions.</li>
+  <li>Fully outlined Adventures.</li>
+  <li>Interesting and detailed NPCs.</li>
+  <li>Random Encounters.</li>
+  <li>Traps.</li>
+  <li>Dungeon Rooms.</li>
+  <li>Dungeon Histories.</li>
+</ul>
+
+<h3>What is a Culture?</h3>
+<p class="indented">
+  Dun-Genesis defines a culture as a block of people who share language, history
+  and values. We don't define 'elven' culture or 'dwarven' culture, but rather,
+  cultures have their own ethnic mixtures based on the territories and locations
+  they control.
+</p>
+
+<p>Here's an example culture.</p>
+<aside class="block--thick">
+  <p><strong>The Eweniaan people</strong></p>
+  <p class="indented">
+    The Eweniaan are a flourishing spiritual civilization, who's primary
+    pantheon is the Organized Trunk. Their patron diety is Jirostýn, the God of
+    zeal and metals. They live a mostly urban lifestyle, with wealth highly
+    centralized in their ruling class.
+  </p>
+  <p class="indented">
+    The Eweniaan people mostly speak Southern Saxotilach-Uriaalpan, Central
+    Eweniaan and Classic Eweniaan. They are known for their cultural
+    appreciation of the performing arts, with a special love for acrobatics, and
+    for their fine cuisine. Eweniaan styles, be it clothing or jewelery, are
+    seen as status symbols in most of the civilized world.
+  </p>
+  <p class="indented">
+    Staunch traditionalists, the Eweniaan people look to their ancestors with
+    pride for founding the first Republic. Eweniaan miners and metalworkers are
+    very skilled, while their military is known for their scouts, especially in
+    the mountains.
+  </p>
+</aside>
+<h3>What is an Encounter?</h3>
+<p class="indented">
+  An encounter in Dun-Genesis' system, is a environment, such as a room or glade
+  or cavern, coupled with an obstacle to overcome - such as a group of monsters,
+  a trap, a roleplaying scenario or... all of the above... or none of the above.
+  We provide many elements to choose from - but in the end, the Storyteller has
+  control.
+</p>
+
+<h3>How do I get an account?</h3>
+<p class="indented">
+  Glad you asked! Just follow this link to register your account! <%= link to: Routes.account_registration_path(@conn, :new), class: "nav-link p-0" do %>Registration<% end %>
+</p>
+
+<h3>What does it cost?</h3>
+<p class="indented">
+Check out our subscription plans: <%= link(to: Routes.page_path(@conn, :pricing), class: "nav-link p-0 text-muted") do %>Pricing<% end %>.
+</p>
+
+<h3>Who's making this thing?</h3>
+<p class="indented">
+  You can find information about the pair behind Dun-Genesis here: <%= link(to:
+Routes.page_path(@conn, :about_us), class: "nav-link p-0 text-muted") do %>About Us<% end %>
+</p>

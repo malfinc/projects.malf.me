@@ -5,23 +5,15 @@ defmodule CoreWeb.PageController do
     render(conn, "index.html")
   end
 
-  def show(conn, %{"id" => "socials"}) do
-    render(conn, "socials.html")
+  def about_us(conn, _params) do
+    render(conn, "about_us.html")
   end
 
-  def show(conn, %{"id" => "discord"}) do
-    render(conn, "discord.html")
+  def pricing(conn, _params) do
+    render(conn, "pricing.html")
   end
 
-  def show(conn, %{"id" => "about"}) do
-    render(conn, "about.html")
-  end
-
-  def show(conn, %{"id" => "projects"}) do
-    render(conn, "projects.html")
-  end
-
-  def show(conn, %{"id" => "contact"}) do
-    render(conn, "contact.html")
+  def faq(conn, _params) do
+    render(conn, "faq.html")
   end
 end

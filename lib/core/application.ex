@@ -19,16 +19,7 @@ defmodule Core.Application do
       CoreWeb.Endpoint,
       {Oban, Application.fetch_env!(:core, Oban)},
       CoreWeb.Channels.Presence,
-      {Finch, name: Core.Client.GenieHTTPClient},
-      {Finch,
-       name: Core.Client.CoreWeaveHTTPClient,
-       pools: [
-         default: [
-           conn_opts: [
-             transport_opts: [verify: :verify_none]
-           ]
-         ]
-       ]}
+      {Finch, name: HTTPClient},
       # Start a worker by calling: Core.Worker.start_link(arg)
       # {Core.Worker, arg}
     ]

@@ -14,8 +14,7 @@ config :core, Core.Repo,
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10,
-  prepare: :unnamed,
-  log: false
+  prepare: :unnamed
 
 # For development, we disable any cache and enable
 # debugging and code reloading.
@@ -35,6 +34,9 @@ config :core, CoreWeb.Endpoint,
     # Start the esbuild watcher by calling Esbuild.install_and_run(:default, args)
     esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
   ]
+
+# Setup the code profiler
+config :core, CoreWeb.Endpoint, phoenix_profiler: [server: CoreWeb.Profiler]
 
 # ## SSL Support
 #
@@ -62,11 +64,12 @@ config :core, CoreWeb.Endpoint,
 
 # Watch static and templates for browser reloading.
 config :core, CoreWeb.Endpoint,
+  reloadable_compilers: [:gettext, :elixir],
   live_reload: [
     patterns: [
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
-      ~r"lib/core_web/(live|views|components)/.*(ex)$",
+      ~r"lib/core_web/(live|views|components)/.*(ex|js)$",
       ~r"lib/core_web/templates/.*(eex)$"
     ]
   ]
