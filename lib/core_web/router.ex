@@ -17,6 +17,7 @@ defmodule CoreWeb.Router do
   scope "/", CoreWeb do
     pipe_through :browser
 
+    live "/face", FaceLive, :index
     get "/", PageController, :index
     get "/:id", PageController, :show
   end

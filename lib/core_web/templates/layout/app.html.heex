@@ -1,5 +1,78 @@
+
 <main>
+  <header>
+    <section>
+      <img src={Routes.static_path(@conn, "/images/banner-logo.svg")} alt="the malf logo, which is two triangles arranged in a way that makes a cute fox head with ears" title="the malf logo, which is two triangles arranged in a way that makes a cute fox head with ears">
+      <div></div>
+    </section>
+    <nav>
+      <ul>
+        <li><%= link to: Routes.page_path(@conn, :index) do %>Home<% end %></li>
+        <li><a href="https://www.twitch.tv/michaelalfox">Watch</a></li>
+        <li><a href="#blog_link_here">Blog</a></li>
+        <li><%= link to: Routes.page_path(@conn, :show, "socials") do %>Socials<% end %></li>
+        <li><%= link to: Routes.page_path(@conn, :show, "discord") do %>Discord<% end %></li>
+        <li><%= link to: Routes.page_path(@conn, :show, "about") do %>About<% end %></li>
+        <li><%= link to: Routes.page_path(@conn, :show, "projects") do %>Projects<% end %></li>
+        <li><%= link to: Routes.page_path(@conn, :show, "contact") do %>Contact<% end %></li>
+      </ul>
+    </nav>
+  </header>
   <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
   <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
-  <%= @inner_content %>
+  <article>
+    <%= @inner_content %>
+  </article>
+  <aside>
+    <section>
+      <div>
+        <h2><span>Community</span></h2>
+        <ul>
+          <li><a href="#">Community Cookbook</a></li>
+          <li><a href="#">League of Plants</a></li>
+          <li><a href="#">Towers of Bebylon</a></li>
+        </ul>
+      </div>
+    </section>
+    <section>
+      <div>
+        <h2><span>Latet Blog post</span></h2>
+        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quo, earum ducimus facilis quisquam quos nostrum nemo quibusdam provident debitis. Totam necessitatibus explicabo cumque mollitia tenetur nobis cupiditate quia commodi voluptate?</p>
+      </div>
+    </section>
+    <section>
+      <div>
+        <h2><span>Twitch Schedule</span></h2>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium obcaecati fugit, laborum facilis consequuntur officiis dignissimos incidunt velit veritatis porro mollitia, id ab beatae sint sit ad optio? Iusto, corporis.</p>
+      </div>
+    </section>
+    <section id="social-links">
+      <ul>
+        <li>
+          <a href="https://www.twitch.tv/michaelalfox">
+            <img src={Routes.static_path(@conn, "/images/sidebar-social-twitch.png")} alt="The twitch logo" width="36px" height="36px">
+          </a>
+        </li>
+        <li>
+          <a href="https://youtube.com/michaelalfox">
+            <img src={Routes.static_path(@conn, "/images/sidebar-social-youtube.png")} alt="The youtube logo" width="36px" height="36px">
+          </a>
+        </li>
+        <li>
+          <a href="https://twitter.com/michaelalfox">
+            <img src={Routes.static_path(@conn, "/images/sidebar-social-twitter.png")} alt="The twitter logo" width="36px" height="36px">
+          </a>
+        </li>
+        <li>
+          <a href="https://www.instagram.com/michaelalfox/">
+            <img src={Routes.static_path(@conn, "/images/sidebar-social-instagram.png")} alt="The instagram logo" width="36px" height="36px">
+          </a>
+        </li>
+      </ul>
+      <p>
+        &copy; <%= DateTime.utc_now().year %> Michael Fox · Built by <a href="#">@th3mcnuggetz</a>, <a href="https://twitter.com/krainboltgreene">@krainboltgreene</a>
+      </p>
+    </section>
+  </aside>
+
 </main>

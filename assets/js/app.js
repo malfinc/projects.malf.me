@@ -1,6 +1,6 @@
 // We import the CSS which is extracted to its own file by esbuild.
 // Remove this line if you add a your own CSS build pipeline (e.g postcss).
-import "../css/app.css"
+import "../css/app.css";
 
 // If you want to use Phoenix channels, run `mix help phx.gen.channel`
 // to get started and then uncomment the line below.
@@ -20,26 +20,85 @@ import "../css/app.css"
 //
 
 // Include phoenix_html to handle method=PUT/DELETE in forms and buttons.
-import "phoenix_html"
+import "phoenix_html";
 // Establish Phoenix Socket and LiveView configuration.
-import {Socket} from "phoenix"
-import {LiveSocket} from "phoenix_live_view"
-import topbar from "../vendor/topbar"
+import { Socket } from "phoenix";
+import { LiveSocket } from "phoenix_live_view";
+import topbar from "../vendor/topbar";
 
-let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
-let liveSocket = new LiveSocket("/live", Socket, {params: {_csrf_token: csrfToken}})
+let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
+let liveSocket = new LiveSocket("/live", Socket, {
+  params: {
+    _csrf_token: csrfToken,
+  },
+  hooks: {
+    Face: {
+      wakeUp() {
+        if (!this.isAwake) {
+          console.log("I'm awake!");
+          this.pushEvent("wake-up", {});
+          this.isAwake = true;
+        }
+      },
+      talk() {
+        if (!this.isTalking) {
+          console.log("I'm talking!");
+          this.pushEvent("talking", {});
+          this.isTalking = true;
+          this.quiet();
+        }
+      },
+      quiet() {
+        setTimeout((face) => {
+          if (face.isTalking) {
+            console.log("I'm quiet!");
+            this.pushEvent("quiet", {});
+            face.isTalking = false;
+          }
+        }, 100, this);
+      },
+      moveEye() {
+        console.log("Checking if it's time to move the eye")
+        if (this.isAwake) {
+          if (Math.random() > 0.5) {
+            console.log("Moving eye left")
+            this.pushEvent("move-eye", {to: "left"});
+          } else {
+            console.log("Moving eye right")
+            this.pushEvent("move-eye", {to: "right"});
+          }
+        }
+        this.eyeMovement = setTimeout(this.moveEye.bind(this), 9999);
+      },
+      mounted() {
+        console.log("Mounting")
+        const SpeechRecognition = window.SpeechRecognition || webkitSpeechRecognition;
+        const recognition = new SpeechRecognition();
+        recognition.lang = 'en-US';
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.onresult = ({ results }) => {
+          console.log("I hear something")
+          this.wakeUp();
+          this.talk();
+        };
+        this.moveEye();
+        recognition.start();
+      }
+    }
+  }
+});
 
 // Show progress bar on live navigation and form submits
-topbar.config({barColors: {0: "#29d"}, shadowColor: "rgba(0, 0, 0, .3)"})
-window.addEventListener("phx:page-loading-start", info => topbar.show())
-window.addEventListener("phx:page-loading-stop", info => topbar.hide())
+topbar.config({ barColors: { 0: "#29d" }, shadowColor: "rgba(0, 0, 0, .3)" });
+window.addEventListener("phx:page-loading-start", info => topbar.show());
+window.addEventListener("phx:page-loading-stop", info => topbar.hide());
 
 // connect if there are any LiveViews on the page
-liveSocket.connect()
+liveSocket.connect();
 
 // expose liveSocket on window for web console debug logs and latency simulation:
 // >> liveSocket.enableDebug()
 // >> liveSocket.enableLatencySim(1000)  // enabled for duration of browser session
 // >> liveSocket.disableLatencySim()
-window.liveSocket = liveSocket
-
+window.liveSocket = liveSocket;

@@ -12,7 +12,7 @@
   --purple-twitch: rgb(148, 59, 255);
 }
 
-body {
+main {
   background-image: url("/images/background.png");
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -28,7 +28,7 @@ body {
   font-family: 'Montserrat', sans-serif;
 }
 
-main {
+article {
   background-image: url("/images/content.png");
   padding: 15px;
 }
