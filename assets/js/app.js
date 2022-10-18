@@ -33,10 +33,23 @@ let liveSocket = new LiveSocket("/live", Socket, {
   },
   hooks: {
     Face: {
+      setup() {
+        const SpeechRecognition = window.SpeechRecognition || webkitSpeechRecognition;
+        this.recognition = new SpeechRecognition();
+        this.recognition.lang = 'en-US';
+        this.recognition.continuous = true;
+        this.recognition.interimResults = true;
+        this.recognition.onresult = ({ results }) => {
+          console.log("I hear something");
+          this.wakeUp();
+          this.talk();
+        };
+      },
       wakeUp() {
         if (!this.isAwake) {
           console.log("I'm awake!");
           this.pushEvent("wake-up", {});
+          this.moveEye();
           this.isAwake = true;
         }
       },
@@ -72,18 +85,13 @@ let liveSocket = new LiveSocket("/live", Socket, {
       },
       mounted() {
         console.log("Mounting")
-        const SpeechRecognition = window.SpeechRecognition || webkitSpeechRecognition;
-        const recognition = new SpeechRecognition();
-        recognition.lang = 'en-US';
-        recognition.continuous = true;
-        recognition.interimResults = true;
-        recognition.onresult = ({ results }) => {
-          console.log("I hear something")
-          this.wakeUp();
-          this.talk();
-        };
-        this.moveEye();
-        recognition.start();
+        this.setup()
+        this.recognition.start()
+        setInterval(() => {
+          this.recognition.stop();
+          this.setup();
+          this.recognition.start();
+        }, 10000)
       }
     }
   }
