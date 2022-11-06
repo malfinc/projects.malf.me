@@ -1,6 +1,7 @@
 defmodule CoreWeb.FaceLive do
   use Phoenix.LiveView,
     layout: {CoreWeb.LayoutView, :face}
+
   use Phoenix.HTML
 
   @impl true

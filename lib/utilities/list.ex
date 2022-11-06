@@ -22,15 +22,7 @@ defmodule Utilities.List do
     end)
   end
 
-
   @spec pluck(list(map()), any() | list(any())) :: list(any())
-  def pluck(maps, key)
-      when (is_list(maps) and is_atom(key)) or is_binary(key) or is_integer(key) do
-    Enum.map(maps, &Map.get(&1, key))
-  end
-
-
-  @spec pluck(list(map()), any() | list(any)) :: list(any())
   def pluck(maps, key)
       when (is_list(maps) and is_atom(key)) or is_binary(key) or is_integer(key) do
     Enum.map(maps, &Map.get(&1, key))

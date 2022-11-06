@@ -19,7 +19,7 @@ defmodule Core.Application do
       CoreWeb.Endpoint,
       {Oban, Application.fetch_env!(:core, Oban)},
       CoreWeb.Channels.Presence,
-      {Finch, name: HTTPClient},
+      {Finch, name: HTTPClient}
       # Start a worker by calling: Core.Worker.start_link(arg)
       # {Core.Worker, arg}
     ]
