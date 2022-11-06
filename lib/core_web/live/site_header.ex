@@ -18,28 +18,10 @@ defmodule CoreWeb.Live.SiteHeader do
   @impl true
   def render(assigns) do
     ~H"""
-    <header>
-      <section>
-        <img src={Routes.static_path(@conn, "/images/banner-logo.svg")} alt="the malf logo, which is two triangles arranged in a way that makes a cute fox head with ears" title="the malf logo, which is two triangles arranged in a way that makes a cute fox head with ears">
-        <div></div>
-      </section>
-      <nav>
-        <ul>
-          <li><%= link to: Routes.page_path(@conn, :index) do %>Home<% end %></li>
-          <li><a href="https://www.twitch.tv/michaelalfox">Watch</a></li>
-          <li><a href="#blog_link_here">Blog</a></li>
-          <li><%= link to: Routes.page_path(@conn, :socials) do %>Socials<% end %></li>
-          <li><%= link to: Routes.page_path(@conn, :discord) do %>Discord<% end %></li>
-          <li><%= link to: Routes.page_path(@conn, :about) do %>About<% end %></li>
-          <li><%= link to: Routes.page_path(@conn, :projects) do %>Projects<% end %></li>
-          <li><%= link to: Routes.page_path(@conn, :contact) do %>Contact<% end %></li>
-        </ul>
-      </nav>
-    </header>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark  bg-dark ">
       <section class="container-fluid">
         <%= link(to: Routes.page_path(@socket, :index), class: "navbar-brand") do %>
-          Micahel Al Fox
+          <img src={Routes.static_path(@socket, "/images/banner-logo.svg")} alt="the malf logo, which is two triangles arranged in a way that makes a cute fox head with ears" title="the malf logo, which is two triangles arranged in a way that makes a cute fox head with ears">
         <% end %>
         <button
           class="navbar-toggler"
@@ -55,6 +37,33 @@ defmodule CoreWeb.Live.SiteHeader do
 
         <section class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item"><a class="nav-link" href="https://www.twitch.tv/michaelalfox">Watch</a></li>
+            <li class="nav-item"><a class="nav-link" href="#blog_link_here">Blog</a></li>
+            <li class="nav-item">
+              <%= link to: Routes.page_path(@socket, :socials), class: "nav-link" do %>
+                Socials
+              <% end %>
+            </li>
+            <li class="nav-item">
+              <%= link to: Routes.page_path(@socket, :discord), class: "nav-link" do %>
+                Discord
+              <% end %>
+            </li>
+            <li class="nav-item">
+              <%= link to: Routes.page_path(@socket, :about), class: "nav-link" do %>
+                About
+              <% end %>
+            </li>
+            <li class="nav-item">
+              <%= link to: Routes.page_path(@socket, :projects), class: "nav-link" do %>
+                Projects
+              <% end %>
+            </li>
+            <li class="nav-item">
+              <%= link to: Routes.page_path(@socket, :contact), class: "nav-link" do %>
+                Contact
+              <% end %>
+            </li>
             <%= if @current_account do %>
               <%= if Core.Users.has_permission?(@current_account, "global", "administrator") do %>
                 <li class="nav-item">

@@ -1,9 +1,9 @@
 <%= live_render(@socket, CoreWeb.Live.SiteHeader, id: "site_header") %>
 <main class="container-md">
   <div class="py-5" style="min-height: 640px">
-    <%= render(@socket, "global/live_notifications.html") %>
+    <%= render("_live_notifications.html", assigns) %>
     <%= @inner_content %>
   </div>
-  <%= render(@socket, "global/sidebar.html") %>
+  <%= render("_sidebar.html", assigns) %>
 </main>
 <%= live_render(@socket, CoreWeb.Live.SiteFooter, id: "site_footer") %>

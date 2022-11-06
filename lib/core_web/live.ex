@@ -13,7 +13,6 @@ defmodule CoreWeb.Live do
 
       on_mount({CoreWeb.Live, :check_for_admin_namespace})
       on_mount({CoreWeb.Live, :authentication})
-      on_mount({CoreWeb.Live, :tenancy})
 
       unquote(on_mounts())
       unquote(CoreWeb.view_helpers())
