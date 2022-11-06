@@ -18,7 +18,6 @@ defmodule Core.DataCase do
 
   using do
     quote do
-      use Mimic
       import Core.DataCase
     end
   end
