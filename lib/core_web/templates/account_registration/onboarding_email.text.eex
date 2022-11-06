@@ -1,0 +1,3 @@
+Thanks for signing up, please use the link below to confirm your account and pick a password:
+
+<%= assigns[:call_to_action] %>

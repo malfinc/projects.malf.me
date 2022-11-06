@@ -1,5 +1,8 @@
 import Config
 
+# Only in tests, remove the complexity from the password hashing algorithm
+config :bcrypt_elixir, :log_rounds, 1
+
 # Configure your database
 #
 # The MIX_TEST_PARTITION environment variable can be used
@@ -7,7 +10,7 @@ import Config
 # Run `mix help test` for more information.
 config :core, Core.Repo,
   username: "postgres",
-  password: "postgres",
+  password: if(System.get_env("CI"), do: "postgres"),
   hostname: "localhost",
   database: "core_test#{System.get_env("MIX_TEST_PARTITION")}",
   pool: Ecto.Adapters.SQL.Sandbox,
@@ -17,11 +20,15 @@ config :core, Core.Repo,
 # you can enable the server option below.
 config :core, CoreWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
-  secret_key_base: "HQEqHJwq9VgRNJlnyXDq24Q5pAOqeyZqWz5fSC8oGn7NUOcXsXFO+me1SU4rpVVe",
+  secret_key_base: "7GnUU++jStQkHY0f1Kj72K3ttoieHe4llePjJMlkQcTzoKomuSnIWU6OjNcJKK8x",
   server: false
 
 # In test we don't send emails.
 config :core, Core.Mailer, adapter: Swoosh.Adapters.Test
+
+config :core, Oban, testing: :inline
+
+config :oban, log_level: :debug
 
 # Print only warnings and errors during test
 config :logger, level: :warn

@@ -11,14 +11,51 @@ defmodule Core.Application do
       # Start the Ecto repository
       Core.Repo,
       # Start the Telemetry supervisor
+      PhoenixLiveSession.Store,
       CoreWeb.Telemetry,
       # Start the PubSub system
       {Phoenix.PubSub, name: Core.PubSub},
       # Start the Endpoint (http/https)
-      CoreWeb.Endpoint
+      CoreWeb.Endpoint,
+      {Oban, Application.fetch_env!(:core, Oban)},
+      CoreWeb.Channels.Presence,
+      {Finch, name: Core.Client.GenieHTTPClient},
+      {Finch,
+       name: Core.Client.CoreWeaveHTTPClient,
+       pools: [
+         default: [
+           conn_opts: [
+             transport_opts: [verify: :verify_none]
+           ]
+         ]
+       ]}
       # Start a worker by calling: Core.Worker.start_link(arg)
       # {Core.Worker, arg}
     ]
+
+    # In HTTP Responses use the Server-Timing spec to tell us response times
+    Plug.Telemetry.ServerTiming.install([
+      {[:phoenix, :endpoint, :stop], :duration, description: ~s("Endpoint Duration")},
+      {[:phoenix, :router_dispatch, :stop], :duration, description: ~s("Router Duration")},
+      {[:phoenix, :live_view, :mount, :stop], :duration,
+       description: ~s("LiveView Mount Duration")},
+      {[:core, :repo, :query], :total_time, description: ~s("Ecto Query Total Time")},
+      {[:core, :repo, :query], :decode_time, description: ~s("Ecto Query Decode Time")},
+      {[:core, :repo, :query], :query_time, description: ~s("Ecto Query Query Time")},
+      {[:core, :repo, :query], :queue_time, description: ~s("Ecto Query Queue Time")},
+      {[:core, :repo, :query], :idle_time, description: ~s("Ecto Query Idle Time")}
+    ])
+
+    # Setup oban to log to stdout
+    :ok = Oban.Telemetry.attach_default_logger(Application.get_env(:oban, :log_level, :debug))
+
+    :ok =
+      :telemetry.attach(
+        "oban-errors",
+        [:oban, :job, :exception],
+        &Utilities.ErrorReporting.handle_event/4,
+        []
+      )
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options

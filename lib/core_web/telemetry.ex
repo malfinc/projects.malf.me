@@ -1,4 +1,5 @@
 defmodule CoreWeb.Telemetry do
+  @moduledoc false
   use Supervisor
   import Telemetry.Metrics
 
@@ -29,6 +30,11 @@ defmodule CoreWeb.Telemetry do
         tags: [:route],
         unit: {:native, :millisecond}
       ),
+      summary("phoenix.live_view.mount.stop.duration",
+        unit: {:native, :millisecond},
+        tags: [:view, :connected?],
+        tag_values: &live_view_metric_tag_values/1
+      ),
 
       # Database Metrics
       summary("core.repo.query.total_time",
@@ -53,6 +59,11 @@ defmodule CoreWeb.Telemetry do
           "The time the connection spent waiting before being checked out for the query"
       ),
 
+      # Oban Metrics
+      summary("oban.job.stop.duration", unit: {:native, :millisecond}),
+      summary("oban.job.exception"),
+      summary("oban.circuit.trip"),
+
       # VM Metrics
       summary("vm.memory.total", unit: {:byte, :kilobyte}),
       summary("vm.total_run_queue_lengths.total"),
@@ -67,5 +78,11 @@ defmodule CoreWeb.Telemetry do
       # This function must call :telemetry.execute/3 and a metric must be added above.
       # {CoreWeb, :count_users, []}
     ]
+  end
+
+  defp live_view_metric_tag_values(metadata) do
+    metadata
+    |> Map.put(:view, metadata.socket.view)
+    |> Map.put(:connected?, metadata.socket.connected?)
   end
 end

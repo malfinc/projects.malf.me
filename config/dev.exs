@@ -1,13 +1,21 @@
 import Config
 
+config :core,
+  domain: "localhost",
+  base_url: "http://localhost:4000/",
+  production: false
+
 # Configure your database
 config :core, Core.Repo,
   username: "postgres",
-  password: "postgres",
+  password: if(System.get_env("GITHUB_CODESPACE"), do: "postgres"),
   hostname: "localhost",
   database: "core_dev",
+  stacktrace: true,
   show_sensitive_data_on_connection_error: true,
-  pool_size: 10
+  pool_size: 10,
+  prepare: :unnamed,
+  log: false
 
 # For development, we disable any cache and enable
 # debugging and code reloading.
@@ -22,7 +30,7 @@ config :core, CoreWeb.Endpoint,
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
-  secret_key_base: "yl+CP4/Xu71cksrNEa6WSl2nVo1c98nL8roiziED+M/IfybYGr7VdFgO09kEL5tr",
+  secret_key_base: "hPnBNsKd4PUfmSLk2QUu4wLsIFY5Mt1kzplLpgEGQnTkWcNmk9kovkbMujnsm3OI",
   watchers: [
     # Start the esbuild watcher by calling Esbuild.install_and_run(:default, args)
     esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
@@ -58,13 +66,15 @@ config :core, CoreWeb.Endpoint,
     patterns: [
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
-      ~r"lib/core_web/(live|views)/.*(ex)$",
+      ~r"lib/core_web/(live|views|components)/.*(ex)$",
       ~r"lib/core_web/templates/.*(eex)$"
     ]
   ]
 
 # Do not include metadata nor timestamps in development logs
-config :logger, :console, format: "[$level] $message\n"
+config :logger, :console,
+  format: "$metadata[$level] #{IO.ANSI.bright()}$message#{IO.ANSI.normal()}\n",
+  metadata: [:label, :request_id]
 
 # Set a higher stacktrace during development. Avoid configuring such
 # in production as building large stacktraces may be expensive.
@@ -72,3 +82,6 @@ config :phoenix, :stacktrace_depth, 20
 
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
+
+config :oban,
+  log_level: :info
