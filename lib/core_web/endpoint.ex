@@ -1,13 +1,20 @@
 defmodule CoreWeb.Endpoint do
+  use Sentry.PlugCapture
   use Phoenix.Endpoint, otp_app: :core
 
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
   # Set :encryption_salt if you would also like to encrypt it.
+  # @session_options [
+  #   store: :cookie,
+  #   key: "_core_key",
+  #   signing_salt: "JKEx/AEF"
+  # ]
   @session_options [
-    store: :cookie,
-    key: "_core_key",
-    signing_salt: "guX+dkB1"
+    store: PhoenixLiveSession,
+    pub_sub: Core.PubSub,
+    signing_salt: "guX+dkB1",
+    key: "session"
   ]
 
   socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
@@ -36,6 +43,7 @@ defmodule CoreWeb.Endpoint do
     cookie_key: "request_logger"
 
   plug Plug.RequestId
+  plug Plug.Telemetry.ServerTiming
   plug Plug.Telemetry, event_prefix: [:phoenix, :endpoint]
 
   plug Plug.Parsers,
@@ -43,6 +51,7 @@ defmodule CoreWeb.Endpoint do
     pass: ["*/*"],
     json_decoder: Phoenix.json_library()
 
+  plug Sentry.PlugContext
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options

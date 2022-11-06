@@ -1,5 +1,5 @@
 /* This file is for your main application CSS */
-@import "./normalize.css";
+@import "./form.css";
 @import "./topbar.css";
 
 :root {

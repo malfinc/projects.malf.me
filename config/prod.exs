@@ -1,5 +1,11 @@
 import Config
 
+config :core,
+  signing_salt: System.get_env("SIGNING_SALT"),
+  domain: "www-malf-me.fly.dev",
+  base_url: "https://www-malf-me.fly.dev/",
+  production: true
+
 # For production, don't forget to configure the url host
 # to something meaningful, Phoenix uses this information
 # when generating URLs.
@@ -12,7 +18,11 @@ import Config
 config :core, CoreWeb.Endpoint, cache_static_manifest: "priv/static/cache_manifest.json"
 
 # Do not print debug messages in production
-config :logger, level: :info
+config :logger,
+  level: :info,
+  backends: [:console, Sentry.LoggerBackend]
+
+config :oban, log_level: :info
 
 # ## SSL Support
 #

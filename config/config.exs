@@ -8,14 +8,37 @@
 import Config
 
 config :core,
-  ecto_repos: [Core.Repo]
+  application_name: "Michael Al Fox",
+  support_email_address: "support@www.malf.me",
+  theme_color: "#ffffff",
+  description: "A website",
+  short_description: "A website",
+  google_site_verification: "",
+  google_tag_manager_id: ""
+
+config :core,
+  ecto_repos: [Core.Repo],
+  generators: [binary_id: true]
+
+config :core,
+       Core.Repo,
+       migration_primary_key: [name: :id, type: :binary_id],
+       migration_foreign_key: [column: :id, type: :binary_id]
 
 # Configures the endpoint
 config :core, CoreWeb.Endpoint,
-  url: [host: "localhost"],
+  url: [host: Application.get_env(:core, :domain)],
   render_errors: [view: CoreWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: Core.PubSub,
-  live_view: [signing_salt: "D6vddk7D"]
+  live_view: [signing_salt: "JKEx/AEF"]
+
+# Configure papertrail to use the right repository
+config :paper_trail,
+  repo: Core.Repo,
+  item_type: Ecto.UUID,
+  originator: [name: :accounts, model: Core.Users.Account],
+  originator_type: Ecto.UUID,
+  originator_relationship_options: [references: :uuid]
 
 # Configures the mailer
 #
@@ -31,7 +54,7 @@ config :swoosh, :api_client, false
 
 # Configure esbuild (the version is required)
 config :esbuild,
-  version: "0.14.0",
+  version: "0.14.29",
   default: [
     args:
       ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
@@ -40,12 +63,28 @@ config :esbuild,
   ]
 
 # Configures Elixir's Logger
+import IO
+
 config :logger, :console,
-  format: "$time $metadata[$level] $message\n",
-  metadata: [:request_id]
+  format: "$time $metadata[$level] #{IO.ANSI.bright()}$message#{IO.ANSI.normal()}\n",
+  metadata: [:request_id],
+  color: :enabled
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
+
+# Configure Sentry, the service we use to alert us to issues in the application
+config :sentry,
+  dsn: System.get_env("SENTRY_DSN"),
+  environment_name: Mix.env(),
+  enable_source_code_context: true,
+  root_source_code_path: File.cwd!(),
+  included_environments: [:prod]
+
+config :core, Oban,
+  repo: Core.Repo,
+  plugins: [Oban.Plugins.Pruner],
+  queues: [default: 10]
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

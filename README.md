@@ -1,5 +1,8 @@
 # Core
 
+
+## Setting up phoenix
+
 To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`
