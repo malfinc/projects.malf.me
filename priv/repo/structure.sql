@@ -301,6 +301,20 @@ CREATE TABLE public.accounts (
 
 
 --
+-- Name: accounts_tokens; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.accounts_tokens (
+    id uuid NOT NULL,
+    account_id uuid NOT NULL,
+    token bytea NOT NULL,
+    context character varying(255) NOT NULL,
+    sent_to character varying(255),
+    inserted_at timestamp(0) without time zone NOT NULL
+);
+
+
+--
 -- Name: oban_jobs; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -503,6 +517,14 @@ ALTER TABLE ONLY public.accounts
 
 
 --
+-- Name: accounts_tokens accounts_tokens_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.accounts_tokens
+    ADD CONSTRAINT accounts_tokens_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: oban_jobs oban_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -586,6 +608,20 @@ CREATE UNIQUE INDEX accounts_email_address_index ON public.accounts USING btree 
 --
 
 CREATE INDEX accounts_onboarding_state_index ON public.accounts USING btree (onboarding_state);
+
+
+--
+-- Name: accounts_tokens_account_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX accounts_tokens_account_id_index ON public.accounts_tokens USING btree (account_id);
+
+
+--
+-- Name: accounts_tokens_context_token_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX accounts_tokens_context_token_index ON public.accounts_tokens USING btree (context, token);
 
 
 --
@@ -701,6 +737,14 @@ CREATE TRIGGER oban_notify AFTER INSERT ON public.oban_jobs FOR EACH ROW EXECUTE
 
 
 --
+-- Name: accounts_tokens accounts_tokens_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.accounts_tokens
+    ADD CONSTRAINT accounts_tokens_account_id_fkey FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
+
+
+--
 -- Name: organization_memberships organization_memberships_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -751,5 +795,6 @@ INSERT INTO public."schema_migrations" (version) VALUES (20200127021837);
 INSERT INTO public."schema_migrations" (version) VALUES (20200127021838);
 INSERT INTO public."schema_migrations" (version) VALUES (20200127021839);
 INSERT INTO public."schema_migrations" (version) VALUES (20201215210357);
+INSERT INTO public."schema_migrations" (version) VALUES (20220209090825);
 INSERT INTO public."schema_migrations" (version) VALUES (20220628175515);
 INSERT INTO public."schema_migrations" (version) VALUES (20220927032208);
