@@ -18,6 +18,24 @@ defmodule CoreWeb.Live.SiteHeader do
   @impl true
   def render(assigns) do
     ~H"""
+    <header>
+      <section>
+        <img src={Routes.static_path(@conn, "/images/banner-logo.svg")} alt="the malf logo, which is two triangles arranged in a way that makes a cute fox head with ears" title="the malf logo, which is two triangles arranged in a way that makes a cute fox head with ears">
+        <div></div>
+      </section>
+      <nav>
+        <ul>
+          <li><%= link to: Routes.page_path(@conn, :index) do %>Home<% end %></li>
+          <li><a href="https://www.twitch.tv/michaelalfox">Watch</a></li>
+          <li><a href="#blog_link_here">Blog</a></li>
+          <li><%= link to: Routes.page_path(@conn, :socials) do %>Socials<% end %></li>
+          <li><%= link to: Routes.page_path(@conn, :discord) do %>Discord<% end %></li>
+          <li><%= link to: Routes.page_path(@conn, :about) do %>About<% end %></li>
+          <li><%= link to: Routes.page_path(@conn, :projects) do %>Projects<% end %></li>
+          <li><%= link to: Routes.page_path(@conn, :contact) do %>Contact<% end %></li>
+        </ul>
+      </nav>
+    </header>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <section class="container-fluid">
         <%= link(to: Routes.page_path(@socket, :index), class: "navbar-brand") do %>

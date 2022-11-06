@@ -1,59 +1,9 @@
 <%= live_render(@socket, CoreWeb.Live.SiteHeader, id: "site_header") %>
 <main class="container-md">
   <div class="py-5" style="min-height: 640px">
-    <%= if live_flash(@flash, :info) do %>
-      <div class="toast-container position-absolute top-0 end-0">
-        <div class="toast show text-white bg-primary" role="alert" aria-live="polite" aria-atomic="true">
-          <div class="toast-header">
-            <strong class="me-auto">
-              <i class="fa-solid fa-circle-exclamation"></i>
-              Information
-            </strong>
-            <button
-              type="button"
-              class="btn-close"
-              phx-click="lv:clear-flash"
-              phx-value-key="info"
-              data-bs-dismiss="toast"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="toast-body">
-            <%= live_flash(@flash, :info) %>
-          </div>
-        </div>
-      </div>
-    <% end %>
-    <%= if live_flash(@flash, :error) do %>
-      <div class="toast-container position-absolute top-0 start-50 translate-middle-x p-3">
-        <div
-          class="toast show text-white bg-danger"
-          role="alert"
-          aria-live="assertive"
-          aria-atomic="true"
-        >
-          <div class="toast-header">
-            <strong class="me-auto">
-              <i class="fa-solid fa-triangle-exclamation"></i>
-              Warning
-            </strong>
-            <button
-              type="button"
-              class="btn-close"
-              phx-click="lv:clear-flash"
-              phx-value-key="error"
-              data-bs-dismiss="toast"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="toast-body">
-            <%= live_flash(@flash, :error) %>
-          </div>
-        </div>
-      </div>
-    <% end %>
+    <%= render(@socket, "global/live_notifications.html") %>
     <%= @inner_content %>
   </div>
-
+  <%= render(@socket, "global/sidebar.html") %>
 </main>
 <%= live_render(@socket, CoreWeb.Live.SiteFooter, id: "site_footer") %>

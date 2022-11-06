@@ -35,9 +35,6 @@ config :core, CoreWeb.Endpoint,
     esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
   ]
 
-# Setup the code profiler
-config :core, CoreWeb.Endpoint, phoenix_profiler: [server: CoreWeb.Profiler]
-
 # ## SSL Support
 #
 # In order to use HTTPS in development, a self-signed
