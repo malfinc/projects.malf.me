@@ -19,7 +19,6 @@ defmodule CoreWeb.LiveCase do
 
   using do
     quote do
-      use Mimic
       # Import conveniences for testing with connections
       import Plug.Conn
       import Phoenix.ConnTest
