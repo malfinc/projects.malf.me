@@ -52,6 +52,7 @@ defmodule CoreWeb do
       # Include shared imports and aliases for views
       unquote(view_helpers())
       unquote(live_view_helpers())
+      unquote(component_helpers())
     end
   end
 
@@ -68,6 +69,7 @@ defmodule CoreWeb do
 
       # Include shared imports and aliases for views
       unquote(view_helpers())
+      unquote(component_helpers())
     end
   end
 
