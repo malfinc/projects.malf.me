@@ -1,4 +1,4 @@
-defmodule CoreWeb.AccountAuth do
+defmodule CoreWeb.AccountAuthenticationHelpers do
   @moduledoc false
   import Plug.Conn
   import Phoenix.Controller

@@ -40,7 +40,7 @@ defmodule CoreWeb.AccountSettingsController do
         conn
         |> put_flash(:info, "Password updated successfully.")
         |> put_session(:account_return_to, Routes.account_settings_path(conn, :edit))
-        |> CoreWeb.AccountAuth.log_in_account(account)
+        |> CoreWeb.AccountAuthenticationHelpers.log_in_account(account)
 
       {:error, changeset} ->
         render(conn, "edit.html", password_changeset: changeset)

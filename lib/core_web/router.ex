@@ -1,6 +1,10 @@
 defmodule CoreWeb.Router do
-  use CoreWeb, :router
+  use Phoenix.Router
 
+  import Plug.Conn
+  import Phoenix.Controller
+  import Phoenix.LiveView.Router
+  import CoreWeb.AccountAuthenticationHelpers
   import Phoenix.LiveDashboard.Router
 
   pipeline :browser do

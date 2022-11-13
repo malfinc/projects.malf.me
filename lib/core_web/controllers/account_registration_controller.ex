@@ -18,7 +18,7 @@ defmodule CoreWeb.AccountRegistrationController do
 
         conn
         |> put_flash(:info, "Account created successfully.")
-        |> CoreWeb.AccountAuth.log_in_account(account)
+        |> CoreWeb.AccountAuthenticationHelpers.log_in_account(account)
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)

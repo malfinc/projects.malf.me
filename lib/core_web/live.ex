@@ -59,7 +59,7 @@ defmodule CoreWeb.Live do
 
   def on_mount(:authentication, _params, session, socket) do
     socket
-    |> CoreWeb.AccountAuth.fetch_current_account(session)
+    |> CoreWeb.AccountAuthenticationHelpers.fetch_current_account(session)
     |> Utilities.Tuple.result(:cont)
   end
 

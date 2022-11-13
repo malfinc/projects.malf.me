@@ -1,4 +1,4 @@
-defmodule CoreWeb.CoreWeb.AccountAuthTest do
+defmodule CoreWeb.CoreWeb.AccountAuthenticationHelpersTest do
   use CoreWeb.ConnCase, async: true
 
   import Core.UsersFixtures
@@ -16,7 +16,7 @@ defmodule CoreWeb.CoreWeb.AccountAuthTest do
 
   describe "log_in_account/3" do
     test "stores the account token in the session", %{conn: conn, account: account} do
-      conn = CoreWeb.AccountAuth.log_in_account(conn, account)
+      conn = CoreWeb.AccountAuthenticationHelpers.log_in_account(conn, account)
       assert token = get_session(conn, :account_token)
       assert get_session(conn, :live_socket_id) == "accounts_sessions:#{Base.url_encode64(token)}"
       assert redirected_to(conn) == "/"
@@ -27,7 +27,7 @@ defmodule CoreWeb.CoreWeb.AccountAuthTest do
       conn =
         conn
         |> put_session(:to_be_removed, "value")
-        |> CoreWeb.AccountAuth.log_in_account(account)
+        |> CoreWeb.AccountAuthenticationHelpers.log_in_account(account)
 
       refute get_session(conn, :to_be_removed)
     end
@@ -36,7 +36,7 @@ defmodule CoreWeb.CoreWeb.AccountAuthTest do
       conn =
         conn
         |> put_session(:account_return_to, "/hello")
-        |> CoreWeb.AccountAuth.log_in_account(account)
+        |> CoreWeb.AccountAuthenticationHelpers.log_in_account(account)
 
       assert redirected_to(conn) == "/hello"
     end
@@ -45,7 +45,7 @@ defmodule CoreWeb.CoreWeb.AccountAuthTest do
       conn =
         conn
         |> fetch_cookies()
-        |> CoreWeb.AccountAuth.log_in_account(account, %{"remember_me" => "true"})
+        |> CoreWeb.AccountAuthenticationHelpers.log_in_account(account, %{"remember_me" => "true"})
 
       assert get_session(conn, :account_token) == conn.cookies[@remember_me_cookie]
 
@@ -64,7 +64,7 @@ defmodule CoreWeb.CoreWeb.AccountAuthTest do
         |> put_session(:account_token, account_token)
         |> put_req_cookie(@remember_me_cookie, account_token)
         |> fetch_cookies()
-        |> CoreWeb.AccountAuth.log_out_account()
+        |> CoreWeb.AccountAuthenticationHelpers.log_out_account()
 
       refute get_session(conn, :account_token)
       refute conn.cookies[@remember_me_cookie]
@@ -79,13 +79,13 @@ defmodule CoreWeb.CoreWeb.AccountAuthTest do
 
       conn
       |> put_session(:live_socket_id, live_socket_id)
-      |> CoreWeb.AccountAuth.log_out_account()
+      |> CoreWeb.AccountAuthenticationHelpers.log_out_account()
 
       assert_receive %Phoenix.Socket.Broadcast{event: "disconnect", topic: ^live_socket_id}
     end
 
     test "works even if account is already logged out", %{conn: conn} do
-      conn = conn |> fetch_cookies() |> CoreWeb.AccountAuth.log_out_account()
+      conn = conn |> fetch_cookies() |> CoreWeb.AccountAuthenticationHelpers.log_out_account()
       refute get_session(conn, :account_token)
       assert %{max_age: 0} = conn.resp_cookies[@remember_me_cookie]
       assert redirected_to(conn) == "/"
@@ -99,7 +99,7 @@ defmodule CoreWeb.CoreWeb.AccountAuthTest do
       conn =
         conn
         |> put_session(:account_token, account_token)
-        |> CoreWeb.AccountAuth.fetch_current_account([])
+        |> CoreWeb.AccountAuthenticationHelpers.fetch_current_account([])
 
       assert conn.assigns.current_account.id == account.id
     end
@@ -108,7 +108,7 @@ defmodule CoreWeb.CoreWeb.AccountAuthTest do
       logged_in_conn =
         conn
         |> fetch_cookies()
-        |> CoreWeb.AccountAuth.log_in_account(account, %{"remember_me" => "true"})
+        |> CoreWeb.AccountAuthenticationHelpers.log_in_account(account, %{"remember_me" => "true"})
 
       account_token = logged_in_conn.cookies[@remember_me_cookie]
       %{value: signed_token} = logged_in_conn.resp_cookies[@remember_me_cookie]
@@ -116,7 +116,7 @@ defmodule CoreWeb.CoreWeb.AccountAuthTest do
       conn =
         conn
         |> put_req_cookie(@remember_me_cookie, signed_token)
-        |> CoreWeb.AccountAuth.fetch_current_account([])
+        |> CoreWeb.AccountAuthenticationHelpers.fetch_current_account([])
 
       assert get_session(conn, :account_token) == account_token
       assert conn.assigns.current_account.id == account.id
@@ -124,7 +124,7 @@ defmodule CoreWeb.CoreWeb.AccountAuthTest do
 
     test "does not authenticate if data is missing", %{conn: conn, account: account} do
       _ = Core.Users.generate_account_session_token(account)
-      conn = CoreWeb.AccountAuth.fetch_current_account(conn, [])
+      conn = CoreWeb.AccountAuthenticationHelpers.fetch_current_account(conn, [])
       refute get_session(conn, :account_token)
       refute conn.assigns.current_account
     end
@@ -135,14 +135,14 @@ defmodule CoreWeb.CoreWeb.AccountAuthTest do
       conn =
         conn
         |> assign(:current_account, account)
-        |> CoreWeb.AccountAuth.redirect_if_account_is_authenticated([])
+        |> CoreWeb.AccountAuthenticationHelpers.redirect_if_account_is_authenticated([])
 
       assert conn.halted
       assert redirected_to(conn) == "/"
     end
 
     test "does not redirect if account is not authenticated", %{conn: conn} do
-      conn = CoreWeb.AccountAuth.redirect_if_account_is_authenticated(conn, [])
+      conn = CoreWeb.AccountAuthenticationHelpers.redirect_if_account_is_authenticated(conn, [])
       refute conn.halted
       refute conn.status
     end
@@ -150,7 +150,7 @@ defmodule CoreWeb.CoreWeb.AccountAuthTest do
 
   describe "require_authenticated_account/2" do
     test "redirects if account is not authenticated", %{conn: conn} do
-      conn = conn |> fetch_flash() |> CoreWeb.AccountAuth.require_authenticated_account([])
+      conn = conn |> fetch_flash() |> CoreWeb.AccountAuthenticationHelpers.require_authenticated_account([])
 
       assert conn.halted
       assert redirected_to(conn) == Routes.account_session_path(conn, :new)
@@ -161,7 +161,7 @@ defmodule CoreWeb.CoreWeb.AccountAuthTest do
       halted_conn =
         %{conn | path_info: ["foo"], query_string: ""}
         |> fetch_flash()
-        |> CoreWeb.AccountAuth.require_authenticated_account([])
+        |> CoreWeb.AccountAuthenticationHelpers.require_authenticated_account([])
 
       assert halted_conn.halted
       assert get_session(halted_conn, :account_return_to) == "/foo"
@@ -169,7 +169,7 @@ defmodule CoreWeb.CoreWeb.AccountAuthTest do
       halted_conn =
         %{conn | path_info: ["foo"], query_string: "bar=baz"}
         |> fetch_flash()
-        |> CoreWeb.AccountAuth.require_authenticated_account([])
+        |> CoreWeb.AccountAuthenticationHelpers.require_authenticated_account([])
 
       assert halted_conn.halted
       assert get_session(halted_conn, :account_return_to) == "/foo?bar=baz"
@@ -177,7 +177,7 @@ defmodule CoreWeb.CoreWeb.AccountAuthTest do
       halted_conn =
         %{conn | path_info: ["foo"], query_string: "bar", method: "POST"}
         |> fetch_flash()
-        |> CoreWeb.AccountAuth.require_authenticated_account([])
+        |> CoreWeb.AccountAuthenticationHelpers.require_authenticated_account([])
 
       assert halted_conn.halted
       refute get_session(halted_conn, :account_return_to)
@@ -187,7 +187,7 @@ defmodule CoreWeb.CoreWeb.AccountAuthTest do
       conn =
         conn
         |> assign(:current_account, account)
-        |> CoreWeb.AccountAuth.require_authenticated_account([])
+        |> CoreWeb.AccountAuthenticationHelpers.require_authenticated_account([])
 
       refute conn.halted
       refute conn.status
