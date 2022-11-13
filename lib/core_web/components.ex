@@ -6,17 +6,6 @@ defmodule CoreWeb.Components do
   use Phoenix.HTML
   use Phoenix.Component
 
-  # Import LiveView and .heex helpers (live_render, live_patch, <.form>, etc)
-  # import Phoenix.LiveView
-  # import Phoenix.LiveView.Helpers
-  # import CoreWeb.Live.LiveHelpers
-
-  # Import basic rendering functionality (render, render_layout, etc)
-  # import Phoenix.View
-  # import CoreWeb.ErrorHelpers
-  # import CoreWeb.Gettext
-
-  alias CoreWeb.Router.Helpers, as: Routes
 
   def button(assigns) do
     ~H"""

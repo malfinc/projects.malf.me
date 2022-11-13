@@ -55,7 +55,7 @@ defmodule Core.MixProject do
       {:phoenix_live_dashboard, "~> 0.7.2"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:phoenix_live_view, "~> 0.18.3"},
-      {:phoenix, "~> 1.6"},
+      {:phoenix, "~> 1.7.0-rc.0", override: true},
       {:plug_cowboy, "~> 2.5"},
       {:plug_telemetry_server_timing, "~> 0.3.0"},
       {:postgrex, "~> 0.16.0"},
