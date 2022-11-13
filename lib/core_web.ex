@@ -148,14 +148,14 @@ defmodule CoreWeb do
   # Move to Core.Plugs.Admin
   def on_mount(:check_for_admin_namespace, _params, %{"admin_namespace" => true}, socket) do
     socket
-    |> assign(:admin_namespace, true)
+    |> Phoenix.Component.assign(:admin_namespace, true)
     |> Utilities.Tuple.result(:cont)
   end
 
   # Move to Core.Plugs.Admin
   def on_mount(:check_for_admin_namespace, _params, _session, socket) do
     socket
-    |> assign_new(:admin_namespace, fn -> false end)
+    |> Phoenix.Component.assign_new(:admin_namespace, fn -> false end)
     |> Utilities.Tuple.result(:cont)
   end
 
@@ -185,7 +185,7 @@ defmodule CoreWeb do
         |> Phoenix.LiveView.redirect(to: "/")
         |> Utilities.Tuple.result(:halt)
     end
-  en
+  end
 
   @doc """
   When used, dispatch to the appropriate controller/view/etc.
