@@ -1,12 +1,14 @@
 defmodule CoreWeb.Components do
-  @moduledoc false
+  @moduledoc """
+  Shared Component module behavior
+  """
   require Logger
 
   # Use all HTML functionality (forms, tags, etc)
   use Phoenix.HTML
   use Phoenix.Component
 
-
+  @spec button(map()) :: Phoenix.LiveView.Rendered.t()
   def button(assigns) do
     ~H"""
     <button type="button" {assigns_to_attributes(assigns, [:loading, :icon])} disabled={assigns[:loading]}>
