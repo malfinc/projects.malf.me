@@ -1,8 +1,8 @@
 defmodule CoreWeb.Live.Account do
   @moduledoc false
-  use CoreWeb.Live, :view
+  use CoreWeb, :live_view
 
-  on_mount({CoreWeb.Live, :require_administrative_privilages})
+  on_mount({CoreWeb, :require_administrative_privilages})
 
   defp list_records(_assigns, _params) do
     Core.Users.list_accounts()

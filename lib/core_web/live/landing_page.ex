@@ -1,6 +1,6 @@
 defmodule CoreWeb.Live.LandingPage do
   @moduledoc false
-  use CoreWeb.Live, :view
+  use CoreWeb, :live_view
 
   @impl true
   def mount(_params, _session, socket) do

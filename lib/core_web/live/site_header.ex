@@ -1,6 +1,6 @@
 defmodule CoreWeb.Live.SiteHeader do
   @moduledoc false
-  use CoreWeb.Live, :view
+  use CoreWeb, :live_view
 
   defp admin_links(),
     do: [

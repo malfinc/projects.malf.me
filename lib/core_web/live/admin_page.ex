@@ -1,8 +1,8 @@
 defmodule CoreWeb.Live.AdminPage do
   @moduledoc false
-  use CoreWeb.Live, :view
+  use CoreWeb, :live_view
 
-  on_mount({CoreWeb.Live, :require_administrative_privilages})
+  on_mount({CoreWeb, :require_administrative_privilages})
 
   @impl true
   def mount(_params, _session, socket) do

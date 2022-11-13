@@ -24,7 +24,34 @@ defmodule CoreWeb do
 
       import Plug.Conn
       import CoreWeb.Gettext
-      alias CoreWeb.Router.Helpers, as: Routes
+    end
+  end
+
+  def live_view do
+    quote do
+      use Phoenix.LiveView,
+        layout: {CoreWeb.LayoutView, :live}
+
+      # Use all HTML functionality (forms, tags, etc)
+      use Phoenix.HTML
+
+      on_mount({CoreWeb, :check_for_admin_namespace})
+      on_mount({CoreWeb, :authentication})
+      on_mount({CoreWeb, :listen_to_session})
+
+      # Import LiveView and .heex helpers (live_render, live_patch, <.form>, etc)
+      import Phoenix.LiveView
+      import Phoenix.Component
+
+      # Import basic rendering functionality (render, render_layout, etc)
+      import Phoenix.View
+
+      import CoreWeb.ErrorHelpers
+      import CoreWeb.Gettext
+
+      # Include shared imports and aliases for views
+      unquote(view_helpers())
+      unquote(live_view_helpers())
     end
   end
 
@@ -32,7 +59,8 @@ defmodule CoreWeb do
     quote do
       use Phoenix.View,
         root: "lib/core_web/templates",
-        namespace: CoreWeb
+        namespace: CoreWeb,
+        layout: {CoreWeb.LayoutView, :app}
 
       # Import convenience functions from controllers
       import Phoenix.Controller,
@@ -40,17 +68,6 @@ defmodule CoreWeb do
 
       # Include shared imports and aliases for views
       unquote(view_helpers())
-    end
-  end
-
-  def router do
-    quote do
-      use Phoenix.Router
-
-      import Plug.Conn
-      import Phoenix.Controller
-      import Phoenix.LiveView.Router
-      import CoreWeb.AccountAuth
     end
   end
 
@@ -70,17 +87,103 @@ defmodule CoreWeb do
       import Phoenix.LiveView
       import Phoenix.Component
       import Phoenix.LiveView.Helpers
-      import CoreWeb.Live.LiveHelpers
 
       # Import basic rendering functionality (render, render_layout, etc)
       import Phoenix.View
 
       import CoreWeb.ErrorHelpers
       import CoreWeb.Gettext
-
-      alias CoreWeb.Router.Helpers, as: Routes
     end
   end
+
+  def live_view_helpers do
+    quote do
+      def handle_info({:live_session_updated, _session}, socket),
+        do: socket |> Utilities.Tuple.result(:noreply)
+    end
+  end
+
+  def component_helpers do
+    quote do
+      def timestamp_in_words_ago(%{updated_at: updated_at}) do
+        Timex.from_now(updated_at)
+      end
+
+      def timestamp_in_words_ago(%{inserted_at: inserted_at}) do
+        Timex.from_now(inserted_at)
+      end
+
+      def code_as_html(source) do
+        inspect(source, pretty: true, limit: :infinity)
+        |> (&"```\n#{&1}\n```").()
+        |> Earmark.as_html!()
+        |> Phoenix.HTML.raw()
+      end
+
+      def error_at_ago(%{"at" => at}) do
+        at
+        |> DateTime.from_iso8601()
+        |> case do
+          {:ok, datetime, _} -> Timex.from_now(datetime)
+          {:error, _} -> at
+        end
+      end
+    end
+  end
+
+  @spec on_mount(
+          atom(),
+          map(),
+          map(),
+          any
+        ) :: {atom, any}
+  def on_mount(:listen_to_session, _params, session, socket) do
+    socket
+    |> PhoenixLiveSession.maybe_subscribe(session)
+    |> Utilities.Tuple.result(:cont)
+  end
+
+  # Move to Core.Plugs.Admin
+  def on_mount(:check_for_admin_namespace, _params, %{"admin_namespace" => true}, socket) do
+    socket
+    |> assign(:admin_namespace, true)
+    |> Utilities.Tuple.result(:cont)
+  end
+
+  # Move to Core.Plugs.Admin
+  def on_mount(:check_for_admin_namespace, _params, _session, socket) do
+    socket
+    |> assign_new(:admin_namespace, fn -> false end)
+    |> Utilities.Tuple.result(:cont)
+  end
+
+  def on_mount(:authentication, _params, session, socket) do
+    socket
+    |> CoreWeb.AccountAuthenticationHelpers.fetch_current_account(session)
+    |> Utilities.Tuple.result(:cont)
+  end
+
+  # Move to Core.Plugs.Admin
+  def on_mount(
+        :require_administrative_privilages,
+        _params,
+        _session,
+        %{assigns: %{current_account: current_account}} = socket
+      ) do
+    current_account
+    |> Core.Users.has_permission?("global", "administrator")
+    |> case do
+      true ->
+        socket
+        |> Utilities.Tuple.result(:cont)
+
+      false ->
+        socket
+        |> Phoenix.LiveView.put_flash(:error, "That page does not exist")
+        |> Phoenix.LiveView.redirect(to: "/")
+        |> Utilities.Tuple.result(:halt)
+    end
+  en
 
   @doc """
   When used, dispatch to the appropriate controller/view/etc.

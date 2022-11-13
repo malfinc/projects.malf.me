@@ -1,9 +1,9 @@
 defmodule CoreWeb.Live.Job do
   @moduledoc false
+  use CoreWeb, :live_view
   import Ecto.Query
-  use CoreWeb.Live, :view
 
-  on_mount({CoreWeb.Live, :require_administrative_privilages})
+  on_mount({CoreWeb, :require_administrative_privilages})
 
   # "available" "scheduled" "executing" "retryable" "completed" "discarded"
   defp list_records(_assigns, params) do
