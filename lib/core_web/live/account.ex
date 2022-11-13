@@ -71,7 +71,8 @@ defmodule CoreWeb.Live.Account do
       <%= for account <- @records do %>
         <tr>
           <td>
-            <i class="fa-solid fa-envelope"></i> <a href={"mailto:#{account.email_address}"}>
+            <i class="fa-solid fa-envelope"></i>
+            <a href={"mailto:#{account.email_address}"}>
               <%= account.email_address %>
             </a>
           </td>
@@ -111,8 +112,12 @@ defmodule CoreWeb.Live.Account do
         <ul>
           <%= for organization_membership <- @record.organization_memberships do %>
             <li>
-              <%= link to: Routes.admin_organization_path(@socket, :show, organization_membership.organization.id) do %><%= organization_membership.organization.name %><% end %>
-              (<%= organization_membership.permissions |> Utilities.List.pluck(:name) |> Utilities.List.to_sentence() %>)
+              <%= link to: Routes.admin_organization_path(@socket, :show, organization_membership.organization.id) do %>
+                <%= organization_membership.organization.name %>
+              <% end %>
+              (<%= organization_membership.permissions
+              |> Utilities.List.pluck(:name)
+              |> Utilities.List.to_sentence() %>)
             </li>
           <% end %>
         </ul>

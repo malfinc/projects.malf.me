@@ -1,10 +1,14 @@
 <%= if get_flash(@conn, :info) do %>
   <div class="toast-container position-absolute top-0 end-0">
-    <div class="toast show text-white bg-primary" role="alert" aria-live="polite" aria-atomic="true">
+    <div
+      class="toast show text-white bg-primary"
+      role="alert"
+      aria-live="polite"
+      aria-atomic="true"
+    >
       <div class="toast-header">
         <strong class="me-auto">
-          <i class="fa-solid fa-circle-exclamation"></i>
-          Information
+          <i class="fa-solid fa-circle-exclamation"></i> Information
         </strong>
         <button
           type="button"
@@ -13,7 +17,8 @@
           phx-value-key="info"
           data-bs-dismiss="toast"
           aria-label="Close"
-        ></button>
+        >
+        </button>
       </div>
       <div class="toast-body">
         <%= get_flash(@conn, :info) %>
@@ -31,8 +36,7 @@
     >
       <div class="toast-header">
         <strong class="me-auto">
-          <i class="fa-solid fa-triangle-exclamation"></i>
-          Warning
+          <i class="fa-solid fa-triangle-exclamation"></i> Warning
         </strong>
         <button
           type="button"
@@ -41,7 +45,8 @@
           phx-value-key="error"
           data-bs-dismiss="toast"
           aria-label="Close"
-        ></button>
+        >
+        </button>
       </div>
       <div class="toast-body">
         <%= get_flash(@conn, :error) %>

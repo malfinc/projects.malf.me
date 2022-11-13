@@ -2,11 +2,19 @@
 
 <ul>
   <li>
-    <%= link(to: Routes.account_reset_password_path(@conn, :new)) do %>Forgot your password?<% end %>
+    <%= link(to: Routes.account_reset_password_path(@conn, :new)) do %>
+      Forgot your password?
+    <% end %>
   </li>
 </ul>
 
-<.form let={f} for={@conn} action={Routes.account_session_path(@conn, :create)} as={:account} class="form">
+<.form
+  :let={f}
+  for={@conn}
+  action={Routes.account_session_path(@conn, :create)}
+  as={:account}
+  class="form"
+>
   <%= if @error_message do %>
     <div class="alert alert-danger">
       <%= @error_message %>

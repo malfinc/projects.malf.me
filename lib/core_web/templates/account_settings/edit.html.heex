@@ -3,7 +3,7 @@
 <h3 id="change-email">Change email</h3>
 
 <.form
-  let={f}
+  :let={f}
   for={@email_address_changeset}
   action={Routes.account_settings_path(@conn, :update)}
   id="update_email_address"
@@ -42,7 +42,7 @@
 <h3 id="change-password">Change password</h3>
 
 <.form
-  let={f}
+  :let={f}
   for={@password_changeset}
   action={Routes.account_settings_path(@conn, :update)}
   id="update_password"

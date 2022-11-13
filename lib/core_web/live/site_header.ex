@@ -21,7 +21,11 @@ defmodule CoreWeb.Live.SiteHeader do
     <nav class="navbar navbar-expand-lg navbar-dark  bg-dark ">
       <section class="container-fluid">
         <%= link(to: Routes.page_path(@socket, :index), class: "navbar-brand") do %>
-          <img src={Routes.static_path(@socket, "/images/banner-logo.svg")} alt="the malf logo, which is two triangles arranged in a way that makes a cute fox head with ears" title="the malf logo, which is two triangles arranged in a way that makes a cute fox head with ears">
+          <img
+            src={Routes.static_path(@socket, "/images/banner-logo.svg")}
+            alt="the malf logo, which is two triangles arranged in a way that makes a cute fox head with ears"
+            title="the malf logo, which is two triangles arranged in a way that makes a cute fox head with ears"
+          />
         <% end %>
         <button
           class="navbar-toggler"
@@ -37,7 +41,9 @@ defmodule CoreWeb.Live.SiteHeader do
 
         <section class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item"><a class="nav-link" href="https://www.twitch.tv/michaelalfox">Watch</a></li>
+            <li class="nav-item">
+              <a class="nav-link" href="https://www.twitch.tv/michaelalfox">Watch</a>
+            </li>
             <li class="nav-item"><a class="nav-link" href="#blog_link_here">Blog</a></li>
             <li class="nav-item">
               <%= link to: Routes.page_path(@socket, :socials), class: "nav-link" do %>
@@ -88,17 +94,27 @@ defmodule CoreWeb.Live.SiteHeader do
           <ul class="navbar-nav me-right mb-2 mb-lg-0">
             <%= if @current_account do %>
               <li class="nav-item">
-                <%= link to: Routes.account_settings_path(@socket, :edit), class: "nav-link" do %><%= @current_account.email_address %><% end %>
+                <%= link to: Routes.account_settings_path(@socket, :edit), class: "nav-link" do %>
+                  <%= @current_account.email_address %>
+                <% end %>
               </li>
               <li class="nav-item">
-                <%= link to: Routes.account_session_path(@socket, :delete), method: :delete, class: "nav-link" do %>Log out<% end %>
+                <%= link to: Routes.account_session_path(@socket, :delete), method: :delete, class: "nav-link" do %>
+                  Log out
+                <% end %>
               </li>
             <% else %>
               <li class="nav-item">
-                <%= link to: Routes.account_registration_path(@socket, :new), class: "nav-link" do %>Register<% end %>
+                <%= link to: Routes.account_registration_path(@socket, :new), class: "nav-link" do %>
+                  Register
+                <% end %>
               </li>
               <li class="nav-item">
-                <strong><%= link to: Routes.account_session_path(@socket, :new), class: "nav-link" do %>Log in<% end %></strong>
+                <strong>
+                  <%= link to: Routes.account_session_path(@socket, :new), class: "nav-link" do %>
+                    Log in
+                  <% end %>
+                </strong>
               </li>
             <% end %>
           </ul>

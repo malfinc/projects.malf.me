@@ -1,7 +1,7 @@
 <h1>Reset password</h1>
 
 <.form
-  let={f}
+  :let={f}
   for={@changeset}
   action={Routes.account_reset_password_path(@conn, :update, @token)}
   class={"form #{unless(Enum.empty?(@changeset.changes), do: "was-validated")}"}
@@ -26,5 +26,7 @@
 </.form>
 
 <p>
-  <%= link("Register", to: Routes.account_registration_path(@conn, :new)) %> | <%= link("Log in", to: Routes.account_session_path(@conn, :new)) %>
+  <%= link("Register", to: Routes.account_registration_path(@conn, :new)) %> | <%= link("Log in",
+    to: Routes.account_session_path(@conn, :new)
+  ) %>
 </p>

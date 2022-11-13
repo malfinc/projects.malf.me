@@ -146,8 +146,22 @@ defmodule CoreWeb.Live.Job do
             <td><time datetime={job.inserted_at}><%= Timex.from_now(job.inserted_at) %></time></td>
             <td>
               <section>
-                <button type="button" phx-click="retry" phx-value-id={job.id} class="btn btn-outline-warning">Retry</button>
-                <button type="button" phx-click="cancel" phx-value-id={job.id} class="btn btn-outline-danger">Cancel</button>
+                <button
+                  type="button"
+                  phx-click="retry"
+                  phx-value-id={job.id}
+                  class="btn btn-outline-warning"
+                >
+                  Retry
+                </button>
+                <button
+                  type="button"
+                  phx-click="cancel"
+                  phx-value-id={job.id}
+                  class="btn btn-outline-danger"
+                >
+                  Cancel
+                </button>
               </section>
             </td>
           </tr>
@@ -164,7 +178,14 @@ defmodule CoreWeb.Live.Job do
     <p>
       <%= @record.queue %> queue -
       currently <%= @record.state %> -
-      <%= if @record.attempted_at do %><%= @record.attempt %> of <%= @record.max_attempts %> (last attempt <time title={@record.attempted_at} datetime={@record.attempted_at}><%= Timex.from_now(@record.attempted_at) %></time>)<% else %>never attempted<% end %>
+      <%= if @record.attempted_at do %>
+        <%= @record.attempt %> of <%= @record.max_attempts %> (last attempt <time
+          title={@record.attempted_at}
+          datetime={@record.attempted_at}
+        ><%= Timex.from_now(@record.attempted_at) %></time>)
+      <% else %>
+        never attempted
+      <% end %>
     </p>
 
     <h4 id="arguments">Arguments</h4>
@@ -192,18 +213,34 @@ defmodule CoreWeb.Live.Job do
     <h4 id="timestamps">Timestamps</h4>
     <dl>
       <dt>Started At</dt>
-      <dd><time title={@record.inserted_at} datetime={@record.inserted_at}><%= Timex.from_now(@record.inserted_at) %></time></dd>
+      <dd>
+        <time title={@record.inserted_at} datetime={@record.inserted_at}>
+          <%= Timex.from_now(@record.inserted_at) %>
+        </time>
+      </dd>
       <%= if @record.cancelled_at do %>
         <dt>Cancelled At</dt>
-        <dd><time title={@record.cancelled_at} datetime={@record.cancelled_at}><%= Timex.from_now(@record.cancelled_at) %></time></dd>
+        <dd>
+          <time title={@record.cancelled_at} datetime={@record.cancelled_at}>
+            <%= Timex.from_now(@record.cancelled_at) %>
+          </time>
+        </dd>
       <% end %>
       <%= if @record.discarded_at do %>
         <dt>Discarded At</dt>
-        <dd><time title={@record.discarded_at} datetime={@record.discarded_at}><%= Timex.from_now(@record.discarded_at) %></time></dd>
+        <dd>
+          <time title={@record.discarded_at} datetime={@record.discarded_at}>
+            <%= Timex.from_now(@record.discarded_at) %>
+          </time>
+        </dd>
       <% end %>
       <%= if @record.completed_at do %>
         <dt>Completed At</dt>
-        <dd><time title={@record.completed_at} datetime={@record.completed_at}><%= Timex.from_now(@record.completed_at) %></time></dd>
+        <dd>
+          <time title={@record.completed_at} datetime={@record.completed_at}>
+            <%= Timex.from_now(@record.completed_at) %>
+          </time>
+        </dd>
       <% end %>
     </dl>
     """

@@ -11,7 +11,11 @@ defmodule CoreWeb.Components do
   @spec button(map()) :: Phoenix.LiveView.Rendered.t()
   def button(assigns) do
     ~H"""
-    <button type="button" {assigns_to_attributes(assigns, [:loading, :icon])} disabled={assigns[:loading]}>
+    <button
+      type="button"
+      {assigns_to_attributes(assigns, [:loading, :icon])}
+      disabled={assigns[:loading]}
+    >
       <%= if assigns[:loading] do %>
         <i class="fa-solid fa-circle-notch fa-spin fa-fade"></i> Loading...
       <% else %>
@@ -29,7 +33,8 @@ defmodule CoreWeb.Components do
       <i
         class="fa-solid fa-square-full fa-beat-fade"
         style={"--fa-animation-duration: 3s; --fa-fade-opacity: 0.2; --fa-animation-delay: #{number / 2.0}s"}
-      ></i>
+      >
+      </i>
     <% end %>
     """
   end
