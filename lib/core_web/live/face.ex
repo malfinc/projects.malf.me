@@ -1,4 +1,4 @@
-defmodule CoreWeb.FaceLive do
+defmodule CoreWeb.Live.Face do
   use Phoenix.LiveView,
     layout: {CoreWeb.LayoutView, :face}
 
