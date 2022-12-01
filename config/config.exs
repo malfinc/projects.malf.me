@@ -8,6 +8,8 @@
 import Config
 
 config :core,
+  ecto_repos: [Core.Repo],
+  generators: [binary_id: true],
   application_name: "Michael Al Fox",
   support_email_address: "support@www.malf.me",
   theme_color: "#ffffff",
@@ -17,10 +19,6 @@ config :core,
   google_tag_manager_id: ""
 
 config :core,
-  ecto_repos: [Core.Repo],
-  generators: [binary_id: true]
-
-config :core,
        Core.Repo,
        migration_primary_key: [name: :id, type: :binary_id],
        migration_foreign_key: [column: :id, type: :binary_id]
@@ -28,7 +26,10 @@ config :core,
 # Configures the endpoint
 config :core, CoreWeb.Endpoint,
   url: [host: Application.get_env(:core, :domain)],
-  render_errors: [view: CoreWeb.ErrorView, accepts: ~w(html json), layout: false],
+  render_errors: [
+    formats: [html: CoreWeb.ErrorHTML, json: CoreWeb.ErrorJSON],
+    layout: false
+  ],
   pubsub_server: Core.PubSub,
   live_view: [signing_salt: "JKEx/AEF"]
 
@@ -49,17 +50,26 @@ config :paper_trail,
 # at the `config/runtime.exs`.
 config :core, Core.Mailer, adapter: Swoosh.Adapters.Local
 
-# Swoosh API client is needed for adapters other than SMTP.
-config :swoosh, :api_client, false
-
 # Configure esbuild (the version is required)
 config :esbuild,
-  version: "0.14.29",
+  version: "0.14.41",
   default: [
     args:
       ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
     cd: Path.expand("../assets", __DIR__),
     env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
+  ]
+
+# Configure tailwind (the version is required)
+config :tailwind,
+  version: "3.1.8",
+  default: [
+    args: ~w(
+      --config=tailwind.config.js
+      --input=css/app.css
+      --output=../priv/static/assets/app.css
+    ),
+    cd: Path.expand("../assets", __DIR__)
   ]
 
 # Configures Elixir's Logger
@@ -75,10 +85,7 @@ config :phoenix, :json_library, Jason
 
 # Configure Sentry, the service we use to alert us to issues in the application
 config :sentry,
-  dsn: System.get_env("SENTRY_DSN"),
   environment_name: Mix.env(),
-  enable_source_code_context: true,
-  root_source_code_path: File.cwd!(),
   included_environments: [:prod]
 
 config :core, Oban,

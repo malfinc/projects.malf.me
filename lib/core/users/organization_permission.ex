@@ -1,7 +1,7 @@
 defmodule Core.Users.OrganizationPermission do
   @moduledoc false
   use Ecto.Schema
-  import Ecto.Changeset
+
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "organization_permissions" do
@@ -24,13 +24,13 @@ defmodule Core.Users.OrganizationPermission do
           Ecto.Changeset.t(t())
   def changeset(record, attributes) do
     record
-    |> cast(attributes, [])
-    |> validate_required([])
-    |> put_assoc(:organization_membership, attributes.organization_membership)
-    |> put_assoc(:permission, attributes.permission)
+    |> Ecto.Changeset.cast(attributes, [])
+    |> Ecto.Changeset.validate_required([])
+    |> Ecto.Changeset.put_assoc(:organization_membership, attributes.organization_membership)
+    |> Ecto.Changeset.put_assoc(:permission, attributes.permission)
     |> Ecto.Changeset.foreign_key_constraint(:organization_membership_id)
     |> Ecto.Changeset.foreign_key_constraint(:permission_id)
-    |> assoc_constraint(:organization_membership)
-    |> assoc_constraint(:permission)
+    |> Ecto.Changeset.assoc_constraint(:organization_membership)
+    |> Ecto.Changeset.assoc_constraint(:permission)
   end
 end

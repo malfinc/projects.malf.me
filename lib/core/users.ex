@@ -113,7 +113,7 @@ defmodule Core.Users do
   @doc """
   Delivers the update email instructions to the given account.
   """
-  def deliver_update_email_address_instructions(
+  def deliver_account_update_email_address_instructions(
         %Core.Users.Account{} = account,
         current_email_address,
         update_email_address_url_fun
@@ -182,7 +182,7 @@ defmodule Core.Users do
   @doc """
   Deletes the signed token with the given context.
   """
-  def delete_session_token(token) do
+  def delete_account_session_token(token) do
     Core.Repo.delete_all(Core.Users.AccountToken.token_and_context_query(token, "session"))
 
     :ok

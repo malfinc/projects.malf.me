@@ -2,7 +2,49 @@ defmodule Utilities.Seeder do
   @moduledoc false
   require Logger
 
-  @file_to_module_mapping Map.new([])
+  @file_to_module_mapping Map.new([
+                            {"gender_identity_options", Core.Data.GenderIdentityOption},
+                            {"gender_presentation_options", Core.Data.GenderPresentationOption},
+                            {"culture_gender_preference_options",
+                             Core.Data.CulturalGenderPreferenceOption},
+                            {"cultural_phase_options", Core.Data.CulturalPhaseOption},
+                            {"cultural_scale_options", Core.Data.CulturalScaleOption},
+                            {"cultural_society_options", Core.Data.CulturalSocietyOption},
+                            {"cultural_pillar_options", Core.Data.CulturalPillarOption},
+                            {"encounter_context_options", Core.Data.EncounterContextOption},
+                            {"group_age_options", Core.Data.GroupAgeOption},
+                            {"group_goal_options", Core.Data.GroupGoalOption},
+                            {"group_scope_options", Core.Data.GroupScopeOption},
+                            {"group_size_options", Core.Data.GroupSizeOption},
+                            {"location_development_options", Core.Data.LocationDevelopmentOption},
+                            {"location_embellishment_options",
+                             Core.Data.LocationEmbellishmentOption},
+                            {"location_founding_options", Core.Data.LocationFoundingOption},
+                            {"person_appearance_options", Core.Data.PersonAppearanceOption},
+                            {"race_options", Core.Data.RaceOption},
+                            {"person_role_options", Core.Data.PersonRoleOption},
+                            {"person_type_options", Core.Data.PersonTypeOption},
+                            {"religion_value_options", Core.Data.ReligionValueOption},
+                            {"room_detail_options", Core.Data.RoomDetailOption},
+                            {"archetype_options", Core.Data.ArchetypeOption},
+                            {"objective_options", Core.Data.ObjectiveOption},
+                            {"cultural_art_options", Core.Data.CulturalArtOption},
+                            {"cultural_ethos_options", Core.Data.CulturalEthosOption},
+                            {"monsters", Core.Data.Monster},
+                            {"trap_bait_options", Core.Data.TrapBaitOption},
+                            {"trap_effect_options", Core.Data.TrapEffectOption},
+                            {"trap_lethality_options", Core.Data.TrapLethalityOption},
+                            {"trap_location_options", Core.Data.TrapLocationOption},
+                            {"trap_purpose_options", Core.Data.TrapPurposeOption},
+                            {"trap_reset_options", Core.Data.TrapResetOption},
+                            {"trap_trigger_options", Core.Data.TrapTriggerOption},
+                            {"trap_type_options", Core.Data.TrapTypeOption},
+                            {"background_options", Core.Data.BackgroundOption},
+                            {"asset_options", Core.Data.AssetOption},
+                            {"trait_options", Core.Data.TraitOption},
+                            {"name_options", Core.Data.NameOption},
+                            {"word_options", Core.Data.WordOption}
+                          ])
 
   def load_all(), do: @file_to_module_mapping |> Map.keys() |> Enum.each(&load/1)
 
@@ -25,6 +67,22 @@ defmodule Utilities.Seeder do
     Core.Repo.delete_all(schema)
   end
 
+  def change(raws, Core.Data.CulturalPillarOption = schema) do
+    Enum.map(
+      raws,
+      &schema.changeset(
+        struct(schema),
+        Map.merge(
+          &1,
+          %{
+            "name" => String.split(&1["name"], "|"),
+            "description" => String.split(&1["description"], "|")
+          }
+        )
+      )
+    )
+  end
+
   def change(raws, schema) do
     Enum.map(raws, &schema.changeset(struct(schema), &1))
   end
@@ -32,7 +90,7 @@ defmodule Utilities.Seeder do
   def filter(changesets) do
     Enum.each(changesets, fn
       %{valid?: false} = changeset ->
-        changeset |> Core.Repo.terminal_error_formatting() |> Logger.error()
+        changeset |> Utilities.Ecto.Changeset.terminal_error_formatting() |> Logger.error()
 
       otherwise ->
         otherwise

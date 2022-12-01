@@ -55,6 +55,12 @@ defmodule Core.Users.Account do
       password field is not desired (like when using this changeset for
       validations on a LiveView form), this option can be set to `false`.
       Defaults to `true`.
+
+    * `:validate_email` - Validates the uniqueness of the email, in case
+      you don't want to validate the uniqueness of the email (like when
+      using this changeset for validations on a LiveView form before
+      submitting the form), this option can be set to `false`.
+      Defaults to `true`.
   """
   def registration_changeset(record, attributes, opts \\ []) do
     record
@@ -62,19 +68,18 @@ defmodule Core.Users.Account do
     |> Ecto.Changeset.change(with_autousername(attributes))
     |> Ecto.Changeset.cast(attributes, [:email_address, :username, :password])
     |> Ecto.Changeset.validate_required([:username])
-    |> validate_email_address()
+    |> validate_email_address(opts)
     |> validate_password(opts)
   end
 
-  defp validate_email_address(changeset) do
+  defp validate_email_address(changeset, opts) do
     changeset
     |> Ecto.Changeset.validate_required([:email_address])
     |> Ecto.Changeset.validate_format(:email_address, ~r/^[^\s]+@[^\s]+$/,
       message: "must have the @ sign and no spaces"
     )
     |> Ecto.Changeset.validate_length(:email_address, max: 160)
-    |> Ecto.Changeset.unsafe_validate_unique(:email_address, Core.Repo)
-    |> Ecto.Changeset.unique_constraint(:email_address)
+    |> maybe_validate_unique_email_address(opts)
   end
 
   defp validate_password(changeset, opts) do
@@ -103,6 +108,16 @@ defmodule Core.Users.Account do
     end
   end
 
+  defp maybe_validate_unique_email_address(changeset, opts) do
+    if Keyword.get(opts, :validate_email, true) do
+      changeset
+      |> Ecto.Changeset.unsafe_validate_unique(:email_address, Core.Repo)
+      |> Ecto.Changeset.unique_constraint(:email_address)
+    else
+      changeset
+    end
+  end
+
   defp with_autousername(%{"email_address" => email_address}) when is_binary(email_address),
     do: with_autousername(%{email_address: email_address})
 
@@ -117,10 +132,10 @@ defmodule Core.Users.Account do
 
   It requires the email to change otherwise an error is added.
   """
-  def email_address_changeset(account, attributes) do
+  def email_address_changeset(account, attributes, opts \\ []) do
     account
     |> Ecto.Changeset.cast(attributes, [:email_address])
-    |> validate_email_address()
+    |> validate_email_address(opts)
     |> case do
       %{changes: %{email_address: _}} = changeset -> changeset
       %{} = changeset -> Ecto.Changeset.add_error(changeset, :email_address, "did not change")

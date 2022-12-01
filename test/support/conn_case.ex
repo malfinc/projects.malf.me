@@ -21,15 +21,15 @@ defmodule CoreWeb.ConnCase do
 
   using do
     quote do
+      # The default endpoint for testing
+      @endpoint CoreWeb.Endpoint
+
+      use CoreWeb, :verified_routes
+
       # Import conveniences for testing with connections
       import Plug.Conn
       import Phoenix.ConnTest
       import CoreWeb.ConnCase
-
-      alias CoreWeb.Router.Helpers, as: Routes
-
-      # The default endpoint for testing
-      @endpoint CoreWeb.Endpoint
     end
   end
 

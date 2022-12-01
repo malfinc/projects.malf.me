@@ -23,7 +23,7 @@ if Mix.env() == :dev do
     {:ok, krainboltgreene} =
       Core.Users.register_account(%{
         name: "Kurtis Rainbolt-Greene",
-        email_address: "kurtis@malf.me",
+        email_address: "kurtis@www.malf.me",
         username: "krainboltgreene",
         password: "passwordpassword"
       })
@@ -37,7 +37,7 @@ if Mix.env() == :dev do
     {:ok, josephryan} =
       Core.Users.register_account(%{
         name: "Joseph Ryan",
-        email_address: "joseph.j.a.ryan@malf.me",
+        email_address: "malf@www.malf.me",
         username: "josephryan",
         password: "passwordpassword"
       })
@@ -50,7 +50,7 @@ if Mix.env() == :dev do
 
     {:ok, organization} = Core.Users.join_organization_by_slug(krainboltgreene, "global", "administrator")
     {:ok, _} = Core.Users.join_organization_by_slug(josephryan, "global", "administrator")
-  end, timeout: :infinity)
+  end, timeout: 1_800_000)
 end
 
 # Reset the log level back to normal

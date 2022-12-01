@@ -1,112 +1,104 @@
 defmodule CoreWeb do
   @moduledoc """
   The entrypoint for defining your web interface, such
-  as controllers, views, channels and so on.
+  as controllers, components, channels, and so on.
 
   This can be used in your application as:
 
       use CoreWeb, :controller
-      use CoreWeb, :view
+      use CoreWeb, :html
 
-  The definitions below will be executed for every view,
-  controller, etc, so keep them short and clean, focused
+  The definitions below will be executed for every controller,
+  component, etc, so keep them short and clean, focused
   on imports, uses and aliases.
 
   Do NOT define functions inside the quoted expressions
-  below. Instead, define any helper function in modules
-  and import those modules here.
+  below. Instead, define additional modules and import
+  those modules here.
   """
+
   def static_paths, do: ~w(assets fonts images favicon.ico robots.txt)
 
-  def controller do
+  def router do
     quote do
-      use Phoenix.Controller, namespace: CoreWeb
+      use Phoenix.Router, helpers: false
 
+      # Import common connection and controller functions to use in pipelines
       import Plug.Conn
-      import CoreWeb.Gettext
-    end
-  end
-
-  def live_view do
-    quote do
-      use Phoenix.LiveView,
-        layout: {CoreWeb.LayoutView, :live}
-
-      # Use all HTML functionality (forms, tags, etc)
-      use Phoenix.HTML
-
-      on_mount({CoreWeb, :check_for_admin_namespace})
-      on_mount({CoreWeb, :authentication})
-      on_mount({CoreWeb, :listen_to_session})
-
-      # Import LiveView and .heex helpers (live_render, live_patch, <.form>, etc)
-      import Phoenix.LiveView
-      import Phoenix.Component
-
-      # Import basic rendering functionality (render, render_layout, etc)
-      import Phoenix.View
-
-      import CoreWeb.ErrorHelpers
-      import CoreWeb.Gettext
-
-      # Include shared imports and aliases for views
-      unquote(view_helpers())
-      unquote(live_view_helpers())
-      unquote(component_helpers())
-    end
-  end
-
-  def view do
-    quote do
-      use Phoenix.View,
-        root: "lib/core_web/templates",
-        namespace: CoreWeb,
-        layout: {CoreWeb.LayoutView, :app}
-
-      # Import convenience functions from controllers
-      import Phoenix.Controller,
-        only: [get_flash: 1, get_flash: 2, view_module: 1, view_template: 1]
-
-      # Include shared imports and aliases for views
-      unquote(view_helpers())
-      unquote(component_helpers())
+      import Phoenix.Controller
+      import Phoenix.LiveView.Router
     end
   end
 
   def channel do
     quote do
       use Phoenix.Channel
+    end
+  end
+
+  def controller do
+    quote do
+      use Phoenix.Controller,
+        namespace: CoreWeb,
+        formats: [:html, :json],
+        layouts: [html: CoreWeb.Layouts]
+
+      import Plug.Conn
       import CoreWeb.Gettext
+
+      unquote(verified_routes())
     end
   end
 
-  def view_helpers do
+  def live_view do
     quote do
-      # Use all HTML functionality (forms, tags, etc)
-      use Phoenix.HTML
+      require Logger
 
-      # Import LiveView and .heex helpers (live_render, live_patch, <.form>, etc)
-      import Phoenix.LiveView
-      import Phoenix.Component
-      import Phoenix.LiveView.Helpers
+      use Phoenix.LiveView,
+        layout: {CoreWeb.Layouts, :app}
 
-      # Import basic rendering functionality (render, render_layout, etc)
-      import Phoenix.View
+      on_mount({CoreWeb.Live, :listen_to_session})
 
-      import CoreWeb.ErrorHelpers
+      unquote(html_helpers())
+      unquote(live_view_helpers())
+    end
+  end
+
+  def live_component do
+    quote do
+      use Phoenix.LiveComponent
+
+      unquote(html_helpers())
+    end
+  end
+
+  def html do
+    quote do
+      use Phoenix.Component
+
+      # Import convenience functions from controllers
+      import Phoenix.Controller,
+        only: [get_csrf_token: 0, view_module: 1, view_template: 1]
+
+      # Include general helpers for rendering HTML
+      unquote(html_helpers())
+    end
+  end
+
+  defp html_helpers do
+    quote do
+      # HTML escaping functionality
+      import Phoenix.HTML
+      # Core UI components and translation
+      import CoreWeb.CoreComponents
       import CoreWeb.Gettext
-    end
-  end
 
-  def live_view_helpers do
-    quote do
-      def handle_info({:live_session_updated, _session}, socket),
-        do: socket |> Utilities.Tuple.result(:noreply)
-    end
-  end
+      # Shortcut for generating JS commands
+      alias Phoenix.LiveView.JS
 
-  def component_helpers do
-    quote do
+      # Routes generation with the ~p sigil
+      unquote(verified_routes())
+
       def timestamp_in_words_ago(%{updated_at: updated_at}) do
         Timex.from_now(updated_at)
       end
@@ -133,57 +125,41 @@ defmodule CoreWeb do
     end
   end
 
-  @spec on_mount(
-          atom(),
-          map(),
-          map(),
-          any
-        ) :: {atom, any}
-  def on_mount(:listen_to_session, _params, session, socket) do
-    socket
-    |> PhoenixLiveSession.maybe_subscribe(session)
-    |> Utilities.Tuple.result(:cont)
+  defp live_view_helpers() do
+    quote do
+      def handle_info({:live_session_updated, %{"world_id" => world_id}}, socket)
+          when is_binary(world_id) do
+        Core.Universes.get_world(world_id)
+        |> case do
+          nil ->
+            Utilities.put_world_id(nil)
+
+            socket
+            |> assign(:world_id, nil)
+            |> assign(:world, nil)
+
+          world ->
+            Utilities.put_world_id(world_id)
+
+            socket
+            |> assign(:world_id, world_id)
+            |> assign(:world, world)
+            |> put_flash(:info, "Opening world #{world_id}")
+        end
+        |> (&{:noreply, &1}).()
+      end
+
+      def handle_info({:live_session_updated, _session}, socket),
+        do: socket |> (&{:noreply, &1}).()
+    end
   end
 
-  # Move to Core.Plugs.Admin
-  def on_mount(:check_for_admin_namespace, _params, %{"admin_namespace" => true}, socket) do
-    socket
-    |> Phoenix.Component.assign(:admin_namespace, true)
-    |> Utilities.Tuple.result(:cont)
-  end
-
-  # Move to Core.Plugs.Admin
-  def on_mount(:check_for_admin_namespace, _params, _session, socket) do
-    socket
-    |> Phoenix.Component.assign_new(:admin_namespace, fn -> false end)
-    |> Utilities.Tuple.result(:cont)
-  end
-
-  def on_mount(:authentication, _params, session, socket) do
-    socket
-    |> CoreWeb.AccountAuthenticationHelpers.fetch_current_account(session)
-    |> Utilities.Tuple.result(:cont)
-  end
-
-  # Move to Core.Plugs.Admin
-  def on_mount(
-        :require_administrative_privilages,
-        _params,
-        _session,
-        %{assigns: %{current_account: current_account}} = socket
-      ) do
-    current_account
-    |> Core.Users.has_permission?("global", "administrator")
-    |> case do
-      true ->
-        socket
-        |> Utilities.Tuple.result(:cont)
-
-      false ->
-        socket
-        |> Phoenix.LiveView.put_flash(:error, "That page does not exist")
-        |> Phoenix.LiveView.redirect(to: "/")
-        |> Utilities.Tuple.result(:halt)
+  def verified_routes do
+    quote do
+      use Phoenix.VerifiedRoutes,
+        endpoint: CoreWeb.Endpoint,
+        router: CoreWeb.Router,
+        statics: CoreWeb.static_paths()
     end
   end
 

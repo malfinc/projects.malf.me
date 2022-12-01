@@ -12,14 +12,4 @@ defmodule Utilities.Tuple do
   def left({value, _}) do
     value
   end
-
-  @spec result(any(), atom()) :: {atom(), any()}
-  def result(value, key) when is_atom(key) do
-    {key, value}
-  end
-
-  @spec result(any(), atom(), any()) :: {atom(), any(), any()}
-  def result(value, key, extra) when is_atom(key) do
-    {key, value, extra}
-  end
 end

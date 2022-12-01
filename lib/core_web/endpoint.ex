@@ -9,7 +9,8 @@ defmodule CoreWeb.Endpoint do
     store: PhoenixLiveSession,
     pub_sub: Core.PubSub,
     signing_salt: "guX+dkB1",
-    key: "session"
+    key: "session",
+    same_site: "Lax"
   ]
 
   socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]

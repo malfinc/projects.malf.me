@@ -13,8 +13,8 @@ config :core, Core.Repo,
   database: "core_dev",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
-  pool_size: 10,
-  prepare: :unnamed
+  prepare: :unnamed,
+  pool_size: 10
 
 # For development, we disable any cache and enable
 # debugging and code reloading.
@@ -31,8 +31,8 @@ config :core, CoreWeb.Endpoint,
   debug_errors: true,
   secret_key_base: "hPnBNsKd4PUfmSLk2QUu4wLsIFY5Mt1kzplLpgEGQnTkWcNmk9kovkbMujnsm3OI",
   watchers: [
-    # Start the esbuild watcher by calling Esbuild.install_and_run(:default, args)
-    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
+    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
+    tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]}
   ]
 
 # ## SSL Support
@@ -43,7 +43,6 @@ config :core, CoreWeb.Endpoint,
 #
 #     mix phx.gen.cert
 #
-# Note that this task requires Erlang/OTP 20 or later.
 # Run `mix help phx.gen.cert` for more information.
 #
 # The `http:` config above can be replaced with:
@@ -61,15 +60,17 @@ config :core, CoreWeb.Endpoint,
 
 # Watch static and templates for browser reloading.
 config :core, CoreWeb.Endpoint,
-  reloadable_compilers: [:gettext, :elixir],
   live_reload: [
     patterns: [
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
-      ~r"lib/core_web/(live|views|components)/.*(ex|js)$",
+      ~r"lib/core_web/(live|components)/.*(ex)$",
       ~r"lib/core_web/templates/.*(eex)$"
     ]
   ]
+
+# Enable dev routes for dashboard and mailbox
+config :core, dev_routes: true
 
 # Do not include metadata nor timestamps in development logs
 config :logger, :console,
@@ -82,6 +83,9 @@ config :phoenix, :stacktrace_depth, 20
 
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
+
+# Disable swoosh api client as it is only required for production adapters.
+config :swoosh, :api_client, false
 
 config :oban,
   log_level: :info

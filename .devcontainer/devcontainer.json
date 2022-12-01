@@ -3,7 +3,7 @@
   "name": "Project",
   "dockerComposeFile": "docker-compose.yml",
   "service": "application",
-  "workspaceFolder": "/workspace/www-malf-me",
+  "workspaceFolder": "/workspace/project",
   "userEnvProbe": "loginInteractiveShell",
   "settings": {
     "terminal.integrated.defaultProfile.linux": "zsh",

@@ -1,7 +1,9 @@
-/* This file is for your main application CSS */
+/* @import "tailwindcss/base"; */
+/* @import "tailwindcss/components"; */
+/* @import "tailwindcss/utilities"; */
 @import "./form.css";
-@import "./topbar.css";
 
+/* This file is for your main application CSS */
 :root {
   --purple: rgb(60, 4, 86);
   --purple-dark: rgb(41, 0, 63);
@@ -25,7 +27,8 @@ main {
   max-width: 80vw;
   min-height: 110vh;
   color: white;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Montserrat', 'Myriad Pro', Calibri, Helvetica,
+    Arial, sans-serif;
 }
 
 article {

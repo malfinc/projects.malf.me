@@ -11,15 +11,18 @@ defmodule Core.Application do
       # Start the Ecto repository
       Core.Repo,
       # Start the Telemetry supervisor
-      PhoenixLiveSession.Store,
       CoreWeb.Telemetry,
       # Start the PubSub system
       {Phoenix.PubSub, name: Core.PubSub},
       # Start the Endpoint (http/https)
       CoreWeb.Endpoint,
+      # Start the background job processor
       {Oban, Application.fetch_env!(:core, Oban)},
-      CoreWeb.Channels.Presence,
-      {Finch, name: HTTPClient}
+      # Start the http client
+      {Finch, name: HTTPClient},
+      # Start the Presence tracker
+      CoreWeb.Channels.Presence
+
       # Start a worker by calling: Core.Worker.start_link(arg)
       # {Core.Worker, arg}
     ]

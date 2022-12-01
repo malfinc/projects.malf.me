@@ -1,7 +1,6 @@
 defmodule Core.Users.OrganizationMembership do
   @moduledoc false
   use Ecto.Schema
-  import Ecto.Changeset
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
@@ -20,13 +19,13 @@ defmodule Core.Users.OrganizationMembership do
           Ecto.Changeset.t(t())
   def changeset(record, attributes) do
     record
-    |> cast(attributes, [])
-    |> validate_required([])
-    |> put_assoc(:account, attributes.account)
-    |> put_assoc(:organization, attributes.organization)
+    |> Ecto.Changeset.cast(attributes, [])
+    |> Ecto.Changeset.validate_required([])
+    |> Ecto.Changeset.put_assoc(:account, attributes.account)
+    |> Ecto.Changeset.put_assoc(:organization, attributes.organization)
     |> Ecto.Changeset.foreign_key_constraint(:account_id)
     |> Ecto.Changeset.foreign_key_constraint(:organization_id)
-    |> assoc_constraint(:account)
-    |> assoc_constraint(:organization)
+    |> Ecto.Changeset.assoc_constraint(:account)
+    |> Ecto.Changeset.assoc_constraint(:organization)
   end
 end
