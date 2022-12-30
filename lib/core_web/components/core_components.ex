@@ -96,7 +96,6 @@ defmodule CoreWeb.CoreComponents do
         </p>
       </section>
     </aside>
-
     """
   end
 
@@ -108,7 +107,6 @@ defmodule CoreWeb.CoreComponents do
 
   def site_header(assigns) do
     ~H"""
-
     <nav class="navbar navbar-expand-lg navbar-dark  bg-dark ">
       <section class="container-fluid">
         <.link href={~p"/"} class="navbar-brand">

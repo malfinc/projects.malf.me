@@ -17,7 +17,7 @@ defmodule Core.Application do
       # Start Finch
       {
         Finch,
-        name: Core.Finch,
+        name: Core.Finch
       },
       # Start the Endpoint (http/https)
       CoreWeb.Endpoint,

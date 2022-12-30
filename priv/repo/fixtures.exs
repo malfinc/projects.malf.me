@@ -19,38 +19,43 @@ previous_log_level = Logger.level()
 Logger.configure(level: :info)
 
 if Mix.env() == :dev do
-  Core.Repo.transaction(fn ->
-    {:ok, krainboltgreene} =
-      Core.Users.register_account(%{
-        name: "Kurtis Rainbolt-Greene",
-        email_address: "kurtis@www.malf.me",
-        username: "krainboltgreene",
-        password: "passwordpassword"
-      })
+  Core.Repo.transaction(
+    fn ->
+      {:ok, krainboltgreene} =
+        Core.Users.register_account(%{
+          name: "Kurtis Rainbolt-Greene",
+          email_address: "kurtis@www.malf.me",
+          username: "krainboltgreene",
+          password: "passwordpassword"
+        })
 
-    {encoded_token, account_token} =
-      Core.Users.AccountToken.build_email_token(krainboltgreene, "confirm")
+      {encoded_token, account_token} =
+        Core.Users.AccountToken.build_email_token(krainboltgreene, "confirm")
 
-    {:ok, _} = Core.Repo.insert(account_token)
-    {:ok, _} = Core.Users.confirm_account(encoded_token)
+      {:ok, _} = Core.Repo.insert(account_token)
+      {:ok, _} = Core.Users.confirm_account(encoded_token)
 
-    {:ok, josephryan} =
-      Core.Users.register_account(%{
-        name: "Joseph Ryan",
-        email_address: "malf@www.malf.me",
-        username: "josephryan",
-        password: "passwordpassword"
-      })
+      {:ok, josephryan} =
+        Core.Users.register_account(%{
+          name: "Joseph Ryan",
+          email_address: "malf@www.malf.me",
+          username: "josephryan",
+          password: "passwordpassword"
+        })
 
-    {encoded_token, account_token} =
-      Core.Users.AccountToken.build_email_token(josephryan, "confirm")
+      {encoded_token, account_token} =
+        Core.Users.AccountToken.build_email_token(josephryan, "confirm")
 
-    {:ok, _} = Core.Repo.insert(account_token)
-    {:ok, _} = Core.Users.confirm_account(encoded_token)
+      {:ok, _} = Core.Repo.insert(account_token)
+      {:ok, _} = Core.Users.confirm_account(encoded_token)
 
-    {:ok, organization} = Core.Users.join_organization_by_slug(krainboltgreene, "global", "administrator")
-    {:ok, _} = Core.Users.join_organization_by_slug(josephryan, "global", "administrator")
-  end, timeout: 1_800_000)
+      {:ok, organization} =
+        Core.Users.join_organization_by_slug(krainboltgreene, "global", "administrator")
+
+      {:ok, _} = Core.Users.join_organization_by_slug(josephryan, "global", "administrator")
+    end,
+    timeout: 1_800_000
+  )
 end
 
 # Reset the log level back to normal
