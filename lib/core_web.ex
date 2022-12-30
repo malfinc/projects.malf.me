@@ -127,28 +127,6 @@ defmodule CoreWeb do
 
   defp live_view_helpers() do
     quote do
-      def handle_info({:live_session_updated, %{"world_id" => world_id}}, socket)
-          when is_binary(world_id) do
-        Core.Universes.get_world(world_id)
-        |> case do
-          nil ->
-            Utilities.put_world_id(nil)
-
-            socket
-            |> assign(:world_id, nil)
-            |> assign(:world, nil)
-
-          world ->
-            Utilities.put_world_id(world_id)
-
-            socket
-            |> assign(:world_id, world_id)
-            |> assign(:world, world)
-            |> put_flash(:info, "Opening world #{world_id}")
-        end
-        |> (&{:noreply, &1}).()
-      end
-
       def handle_info({:live_session_updated, _session}, socket),
         do: socket |> (&{:noreply, &1}).()
     end

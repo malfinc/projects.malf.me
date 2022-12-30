@@ -1,8 +1,8 @@
 <.site_header
-  world={@world}
   current_account={@current_account}
   admin_namespace={assigns[:admin_namespace]}
 />
+
 <main class="container-md">
   <.flash kind={:info} flash={@flash} />
   <.flash kind={:error} flash={@flash} />
@@ -10,4 +10,5 @@
     <%= @inner_content %>
   </div>
 </main>
-<.site_footer world={@world} current_account={@current_account} />
+
+<.site_footer current_account={@current_account} />

@@ -14,12 +14,17 @@ defmodule Core.Application do
       CoreWeb.Telemetry,
       # Start the PubSub system
       {Phoenix.PubSub, name: Core.PubSub},
+      # Start Finch
+      {
+        Finch,
+        name: Core.Finch,
+      },
       # Start the Endpoint (http/https)
       CoreWeb.Endpoint,
+      # Start the session store
+      PhoenixLiveSession.Store,
       # Start the background job processor
       {Oban, Application.fetch_env!(:core, Oban)},
-      # Start the http client
-      {Finch, name: HTTPClient},
       # Start the Presence tracker
       CoreWeb.Channels.Presence
 

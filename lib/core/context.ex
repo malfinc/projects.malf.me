@@ -25,6 +25,45 @@ defmodule Core.Context do
     quote do
       import Ecto.Query, only: [from: 2]
 
+      unless Enum.member?(unquote(actions), :count) do
+        @doc """
+        Counts the number of `#{unquote(schema)}` records in the database.
+        """
+        @spec unquote(:"count_#{plural}")() :: integer()
+        def unquote(:"count_#{plural}")() do
+          Core.Repo.aggregate(unquote(schema), :count, :id)
+        end
+      end
+
+      unless Enum.member?(unquote(actions), :random) do
+        @doc """
+        Randomly selects a unique `#{unquote(schema)}` record where the primary key arent the ones provided
+        """
+        @spec unquote(:"random_unique_#{singular}")(list()) :: unquote(schema).t()
+        def unquote(:"random_unique_#{singular}")(ids) when is_list(ids) do
+          (record in unquote(schema))
+          |> from(limit: 1, order_by: fragment("random()"), where: record.id not in ^ids)
+          |> Core.Repo.one()
+        end
+
+        @doc """
+        Randomly selects a `#{unquote(schema)}` record based on a set of conditions
+        """
+        @spec unquote(:"random_#{singular}")(Keyword.t()) :: unquote(schema).t()
+        def unquote(:"random_#{singular}")(where: where) do
+          unquote(schema)
+          |> from(limit: 1, order_by: fragment("random()"), where: ^where)
+          |> Core.Repo.one()
+        end
+
+        @doc """
+        Randomly selects a `#{unquote(schema)}` record
+        """
+        @spec unquote(:"random_#{singular}")() :: unquote(schema).t()
+        def unquote(:"random_#{singular}")(),
+          do: from(unquote(schema), limit: 1, order_by: fragment("random()")) |> Core.Repo.one()
+      end
+
       unless Enum.member?(unquote(actions), :list) do
         @doc """
         Returns all `#{unquote(schema)}` records sorted by the given order, see Ecto's `Ecto.Query.API.order_by/1` for more details

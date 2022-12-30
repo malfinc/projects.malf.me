@@ -1,7 +1,7 @@
 defmodule CoreWeb.Router do
   use CoreWeb, :router
 
-  import CoreWeb.AccountAuth
+  import CoreWeb.AccountAuthenticationHelpers
   import Phoenix.LiveDashboard.Router
 
   import CoreWeb.Plugs.Administration,
@@ -25,7 +25,7 @@ defmodule CoreWeb.Router do
     pipe_through [:browser, :redirect_if_account_is_authenticated]
 
     live_session :redirect_if_account_is_authenticated,
-      on_mount: [{CoreWeb.AccountAuth, :redirect_if_account_is_authenticated}] do
+      on_mount: [{CoreWeb.AccountAuthenticationHelpers, :redirect_if_account_is_authenticated}] do
       live "/accounts/register", CoreWeb.AccountRegistrationLive, :new
       live "/accounts/log_in", CoreWeb.AccountLoginLive, :new
       live "/accounts/reset_password", CoreWeb.AccountForgotPasswordLive, :new
@@ -38,10 +38,6 @@ defmodule CoreWeb.Router do
   scope "/" do
     pipe_through [:browser]
 
-    live "/", CoreWeb.PageLive, :home
-    live "/about_us", CoreWeb.PageLive, :about_us
-    live "/pricing", CoreWeb.PageLive, :pricing
-    live "/faq", CoreWeb.PageLive, :faq
     delete "/accounts/log_out", CoreWeb.AccountSessionController, :delete
   end
 
@@ -50,8 +46,12 @@ defmodule CoreWeb.Router do
 
     live_session :current_account,
       on_mount: [
-        {CoreWeb.AccountAuth, :mount_current_account}
+        {CoreWeb.AccountAuthenticationHelpers, :mount_current_account}
       ] do
+      live "/", CoreWeb.PageLive, :home
+      live "/about_us", CoreWeb.PageLive, :about_us
+      live "/pricing", CoreWeb.PageLive, :pricing
+      live "/faq", CoreWeb.PageLive, :faq
       live "/accounts/confirm/:token", CoreWeb.AccountConfirmationLive, :edit
       live "/accounts/confirm", CoreWeb.AccountConfirmationInstructionsLive, :new
     end
@@ -74,29 +74,25 @@ defmodule CoreWeb.Router do
 
     live_session :admin,
       on_mount: [
-        {CoreWeb.AccountAuth, :ensure_authenticated},
+        {CoreWeb.AccountAuthenticationHelpers, :ensure_authenticated},
+        {CoreWeb.Plugs.Administration, :set_admin_namespace},
         {CoreWeb.Plugs.Administration, :require_administrative_privilages}
       ] do
-      live "/", CoreWeb.AdminPageLive
+      live "/", CoreWeb.PageLive, :admin
       live "/jobs/:id", CoreWeb.JobLive, :show
       live "/jobs", CoreWeb.JobLive, :list
       live "/organizations/:id", CoreWeb.OrganizationLive, :show
       live "/organizations", CoreWeb.OrganizationLive, :list
       live "/accounts/:id", CoreWeb.AccountLive, :show
       live "/accounts", CoreWeb.AccountLive, :list
-
     end
-  end
-
-    pipe_through [:browser, :require_authenticated_account]
-
   end
 
   scope "/" do
     pipe_through [:browser, :require_authenticated_account]
 
     live_session :require_authenticated_account,
-      on_mount: [{CoreWeb.AccountAuth, :ensure_authenticated}] do
+      on_mount: [{CoreWeb.AccountAuthenticationHelpers, :ensure_authenticated}] do
       live "/accounts/settings", CoreWeb.AccountSettingsLive, :edit
       live "/accounts/settings/confirm_email/:token", CoreWeb.AccountSettingsLive, :confirm_email
     end

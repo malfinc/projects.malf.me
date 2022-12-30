@@ -20,7 +20,6 @@ defmodule CoreWeb.CoreComponents do
   """
   attr :current_account, Core.Users.Account, default: nil
   attr :admin_namespace, :boolean, default: false
-  attr :world, Core.Universes.World, default: nil
 
   def site_header(assigns) do
     ~H"""
@@ -104,25 +103,11 @@ defmodule CoreWeb.CoreComponents do
   @doc """
   Renders the site footer.
   """
-  attr :world, Core.Universes.World, default: nil
   attr :current_account, Core.Users.Account, default: nil
 
   def site_footer(assigns) do
     ~H"""
     <footer class="p-5">
-      <%= if @world do %>
-        <section id="current_world_indicator" class="row">
-          <section class="col-12">
-            <p>
-              <em>
-                <small>Currently viewing world <.link href={~p"/worlds/#{@world.id}"}><%= @world.name %></.link></small>, go
-                <.link href={~p"/worlds"}>here</.link>
-                to see other worlds.
-              </em>
-            </p>
-          </section>
-        </section>
-      <% end %>
       <section class="row">
         <section class="col-2">
           <h5>Section</h5>
@@ -497,7 +482,10 @@ defmodule CoreWeb.CoreComponents do
 
   def error(assigns) do
     ~H"""
-    <div id={if(@describing, do: "#{@describing}_feedback")} class="phx-no-feedback:hidden invalid-feedback">
+    <div
+      id={if(@describing, do: "#{@describing}_feedback")}
+      class="phx-no-feedback:hidden invalid-feedback"
+    >
       <%= render_slot(@inner_block) %>
     </div>
     """

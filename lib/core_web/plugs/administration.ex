@@ -45,6 +45,17 @@ defmodule CoreWeb.Plugs.Administration do
   defp maybe_store_return_to(conn), do: conn
 
   def on_mount(
+        :set_admin_namespace,
+        _params,
+        _session,
+        socket
+      ) do
+    socket
+    |> Phoenix.Component.assign(:admin_namespace, true)
+    |> (&{:cont, &1}).()
+  end
+
+  def on_mount(
         :require_administrative_privilages,
         _params,
         _session,

@@ -21,7 +21,7 @@ defmodule CoreWeb.AccountSessionController do
     if account = Core.Users.get_account_by_email_address_and_password(email_address, password) do
       conn
       |> put_flash(:info, info)
-      |> CoreWeb.AccountAuth.log_in_account(account, account_params)
+      |> CoreWeb.AccountAuthenticationHelpers.log_in_account(account, account_params)
     else
       # In order to prevent user enumeration attacks, don't disclose whether the email is registered.
       conn
@@ -34,6 +34,6 @@ defmodule CoreWeb.AccountSessionController do
   def delete(conn, _params) do
     conn
     |> put_flash(:info, "Logged out successfully.")
-    |> CoreWeb.AccountAuth.log_out_account()
+    |> CoreWeb.AccountAuthenticationHelpers.log_out_account()
   end
 end

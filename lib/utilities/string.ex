@@ -42,7 +42,7 @@ defmodule Utilities.String do
   def calculate(a, b, size) when is_integer(size) and is_binary(a) and is_binary(b) do
     na = letter_ngrams(a, size)
     nb = letter_ngrams(b, size)
-    (Utilities.Ngram.intersect(na, nb) |> length) / max(length(na), length(nb))
+    (Utilities.intersect(na, nb) |> length) / max(length(na), length(nb))
   end
 
   @doc """
