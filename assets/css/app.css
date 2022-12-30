@@ -2,6 +2,7 @@
 /* @import "tailwindcss/components"; */
 /* @import "tailwindcss/utilities"; */
 @import "./form.css";
+@import "./phoenix.css";
 
 /* This file is for your main application CSS */
 :root {

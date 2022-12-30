@@ -4,20 +4,6 @@
   display: none;
 }
 
-.phx-no-feedback .form-control,
-.phx-no-feedback .form-control:focus {
-  border-color: var(--bs-gray-400);
-  padding-right: .75rem;
-  background-image: initial;
-  background-repeat: initial;
-  background-position: initial;
-  background-size: initial;
-}
-
-.phx-no-feedback .form-control:focus {
-  box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%);
-}
-
 .phx-click-loading {
   opacity: 0.5;
   transition: opacity 1s ease-out;
