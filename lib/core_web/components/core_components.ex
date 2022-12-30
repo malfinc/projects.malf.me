@@ -16,6 +16,91 @@ defmodule CoreWeb.CoreComponents do
   # import CoreWeb.Gettext
 
   @doc """
+  Renders the sidebar
+  """
+  def sidebar(assigns) do
+    ~H"""
+    <aside>
+      <section>
+        <div>
+          <h2><span>Community</span></h2>
+          <ul>
+            <li><a href="#">Community Cookbook</a></li>
+            <li><a href="#">League of Plants</a></li>
+            <li><a href="#">Towers of Bebylon</a></li>
+          </ul>
+        </div>
+      </section>
+      <section>
+        <div>
+          <h2><span>Latet Blog post</span></h2>
+          <p>
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quo, earum ducimus facilis quisquam quos nostrum nemo quibusdam provident debitis. Totam necessitatibus explicabo cumque mollitia tenetur nobis cupiditate quia commodi voluptate?
+          </p>
+        </div>
+      </section>
+      <section>
+        <div>
+          <h2><span>Twitch Schedule</span></h2>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium obcaecati fugit, laborum facilis consequuntur officiis dignissimos incidunt velit veritatis porro mollitia, id ab beatae sint sit ad optio? Iusto, corporis.
+          </p>
+        </div>
+      </section>
+      <section id="social-links">
+        <ul>
+          <li>
+            <a href="https://www.twitch.tv/michaelalfox">
+              <img
+                src={Routes.static_path(@conn, "/images/sidebar-social-twitch.png")}
+                alt="The twitch logo"
+                width="36px"
+                height="36px"
+              />
+            </a>
+          </li>
+          <li>
+            <a href="https://youtube.com/michaelalfox">
+              <img
+                src={Routes.static_path(@conn, "/images/sidebar-social-youtube.png")}
+                alt="The youtube logo"
+                width="36px"
+                height="36px"
+              />
+            </a>
+          </li>
+          <li>
+            <a href="https://twitter.com/michaelalfox">
+              <img
+                src={Routes.static_path(@conn, "/images/sidebar-social-twitter.png")}
+                alt="The twitter logo"
+                width="36px"
+                height="36px"
+              />
+            </a>
+          </li>
+          <li>
+            <a href="https://www.instagram.com/michaelalfox/">
+              <img
+                src={Routes.static_path(@conn, "/images/sidebar-social-instagram.png")}
+                alt="The instagram logo"
+                width="36px"
+                height="36px"
+              />
+            </a>
+          </li>
+        </ul>
+        <p>
+          &copy; <%= DateTime.utc_now().year %> Michael Fox · Built by <a href="#">@th3mcnuggetz</a>,
+          <a href="https://twitter.com/krainboltgreene">@krainboltgreene</a>
+        </p>
+      </section>
+    </aside>
+
+    """
+  end
+
+  @doc """
   Renders the site header
   """
   attr :current_account, Core.Users.Account, default: nil
@@ -23,10 +108,15 @@ defmodule CoreWeb.CoreComponents do
 
   def site_header(assigns) do
     ~H"""
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+    <nav class="navbar navbar-expand-lg navbar-dark  bg-dark ">
       <section class="container-fluid">
         <.link href={~p"/"} class="navbar-brand">
-          Plotgenerator
+          <img
+            src={~p"/images/banner-logo.svg"}
+            alt="the malf logo, which is two triangles arranged in a way that makes a cute fox head with ears"
+            title="the malf logo, which is two triangles arranged in a way that makes a cute fox head with ears"
+          />
         </.link>
         <button
           class="navbar-toggler"
@@ -42,12 +132,36 @@ defmodule CoreWeb.CoreComponents do
 
         <section class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="https://www.twitch.tv/michaelalfox">Watch</a>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="#blog_link_here">Blog</a></li>
+            <li class="nav-item">
+              <.link href={~p"/socials"} class="nav-link">
+                Socials
+              </.link>
+            </li>
+            <li class="nav-item">
+              <.link href={~p"/discord"} class="nav-link">
+                Discord
+              </.link>
+            </li>
+            <li class="nav-item">
+              <.link href={~p"/about"} class="nav-link">
+                About
+              </.link>
+            </li>
+            <li class="nav-item">
+              <.link href={~p"/projects"} class="nav-link">
+                Projects
+              </.link>
+            </li>
+            <li class="nav-item">
+              <.link href={~p"/contact"} class="nav-link">
+                Contact
+              </.link>
+            </li>
             <%= if @current_account do %>
-              <li class="nav-item">
-                <.link href={~p"/worlds"} class="nav-link">
-                  Worlds
-                </.link>
-              </li>
               <%= if Core.Users.has_permission?(@current_account, "global", "administrator") do %>
                 <li class="nav-item">
                   <.link href={~p"/admin"} class="nav-link">
@@ -88,12 +202,6 @@ defmodule CoreWeb.CoreComponents do
               </li>
             <% end %>
           </ul>
-          <form class="d-flex">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-            <button class="btn btn-outline-success" type="submit">
-              Search
-            </button>
-          </form>
         </section>
       </section>
     </nav>

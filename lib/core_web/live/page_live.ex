@@ -34,7 +34,24 @@ defmodule CoreWeb.PageLive do
   @impl true
   def render(%{live_action: :home} = assigns) do
     ~H"""
-
+    <dl>
+      <dt>Twitter</dt>
+      <dd>
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Harum aspernatur inventore corrupti officia beatae blanditiis pariatur maiores illo suscipit consequatur alias error aliquid, dolorum ad quisquam deserunt quia quaerat. Nesciunt.
+      </dd>
+      <dt>Twitch</dt>
+      <dd>
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Harum aspernatur inventore corrupti officia beatae blanditiis pariatur maiores illo suscipit consequatur alias error aliquid, dolorum ad quisquam deserunt quia quaerat. Nesciunt.
+      </dd>
+      <dt>Youtube</dt>
+      <dd>
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Harum aspernatur inventore corrupti officia beatae blanditiis pariatur maiores illo suscipit consequatur alias error aliquid, dolorum ad quisquam deserunt quia quaerat. Nesciunt.
+      </dd>
+      <dt>Instagram</dt>
+      <dd>
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Harum aspernatur inventore corrupti officia beatae blanditiis pariatur maiores illo suscipit consequatur alias error aliquid, dolorum ad quisquam deserunt quia quaerat. Nesciunt.
+      </dd>
+    </dl>
     """
   end
 

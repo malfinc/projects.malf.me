@@ -3,19 +3,6 @@ defmodule Utilities.String do
   Extra functionality relating to strings
   """
 
-  @race_to_collective_mapping %{
-    "human" => "human",
-    "elf" => "elven",
-    "dwarf" => "dwarven",
-    "goblin" => "goblin",
-    "orc" => "orcish",
-    "gnome" => "gnomen",
-    "halfling" => "halfling",
-    "dragonborn" => "dragonborn",
-    "hobgoblin" => "hobgoblin",
-    "kobold" => "kobold"
-  }
-
   @doc """
   calculate n-gram distance between two lists or strings
 
@@ -120,22 +107,5 @@ defmodule Utilities.String do
           string |> String.capitalize()
       end
     end)
-  end
-
-  def pronoun(target) do
-    cond do
-      Map.has_key?(target, :gender_presentation) -> target.gender_presentation
-      target.__struct__ == Core.Universes.Person -> "them"
-    end
-  end
-
-  @spec gendered_noun(String.t(), String.t()) :: String.t()
-  def gendered_noun(word, "feminine"), do: "#{word}ess"
-  def gendered_noun(word, "masculine"), do: word
-  def gendered_noun(word, _), do: word
-
-  @spec collective_for(String.t()) :: String.t()
-  def collective_for(race) when is_binary(race) do
-    @race_to_collective_mapping[race]
   end
 end

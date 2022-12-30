@@ -1,3 +1,0 @@
-<p>
-  Thanks for signing up, <%= link "please click here to confirm your account and pick a password", to: assigns[:call_to_action] %>.
-</p>
