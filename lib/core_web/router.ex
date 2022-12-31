@@ -94,15 +94,13 @@ defmodule CoreWeb.Router do
         {CoreWeb.Plugs.Administration, :set_admin_namespace},
         {CoreWeb.Plugs.Administration, :require_administrative_privilages}
       ] do
-      live "/", CoreWeb.PageLive, :admin
+      live "/", CoreWeb.AdminPageLive, :dashboard
       live "/jobs/:id", CoreWeb.JobLive, :show
       live "/jobs", CoreWeb.JobLive, :list
       live "/organizations/:id", CoreWeb.OrganizationLive, :show
       live "/organizations", CoreWeb.OrganizationLive, :list
       live "/accounts/:id", CoreWeb.AccountLive, :show
       live "/accounts", CoreWeb.AccountLive, :list
-      live "/seasons/new", CoreWeb.SeasonLive, :new
-      live "/plants/new", CoreWeb.PlantLive, :new
       live "/plants/:id/edit", CoreWeb.PlantLive, :edit
     end
   end

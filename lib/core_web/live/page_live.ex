@@ -11,7 +11,7 @@ defmodule CoreWeb.PageLive do
 
   defp as(socket, :home, _params) do
     socket
-    |> assign(:page_title, "Plotgenerator")
+    |> assign(:page_title, "Michael Al Fox")
   end
 
   defp as(socket, :admin, _params) do
@@ -52,18 +52,6 @@ defmodule CoreWeb.PageLive do
         Lorem, ipsum dolor sit amet consectetur adipisicing elit. Harum aspernatur inventore corrupti officia beatae blanditiis pariatur maiores illo suscipit consequatur alias error aliquid, dolorum ad quisquam deserunt quia quaerat. Nesciunt.
       </dd>
     </dl>
-    """
-  end
-
-  @impl true
-  def render(%{live_action: :admin} = assigns) do
-    ~H"""
-    The administrative dashboard.
-
-    <ul>
-      <li><.link href={~p"/admin/seasons/new"}>Start a new Season</.link></li>
-      <li><.link href={~p"/admin/plants/new"}>Spawn a new Plant</.link></li>
-    </ul>
     """
   end
 end

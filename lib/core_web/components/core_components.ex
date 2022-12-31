@@ -25,9 +25,9 @@ defmodule CoreWeb.CoreComponents do
         <div>
           <h2><span>Community</span></h2>
           <ul>
-            <li><a href="#">Community Cookbook</a></li>
-            <li><a href="#">League of Plants</a></li>
-            <li><a href="#">Towers of Bebylon</a></li>
+            <li><.link href="#">Community Cookbook</.link></li>
+            <li><.link href="#">League of Plants</.link></li>
+            <li><.link href="#">Towers of Bebylon</.link></li>
           </ul>
         </div>
       </section>
@@ -50,49 +50,49 @@ defmodule CoreWeb.CoreComponents do
       <section id="social-links">
         <ul>
           <li>
-            <a href="https://www.twitch.tv/michaelalfox">
+            <.link href="https://www.twitch.tv/michaelalfox">
               <img
-                src={Routes.static_path(@conn, "/images/sidebar-social-twitch.png")}
+                src={~p"/images/sidebar-social-twitch.png"}
                 alt="The twitch logo"
                 width="36px"
                 height="36px"
               />
-            </a>
+            </.link>
           </li>
           <li>
-            <a href="https://youtube.com/michaelalfox">
+            <.link href="https://youtube.com/michaelalfox">
               <img
-                src={Routes.static_path(@conn, "/images/sidebar-social-youtube.png")}
+                src={~p"/images/sidebar-social-youtube.png"}
                 alt="The youtube logo"
                 width="36px"
                 height="36px"
               />
-            </a>
+            </.link>
           </li>
           <li>
-            <a href="https://twitter.com/michaelalfox">
+            <.link href="https://twitter.com/michaelalfox">
               <img
-                src={Routes.static_path(@conn, "/images/sidebar-social-twitter.png")}
+                src={~p"/images/sidebar-social-twitter.png"}
                 alt="The twitter logo"
                 width="36px"
                 height="36px"
               />
-            </a>
+            </.link>
           </li>
           <li>
-            <a href="https://www.instagram.com/michaelalfox/">
+            <.link href="https://www.instagram.com/michaelalfox/">
               <img
-                src={Routes.static_path(@conn, "/images/sidebar-social-instagram.png")}
+                src={~p"/images/sidebar-social-instagram.png"}
                 alt="The instagram logo"
                 width="36px"
                 height="36px"
               />
-            </a>
+            </.link>
           </li>
         </ul>
         <p>
-          &copy; <%= DateTime.utc_now().year %> Michael Fox · Built by <a href="#">@th3mcnuggetz</a>,
-          <a href="https://twitter.com/krainboltgreene">@krainboltgreene</a>
+          &copy; <%= DateTime.utc_now().year %> Michael Fox · Built by <.link href="#">@th3mcnuggetz</.link>,
+          <.link href="https://twitter.com/krainboltgreene">@krainboltgreene</.link>
         </p>
       </section>
     </aside>
@@ -131,9 +131,11 @@ defmodule CoreWeb.CoreComponents do
         <section class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link" href="https://www.twitch.tv/michaelalfox">Watch</a>
+              <.link href="https://www.twitch.tv/michaelalfox" class="nav-link">Watch Now</.link>
             </li>
-            <li class="nav-item"><a class="nav-link" href="#blog_link_here">Blog</a></li>
+            <li class="nav-item">
+              <.link href="#blog_link_here" class="nav-link">Blog</.link>
+            </li>
             <li class="nav-item">
               <.link href={~p"/socials"} class="nav-link">
                 Socials
@@ -221,15 +223,6 @@ defmodule CoreWeb.CoreComponents do
             <li class="nav-item mb-2">
               <.link href={~p"/"} class="nav-link p-0 text-muted">Home</.link>
             </li>
-            <li class="nav-item mb-2">
-              <.link href={~p"/pricing"} class="nav-link p-0 text-muted">Pricing</.link>
-            </li>
-            <li class="nav-item mb-2">
-              <.link href={~p"/faq"} class="nav-link p-0 text-muted">FAQ</.link>
-            </li>
-            <li class="nav-item mb-2">
-              <.link href={~p"/about_us"} class="nav-link p-0 text-muted">About Us</.link>
-            </li>
           </ul>
         </section>
 
@@ -257,22 +250,6 @@ defmodule CoreWeb.CoreComponents do
               </li>
             <% end %>
           </ul>
-        </section>
-
-        <section class="col-4 offset-1">
-          <form>
-            <h5>Subscribe to our newsletter</h5>
-            <p>Monthly digest of whats new and exciting from us.</p>
-            <section class="d-flex w-100 gap-2">
-              <label for="newsletter1" class="visually-hidden">
-                Email address
-              </label>
-              <input id="newsletter1" type="text" class="form-control" placeholder="Email address" />
-              <button class="btn btn-primary" type="button">
-                Subscribe
-              </button>
-            </section>
-          </form>
         </section>
       </section>
     </footer>
@@ -306,6 +283,7 @@ defmodule CoreWeb.CoreComponents do
         @kind == :error && "alert-warning"
       ]}
       style="margin-top: 5px; "
+      {@rest}
       {@rest}
     >
       <p :if={@title}>
@@ -377,70 +355,24 @@ defmodule CoreWeb.CoreComponents do
   ## Examples
 
       <.button>Send!</.button>
-      <.button phx-click="go" class="ml-2">Send!</.button>
+      <.button phx-click="go">Send!</.button>
   """
   attr :type, :string, default: "button"
-  attr :class, :string, default: nil
   attr :loading, :boolean, default: false
   attr :icon, :string, default: nil
-  attr :rest, :global, include: ~w(disabled form name value)
+  attr :rest, :global, include: ~w(disabled form name value class)
 
   slot :inner_block, required: true
 
   def button(assigns) do
     ~H"""
-    <button {@rest} type={@type} class={@class} disabled={assigns[:loading]}>
+    <button {@rest} type={@type} disabled={assigns[:loading]}>
       <%= if assigns[:loading] do %>
         <i class="fa-solid fa-circle-notch fa-spin fa-fade"></i> Loading...
       <% else %>
         <i class={"fa-solid fa-#{assigns[:icon]}"}></i> <%= render_slot(@inner_block) %>
       <% end %>
     </button>
-    """
-  end
-
-  defp random_messages(), do: ["reticulating splines"]
-
-  @spec generating_indicator(%{status: boolean, display: String.t()}) ::
-          Phoenix.LiveView.Rendered.t()
-  def generating_indicator(%{display: "card", status: true} = assigns) do
-    ~H"""
-    <div class="card">
-      <img src={"/images/generating-#{@type}.webp"} class="card-img-top" />
-      <div class="card-body">
-        <h5 class="card-title">
-          <i
-            class="fa-regular fa-hourglass fa-flip"
-            style="--fa-flip-x: 1; --fa-flip-y: 0; --fa-animation-duration: 3s;"
-          >
-          </i>
-          Generating <%= @type %>...
-        </h5>
-        <p class="card-text"><em><%= random_messages() |> Enum.random() %></em></p>
-      </div>
-    </div>
-    """
-  end
-
-  def generating_indicator(%{status: false} = assigns) do
-    ~H"""
-    <div>
-      <%= render_slot(@inner_block) %>
-    </div>
-    """
-  end
-
-  @spec loading_text_indicator(%{size: pos_integer()}) ::
-          Phoenix.LiveView.Rendered.t()
-  def loading_text_indicator(assigns) do
-    ~H"""
-    <%= for number <- 1..@size do %>
-      <i
-        class="fa-solid fa-square-full fa-beat-fade"
-        style={"--fa-animation-duration: 3s; --fa-fade-opacity: 0.2; --fa-animation-delay: #{number / 2.0}s"}
-      >
-      </i>
-    <% end %>
     """
   end
 
@@ -506,6 +438,7 @@ defmodule CoreWeb.CoreComponents do
         checked={@checked}
         class="form-check-input"
         {@rest}
+        {@rest}
       />
       <label phx-feedback-for={@name} class="form-check-label"><%= @label %></label>
     </div>
@@ -522,6 +455,7 @@ defmodule CoreWeb.CoreComponents do
         class={"form-select #{unless(Enum.empty?(@errors), do: "is-invalid")}"}
         multiple={@multiple}
         aria-describedby={"#{@id}-feedback"}
+        {@rest}
         {@rest}
       >
         <option :if={@prompt}><%= @prompt %></option>
@@ -542,6 +476,7 @@ defmodule CoreWeb.CoreComponents do
         class={"form-control #{unless(Enum.empty?(@errors), do: "is-invalid")}"}
         aria-describedby={"#{@id}-feedback"}
         {@rest}
+        {@rest}
       ><%= @value %></textarea>
       <.error :for={msg <- @errors} describing={@id}><%= msg %></.error>
     </div>
@@ -559,6 +494,7 @@ defmodule CoreWeb.CoreComponents do
         value={@value}
         class={"form-control #{unless(Enum.empty?(@errors), do: "is-invalid")}"}
         aria-describedby={"#{@id}-feedback"}
+        {@rest}
         {@rest}
       />
       <.error :for={msg <- @errors} describing={@id}><%= msg %></.error>

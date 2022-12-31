@@ -28,15 +28,10 @@ defmodule CoreWeb.PlantLive do
     |> (&{:ok, &1}).()
   end
 
-  defp as(socket, :new, _params) do
-    socket
-    |> assign(:page_title, "New Plant")
-    |> assign(:changeset, Core.Gameplay.Plant.changeset(%Core.Gameplay.Plant{}, %{}))
-  end
-
   defp as(socket, :list, params) do
     socket
     |> assign(:page_title, "Plants")
+    |> assign(:changeset, Core.Gameplay.Plant.changeset(%Core.Gameplay.Plant{}, %{}))
     |> assign(:records, list_records(socket.assigns, params))
   end
 
@@ -76,8 +71,9 @@ defmodule CoreWeb.PlantLive do
   end
 
   @impl true
-  def render(%{live_action: :new} = assigns) do
+  def render(%{live_action: :list} = assigns) do
     ~H"""
+    <h1>Plants</h1>
     <.simple_form :let={f} for={@changeset} id="new_plant" phx-submit="create_plant">
       <.input
         field={{f, :name}}
@@ -107,16 +103,15 @@ defmodule CoreWeb.PlantLive do
   end
 
   @impl true
-  def render(%{live_action: :list} = assigns) do
-    ~H"""
-
-    """
-  end
-
-  @impl true
   def render(%{live_action: :show} = assigns) do
     ~H"""
-
+    <h1>Plant <%= @record.name %></h1>
+    <dl>
+      <dt>Name</dt>
+      <dd><%= @record.name %></dd>
+      <dt>Rarity</dt>
+      <dd><%= @record.rarity %></dd>
+    </dl>
     """
   end
 

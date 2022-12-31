@@ -28,15 +28,10 @@ defmodule CoreWeb.SeasonLive do
     |> (&{:ok, &1}).()
   end
 
-  defp as(socket, :new, _params) do
-    socket
-    |> assign(:page_title, "New Season")
-    |> assign(:changeset, Core.Gameplay.Season.changeset(%Core.Gameplay.Season{}, %{}))
-  end
-
   defp as(socket, :list, params) do
     socket
     |> assign(:page_title, "Seasons")
+    |> assign(:changeset, Core.Gameplay.Season.changeset(%Core.Gameplay.Season{}, %{}))
     |> assign(:records, list_records(socket.assigns, params))
   end
 
@@ -63,7 +58,7 @@ defmodule CoreWeb.SeasonLive do
   @impl true
   def handle_event("create_season", params, socket) do
     params
-    |> Map.put("position", Core.Gameplay.list_seasons() |> Utilities.List.pluck(:position) |> List.last() |> Kernel.||(0) |> Kernel.+(1))
+    |> Map.put("position", socket.assigns.records |> Utilities.List.pluck(:position) |> List.last() |> Kernel.||(0) |> Kernel.+(1))
     |> Core.Gameplay.create_season()
     |> case do
       {:ok, record} ->
@@ -77,22 +72,17 @@ defmodule CoreWeb.SeasonLive do
   end
 
   @impl true
-  def render(%{live_action: :new} = assigns) do
-    ~H"""
-    <.simple_form :let={_f} for={@changeset} id="new_season" phx-submit="create_season">
-      <:actions>
-        <.button phx-disable-with="Starting..." type="submit" class="btn btn-primary">
-          Start Season
-        </.button>
-      </:actions>
-    </.simple_form>
-    """
-  end
-
-  @impl true
   def render(%{live_action: :list} = assigns) do
     ~H"""
     <h1>Seasons</h1>
+    <.simple_form :let={_f} for={@changeset} id="new_season" phx-submit="create_season">
+      <:actions>
+        <.button phx-disable-with="Starting..." type="submit" class="btn btn-primary">
+          Start New Season
+        </.button>
+      </:actions>
+    </.simple_form>
+
     <ul>
       <%= for season <- @records do %>
         <li>Season <%= season.position %></li>

@@ -12,8 +12,12 @@
   --purple-twitch: rgb(148, 59, 255);
 }
 
-main {
+main.content {
   background-image: url("/images/background.png");
+  color: white;
+}
+
+main {
   display: grid;
   grid-template-columns: 2fr 1fr;
   grid-template-rows: max-content 1fr;
@@ -24,7 +28,6 @@ main {
   margin-bottom: 15px;
   max-width: 80vw;
   min-height: 110vh;
-  color: white;
   font-family: 'Montserrat', 'Myriad Pro', Calibri, Helvetica,
     Arial, sans-serif;
 }
