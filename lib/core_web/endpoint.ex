@@ -6,10 +6,9 @@ defmodule CoreWeb.Endpoint do
   # this means its contents can be read but not tampered with.
   # Set :encryption_salt if you would also like to encrypt it.
   @session_options [
-    store: PhoenixLiveSession,
-    pub_sub: Core.PubSub,
+    store: :cookie,
     signing_salt: "guX+dkB1",
-    key: "session",
+    key: "_coreweb_key",
     same_site: "Lax"
   ]
 

@@ -4,6 +4,14 @@ defmodule Utilities.String do
   """
 
   @doc """
+  Generate a random string
+  """
+  @spec random() :: String.t()
+  def random() do
+    :crypto.strong_rand_bytes(32) |> Base.encode64(padding: false) |> binary_part(0, 32)
+  end
+
+  @doc """
   calculate n-gram distance between two lists or strings
 
   ## Examples:

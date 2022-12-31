@@ -1,6 +1,6 @@
 defmodule CoreWeb.PageLive do
   @moduledoc false
-  use CoreWeb, :live_view
+  use CoreWeb, [:live_view, :content]
 
   @impl true
   def mount(_params, _session, socket) do
@@ -59,6 +59,11 @@ defmodule CoreWeb.PageLive do
   def render(%{live_action: :admin} = assigns) do
     ~H"""
     The administrative dashboard.
+
+    <ul>
+      <li><.link href={~p"/admin/seasons/new"}>Start a new Season</.link></li>
+      <li><.link href={~p"/admin/plants/new"}>Spawn a new Plant</.link></li>
+    </ul>
     """
   end
 end

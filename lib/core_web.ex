@@ -50,14 +50,12 @@ defmodule CoreWeb do
     end
   end
 
-  def live_view do
+  def live_view(layout \\ :app) do
     quote do
       require Logger
 
       use Phoenix.LiveView,
-        layout: {CoreWeb.Layouts, :app}
-
-      on_mount({CoreWeb.Live, :listen_to_session})
+        layout: {CoreWeb.Layouts, unquote(layout)}
 
       unquote(html_helpers())
       unquote(live_view_helpers())
@@ -146,5 +144,8 @@ defmodule CoreWeb do
   """
   defmacro __using__(which) when is_atom(which) do
     apply(__MODULE__, which, [])
+  end
+  defmacro __using__([which | options]) when is_atom(which) do
+    apply(__MODULE__, which, options)
   end
 end

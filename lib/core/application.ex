@@ -21,8 +21,6 @@ defmodule Core.Application do
       },
       # Start the Endpoint (http/https)
       CoreWeb.Endpoint,
-      # Start the session store
-      PhoenixLiveSession.Store,
       # Start the background job processor
       {Oban, Application.fetch_env!(:core, Oban)},
       # Start the Presence tracker

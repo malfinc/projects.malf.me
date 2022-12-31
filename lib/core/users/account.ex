@@ -13,12 +13,18 @@ defmodule Core.Users.Account do
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "accounts" do
+    field(:provider, :string)
+    field(:provider_id, :string)
+    field(:provider_access_token, :string)
+    field(:provider_refresh_token, :string)
+    field(:provider_token_expiration, :integer)
+    field(:avatar_uri, :string)
     field(:email_address, :string)
     field(:username, :string)
     field(:onboarding_state, :string, default: "converted")
-    field :password, :string, virtual: true, redact: true
-    field :hashed_password, :string, redact: true
-    field :confirmed_at, :naive_datetime
+    field(:password, :string, virtual: true, redact: true)
+    field(:hashed_password, :string, redact: true)
+    field(:confirmed_at, :naive_datetime)
     embeds_one(:settings, Core.Users.Settings)
     embeds_one(:profile, Core.Users.Profile)
     has_many(:organization_memberships, Core.Users.OrganizationMembership)
@@ -38,6 +44,29 @@ defmodule Core.Users.Account do
           profile: Core.Users.Profile.t() | nil,
           organizations: list(Core.Users.Organization.t() | nil) | nil
         }
+
+  def oauth_changeset(record, attributes) do
+    record
+    |> Core.Repo.preload(:organizations)
+    |> Ecto.Changeset.cast(attributes, [
+      :provider,
+      :provider_id,
+      :provider_access_token,
+      :provider_refresh_token,
+      :provider_token_expiration,
+      :avatar_uri,
+      :username
+    ])
+    |> Ecto.Changeset.validate_required([
+      :provider,
+      :provider_id,
+      :provider_access_token,
+      :provider_refresh_token,
+      :provider_token_expiration,
+      :avatar_uri,
+      :username
+    ])
+  end
 
   @doc """
   A account changeset for registration.
@@ -66,8 +95,27 @@ defmodule Core.Users.Account do
     record
     |> Core.Repo.preload(:organizations)
     |> Ecto.Changeset.change(with_autousername(attributes))
-    |> Ecto.Changeset.cast(attributes, [:email_address, :username, :password])
-    |> Ecto.Changeset.validate_required([:username])
+    |> Ecto.Changeset.cast(attributes, [
+      :email_address,
+      :username,
+      :password,
+      :provider,
+      :provider_id,
+      :provider_access_token,
+      :provider_refresh_token,
+      :provider_token_expiration,
+      :avatar_uri
+    ])
+    |> Ecto.Changeset.validate_required([
+      :email_address,
+      :username,
+      :provider,
+      :provider_id,
+      :provider_access_token,
+      :provider_refresh_token,
+      :provider_token_expiration,
+      :avatar_uri
+    ])
     |> validate_email_address(opts)
     |> validate_password(opts)
   end

@@ -15,10 +15,18 @@ defmodule CoreWeb.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug :fetch_current_account
+    plug Ueberauth
   end
 
   pipeline :api do
     plug :accepts, ["json"]
+  end
+
+  scope "/auth" do
+    pipe_through :browser
+
+    get "/:provider", CoreWeb.AccountSessionController, :request
+    get "/:provider/callback", CoreWeb.AccountSessionController, :callback
   end
 
   scope "/" do
@@ -49,11 +57,19 @@ defmodule CoreWeb.Router do
         {CoreWeb.AccountAuthenticationHelpers, :mount_current_account}
       ] do
       live "/", CoreWeb.PageLive, :home
-      live "/about_us", CoreWeb.PageLive, :about_us
-      live "/pricing", CoreWeb.PageLive, :pricing
-      live "/faq", CoreWeb.PageLive, :faq
+      live "/socials", CoreWeb.PageLive, :socials
+      live "/discord", CoreWeb.PageLive, :discord
+      live "/about", CoreWeb.PageLive, :about
+      live "/projects", CoreWeb.PageLive, :projects
+      live "/contact", CoreWeb.PageLive, :contact
       live "/accounts/confirm/:token", CoreWeb.AccountConfirmationLive, :edit
       live "/accounts/confirm", CoreWeb.AccountConfirmationInstructionsLive, :new
+      live "/seasons/:id", CoreWeb.SeasonLive, :show
+      live "/seasons", CoreWeb.SeasonLive, :list
+      live "/plants/:id", CoreWeb.PlantLive, :show
+      live "/plants", CoreWeb.PlantLive, :list
+      live "/champions/:id", CoreWeb.ChampionLive, :show
+      live "/champions/", CoreWeb.ChampionLive, :list
     end
   end
 
@@ -85,6 +101,9 @@ defmodule CoreWeb.Router do
       live "/organizations", CoreWeb.OrganizationLive, :list
       live "/accounts/:id", CoreWeb.AccountLive, :show
       live "/accounts", CoreWeb.AccountLive, :list
+      live "/seasons/new", CoreWeb.SeasonLive, :new
+      live "/plants/new", CoreWeb.PlantLive, :new
+      live "/plants/:id/edit", CoreWeb.PlantLive, :edit
     end
   end
 

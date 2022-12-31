@@ -24,9 +24,15 @@ if Mix.env() == :dev do
       {:ok, krainboltgreene} =
         Core.Users.register_account(%{
           name: "Kurtis Rainbolt-Greene",
-          email_address: "kurtis@www.malf.me",
+          email_address: "kurtis@rainbolt-greene.online",
           username: "krainboltgreene",
-          password: "passwordpassword"
+          password: "passwordpassword",
+          provider: "twitch",
+          provider_id: "36808632",
+          provider_access_token: "s77vyzbw7v5yjsl3ya2vvfm6jigo6f",
+          provider_refresh_token: "uaftj0trsgh311s6js0pbp09b87ctaj5tstk8rpeq1xvs26nfj",
+          provider_token_expiration: "1672456087",
+          avatar_uri: "https://static-cdn.jtvnw.net/jtv_user_pictures/f6fb8ff7-1055-414f-86a8-7d2302b58e6f-profile_image-300x300.jpg"
         })
 
       {encoded_token, account_token} =
@@ -35,26 +41,9 @@ if Mix.env() == :dev do
       {:ok, _} = Core.Repo.insert(account_token)
       {:ok, _} = Core.Users.confirm_account(encoded_token)
 
-      {:ok, josephryan} =
-        Core.Users.register_account(%{
-          name: "Joseph Ryan",
-          email_address: "malf@www.malf.me",
-          username: "josephryan",
-          password: "passwordpassword"
-        })
-
-      {encoded_token, account_token} =
-        Core.Users.AccountToken.build_email_token(josephryan, "confirm")
-
-      {:ok, _} = Core.Repo.insert(account_token)
-      {:ok, _} = Core.Users.confirm_account(encoded_token)
-
-      {:ok, organization} =
+      {:ok, _organization} =
         Core.Users.join_organization_by_slug(krainboltgreene, "global", "administrator")
-
-      {:ok, _} = Core.Users.join_organization_by_slug(josephryan, "global", "administrator")
-    end,
-    timeout: 1_800_000
+    end
   )
 end
 

@@ -3,8 +3,6 @@ defmodule Utilities do
   Generic behavior that we use elsewhere.
   """
 
-  @tenant_key {__MODULE__, :world_id}
-
   @doc """
   find duplicate-aware intersection between lists or stings
 

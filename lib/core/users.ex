@@ -4,6 +4,7 @@ defmodule Core.Users do
   """
 
   import Ecto.Query, warn: false
+  require Logger
 
   def list_accounts() do
     Core.Repo.all(Core.Users.Account)
@@ -34,6 +35,46 @@ defmodule Core.Users do
   def get_account(id), do: Core.Repo.get(Core.Users.Account, id)
 
   @doc """
+  Find or create an account based on OAuth data.
+  """
+  @spec find_or_create_account_from_oauth(Ueberauth.Auth.t()) :: {:ok, Core.Users.Account.t()}
+  def find_or_create_account_from_oauth(%Ueberauth.Auth{} = data) do
+    get_account_by_email_address(data.info.email)
+    |> case do
+      nil -> register_account(%{
+        name: data.info.name,
+        username: data.info.nickname,
+        password: Utilities.String.random(),
+        email_address: data.info.email,
+        provider: "twitch",
+        provider_id: data.uid,
+        provider_access_token: data.credentials.token,
+        provider_refresh_token: data.credentials.refresh_token,
+        provider_token_expiration: data.credentials.expires_at,
+        avatar_uri: data.info.image
+      })
+      account -> {:ok, account}
+    end
+    |> case do
+      {:error, changeset} ->
+        Logger.error(changeset.errors)
+      {:ok, account} ->
+        update_account_oauth(
+          account,
+          %{
+            name: data.info.name,
+            username: data.info.nickname,
+            provider_id: data.uid,
+            provider_access_token: data.credentials.token,
+            provider_refresh_token: data.credentials.refresh_token,
+            provider_token_expiration: data.credentials.expires_at,
+            avatar_uri: data.info.image
+          }
+        )
+    end
+  end
+
+  @doc """
   Registers a account.
   """
   @spec register_account(map()) :: {:ok, Core.Users.Account.t()} | {:error, Ecto.Changeset.t()}
@@ -42,8 +83,7 @@ defmodule Core.Users do
            %Core.Users.Account{}
            |> Core.Users.Account.registration_changeset(attrs)
            |> Core.Repo.insert(),
-         {:ok, organization} <- create_organization(%{name: "#{account.username}'s Crew"}),
-         {:ok, _} <- join_organization(account, organization, "administrator") do
+         {:ok, _} <- join_organization_by_slug(account, "global", "default") do
       {:ok, account |> Core.Repo.reload() |> Core.Repo.preload(:organizations)}
     else
       {:error, _} = error -> error
@@ -138,6 +178,15 @@ defmodule Core.Users do
   """
   def change_account_password(account, attrs \\ %{}) do
     Core.Users.Account.password_changeset(account, attrs, hash_password: false)
+  end
+
+  @doc """
+  Updates the accounts details.
+  """
+  def update_account_oauth(account, attributes) do
+    account
+    |> Core.Users.Account.oauth_changeset(attributes)
+    |> Core.Repo.update()
   end
 
   @doc """

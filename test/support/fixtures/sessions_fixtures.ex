@@ -4,10 +4,6 @@ defmodule Core.SessionsFixtures do
   entities via the `Core.Sessions` context.
   """
 
-  def set_current_world_in_session(%{conn: conn, world: world}) do
-    %{conn: conn |> Plug.Conn.put_session("world_id", world.id)}
-  end
-
   @doc """
   Setup helper that registers and logs in accounts.
 
