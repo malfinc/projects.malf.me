@@ -121,4 +121,9 @@ if config_env() == :prod do
   #     config :swoosh, :api_client, Swoosh.ApiClient.Hackney
   #
   # See https://hexdocs.pm/swoosh/Swoosh.html#module-installation for details.
+
+  config :ueberauth, Ueberauth.Strategy.Twitch.OAuth,
+    client_id: System.get_env("TWITCH_CLIENT_ID"),
+    client_secret: System.get_env("TWITCH_CLIENT_SECRET"),
+    redirect_uri: System.get_env("TWITCH_REDIRECT_URI")
 end

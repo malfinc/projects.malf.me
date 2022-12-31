@@ -41,24 +41,6 @@ defmodule CoreWeb.ConnCase do
 
   def build_conn(session: true, live: true) do
     Phoenix.ConnTest.build_conn()
-    |> Phoenix.ConnTest.init_test_session(%{
-      "__sid__" => @__sid__,
-      "__opts__" => PhoenixLiveSession.init(pub_sub: Core.PubSub)
-    })
-    |> tap(&live_session_enabled/1)
-  end
-
-  defp live_session_enabled(conn) do
-    PhoenixLiveSession.get(
-      conn,
-      @__sid__,
-      PhoenixLiveSession.init(
-        store: PhoenixLiveSession,
-        pub_sub: Core.PubSub,
-        signing_salt: "JKEx/AEF",
-        key: "session"
-      )
-    )
   end
 
   @doc """

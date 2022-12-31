@@ -33,6 +33,11 @@ config :core, CoreWeb.Endpoint,
   pubsub_server: Core.PubSub,
   live_view: [signing_salt: "JKEx/AEF"]
 
+config :ueberauth, Ueberauth,
+  providers: [
+    twitch: {Ueberauth.Strategy.Twitch, [default_scope: "user:read:email"]}
+  ]
+
 # Configure papertrail to use the right repository
 config :paper_trail,
   repo: Core.Repo,

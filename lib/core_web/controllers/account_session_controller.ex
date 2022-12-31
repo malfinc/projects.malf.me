@@ -36,4 +36,28 @@ defmodule CoreWeb.AccountSessionController do
     |> put_flash(:info, "Logged out successfully.")
     |> CoreWeb.AccountAuthenticationHelpers.log_out_account()
   end
+
+  def callback(%{assigns: %{ueberauth_failure: _}} = conn, _params) do
+    conn
+    |> put_flash(:error, "Failed to authenticate.")
+    |> redirect(to: "/")
+  end
+
+  def callback(%{assigns: %{ueberauth_auth: ueberauth_auth}} = conn, _params) do
+    # This is an example of how you can pass the auth information to
+    # a function that you implement that will register or login a user
+    case Core.Users.find_or_create_account_from_oauth(ueberauth_auth) do
+      {:ok, account} ->
+        conn
+        |> put_flash(:info, "Successfully authenticated.")
+        |> CoreWeb.AccountAuthenticationHelpers.log_in_account(account, %{})
+        |> configure_session(renew: true)
+        |> redirect(to: "/")
+
+      {:error, reason} ->
+        conn
+        |> put_flash(:error, reason)
+        |> redirect(to: "/")
+    end
+  end
 end

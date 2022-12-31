@@ -8,37 +8,7 @@ defmodule CoreWeb.AccountRegistrationLive do
     ~H"""
     <h1>Register</h1>
 
-    <p>
-      Already registered?
-      <.link navigate={~p"/accounts/log_in"}>
-        Sign in
-      </.link>
-      to your account now.
-    </p>
-
-    <.simple_form
-      :let={f}
-      id="registration_form"
-      for={@changeset}
-      phx-submit="save"
-      phx-change="validate"
-      phx-trigger-action={@trigger_submit}
-      action={~p"/accounts/log_in?_action=registered"}
-      method="post"
-      as={:account}
-    >
-      <.error :if={@changeset.action == :insert}>
-        Oops, something went wrong! Please check the errors below.
-      </.error>
-
-      <.input field={{f, :email_address}} type="email" label="Email" required />
-      <.input field={{f, :password}} type="password" label="Password" required />
-      <:actions>
-        <.button type="submit" phx-disable-with="Creating account..." class="btn btn-primary">
-          Create an account
-        </.button>
-      </:actions>
-    </.simple_form>
+    <.link href={~p"/auth/twitch"}>Sign in with Twitch</.link>
     """
   end
 

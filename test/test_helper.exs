@@ -1,3 +1,2 @@
-Mimic.copy(Core.Data)
-ExUnit.start(timeout: 1_800_000)
+ExUnit.start()
 Ecto.Adapters.SQL.Sandbox.mode(Core.Repo, :manual)

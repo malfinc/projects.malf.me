@@ -33,8 +33,6 @@ Core.Repo.transaction(fn ->
     Core.Users.create_permission(%{
       name: "Default"
     })
-
-  :ok = Utilities.Seeder.load_all()
 end)
 
 # Reset the log level back to normal

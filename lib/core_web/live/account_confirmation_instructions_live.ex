@@ -10,7 +10,7 @@ defmodule CoreWeb.AccountConfirmationInstructionsLive do
     <.simple_form :let={f} for={:account} id="resend_confirmation_form" phx-submit="send_instructions">
       <.input field={{f, :email_address}} type="email" label="Email" required />
       <:actions>
-        <.button phx-disable-with="Sending..." class="btn btn-primary">
+        <.button phx-disable-with="Sending..." type="submit" class="btn btn-primary">
           Resend confirmation instructions
         </.button>
       </:actions>

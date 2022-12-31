@@ -28,7 +28,9 @@ defmodule CoreWeb.AccountSettingsLive do
         required
       />
       <:actions>
-        <.button phx-disable-with="Changing..." class="btn btn-primary">Change Email Address</.button>
+        <.button phx-disable-with="Changing..." type="submit" class="btn btn-primary">
+          Change Email Address
+        </.button>
       </:actions>
     </.simple_form>
 
@@ -62,7 +64,9 @@ defmodule CoreWeb.AccountSettingsLive do
         required
       />
       <:actions>
-        <.button phx-disable-with="Changing..." class="btn btn-primary">Change Password</.button>
+        <.button phx-disable-with="Changing..." type="submit" class="btn btn-primary">
+          Change Password
+        </.button>
       </:actions>
     </.simple_form>
     """

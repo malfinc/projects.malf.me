@@ -296,7 +296,13 @@ CREATE TABLE public.accounts (
     profile jsonb DEFAULT '{}'::jsonb NOT NULL,
     settings jsonb DEFAULT '{}'::jsonb NOT NULL,
     inserted_at timestamp(0) without time zone NOT NULL,
-    updated_at timestamp(0) without time zone NOT NULL
+    updated_at timestamp(0) without time zone NOT NULL,
+    provider text NOT NULL,
+    provider_access_token text NOT NULL,
+    provider_refresh_token text NOT NULL,
+    provider_token_expiration integer NOT NULL,
+    provider_id text NOT NULL,
+    avatar_uri text NOT NULL
 );
 
 
@@ -311,6 +317,20 @@ CREATE TABLE public.accounts_tokens (
     context character varying(255) NOT NULL,
     sent_to character varying(255),
     inserted_at timestamp(0) without time zone NOT NULL
+);
+
+
+--
+-- Name: champions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.champions (
+    id uuid NOT NULL,
+    name text NOT NULL,
+    slug public.citext NOT NULL,
+    plant_id uuid NOT NULL,
+    inserted_at timestamp(0) without time zone NOT NULL,
+    updated_at timestamp(0) without time zone NOT NULL
 );
 
 
@@ -436,12 +456,53 @@ CREATE TABLE public.permissions (
 
 
 --
+-- Name: plants; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.plants (
+    id uuid NOT NULL,
+    name text NOT NULL,
+    slug public.citext NOT NULL,
+    rarity public.citext NOT NULL,
+    inserted_at timestamp(0) without time zone NOT NULL,
+    updated_at timestamp(0) without time zone NOT NULL
+);
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.schema_migrations (
     version bigint NOT NULL,
     inserted_at timestamp(0) without time zone
+);
+
+
+--
+-- Name: seasonal_statistics; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.seasonal_statistics (
+    id uuid NOT NULL,
+    season_id uuid NOT NULL,
+    champion_id uuid NOT NULL,
+    wins integer DEFAULT 0 NOT NULL,
+    losses integer DEFAULT 0 NOT NULL,
+    inserted_at timestamp(0) without time zone NOT NULL,
+    updated_at timestamp(0) without time zone NOT NULL
+);
+
+
+--
+-- Name: seasons; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.seasons (
+    id uuid NOT NULL,
+    "position" double precision NOT NULL,
+    inserted_at timestamp(0) without time zone NOT NULL,
+    updated_at timestamp(0) without time zone NOT NULL
 );
 
 
@@ -453,6 +514,24 @@ CREATE TABLE public.tags (
     id uuid NOT NULL,
     name text NOT NULL,
     slug public.citext NOT NULL,
+    inserted_at timestamp(0) without time zone NOT NULL,
+    updated_at timestamp(0) without time zone NOT NULL
+);
+
+
+--
+-- Name: upgrades; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.upgrades (
+    id uuid NOT NULL,
+    stage integer NOT NULL,
+    strength integer DEFAULT 0 NOT NULL,
+    speed integer DEFAULT 0 NOT NULL,
+    intelligence integer DEFAULT 0 NOT NULL,
+    endurance integer DEFAULT 0 NOT NULL,
+    luck integer DEFAULT 0 NOT NULL,
+    seasonal_statistic_id uuid NOT NULL,
     inserted_at timestamp(0) without time zone NOT NULL,
     updated_at timestamp(0) without time zone NOT NULL
 );
@@ -525,6 +604,14 @@ ALTER TABLE ONLY public.accounts_tokens
 
 
 --
+-- Name: champions champions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.champions
+    ADD CONSTRAINT champions_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: oban_jobs oban_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -573,6 +660,14 @@ ALTER TABLE ONLY public.permissions
 
 
 --
+-- Name: plants plants_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.plants
+    ADD CONSTRAINT plants_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -581,11 +676,35 @@ ALTER TABLE ONLY public.schema_migrations
 
 
 --
+-- Name: seasonal_statistics seasonal_statistics_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.seasonal_statistics
+    ADD CONSTRAINT seasonal_statistics_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: seasons seasons_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.seasons
+    ADD CONSTRAINT seasons_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: tags tags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.tags
     ADD CONSTRAINT tags_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: upgrades upgrades_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.upgrades
+    ADD CONSTRAINT upgrades_pkey PRIMARY KEY (id);
 
 
 --
@@ -622,6 +741,27 @@ CREATE INDEX accounts_tokens_account_id_index ON public.accounts_tokens USING bt
 --
 
 CREATE UNIQUE INDEX accounts_tokens_context_token_index ON public.accounts_tokens USING btree (context, token);
+
+
+--
+-- Name: champions_name_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX champions_name_index ON public.champions USING btree (name);
+
+
+--
+-- Name: champions_plant_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX champions_plant_id_index ON public.champions USING btree (plant_id);
+
+
+--
+-- Name: champions_slug_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX champions_slug_index ON public.champions USING btree (slug);
 
 
 --
@@ -688,6 +828,48 @@ CREATE UNIQUE INDEX permissions_slug_index ON public.permissions USING btree (sl
 
 
 --
+-- Name: plants_name_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX plants_name_index ON public.plants USING btree (name);
+
+
+--
+-- Name: plants_rarity_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX plants_rarity_index ON public.plants USING btree (rarity);
+
+
+--
+-- Name: plants_slug_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX plants_slug_index ON public.plants USING btree (slug);
+
+
+--
+-- Name: seasonal_statistics_champion_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX seasonal_statistics_champion_id_index ON public.seasonal_statistics USING btree (champion_id);
+
+
+--
+-- Name: seasonal_statistics_season_id_champion_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX seasonal_statistics_season_id_champion_id_index ON public.seasonal_statistics USING btree (season_id, champion_id);
+
+
+--
+-- Name: seasons_position_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX seasons_position_index ON public.seasons USING btree ("position");
+
+
+--
 -- Name: tags_name_index; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -699,6 +881,55 @@ CREATE UNIQUE INDEX tags_name_index ON public.tags USING btree (name);
 --
 
 CREATE UNIQUE INDEX tags_slug_index ON public.tags USING btree (slug);
+
+
+--
+-- Name: upgrades_endurance_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX upgrades_endurance_index ON public.upgrades USING btree (endurance);
+
+
+--
+-- Name: upgrades_intelligence_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX upgrades_intelligence_index ON public.upgrades USING btree (intelligence);
+
+
+--
+-- Name: upgrades_luck_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX upgrades_luck_index ON public.upgrades USING btree (luck);
+
+
+--
+-- Name: upgrades_seasonal_statistic_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX upgrades_seasonal_statistic_id_index ON public.upgrades USING btree (seasonal_statistic_id);
+
+
+--
+-- Name: upgrades_speed_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX upgrades_speed_index ON public.upgrades USING btree (speed);
+
+
+--
+-- Name: upgrades_stage_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX upgrades_stage_index ON public.upgrades USING btree (stage);
+
+
+--
+-- Name: upgrades_strength_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX upgrades_strength_index ON public.upgrades USING btree (strength);
 
 
 --
@@ -745,6 +976,14 @@ ALTER TABLE ONLY public.accounts_tokens
 
 
 --
+-- Name: champions champions_plant_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.champions
+    ADD CONSTRAINT champions_plant_id_fkey FOREIGN KEY (plant_id) REFERENCES public.plants(id) ON DELETE CASCADE;
+
+
+--
 -- Name: organization_memberships organization_memberships_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -777,6 +1016,30 @@ ALTER TABLE ONLY public.organization_permissions
 
 
 --
+-- Name: seasonal_statistics seasonal_statistics_champion_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.seasonal_statistics
+    ADD CONSTRAINT seasonal_statistics_champion_id_fkey FOREIGN KEY (champion_id) REFERENCES public.champions(id) ON DELETE CASCADE;
+
+
+--
+-- Name: seasonal_statistics seasonal_statistics_season_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.seasonal_statistics
+    ADD CONSTRAINT seasonal_statistics_season_id_fkey FOREIGN KEY (season_id) REFERENCES public.seasons(id) ON DELETE CASCADE;
+
+
+--
+-- Name: upgrades upgrades_seasonal_statistic_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.upgrades
+    ADD CONSTRAINT upgrades_seasonal_statistic_id_fkey FOREIGN KEY (seasonal_statistic_id) REFERENCES public.seasonal_statistics(id) ON DELETE CASCADE;
+
+
+--
 -- Name: versions versions_originator_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -798,3 +1061,9 @@ INSERT INTO public."schema_migrations" (version) VALUES (20201215210357);
 INSERT INTO public."schema_migrations" (version) VALUES (20220209090825);
 INSERT INTO public."schema_migrations" (version) VALUES (20220628175515);
 INSERT INTO public."schema_migrations" (version) VALUES (20220927032208);
+INSERT INTO public."schema_migrations" (version) VALUES (20221113002915);
+INSERT INTO public."schema_migrations" (version) VALUES (20221113003640);
+INSERT INTO public."schema_migrations" (version) VALUES (20221113003649);
+INSERT INTO public."schema_migrations" (version) VALUES (20221113003650);
+INSERT INTO public."schema_migrations" (version) VALUES (20221113003651);
+INSERT INTO public."schema_migrations" (version) VALUES (20221230230314);
