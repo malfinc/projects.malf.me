@@ -38,11 +38,6 @@ config :ueberauth, Ueberauth,
     twitch: {Ueberauth.Strategy.Twitch, [default_scope: "user:read:email"]}
   ]
 
-config :ueberauth, Ueberauth.Strategy.Twitch.OAuth,
-  client_id: System.get_env("TWITCH_CLIENT_ID"),
-  client_secret: System.get_env("TWITCH_CLIENT_SECRET"),
-  redirect_uri: System.get_env("TWITCH_REDIRECT_URI")
-
 # Configure papertrail to use the right repository
 config :paper_trail,
   repo: Core.Repo,
