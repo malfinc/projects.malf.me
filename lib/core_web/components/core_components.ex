@@ -25,9 +25,15 @@ defmodule CoreWeb.CoreComponents do
         <div>
           <h2><span>Community</span></h2>
           <ul>
-            <li><.link href="#">Community Cookbook</.link></li>
-            <li><.link href="#">League of Plants</.link></li>
-            <li><.link href="#">Towers of Bebylon</.link></li>
+            <li>
+              <.link href="#">Community Cookbook</.link>
+            </li>
+            <li>
+              <.link href="#">League of Plants</.link>
+            </li>
+            <li>
+              <.link href="#">Towers of Bebylon</.link>
+            </li>
           </ul>
         </div>
       </section>
@@ -91,7 +97,8 @@ defmodule CoreWeb.CoreComponents do
           </li>
         </ul>
         <p>
-          &copy; <%= DateTime.utc_now().year %> Michael Fox · Built by <.link href="#">@th3mcnuggetz</.link>,
+          &copy; <%= DateTime.utc_now().year %> Michael Fox · Built by
+          <.link href="#">@th3mcnuggetz</.link>,
           <.link href="https://twitter.com/krainboltgreene">@krainboltgreene</.link>
         </p>
       </section>

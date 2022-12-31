@@ -1,4 +1,5 @@
 defmodule Core.Gameplay do
+  @moduledoc false
   import Core.Context
 
   resource(:plants, :plant, Core.Gameplay.Plant)

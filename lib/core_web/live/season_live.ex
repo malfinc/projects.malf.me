@@ -4,7 +4,7 @@ defmodule CoreWeb.SeasonLive do
 
   defp list_records(_assigns, _params) do
     Core.Gameplay.list_seasons()
-    |> Core.Repo.preload([seasonal_statistics: [champion: [:plant, :upgrades]]])
+    |> Core.Repo.preload(seasonal_statistics: [champion: [:plant, :upgrades]])
     |> Core.Decorate.deep()
   end
 
@@ -16,7 +16,7 @@ defmodule CoreWeb.SeasonLive do
 
       record ->
         record
-        |> Core.Repo.preload([seasonal_statistics: [champion: [:plant, :upgrades]]])
+        |> Core.Repo.preload(seasonal_statistics: [champion: [:plant, :upgrades]])
         |> Core.Decorate.deep()
     end
   end
@@ -58,12 +58,20 @@ defmodule CoreWeb.SeasonLive do
   @impl true
   def handle_event("create_season", params, socket) do
     params
-    |> Map.put("position", socket.assigns.records |> Utilities.List.pluck(:position) |> List.last() |> Kernel.||(0) |> Kernel.+(1))
+    |> Map.put(
+      "position",
+      socket.assigns.records
+      |> Utilities.List.pluck(:position)
+      |> List.last()
+      |> Kernel.||(0)
+      |> Kernel.+(1)
+    )
     |> Core.Gameplay.create_season()
     |> case do
       {:ok, record} ->
         socket
         |> redirect(to: ~p"/seasons/#{record.id}")
+
       {:error, changeset} ->
         socket
         |> assign(:changeset, changeset)
@@ -99,7 +107,9 @@ defmodule CoreWeb.SeasonLive do
     <h2>Scoreboard</h2>
     <ul>
       <%= for seasonal_statistic <- sorted(@record.seasonal_statistics) do %>
-        <li><%= seasonal_statistic.champion.name %> <%= seasonal_statistic.wins %> Wins, <%= seasonal_statistic.losses %> Losses</li>
+        <li>
+          <%= seasonal_statistic.champion.name %> <%= seasonal_statistic.wins %> Wins, <%= seasonal_statistic.losses %> Losses
+        </li>
       <% end %>
     </ul>
     """

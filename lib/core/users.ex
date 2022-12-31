@@ -41,23 +41,27 @@ defmodule Core.Users do
   def find_or_create_account_from_oauth(%Ueberauth.Auth{} = data) do
     get_account_by_email_address(data.info.email)
     |> case do
-      nil -> register_account(%{
-        name: data.info.name,
-        username: data.info.nickname,
-        password: Utilities.String.random(),
-        email_address: data.info.email,
-        provider: "twitch",
-        provider_id: data.uid,
-        provider_access_token: data.credentials.token,
-        provider_refresh_token: data.credentials.refresh_token,
-        provider_token_expiration: data.credentials.expires_at,
-        avatar_uri: data.info.image
-      })
-      account -> {:ok, account}
+      nil ->
+        register_account(%{
+          name: data.info.name,
+          username: data.info.nickname,
+          password: Utilities.String.random(),
+          email_address: data.info.email,
+          provider: "twitch",
+          provider_id: data.uid,
+          provider_access_token: data.credentials.token,
+          provider_refresh_token: data.credentials.refresh_token,
+          provider_token_expiration: data.credentials.expires_at,
+          avatar_uri: data.info.image
+        })
+
+      account ->
+        {:ok, account}
     end
     |> case do
       {:error, changeset} ->
         Logger.error(changeset.errors)
+
       {:ok, account} ->
         update_account_oauth(
           account,

@@ -9,7 +9,10 @@ defmodule Core.Repo.Migrations.CreateUpgrades do
       add :intelligence, :integer, null: false, default: 0
       add :endurance, :integer, null: false, default: 0
       add :luck, :integer, null: false, default: 0
-      add :seasonal_statistic_id, references(:seasonal_statistics, on_delete: :delete_all), null: false
+
+      add :seasonal_statistic_id, references(:seasonal_statistics, on_delete: :delete_all),
+        null: false
+
       timestamps()
     end
 

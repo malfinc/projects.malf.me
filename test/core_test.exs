@@ -2,19 +2,6 @@ defmodule CoreTest do
   use ExUnit.Case, async: true
   doctest Core
 
-  test "pronoun(gender_presenting)" do
-    assert Utilities.String.pronoun(%{gender_presentation: "masculine"}) == "masculine"
-  end
-
-  test "pronoun for them" do
-    assert Utilities.String.pronoun(%Core.Universes.Person{}) == "them"
-  end
-
-  test "gendered_noun()" do
-    assert Utilities.String.gendered_noun("God", "feminine") == "Godess"
-    assert Utilities.String.gendered_noun("God", "masculine") == "God"
-  end
-
   test "multiple(..., [{1, 10}, {2, 40}, {3, 50}])" do
     result = Utilities.Enum.multiple([{1, 10}, {2, 40}, {3, 50}], fn -> :example end)
     assert result |> Enum.all?(fn item -> item == :example end)

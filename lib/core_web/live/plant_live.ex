@@ -63,6 +63,7 @@ defmodule CoreWeb.PlantLive do
       {:ok, record} ->
         socket
         |> redirect(to: ~p"/plants/#{record.id}")
+
       {:error, changeset} ->
         socket
         |> assign(:changeset, changeset)
@@ -76,18 +77,13 @@ defmodule CoreWeb.PlantLive do
     <h1>Plants</h1>
     <ul>
       <%= for plant <- @records do %>
-        <li><.link href={~p"/plants/#{plant.id}"}><%= plant.name %> (<%= plant.rarity %>)</.link></li>
+        <li>
+          <.link href={~p"/plants/#{plant.id}"}><%= plant.name %> (<%= plant.rarity %>)</.link>
+        </li>
       <% end %>
     </ul>
     <.simple_form :let={f} for={@changeset} id="new_plant" phx-submit="create_plant">
-      <.input
-        field={{f, :name}}
-        name="name"
-        id="name"
-        type="text"
-        label="Name"
-        required
-      />
+      <.input field={{f, :name}} name="name" id="name" type="text" label="Name" required />
       <.input
         field={{f, :rarity}}
         name="rarity"
@@ -127,9 +123,10 @@ defmodule CoreWeb.PlantLive do
     """
   end
 
-  defp rarity_options(), do: [
-    {"Normal", "normal"},
-    {"Rare", "rare"},
-    {"Epic", "epic"}
-  ]
+  defp rarity_options(),
+    do: [
+      {"Normal", "normal"},
+      {"Rare", "rare"},
+      {"Epic", "epic"}
+    ]
 end

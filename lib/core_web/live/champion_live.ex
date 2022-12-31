@@ -68,6 +68,7 @@ defmodule CoreWeb.ChampionLive do
       {:ok, record} ->
         socket
         |> redirect(to: ~p"/champions/#{record.id}")
+
       {:error, changeset} ->
         socket
         |> assign(:changeset, changeset)
@@ -79,14 +80,7 @@ defmodule CoreWeb.ChampionLive do
   def render(%{live_action: :new} = assigns) do
     ~H"""
     <.simple_form :let={f} for={@changeset} id="new_champion" phx-submit="create_champion">
-      <.input
-        field={{f, :name}}
-        name="name"
-        id="name"
-        type="text"
-        label="Name"
-        required
-      />
+      <.input field={{f, :name}} name="name" id="name" type="text" label="Name" required />
       <.input
         field={{f, :plant}}
         name="plant"

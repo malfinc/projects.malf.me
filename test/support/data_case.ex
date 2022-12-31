@@ -18,8 +18,6 @@ defmodule Core.DataCase do
 
   using do
     quote do
-      use Mimic
-
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
