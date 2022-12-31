@@ -11,7 +11,9 @@
 Notes:
 
   - https://dev.twitch.tv/docs/eventsub/manage-subscriptions
-  - https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchannel_points_custom_reward_redemptionadd
+  - Channel Points Custom Reward Redemption Add:	`channel.channel_points_custom_reward_redemption.add` A viewer has redeemed a custom channel points reward on the specified channel. https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchannel_points_custom_reward_redemptionadd
+  - Channel Points Custom Reward Redemption Update:	`channel.channel_points_custom_reward_redemption.update` A redemption of a channel points custom reward has been updated for the specified channel. https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types#channelchannel_points_custom_reward_redemptionupdate
+
 
 ## Session 2
 
