@@ -4,7 +4,7 @@ defmodule CoreWeb.PlantLive do
 
   defp list_records(_assigns, _params) do
     Core.Gameplay.list_plants()
-    |> Core.Repo.preload([])
+    |> Core.Repo.preload([:champions])
     |> Core.Decorate.deep()
   end
 
@@ -16,7 +16,7 @@ defmodule CoreWeb.PlantLive do
 
       record ->
         record
-        |> Core.Repo.preload([])
+        |> Core.Repo.preload([:champions])
         |> Core.Decorate.deep()
     end
   end
@@ -74,6 +74,11 @@ defmodule CoreWeb.PlantLive do
   def render(%{live_action: :list} = assigns) do
     ~H"""
     <h1>Plants</h1>
+    <ul>
+      <%= for plant <- @records do %>
+        <li><.link href={~p"/plants/#{plant.id}"}><%= plant.name %> (<%= plant.rarity %>)</.link></li>
+      <% end %>
+    </ul>
     <.simple_form :let={f} for={@changeset} id="new_plant" phx-submit="create_plant">
       <.input
         field={{f, :name}}
@@ -112,12 +117,19 @@ defmodule CoreWeb.PlantLive do
       <dt>Rarity</dt>
       <dd><%= @record.rarity %></dd>
     </dl>
+
+    <h2>Champions</h2>
+    <ul>
+      <%= for champion <- @record.champions do %>
+        <li><%= champion.name %></li>
+      <% end %>
+    </ul>
     """
   end
 
   defp rarity_options(), do: [
-    "normal",
-    "rare",
-    "epic"
+    {"Normal", "normal"},
+    {"Rare", "rare"},
+    {"Epic", "epic"}
   ]
 end

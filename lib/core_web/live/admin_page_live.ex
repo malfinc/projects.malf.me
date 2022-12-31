@@ -25,11 +25,6 @@ defmodule CoreWeb.AdminPageLive do
   def render(%{live_action: :dashboard} = assigns) do
     ~H"""
     The administrative dashboard.
-
-    <ul>
-      <li><.link href={~p"/admin/seasons/new"}>Start a new Season</.link></li>
-      <li><.link href={~p"/admin/plants/new"}>Spawn a new Plant</.link></li>
-    </ul>
     """
   end
 end
