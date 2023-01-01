@@ -37,7 +37,8 @@ defmodule Core.Users do
   @doc """
   Find or create an account based on OAuth data.
   """
-  @spec find_or_create_account_from_oauth(Ueberauth.Auth.t()) :: {:ok, Core.Users.Account.t()}
+  @spec find_or_create_account_from_oauth(Ueberauth.Auth.t()) ::
+          {:ok, Core.Users.Account.t()} | {:error, Ecto.Changeset.t()}
   def find_or_create_account_from_oauth(%Ueberauth.Auth{} = data) do
     get_account_by_email_address(data.info.email)
     |> case do
@@ -52,6 +53,7 @@ defmodule Core.Users do
           provider_access_token: data.credentials.token,
           provider_refresh_token: data.credentials.refresh_token,
           provider_token_expiration: data.credentials.expires_at,
+          provider_scopes: data.credentials.scopes,
           avatar_uri: data.info.image
         })
 
@@ -72,6 +74,7 @@ defmodule Core.Users do
             provider_access_token: data.credentials.token,
             provider_refresh_token: data.credentials.refresh_token,
             provider_token_expiration: data.credentials.expires_at,
+            provider_scopes: data.credentials.scopes,
             avatar_uri: data.info.image
           }
         )

@@ -18,6 +18,7 @@ defmodule Core.Users.Account do
     field(:provider_access_token, :string)
     field(:provider_refresh_token, :string)
     field(:provider_token_expiration, :integer)
+    field(:provider_scopes, {:array, :string})
     field(:avatar_uri, :string)
     field(:email_address, :string)
     field(:username, :string)
@@ -54,6 +55,7 @@ defmodule Core.Users.Account do
       :provider_access_token,
       :provider_refresh_token,
       :provider_token_expiration,
+      :provider_scopes,
       :avatar_uri,
       :username
     ])
@@ -63,6 +65,7 @@ defmodule Core.Users.Account do
       :provider_access_token,
       :provider_refresh_token,
       :provider_token_expiration,
+      :provider_scopes,
       :avatar_uri,
       :username
     ])
@@ -104,6 +107,7 @@ defmodule Core.Users.Account do
       :provider_access_token,
       :provider_refresh_token,
       :provider_token_expiration,
+      :provider_scopes,
       :avatar_uri
     ])
     |> Ecto.Changeset.validate_required([
@@ -114,6 +118,7 @@ defmodule Core.Users.Account do
       :provider_access_token,
       :provider_refresh_token,
       :provider_token_expiration,
+      :provider_scopes,
       :avatar_uri
     ])
     |> validate_email_address(opts)

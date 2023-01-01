@@ -4,7 +4,9 @@ defmodule CoreWeb.AccountLoginLive do
   def render(assigns) do
     ~H"""
     <h1>Sign in</h1>
-    <.link href={~p"/auth/twitch"}>Sign in with Twitch</.link>
+    <p>
+      <.link href={~p"/auth/twitch"}>Authenticate via Twitch</.link>
+    </p>
     """
   end
 
