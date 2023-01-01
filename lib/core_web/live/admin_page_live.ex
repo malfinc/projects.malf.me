@@ -25,9 +25,12 @@ defmodule CoreWeb.AdminPageLive do
   def render(%{live_action: :dashboard} = assigns) do
     ~H"""
     The administrative dashboard.
-
     <p>
-      <.link href={~p"/auth/twitch?scope=user:read:email bits:read channel:read:redemptions channel:read:subscriptions"}>Reauthenticate via Twitch</.link>
+      <.link href={
+        ~p"/auth/twitch?scope=user:read:email bits:read channel:read:redemptions channel:read:subscriptions"
+      }>
+        Reauthenticate via Twitch
+      </.link>
     </p>
     """
   end

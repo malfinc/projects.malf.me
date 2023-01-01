@@ -1,7 +1,10 @@
 defmodule CoreWeb.TwitchWebhookController do
   use CoreWeb, :controller
 
-  def create(conn, %{"subscription" => %{"status" => "webhook_callback_verification_pending"}, "challenge" => challenge}) do
+  def create(conn, %{
+        "subscription" => %{"status" => "webhook_callback_verification_pending"},
+        "challenge" => challenge
+      }) do
     conn
     |> put_status(200)
     |> text(challenge)
@@ -44,9 +47,9 @@ defmodule CoreWeb.TwitchWebhookController do
   #     }
   # }
   def create(conn, %{
-    "subscription" => %{"type" => "channel.channel_points_custom_reward_redemption.add"},
-    "event" => event
-  }) do
+        "subscription" => %{"type" => "channel.channel_points_custom_reward_redemption.add"},
+        "event" => event
+      }) do
     dbg(event)
     # give_coins(account, amount)
     conn
@@ -55,9 +58,9 @@ defmodule CoreWeb.TwitchWebhookController do
   end
 
   def create(conn, %{
-    "subscription" => %{"type" => "channel.subscription.gift"},
-    "event" => event
-  }) do
+        "subscription" => %{"type" => "channel.subscription.gift"},
+        "event" => event
+      }) do
     dbg(event)
     # give_coins(account, amount)
     conn
@@ -66,9 +69,9 @@ defmodule CoreWeb.TwitchWebhookController do
   end
 
   def create(conn, %{
-    "subscription" => %{"type" => "channel.subscribe"},
-    "event" => event
-  }) do
+        "subscription" => %{"type" => "channel.subscribe"},
+        "event" => event
+      }) do
     dbg(event)
     # give_coins(account, amount)
     conn
@@ -77,9 +80,9 @@ defmodule CoreWeb.TwitchWebhookController do
   end
 
   def create(conn, %{
-    "subscription" => %{"type" => "channel.subscription.message"},
-    "event" => event
-  }) do
+        "subscription" => %{"type" => "channel.subscription.message"},
+        "event" => event
+      }) do
     dbg(event)
     # give_coins(account, amount)
     conn
@@ -88,9 +91,9 @@ defmodule CoreWeb.TwitchWebhookController do
   end
 
   def create(conn, %{
-    "subscription" => %{"type" => "channel.cheer"},
-    "event" => event
-  }) do
+        "subscription" => %{"type" => "channel.cheer"},
+        "event" => event
+      }) do
     dbg(event)
     # give_coins(account, amount)
     conn

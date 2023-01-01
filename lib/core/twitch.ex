@@ -1,4 +1,7 @@
 defmodule Core.Twitch do
+  @moduledoc """
+  All behavior having to do with Twitch's API
+  """
   @authentication_uri "https://id.twitch.tv"
   @origin_uri "https://api.twitch.tv"
   @common_headers [
