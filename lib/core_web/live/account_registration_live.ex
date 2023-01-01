@@ -8,7 +8,9 @@ defmodule CoreWeb.AccountRegistrationLive do
     ~H"""
     <h1>Register</h1>
 
-    <.link href={~p"/auth/twitch"}>Sign in with Twitch</.link>
+    <p>
+      <.link href={~p"/auth/twitch"}>Authenticate via Twitch</.link>
+    </p>
     """
   end
 

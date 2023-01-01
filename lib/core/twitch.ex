@@ -5,6 +5,28 @@ defmodule Core.Twitch do
     {"User-Agent", "league-of-plants v1"}
   ]
   @broadcaster_user_id "19336638"
+  @subscription_types [
+    "channel.channel_points_custom_reward_redemption.add",
+    "channel.subscription.gift",
+    "channel.subscribe",
+    "channel.subscription.message"
+  ]
+
+  def revoke_access_token(access_token) do
+    :post
+    |> Finch.build(
+      "#{@authentication_uri}/oauth2/revoke",
+      [
+        {"Content-Type", "application/x-www-form-urlencoded"}
+        | @common_headers
+      ],
+      "client_id=#{System.get_env("TWITCH_CLIENT_ID")}&token=#{access_token}"
+    )
+    |> Finch.request(Core.Finch)
+    |> case do
+      {:ok, %Finch.Response{status: 200} = response} -> Jason.decode(response.body)
+    end
+  end
 
   def fetch_access_token() do
     :post
@@ -14,7 +36,7 @@ defmodule Core.Twitch do
         {"Content-Type", "application/x-www-form-urlencoded"}
         | @common_headers
       ],
-      "client_id=#{System.get_env("TWITCH_CLIENT_SECRET")}&client_secret=#{System.get_env("TWITCH_CLIENT_SECRET")}&grant_type=client_credentials"
+      "client_id=#{System.get_env("TWITCH_CLIENT_ID")}&client_secret=#{System.get_env("TWITCH_CLIENT_SECRET")}&grant_type=client_credentials"
     )
     |> Finch.request(Core.Finch)
     |> case do
@@ -25,105 +47,68 @@ defmodule Core.Twitch do
     end
   end
 
-  def subscribe() do
+  def stop_event_subscription(event_subscription_id, token \\ fetch_access_token()) do
+    :delete
+    |> Finch.build(
+      "#{@origin_uri}/helix/eventsub/subscriptions?id=#{event_subscription_id}",
+      [
+        {"Client-Id", System.get_env("TWITCH_CLIENT_ID")},
+        {"Authorization", "Bearer #{token}"}
+        | @common_headers
+      ]
+    )
+    |> Finch.request(Core.Finch)
+  end
+
+  def list_event_subscriptions(token \\ fetch_access_token()) do
+    :get
+    |> Finch.build(
+      "#{@origin_uri}/helix/eventsub/subscriptions",
+      [
+        {"Client-Id", System.get_env("TWITCH_CLIENT_ID")},
+        {"Authorization", "Bearer #{token}"}
+        | @common_headers
+      ]
+    )
+    |> Finch.request(Core.Finch)
+    |> case do
+      {:ok, %Finch.Response{status: 200} = response} -> Jason.decode(response.body)
+    end
+  end
+
+  def start_event_subscription() do
+    @subscription_types
+    |> Enum.map(fn subscription_type ->
+      start_event_subscription(subscription_type)
+    end)
+  end
+
+  def start_event_subscription(type, token \\ fetch_access_token()) do
     :post
     |> Finch.build(
       "#{@origin_uri}/helix/eventsub/subscriptions",
       [
         {"Content-Type", "application/json"},
         {"Client-Id", System.get_env("TWITCH_CLIENT_ID")},
-        {"Authorization", "Bearer #{fetch_access_token()}"}
+        {"Authorization", "Bearer #{token}"}
         | @common_headers
       ],
       Jason.encode!(%{
-        "type" => "channel.channel_points_custom_reward_redemption.add",
+        "type" => type,
         "version" => "1",
         "condition" => %{
-          "broadcaster_user_id" => @broadcaster_user_id,
-          # "reward_id" => nil
+          "broadcaster_user_id" => @broadcaster_user_id
         },
         "transport" => %{
           "method" => "webhook",
-          "callback" => "https://webhook.site/800992df-d520-4f42-bd4f-5eba3f60aa7e",
+          "callback" => "https://www-malf-me.fly.dev/twitch/webhooks",
           "secret" => "xxxxxxxxxx"
         }
       })
     )
     |> Finch.request(Core.Finch)
-  end
-  #   {
-  #     "subscription": {
-  #         "id": "f1c2a387-161a-49f9-a165-0f21d7a4e1c4",
-  #         "type": "channel.channel_points_custom_reward_redemption.add",
-  #         "version": "1",
-  #         "status": "enabled",
-  #         "cost": 0,
-  #         "condition": {
-  #             "broadcaster_user_id": "1337",
-  #             "reward_id": "92af127c-7326-4483-a52b-b0da0be61c01" // optional; gets notifications for a specific reward
-  #         },
-  #          "transport": {
-  #             "method": "webhook",
-  #             "callback": "https://example.com/webhooks/callback"
-  #         },
-  #         "created_at": "2019-11-16T10:11:12.634234626Z"
-  #     },
-  #     "event": {
-  #         "id": "17fa2df1-ad76-4804-bfa5-a40ef63efe63",
-  #         "broadcaster_user_id": "1337",
-  #         "broadcaster_user_login": "cool_user",
-  #         "broadcaster_user_name": "Cool_User",
-  #         "user_id": "9001",
-  #         "user_login": "cooler_user",
-  #         "user_name": "Cooler_User",
-  #         "user_input": "pogchamp",
-  #         "status": "unfulfilled",
-  #         "reward": {
-  #             "id": "92af127c-7326-4483-a52b-b0da0be61c01",
-  #             "title": "title",
-  #             "cost": 100,
-  #             "prompt": "reward prompt"
-  #         },
-  #         "redeemed_at": "2020-07-15T17:16:03.17106713Z"
-  #     }
-  # }
-  def handle_webhook(%{
-    "subscription" => %{"type" => "channel.channel_points_custom_reward_redemption.add"},
-    "event" => event
-  }) do
-    dbg(event)
-    # give_coins(account, amount)
-  end
-
-  def handle_webhook(%{
-    "subscription" => %{"type" => "channel.subscription.gift"},
-    "event" => event
-  }) do
-    dbg(event)
-    # give_coins(account, amount)
-  end
-
-  def handle_webhook(%{
-    "subscription" => %{"type" => "channel.subscribe"},
-    "event" => event
-  }) do
-    dbg(event)
-    # give_coins(account, amount)
-  end
-
-  def handle_webhook(%{
-    "subscription" => %{"type" => "channel.subscription.message"},
-    "event" => event
-  }) do
-    dbg(event)
-    # give_coins(account, amount)
-  end
-
-  def handle_webhook(%{
-    "subscription" => %{"type" => "channel.cheer"},
-    "event" => event
-  }) do
-    dbg(event)
-    # give_coins(account, amount)
+    |> case do
+      {:ok, %Finch.Response{status: 202} = response} -> Jason.decode(response.body)
+    end
   end
 end

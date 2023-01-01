@@ -29,6 +29,12 @@ defmodule CoreWeb.Router do
     get "/:provider/callback", CoreWeb.AccountSessionController, :callback
   end
 
+  scope "/twitch/webhooks" do
+    pipe_through [:api]
+
+    post "/", CoreWeb.TwitchWebhookController, :create
+  end
+
   scope "/" do
     pipe_through [:browser, :redirect_if_account_is_authenticated]
 
