@@ -8,16 +8,18 @@ defmodule Core.Job.DepositCoinJob do
   @impl Oban.Worker
   @spec perform(Oban.Job.t()) :: {:ok, Core.Gameplay.Coin.t()} | {:error, Ecto.Changeset.t()}
   def perform(%Oban.Job{args: %{"twitch_user_id" => twitch_user_id, "value" => value}}) do
-    account = from(
+    from(
       accounts in Core.Users.Account,
       where: accounts.provider_id == ^twitch_user_id,
       limit: 1
     )
     |> Core.Repo.one()
-
-    Core.Gameplay.create_coin_transaction(%{
-      account: account,
-      value: value
-    })
+    |> case do
+      nil -> {:snooze, 86400}
+      account -> Core.Gameplay.create_coin_transaction(%{
+        account: account,
+        value: value
+      })
+    end
   end
 end
