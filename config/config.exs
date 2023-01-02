@@ -18,6 +18,9 @@ config :core,
   google_site_verification: "",
   google_tag_manager_id: ""
 
+config :core, :twitch,
+  webhook_path: "twitch/webhooks"
+
 config :core,
        Core.Repo,
        migration_primary_key: [name: :id, type: :binary_id],

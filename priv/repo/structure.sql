@@ -302,7 +302,8 @@ CREATE TABLE public.accounts (
     provider_refresh_token text NOT NULL,
     provider_token_expiration integer NOT NULL,
     provider_id text NOT NULL,
-    avatar_uri text NOT NULL
+    avatar_uri text NOT NULL,
+    provider_scopes text[] DEFAULT ARRAY[]::text[] NOT NULL
 );
 
 
@@ -321,6 +322,29 @@ CREATE TABLE public.accounts_tokens (
 
 
 --
+-- Name: challenge_champions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.challenge_champions (
+    id uuid NOT NULL,
+    champion_id uuid NOT NULL,
+    challenge_id uuid NOT NULL
+);
+
+
+--
+-- Name: challenges; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.challenges (
+    id uuid NOT NULL,
+    season_id uuid NOT NULL,
+    inserted_at timestamp(0) without time zone NOT NULL,
+    updated_at timestamp(0) without time zone NOT NULL
+);
+
+
+--
 -- Name: champions; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -329,6 +353,65 @@ CREATE TABLE public.champions (
     name text NOT NULL,
     slug public.citext NOT NULL,
     plant_id uuid NOT NULL,
+    inserted_at timestamp(0) without time zone NOT NULL,
+    updated_at timestamp(0) without time zone NOT NULL,
+    "position" bigint NOT NULL
+);
+
+
+--
+-- Name: champions_position_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.champions_position_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: champions_position_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.champions_position_seq OWNED BY public.champions."position";
+
+
+--
+-- Name: coin_transactions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.coin_transactions (
+    id uuid NOT NULL,
+    value integer NOT NULL,
+    account_id uuid NOT NULL,
+    inserted_at timestamp(0) without time zone NOT NULL,
+    updated_at timestamp(0) without time zone NOT NULL
+);
+
+
+--
+-- Name: conferences; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.conferences (
+    id uuid NOT NULL,
+    name text NOT NULL,
+    slug public.citext NOT NULL,
+    inserted_at timestamp(0) without time zone NOT NULL,
+    updated_at timestamp(0) without time zone NOT NULL
+);
+
+
+--
+-- Name: divisions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.divisions (
+    id uuid NOT NULL,
+    name text NOT NULL,
+    slug public.citext NOT NULL,
     inserted_at timestamp(0) without time zone NOT NULL,
     updated_at timestamp(0) without time zone NOT NULL
 );
@@ -463,7 +546,24 @@ CREATE TABLE public.plants (
     id uuid NOT NULL,
     name text NOT NULL,
     slug public.citext NOT NULL,
-    rarity public.citext NOT NULL,
+    inserted_at timestamp(0) without time zone NOT NULL,
+    updated_at timestamp(0) without time zone NOT NULL,
+    starting_attributes jsonb NOT NULL,
+    rarity_symbol text NOT NULL,
+    image_uri text NOT NULL,
+    species text NOT NULL
+);
+
+
+--
+-- Name: rarities; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.rarities (
+    id uuid NOT NULL,
+    name text NOT NULL,
+    slug public.citext NOT NULL,
+    color text NOT NULL,
     inserted_at timestamp(0) without time zone NOT NULL,
     updated_at timestamp(0) without time zone NOT NULL
 );
@@ -480,30 +580,34 @@ CREATE TABLE public.schema_migrations (
 
 
 --
--- Name: seasonal_statistics; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.seasonal_statistics (
-    id uuid NOT NULL,
-    season_id uuid NOT NULL,
-    champion_id uuid NOT NULL,
-    wins integer DEFAULT 0 NOT NULL,
-    losses integer DEFAULT 0 NOT NULL,
-    inserted_at timestamp(0) without time zone NOT NULL,
-    updated_at timestamp(0) without time zone NOT NULL
-);
-
-
---
 -- Name: seasons; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.seasons (
     id uuid NOT NULL,
-    "position" double precision NOT NULL,
     inserted_at timestamp(0) without time zone NOT NULL,
-    updated_at timestamp(0) without time zone NOT NULL
+    updated_at timestamp(0) without time zone NOT NULL,
+    "position" bigint NOT NULL
 );
+
+
+--
+-- Name: seasons_position_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.seasons_position_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: seasons_position_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.seasons_position_seq OWNED BY public.seasons."position";
 
 
 --
@@ -531,9 +635,10 @@ CREATE TABLE public.upgrades (
     intelligence integer DEFAULT 0 NOT NULL,
     endurance integer DEFAULT 0 NOT NULL,
     luck integer DEFAULT 0 NOT NULL,
-    seasonal_statistic_id uuid NOT NULL,
     inserted_at timestamp(0) without time zone NOT NULL,
-    updated_at timestamp(0) without time zone NOT NULL
+    updated_at timestamp(0) without time zone NOT NULL,
+    champion_id uuid NOT NULL,
+    patron_account_id uuid NOT NULL
 );
 
 
@@ -574,10 +679,24 @@ ALTER SEQUENCE public.versions_id_seq OWNED BY public.versions.id;
 
 
 --
+-- Name: champions position; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.champions ALTER COLUMN "position" SET DEFAULT nextval('public.champions_position_seq'::regclass);
+
+
+--
 -- Name: oban_jobs id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.oban_jobs ALTER COLUMN id SET DEFAULT nextval('public.oban_jobs_id_seq'::regclass);
+
+
+--
+-- Name: seasons position; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.seasons ALTER COLUMN "position" SET DEFAULT nextval('public.seasons_position_seq'::regclass);
 
 
 --
@@ -604,11 +723,51 @@ ALTER TABLE ONLY public.accounts_tokens
 
 
 --
+-- Name: challenge_champions challenge_champions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.challenge_champions
+    ADD CONSTRAINT challenge_champions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: challenges challenges_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.challenges
+    ADD CONSTRAINT challenges_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: champions champions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.champions
     ADD CONSTRAINT champions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: coin_transactions coin_transactions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.coin_transactions
+    ADD CONSTRAINT coin_transactions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: conferences conferences_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.conferences
+    ADD CONSTRAINT conferences_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: divisions divisions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.divisions
+    ADD CONSTRAINT divisions_pkey PRIMARY KEY (id);
 
 
 --
@@ -668,19 +827,19 @@ ALTER TABLE ONLY public.plants
 
 
 --
+-- Name: rarities rarities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.rarities
+    ADD CONSTRAINT rarities_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.schema_migrations
     ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
-
-
---
--- Name: seasonal_statistics seasonal_statistics_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.seasonal_statistics
-    ADD CONSTRAINT seasonal_statistics_pkey PRIMARY KEY (id);
 
 
 --
@@ -744,6 +903,27 @@ CREATE UNIQUE INDEX accounts_tokens_context_token_index ON public.accounts_token
 
 
 --
+-- Name: challenge_champions_challenge_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX challenge_champions_challenge_id_index ON public.challenge_champions USING btree (challenge_id);
+
+
+--
+-- Name: challenge_champions_champion_id_challenge_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX challenge_champions_champion_id_challenge_id_index ON public.challenge_champions USING btree (champion_id, challenge_id);
+
+
+--
+-- Name: challenges_season_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX challenges_season_id_index ON public.challenges USING btree (season_id);
+
+
+--
 -- Name: champions_name_index; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -762,6 +942,41 @@ CREATE INDEX champions_plant_id_index ON public.champions USING btree (plant_id)
 --
 
 CREATE UNIQUE INDEX champions_slug_index ON public.champions USING btree (slug);
+
+
+--
+-- Name: coin_transactions_account_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX coin_transactions_account_id_index ON public.coin_transactions USING btree (account_id);
+
+
+--
+-- Name: conferences_name_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX conferences_name_index ON public.conferences USING btree (name);
+
+
+--
+-- Name: conferences_slug_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX conferences_slug_index ON public.conferences USING btree (slug);
+
+
+--
+-- Name: divisions_name_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX divisions_name_index ON public.divisions USING btree (name);
+
+
+--
+-- Name: divisions_slug_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX divisions_slug_index ON public.divisions USING btree (slug);
 
 
 --
@@ -835,13 +1050,6 @@ CREATE UNIQUE INDEX plants_name_index ON public.plants USING btree (name);
 
 
 --
--- Name: plants_rarity_index; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX plants_rarity_index ON public.plants USING btree (rarity);
-
-
---
 -- Name: plants_slug_index; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -849,24 +1057,17 @@ CREATE UNIQUE INDEX plants_slug_index ON public.plants USING btree (slug);
 
 
 --
--- Name: seasonal_statistics_champion_id_index; Type: INDEX; Schema: public; Owner: -
+-- Name: rarities_name_index; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX seasonal_statistics_champion_id_index ON public.seasonal_statistics USING btree (champion_id);
-
-
---
--- Name: seasonal_statistics_season_id_champion_id_index; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX seasonal_statistics_season_id_champion_id_index ON public.seasonal_statistics USING btree (season_id, champion_id);
+CREATE UNIQUE INDEX rarities_name_index ON public.rarities USING btree (name);
 
 
 --
--- Name: seasons_position_index; Type: INDEX; Schema: public; Owner: -
+-- Name: rarities_slug_index; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX seasons_position_index ON public.seasons USING btree ("position");
+CREATE UNIQUE INDEX rarities_slug_index ON public.rarities USING btree (slug);
 
 
 --
@@ -881,6 +1082,13 @@ CREATE UNIQUE INDEX tags_name_index ON public.tags USING btree (name);
 --
 
 CREATE UNIQUE INDEX tags_slug_index ON public.tags USING btree (slug);
+
+
+--
+-- Name: upgrades_champion_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX upgrades_champion_id_index ON public.upgrades USING btree (champion_id);
 
 
 --
@@ -905,10 +1113,10 @@ CREATE INDEX upgrades_luck_index ON public.upgrades USING btree (luck);
 
 
 --
--- Name: upgrades_seasonal_statistic_id_index; Type: INDEX; Schema: public; Owner: -
+-- Name: upgrades_patron_account_id_index; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX upgrades_seasonal_statistic_id_index ON public.upgrades USING btree (seasonal_statistic_id);
+CREATE INDEX upgrades_patron_account_id_index ON public.upgrades USING btree (patron_account_id);
 
 
 --
@@ -976,11 +1184,43 @@ ALTER TABLE ONLY public.accounts_tokens
 
 
 --
+-- Name: challenge_champions challenge_champions_challenge_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.challenge_champions
+    ADD CONSTRAINT challenge_champions_challenge_id_fkey FOREIGN KEY (challenge_id) REFERENCES public.challenges(id) ON DELETE CASCADE;
+
+
+--
+-- Name: challenge_champions challenge_champions_champion_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.challenge_champions
+    ADD CONSTRAINT challenge_champions_champion_id_fkey FOREIGN KEY (champion_id) REFERENCES public.champions(id) ON DELETE CASCADE;
+
+
+--
+-- Name: challenges challenges_season_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.challenges
+    ADD CONSTRAINT challenges_season_id_fkey FOREIGN KEY (season_id) REFERENCES public.seasons(id) ON DELETE CASCADE;
+
+
+--
 -- Name: champions champions_plant_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.champions
     ADD CONSTRAINT champions_plant_id_fkey FOREIGN KEY (plant_id) REFERENCES public.plants(id) ON DELETE CASCADE;
+
+
+--
+-- Name: coin_transactions coin_transactions_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.coin_transactions
+    ADD CONSTRAINT coin_transactions_account_id_fkey FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
 
 
 --
@@ -1016,27 +1256,19 @@ ALTER TABLE ONLY public.organization_permissions
 
 
 --
--- Name: seasonal_statistics seasonal_statistics_champion_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.seasonal_statistics
-    ADD CONSTRAINT seasonal_statistics_champion_id_fkey FOREIGN KEY (champion_id) REFERENCES public.champions(id) ON DELETE CASCADE;
-
-
---
--- Name: seasonal_statistics seasonal_statistics_season_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.seasonal_statistics
-    ADD CONSTRAINT seasonal_statistics_season_id_fkey FOREIGN KEY (season_id) REFERENCES public.seasons(id) ON DELETE CASCADE;
-
-
---
--- Name: upgrades upgrades_seasonal_statistic_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: upgrades upgrades_champion_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.upgrades
-    ADD CONSTRAINT upgrades_seasonal_statistic_id_fkey FOREIGN KEY (seasonal_statistic_id) REFERENCES public.seasonal_statistics(id) ON DELETE CASCADE;
+    ADD CONSTRAINT upgrades_champion_id_fkey FOREIGN KEY (champion_id) REFERENCES public.champions(id) ON DELETE CASCADE;
+
+
+--
+-- Name: upgrades upgrades_patron_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.upgrades
+    ADD CONSTRAINT upgrades_patron_account_id_fkey FOREIGN KEY (patron_account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
 
 
 --
@@ -1067,3 +1299,21 @@ INSERT INTO public."schema_migrations" (version) VALUES (20221113003649);
 INSERT INTO public."schema_migrations" (version) VALUES (20221113003650);
 INSERT INTO public."schema_migrations" (version) VALUES (20221113003651);
 INSERT INTO public."schema_migrations" (version) VALUES (20221230230314);
+INSERT INTO public."schema_migrations" (version) VALUES (20230101024919);
+INSERT INTO public."schema_migrations" (version) VALUES (20230101201304);
+INSERT INTO public."schema_migrations" (version) VALUES (20230101201716);
+INSERT INTO public."schema_migrations" (version) VALUES (20230101203007);
+INSERT INTO public."schema_migrations" (version) VALUES (20230101203129);
+INSERT INTO public."schema_migrations" (version) VALUES (20230101204131);
+INSERT INTO public."schema_migrations" (version) VALUES (20230101204132);
+INSERT INTO public."schema_migrations" (version) VALUES (20230101223120);
+INSERT INTO public."schema_migrations" (version) VALUES (20230102002000);
+INSERT INTO public."schema_migrations" (version) VALUES (20230102002130);
+INSERT INTO public."schema_migrations" (version) VALUES (20230102003023);
+INSERT INTO public."schema_migrations" (version) VALUES (20230102003228);
+INSERT INTO public."schema_migrations" (version) VALUES (20230102005514);
+INSERT INTO public."schema_migrations" (version) VALUES (20230102005527);
+INSERT INTO public."schema_migrations" (version) VALUES (20230102013808);
+INSERT INTO public."schema_migrations" (version) VALUES (20230102013833);
+INSERT INTO public."schema_migrations" (version) VALUES (20230102014048);
+INSERT INTO public."schema_migrations" (version) VALUES (20230102014849);

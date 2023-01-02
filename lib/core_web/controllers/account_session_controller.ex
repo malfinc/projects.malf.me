@@ -40,7 +40,7 @@ defmodule CoreWeb.AccountSessionController do
   def callback(%{assigns: %{ueberauth_failure: _}} = conn, _params) do
     conn
     |> put_flash(:error, "Failed to authenticate.")
-    |> redirect(to: "/")
+    |> redirect(to: "/lop")
   end
 
   def callback(%{assigns: %{ueberauth_auth: ueberauth_auth}} = conn, _params) do
@@ -52,11 +52,11 @@ defmodule CoreWeb.AccountSessionController do
         |> put_flash(:info, "Successfully authenticated.")
         |> CoreWeb.AccountAuthenticationHelpers.log_in_account(account, %{})
         |> configure_session(renew: true)
-        |> redirect(to: "/")
+        |> redirect(to: "/lop")
 
-      {:error, reason} ->
+      {:error, changeset} ->
         conn
-        |> put_flash(:error, reason)
+        |> put_flash(:error, changeset)
         |> redirect(to: "/")
     end
   end

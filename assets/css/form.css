@@ -3,6 +3,8 @@
   grid-template-columns: 1fr 1fr;
   row-gap: 1rem;
   column-gap: 1rem;
+  margin: 5px;
+  padding: 5px;
 }
 
 .form .alert {

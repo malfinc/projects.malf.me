@@ -67,37 +67,13 @@ defmodule CoreWeb.ChampionLive do
     |> case do
       {:ok, record} ->
         socket
-        |> redirect(to: ~p"/champions/#{record.id}")
+        |> redirect(to: ~p"/lop/champions/#{record.id}")
 
       {:error, changeset} ->
         socket
         |> assign(:changeset, changeset)
     end
     |> (&{:noreply, &1}).()
-  end
-
-  @impl true
-  def render(%{live_action: :new} = assigns) do
-    ~H"""
-    <.simple_form :let={f} for={@changeset} id="new_champion" phx-submit="create_champion">
-      <.input field={{f, :name}} name="name" id="name" type="text" label="Name" required />
-      <.input
-        field={{f, :plant}}
-        name="plant"
-        id="plant"
-        type="select"
-        label="Rarity"
-        prompt="Select one..."
-        options={Core.Gameplay.list_plants() |> Enum.map(fn plant -> {plant.id, plant.name} end)}
-        required
-      />
-      <:actions>
-        <.button phx-disable-with="Defining origin story..." type="submit" class="btn btn-primary">
-          Announce Champion
-        </.button>
-      </:actions>
-    </.simple_form>
-    """
   end
 
   @impl true

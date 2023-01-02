@@ -161,6 +161,15 @@ defmodule CoreWeb.CoreComponents do
                 Contact
               </.link>
             </li>
+
+            <%= for {path, name} <- regular_links() do %>
+              <li class="nav-item">
+                <.link href={path} class="nav-link">
+                  <%= name %>
+                </.link>
+              </li>
+            <% end %>
+
             <%= if @current_account do %>
               <%= if Core.Users.has_permission?(@current_account, "global", "administrator") do %>
                 <li class="nav-item">
@@ -265,6 +274,8 @@ defmodule CoreWeb.CoreComponents do
   attr :id, :string, default: "flash", doc: "the optional id of flash container"
   attr :flash, :map, default: %{}, doc: "the map of flash messages to display"
   attr :title, :string, default: nil
+  attr :icon, :string, default: nil
+  attr :context, :string, default: nil
   attr :kind, :atom, values: [:info, :error], doc: "used for styling and flash lookup"
   attr :close, :boolean, default: true, doc: "whether the flash can be closed"
   attr :rest, :global, doc: "the arbitrary HTML attributes to add to the flash container"
@@ -282,14 +293,15 @@ defmodule CoreWeb.CoreComponents do
         @kind == :info && "alert-primary",
         @kind == :error && "alert-warning"
       ]}
-      style="margin-top: 5px; "
-      {@rest}
       {@rest}
     >
-      <p :if={@title}>
-        icon <%= @title %>
-      </p>
-      <div><%= msg %></div>
+      <h4 :if={@title} class="alert-heading">
+        <i :if={@icon} class={"fa fa-#{@icon}"} /> <%= @title %>
+      </h4>
+
+      <p><%= msg %></p>
+      <hr :if={@context} />
+      <p :if={@context} class="mb-0"><%= @context %></p>
       <.button :if={@close} class="btn-close" data-bs-dismiss="alert" aria-label="close"></.button>
     </div>
     """
@@ -577,5 +589,12 @@ defmodule CoreWeb.CoreComponents do
       {~p"/admin/accounts", "Accounts"},
       {~p"/admin/organizations", "Organizations"},
       {~p"/admin/jobs", "Jobs"}
+    ]
+
+  defp regular_links(),
+    do: [
+      {~p"/lop/seasons", "Seasons"},
+      {~p"/lop/champions", "Champions"},
+      {~p"/lop/plants", "Plants"}
     ]
 end

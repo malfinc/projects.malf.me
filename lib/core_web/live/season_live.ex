@@ -4,7 +4,7 @@ defmodule CoreWeb.SeasonLive do
 
   defp list_records(_assigns, _params) do
     Core.Gameplay.list_seasons()
-    |> Core.Repo.preload(seasonal_statistics: [champion: [:plant, :upgrades]])
+    |> Core.Repo.preload([challenges: [champion: [:plant, :upgrades]]])
     |> Core.Decorate.deep()
   end
 
@@ -16,7 +16,7 @@ defmodule CoreWeb.SeasonLive do
 
       record ->
         record
-        |> Core.Repo.preload(seasonal_statistics: [champion: [:plant, :upgrades]])
+        |> Core.Repo.preload([challenges: [champion: [:plant, :upgrades]]])
         |> Core.Decorate.deep()
     end
   end
@@ -58,19 +58,11 @@ defmodule CoreWeb.SeasonLive do
   @impl true
   def handle_event("create_season", params, socket) do
     params
-    |> Map.put(
-      "position",
-      socket.assigns.records
-      |> Utilities.List.pluck(:position)
-      |> List.last()
-      |> Kernel.||(0)
-      |> Kernel.+(1)
-    )
     |> Core.Gameplay.create_season()
     |> case do
       {:ok, record} ->
         socket
-        |> redirect(to: ~p"/seasons/#{record.id}")
+        |> redirect(to: ~p"/lop/seasons/#{record.id}")
 
       {:error, changeset} ->
         socket
@@ -83,19 +75,28 @@ defmodule CoreWeb.SeasonLive do
   def render(%{live_action: :list} = assigns) do
     ~H"""
     <h1>Seasons</h1>
-    <.simple_form :let={_f} for={@changeset} id="new_season" phx-submit="create_season">
-      <:actions>
-        <.button phx-disable-with="Starting..." type="submit" class="btn btn-primary">
-          Start New Season
-        </.button>
-      </:actions>
-    </.simple_form>
 
-    <ul>
-      <%= for season <- @records do %>
-        <li>Season <%= season.position %></li>
-      <% end %>
-    </ul>
+    <%= if length(@records) > 0 do %>
+      <ul>
+        <%= for season <- @records do %>
+          <li><.link href={~p"/lop/seasons/#{season.id}"}>Season <%= season.position %></.link></li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p>
+        No seasons setup yet.
+      </p>
+    <% end %>
+
+    <%= if Core.Users.has_permission?(@current_account, "global", "administrator") do %>
+      <.simple_form :let={_f} for={@changeset} id="new_season" phx-submit="create_season">
+        <:actions>
+          <.button phx-disable-with="Starting..." type="submit" class="btn btn-primary">
+            Start New Season
+          </.button>
+        </:actions>
+      </.simple_form>
+    <% end %>
     """
   end
 
@@ -104,18 +105,37 @@ defmodule CoreWeb.SeasonLive do
     ~H"""
     <h1>Season <%= @record.position %></h1>
 
-    <h2>Scoreboard</h2>
-    <ul>
-      <%= for seasonal_statistic <- sorted(@record.seasonal_statistics) do %>
-        <li>
-          <%= seasonal_statistic.champion.name %> <%= seasonal_statistic.wins %> Wins, <%= seasonal_statistic.losses %> Losses
-        </li>
-      <% end %>
-    </ul>
-    """
-  end
+    <h2>Challenges</h2>
+    <%= if length(@record.challenges) > 0 do %>
+      <ul>
+        <%= for challenge <- @record.challenges do %>
+          <li>
+            <.link href={~p"/lop/challenges/#{challenge.id}"}><%= challenge.id %></.link>
 
-  defp sorted(seasonal_statistics) do
-    seasonal_statistics
+            <h3>Participants</h3>
+            <%= if length(challenge.champions) > 0 do %>
+              <ul>
+                <%= for champion <- @record.champions do %>
+                  <li>
+                    <.link href={~p"/lop/champions/#{champion.id}"}>
+                      <%= champion.name %>
+                    </.link>
+                  </li>
+                <% end %>
+              </ul>
+            <% else %>
+              <p>
+                No champions yet participating in this challenge.
+              </p>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p>
+        No challenges created for this season yet.
+      </p>
+    <% end %>
+    """
   end
 end

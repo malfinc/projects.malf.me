@@ -7,7 +7,8 @@ defmodule Core.Gameplay.Champion do
   schema "champions" do
     field(:name, :string)
     field(:slug, :string)
-    has_many(:seasonal_statistics, Core.Gameplay.SeasonalStatistic)
+    field(:position, :integer)
+    many_to_many(:challenges, Core.Gameplay.Champion, join_through: "challenge_champions")
     belongs_to(:plant, Core.Gameplay.Plant)
 
     timestamps()
@@ -15,6 +16,7 @@ defmodule Core.Gameplay.Champion do
 
   @type t :: %__MODULE__{
           name: String.t(),
+          position: integer(),
           slug: String.t()
         }
 
@@ -22,6 +24,7 @@ defmodule Core.Gameplay.Champion do
   @spec changeset(struct, map) :: Ecto.Changeset.t(t())
   def changeset(record, attributes) do
     record
+    |> Core.Repo.preload([:plant])
     |> Ecto.Changeset.cast(attributes, [:name])
     |> Slugy.slugify(:name)
     |> Ecto.Changeset.validate_required([:name, :slug, :plant])

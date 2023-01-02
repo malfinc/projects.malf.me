@@ -11,8 +11,8 @@ defmodule Core.Gameplay.Upgrade do
     field(:intelligence, :integer)
     field(:endurance, :integer)
     field(:luck, :integer)
-    belongs_to(:seasonal_statistic, Core.Gameplay.SeasonalStatistic)
-    has_one(:plant, through: [:seasonal_statistic, :plant])
+    belongs_to(:champion, Core.Gameplay.Champion)
+    belongs_to(:patron_account, Core.Users.Account)
 
     timestamps()
   end
@@ -29,6 +29,8 @@ defmodule Core.Gameplay.Upgrade do
   @doc false
   @spec changeset(struct, map) :: Ecto.Changeset.t(t())
   def changeset(record, attributes) do
+    record_with_preload = Core.Repo.preload(record, [:champion])
+
     record
     |> Ecto.Changeset.cast(attributes, [
       :stage,
@@ -38,15 +40,16 @@ defmodule Core.Gameplay.Upgrade do
       :endurance,
       :luck
     ])
-    |> Ecto.Changeset.put_assoc(:seasonal_statistic, attributes.seasonal_statistic)
+    |> Ecto.Changeset.put_assoc(:champion, attributes[:champion] || record_with_preload.champion)
     |> Ecto.Changeset.validate_required([
       :stage,
       :strength,
       :speed,
       :intelligence,
       :endurance,
-      :luck
+      :luck,
+      :champion
     ])
-    |> Ecto.Changeset.foreign_key_constraint(:seasonal_statistic_id)
+    |> Ecto.Changeset.foreign_key_constraint(:champion_id)
   end
 end
