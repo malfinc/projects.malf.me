@@ -8,7 +8,6 @@ defmodule Core.Gameplay.Rarity do
     field(:name, :string)
     field(:slug, :string)
     field(:color, :string)
-    has_many(:plants, Core.Gameplay.Plant)
 
     timestamps()
   end
@@ -16,7 +15,7 @@ defmodule Core.Gameplay.Rarity do
   @type t :: %__MODULE__{
           name: float(),
           slug: float(),
-          color: float(),
+          color: float()
         }
 
   @doc false

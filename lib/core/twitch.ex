@@ -104,7 +104,8 @@ defmodule Core.Twitch do
         },
         "transport" => %{
           "method" => "webhook",
-          "callback" => "#{Application.get_env(:core, :base_url)}#{Application.get_env(:core, :twitch)[:webhook_path]}",
+          "callback" =>
+            "#{Application.get_env(:core, :base_url)}#{Application.get_env(:core, :twitch)[:webhook_path]}",
           "secret" => "xxxxxxxxxx"
         }
       })

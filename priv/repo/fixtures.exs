@@ -36,14 +36,29 @@ if Mix.env() == :dev do
           "https://static-cdn.jtvnw.net/jtv_user_pictures/f6fb8ff7-1055-414f-86a8-7d2302b58e6f-profile_image-300x300.jpg"
       })
 
-    {encoded_token, account_token} =
-      Core.Users.AccountToken.build_email_token(account, "confirm")
+    {encoded_token, account_token} = Core.Users.AccountToken.build_email_token(account, "confirm")
 
     {:ok, _} = Core.Repo.insert(account_token)
     {:ok, _} = Core.Users.confirm_account(encoded_token)
 
     {:ok, _organization} =
       Core.Users.join_organization_by_slug(account, "global", "administrator")
+
+    File.read!("priv/data/plants.csv")
+    |> String.split("\n")
+    |> Enum.map(&String.split(&1, ~r/\s*,\s*/))
+    |> Enum.filter(fn
+      [""] -> false
+      _ -> true
+    end)
+    |> Enum.each(fn [name, species, image_uri] ->
+      Core.Gameplay.create_plant!(%{
+        name: name,
+        species: species,
+        image_uri: image_uri,
+        rarity_symbol: "x"
+      })
+    end)
   end)
 end
 

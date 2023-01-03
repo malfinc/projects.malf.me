@@ -17,8 +17,6 @@ defmodule CoreWeb.AccountConfirmationLive do
     </.simple_form>
 
     <p>
-      <.link href={~p"/accounts/register"}>Register</.link>
-      |
       <.link href={~p"/accounts/log_in"}>Log in</.link>
     </p>
     """

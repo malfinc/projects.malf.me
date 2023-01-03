@@ -78,7 +78,9 @@ defmodule CoreWeb.PlantLive do
     <%= if length(@records) > 0 do %>
       <ul>
         <%= for plant <- @records do %>
-          <li><.link href={~p"/lop/plants/#{plant.id}"}><%= plant.name %> (<%= plant.rarity %>)</.link></li>
+          <li>
+            <.link href={~p"/lop/plants/#{plant.id}"}><%= plant.name %> (<%= plant.rarity %>)</.link>
+          </li>
         <% end %>
       </ul>
     <% else %>
@@ -90,8 +92,22 @@ defmodule CoreWeb.PlantLive do
     <%= if Core.Users.has_permission?(@current_account, "global", "administrator") do %>
       <.simple_form :let={f} for={@changeset} id="new_plant" phx-submit="create_plant">
         <.input field={{f, :name}} name="name" id="name" type="text" label="Name" required />
-        <.input field={{f, :species}} name="species" id="species" type="text" label="Species" required />
-        <.input field={{f, :image_uri}} name="image_uri" id="image_uri" type="text" label="Image URI" required />
+        <.input
+          field={{f, :species}}
+          name="species"
+          id="species"
+          type="text"
+          label="Species"
+          required
+        />
+        <.input
+          field={{f, :image_uri}}
+          name="image_uri"
+          id="image_uri"
+          type="text"
+          label="Image URI"
+          required
+        />
         <:actions>
           <.button phx-disable-with="Planting..." type="submit" class="btn btn-primary">
             Spawn Plant
@@ -117,7 +133,9 @@ defmodule CoreWeb.PlantLive do
     <h2>Champions</h2>
     <ul>
       <%= for champion <- @record.champions do %>
-        <li><.link href={~p"/lop/champions/#{champion.id}"}><%= champion.name %></.link></li>
+        <li>
+          <.link href={~p"/lop/champions/#{champion.id}"}><%= champion.name %></.link>
+        </li>
       <% end %>
     </ul>
     """

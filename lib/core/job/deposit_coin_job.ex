@@ -6,7 +6,8 @@ defmodule Core.Job.DepositCoinJob do
   import Ecto.Query
 
   @impl Oban.Worker
-  @spec perform(Oban.Job.t()) :: {:ok, Core.Gameplay.Coin.t()} | {:error, Ecto.Changeset.t()}
+  @spec perform(Oban.Job.t()) ::
+          {:ok, Core.Gameplay.Coin.t()} | {:error, Ecto.Changeset.t()} | {:snooze, pos_integer()}
   def perform(%Oban.Job{args: %{"twitch_user_id" => twitch_user_id, "value" => value}}) do
     from(
       accounts in Core.Users.Account,
@@ -15,11 +16,14 @@ defmodule Core.Job.DepositCoinJob do
     )
     |> Core.Repo.one()
     |> case do
-      nil -> {:snooze, 86400}
-      account -> Core.Gameplay.create_coin_transaction(%{
-        account: account,
-        value: value
-      })
+      nil ->
+        {:snooze, 86400}
+
+      account ->
+        Core.Gameplay.create_coin_transaction(%{
+          account: account,
+          value: value
+        })
     end
   end
 end

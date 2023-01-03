@@ -95,6 +95,7 @@ defmodule CoreWeb.TwitchWebhookController do
         }
       }) do
     give_coins(twitch_user_id, amount / 20000)
+
     conn
     |> put_status(200)
     |> text("OK")
@@ -107,6 +108,7 @@ defmodule CoreWeb.TwitchWebhookController do
         }
       }) do
     give_coins(twitch_user_id, 1)
+
     conn
     |> put_status(200)
     |> text("OK")
@@ -119,6 +121,7 @@ defmodule CoreWeb.TwitchWebhookController do
         }
       }) do
     give_coins(twitch_user_id, 1)
+
     conn
     |> put_status(200)
     |> text("OK")
@@ -131,6 +134,7 @@ defmodule CoreWeb.TwitchWebhookController do
         }
       }) do
     give_coins(twitch_user_id, 1)
+
     conn
     |> put_status(200)
     |> text("OK")
@@ -144,6 +148,7 @@ defmodule CoreWeb.TwitchWebhookController do
         }
       }) do
     give_coins(twitch_user_id, bits / 500)
+
     conn
     |> put_status(200)
     |> text("OK")

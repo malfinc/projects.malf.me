@@ -4,7 +4,7 @@ defmodule CoreWeb.SeasonLive do
 
   defp list_records(_assigns, _params) do
     Core.Gameplay.list_seasons()
-    |> Core.Repo.preload([challenges: [champion: [:plant, :upgrades]]])
+    |> Core.Repo.preload(plants: [:champions], challenges: [champion: [:plant, :upgrades]])
     |> Core.Decorate.deep()
   end
 
@@ -16,7 +16,7 @@ defmodule CoreWeb.SeasonLive do
 
       record ->
         record
-        |> Core.Repo.preload([challenges: [champion: [:plant, :upgrades]]])
+        |> Core.Repo.preload(plants: [:champions], challenges: [champion: [:plant, :upgrades]])
         |> Core.Decorate.deep()
     end
   end
@@ -31,7 +31,11 @@ defmodule CoreWeb.SeasonLive do
   defp as(socket, :list, params) do
     socket
     |> assign(:page_title, "Seasons")
-    |> assign(:changeset, Core.Gameplay.Season.changeset(%Core.Gameplay.Season{}, %{}))
+    |> assign(:plants, Core.Gameplay.list_plants())
+    |> assign(
+      :changeset,
+      Core.Gameplay.Season.changeset(%Core.Gameplay.Season{} |> Core.Repo.preload([:plants]), %{})
+    )
     |> assign(:records, list_records(socket.assigns, params))
   end
 
@@ -57,13 +61,18 @@ defmodule CoreWeb.SeasonLive do
 
   @impl true
   def handle_event("create_season", params, socket) do
-    params
-    |> Core.Gameplay.create_season()
-    |> case do
-      {:ok, record} ->
-        socket
-        |> redirect(to: ~p"/lop/seasons/#{record.id}")
-
+    with {:ok, season} <-
+           Core.Gameplay.create_season(%{
+             plants:
+               Enum.reduce(params["plants"], [], fn
+                 {_id, "false"}, selected_plants -> selected_plants
+                 {id, "true"}, selected_plants -> [Core.Gameplay.get_plant(id) | selected_plants]
+               end)
+           }),
+         {:ok, _job} <- Oban.insert(Core.Job.StartSeasonJob.new(%{season_id: season.id})) do
+      socket
+      |> redirect(to: ~p"/lop/seasons/#{season.id}")
+    else
       {:error, changeset} ->
         socket
         |> assign(:changeset, changeset)
@@ -79,7 +88,9 @@ defmodule CoreWeb.SeasonLive do
     <%= if length(@records) > 0 do %>
       <ul>
         <%= for season <- @records do %>
-          <li><.link href={~p"/lop/seasons/#{season.id}"}>Season <%= season.position %></.link></li>
+          <li>
+            <.link href={~p"/lop/seasons/#{season.id}"}>Season <%= season.position %></.link>
+          </li>
         <% end %>
       </ul>
     <% else %>
@@ -89,10 +100,22 @@ defmodule CoreWeb.SeasonLive do
     <% end %>
 
     <%= if Core.Users.has_permission?(@current_account, "global", "administrator") do %>
-      <.simple_form :let={_f} for={@changeset} id="new_season" phx-submit="create_season">
+      <h2>New Season</h2>
+      <.simple_form :let={f} for={@changeset} id="new_season" phx-submit="create_season">
+        <%= for plant <- @plants do %>
+          <.input
+            field={{f, :plants}}
+            type="checkbox"
+            checked={false}
+            id={"plants_#{plant.slug}"}
+            name={"plants[#{plant.id}]"}
+            label={plant.name}
+          />
+        <% end %>
+
         <:actions>
           <.button phx-disable-with="Starting..." type="submit" class="btn btn-primary">
-            Start New Season
+            Start Season
           </.button>
         </:actions>
       </.simple_form>
@@ -104,6 +127,32 @@ defmodule CoreWeb.SeasonLive do
   def render(%{live_action: :show} = assigns) do
     ~H"""
     <h1>Season <%= @record.position %></h1>
+
+    <h2>Allowed Plants</h2>
+    <%= if length(@record.plants) > 0 do %>
+      <ul>
+        <%= for plant <- @record.plants do %>
+          <li>
+            <.link href={~p"/lop/plants/#{plant.id}"}><%= plant.name %></.link>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p>
+        No plants created for this season yet.
+      </p>
+    <% end %>
+
+    <h2>Champions</h2>
+    <ul>
+      <%= for plant <- @record.plants do %>
+        <%= for champion <- plant.champions do %>
+          <li>
+            <.link href={~p"/lop/champions/#{champion.id}"}><%= champion.name %></.link> (<%= plant.name %>)
+          </li>
+        <% end %>
+      <% end %>
+    </ul>
 
     <h2>Challenges</h2>
     <%= if length(@record.challenges) > 0 do %>

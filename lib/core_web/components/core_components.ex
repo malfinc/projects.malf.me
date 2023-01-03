@@ -204,10 +204,7 @@ defmodule CoreWeb.CoreComponents do
               </li>
             <% else %>
               <li class="nav-item">
-                <.link href={~p"/accounts/register"} class="nav-link">Register</.link>
-              </li>
-              <li class="nav-item">
-                <.link href={~p"/accounts/log_in"} class="nav-link">Log in</.link>
+                <.link href={~p"/auth/twitch"} class="nav-link">Authenticate via Twitch</.link>
               </li>
             <% end %>
           </ul>
@@ -252,10 +249,7 @@ defmodule CoreWeb.CoreComponents do
               </li>
             <% else %>
               <li class="nav-item">
-                <.link href={~p"/accounts/register"} class="nav-link p-0">Register</.link>
-              </li>
-              <li class="nav-item">
-                <.link href={~p"/accounts/log_in"} class="nav-link p-0">Log in</.link>
+                <.link href={~p"/auth/twitch"} class="nav-link p-0">Authenticate via Twitch</.link>
               </li>
             <% end %>
           </ul>
@@ -440,7 +434,7 @@ defmodule CoreWeb.CoreComponents do
     assigns = assign_new(assigns, :checked, fn -> input_equals?(assigns.value, "true") end)
 
     ~H"""
-    <div class={"form-check #{unless(Enum.empty?(@errors), do: "is-invalid")}"}>
+    <div class="form-check" }>
       <input type="hidden" name={@name} value="false" />
       <input
         type="checkbox"
@@ -448,11 +442,11 @@ defmodule CoreWeb.CoreComponents do
         name={@name}
         value="true"
         checked={@checked}
-        class="form-check-input"
-        {@rest}
+        class={"form-check-input #{unless(Enum.empty?(@errors), do: "is-invalid")}"}
         {@rest}
       />
       <label phx-feedback-for={@name} class="form-check-label"><%= @label %></label>
+      <.error :for={msg <- @errors} describing={@id}><%= msg %></.error>
     </div>
     """
   end
@@ -467,7 +461,6 @@ defmodule CoreWeb.CoreComponents do
         class={"form-select #{unless(Enum.empty?(@errors), do: "is-invalid")}"}
         multiple={@multiple}
         aria-describedby={"#{@id}-feedback"}
-        {@rest}
         {@rest}
       >
         <option :if={@prompt}><%= @prompt %></option>
@@ -488,7 +481,6 @@ defmodule CoreWeb.CoreComponents do
         class={"form-control #{unless(Enum.empty?(@errors), do: "is-invalid")}"}
         aria-describedby={"#{@id}-feedback"}
         {@rest}
-        {@rest}
       ><%= @value %></textarea>
       <.error :for={msg <- @errors} describing={@id}><%= msg %></.error>
     </div>
@@ -506,7 +498,6 @@ defmodule CoreWeb.CoreComponents do
         value={@value}
         class={"form-control #{unless(Enum.empty?(@errors), do: "is-invalid")}"}
         aria-describedby={"#{@id}-feedback"}
-        {@rest}
         {@rest}
       />
       <.error :for={msg <- @errors} describing={@id}><%= msg %></.error>

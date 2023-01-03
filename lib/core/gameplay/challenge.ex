@@ -11,8 +11,7 @@ defmodule Core.Gameplay.Challenge do
     timestamps()
   end
 
-  @type t :: %__MODULE__{
-        }
+  @type t :: %__MODULE__{}
 
   @doc false
   @spec changeset(struct, map) :: Ecto.Changeset.t(t())

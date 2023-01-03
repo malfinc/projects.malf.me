@@ -580,6 +580,16 @@ CREATE TABLE public.schema_migrations (
 
 
 --
+-- Name: season_plants; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.season_plants (
+    plant_id uuid NOT NULL,
+    season_id uuid NOT NULL
+);
+
+
+--
 -- Name: seasons; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1071,6 +1081,20 @@ CREATE UNIQUE INDEX rarities_slug_index ON public.rarities USING btree (slug);
 
 
 --
+-- Name: season_plants_plant_id_season_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX season_plants_plant_id_season_id_index ON public.season_plants USING btree (plant_id, season_id);
+
+
+--
+-- Name: season_plants_season_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX season_plants_season_id_index ON public.season_plants USING btree (season_id);
+
+
+--
 -- Name: tags_name_index; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1256,6 +1280,22 @@ ALTER TABLE ONLY public.organization_permissions
 
 
 --
+-- Name: season_plants season_plants_plant_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.season_plants
+    ADD CONSTRAINT season_plants_plant_id_fkey FOREIGN KEY (plant_id) REFERENCES public.plants(id) ON DELETE CASCADE;
+
+
+--
+-- Name: season_plants season_plants_season_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.season_plants
+    ADD CONSTRAINT season_plants_season_id_fkey FOREIGN KEY (season_id) REFERENCES public.seasons(id) ON DELETE CASCADE;
+
+
+--
 -- Name: upgrades upgrades_champion_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1317,3 +1357,4 @@ INSERT INTO public."schema_migrations" (version) VALUES (20230102013808);
 INSERT INTO public."schema_migrations" (version) VALUES (20230102013833);
 INSERT INTO public."schema_migrations" (version) VALUES (20230102014048);
 INSERT INTO public."schema_migrations" (version) VALUES (20230102014849);
+INSERT INTO public."schema_migrations" (version) VALUES (20230103033245);

@@ -390,6 +390,7 @@ defmodule Core.Users do
 
   @spec has_permission?(Core.Users.Account.t() | nil, String.t(), String.t()) :: boolean()
   def has_permission?(nil, _, _), do: false
+
   def has_permission?(account, organization_slug, permission_slug) do
     from(
       organization_permission in Core.Users.OrganizationPermission,

@@ -40,7 +40,6 @@ defmodule CoreWeb.Router do
 
     live_session :redirect_if_account_is_authenticated,
       on_mount: [{CoreWeb.AccountAuthenticationHelpers, :redirect_if_account_is_authenticated}] do
-      live "/accounts/register", CoreWeb.AccountRegistrationLive, :new
       live "/accounts/log_in", CoreWeb.AccountLoginLive, :new
       live "/accounts/reset_password", CoreWeb.AccountForgotPasswordLive, :new
       live "/accounts/reset_password/:token", CoreWeb.AccountResetPasswordLive, :edit
@@ -70,6 +69,7 @@ defmodule CoreWeb.Router do
       live "/contact", CoreWeb.PageLive, :contact
       live "/accounts/confirm/:token", CoreWeb.AccountConfirmationLive, :edit
       live "/accounts/confirm", CoreWeb.AccountConfirmationInstructionsLive, :new
+
       scope "/lop" do
         live "/", CoreWeb.GameplayLive, :lop
         live "/conferences/:id", CoreWeb.ConferenceLive, :show
@@ -113,6 +113,7 @@ defmodule CoreWeb.Router do
       live "/organizations", CoreWeb.OrganizationLive, :list
       live "/accounts/:id", CoreWeb.AccountLive, :show
       live "/accounts", CoreWeb.AccountLive, :list
+
       scope "/lop" do
         live "/plants/:id/edit", CoreWeb.PlantLive, :edit
       end

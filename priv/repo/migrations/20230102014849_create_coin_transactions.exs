@@ -7,6 +7,7 @@ defmodule Core.Repo.Migrations.CreateCoinTransactions do
       add :account_id, references(:accounts, on_delete: :delete_all), null: false
       timestamps()
     end
+
     create(index(:coin_transactions, [:account_id]))
   end
 end
