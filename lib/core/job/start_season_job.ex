@@ -6,7 +6,7 @@ defmodule Core.Job.StartSeasonJob do
 
   @impl Oban.Worker
   @spec perform(Oban.Job.t()) ::
-          {:ok, Core.Gameplay.Coin.t()} | {:error, Ecto.Changeset.t()} | {:snooze, pos_integer()}
+          :ok | {:snooze, pos_integer()}
   def perform(%Oban.Job{args: %{"season_id" => season_id}}) do
     words = File.read!("priv/data/words.txt") |> String.split("\n")
 
@@ -14,7 +14,7 @@ defmodule Core.Job.StartSeasonJob do
     |> Core.Repo.preload([:plants])
     |> case do
       nil ->
-        {:snooze, 86400}
+        {:snooze, 60}
 
       season ->
         IO.puts("Start season!")

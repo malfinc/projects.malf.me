@@ -4,7 +4,7 @@ defmodule CoreWeb.ChampionLive do
 
   defp list_records(_assigns, _params) do
     Core.Gameplay.list_champions()
-    |> Core.Repo.preload([])
+    |> Core.Repo.preload([:upgrades, :plant])
     |> Core.Decorate.deep()
   end
 
@@ -16,7 +16,7 @@ defmodule CoreWeb.ChampionLive do
 
       record ->
         record
-        |> Core.Repo.preload([])
+        |> Core.Repo.preload([:upgrades, :plant])
         |> Core.Decorate.deep()
     end
   end
@@ -86,7 +86,20 @@ defmodule CoreWeb.ChampionLive do
   @impl true
   def render(%{live_action: :show} = assigns) do
     ~H"""
-
+    <h1><%= @record.name %> (Alive)</h1>
+    <p><%= @record.name %> is a <%= @record.plant.species %>.</p>
+    <dl>
+      <%= for {name, value} <- total_attributes(@record) do %>
+        <dt><%= Utilities.String.titlecase(name) %></dt>
+        <dd><%= value %></dd>
+      <% end %>
+    </dl>
     """
+  end
+
+  defp total_attributes(%{upgrades: upgrades, plant: %{starting_attributes: starting_attributes}}) do
+    Enum.reduce(upgrades, starting_attributes, fn upgrade, attributes ->
+      Map.merge(attributes, Map.take(upgrade, Map.keys(attributes)))
+    end)
   end
 end

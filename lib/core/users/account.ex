@@ -30,6 +30,7 @@ defmodule Core.Users.Account do
     embeds_one(:profile, Core.Users.Profile)
     has_many(:upgrades, Core.Gameplay.Upgrade)
     has_many(:champions, through: [:upgrades, :champion])
+    has_many(:coin_transactions, Core.Gameplay.CoinTransaction)
     has_many(:organization_memberships, Core.Users.OrganizationMembership)
 
     has_many(:organizations, through: [:organization_memberships, :organization])

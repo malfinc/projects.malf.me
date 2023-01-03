@@ -3,8 +3,22 @@ defmodule CoreWeb.AccountSettingsLive do
 
   def render(assigns) do
     ~H"""
-    <h1>Change Email</h1>
+    <h1>Account</h1>
+    <h2 id="wallet">Wallet</h2>
+    <p>You currently have <i class="fa fa-coin" /> <%= @total_balance %> coins</p>
 
+    <h3 id="transactions">Transactions</h3>
+    <%= if length(@current_account.coin_transactions) > 0 do %>
+      <ul>
+        <%= for coin_transaction <- @current_account.coin_transactions do %>
+          <li><i class="fa fa-coin" /> <%= coin_transaction.value %> <em>at <%= coin_transaction.inserted_at %> due to <%= coin_transaction.reason %></em></li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p>You have no coin transactions currently.</p>
+    <% end %>
+
+    <h2>Change Email</h2>
     <.simple_form
       :let={f}
       id="email_form"
@@ -34,7 +48,7 @@ defmodule CoreWeb.AccountSettingsLive do
       </:actions>
     </.simple_form>
 
-    <h1>Change Password</h1>
+    <h2>Change Password</h2>
 
     <.simple_form
       :let={f}
@@ -86,11 +100,13 @@ defmodule CoreWeb.AccountSettingsLive do
   end
 
   def mount(_params, _session, socket) do
-    account = socket.assigns.current_account
+    account = socket.assigns.current_account |> Core.Repo.preload([:coin_transactions])
 
     socket =
       socket
+      |> assign(:current_account, account)
       |> assign(:current_password, nil)
+      |> assign(:total_balance, Enum.reduce(account.coin_transactions, 0, fn %{value: value}, total -> total + value end))
       |> assign(:email_form_current_password, nil)
       |> assign(:current_email, account.email_address)
       |> assign(:email_changeset, Core.Users.change_account_email_address(account))

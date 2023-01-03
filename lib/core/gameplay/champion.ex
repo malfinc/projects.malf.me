@@ -10,6 +10,7 @@ defmodule Core.Gameplay.Champion do
     field(:position, :integer)
     many_to_many(:challenges, Core.Gameplay.Champion, join_through: "challenge_champions")
     belongs_to(:plant, Core.Gameplay.Plant)
+    has_many(:upgrades, Core.Gameplay.Upgrade)
 
     timestamps()
   end

@@ -62,7 +62,8 @@ defmodule CoreWeb.PlantLive do
     |> case do
       {:ok, record} ->
         socket
-        |> redirect(to: ~p"/lop/plants/#{record.id}")
+        |> put_flash(:info, "Plant #{record.name} created")
+        |> redirect(to: ~p"/lop/plants")
 
       {:error, changeset} ->
         socket
@@ -79,7 +80,7 @@ defmodule CoreWeb.PlantLive do
       <ul>
         <%= for plant <- @records do %>
           <li>
-            <.link href={~p"/lop/plants/#{plant.id}"}><%= plant.name %> (<%= plant.rarity %>)</.link>
+            <.link href={~p"/lop/plants"}><%= plant.name %> (<em><%= plant.species %></em>)</.link>
           </li>
         <% end %>
       </ul>
@@ -106,6 +107,14 @@ defmodule CoreWeb.PlantLive do
           id="image_uri"
           type="text"
           label="Image URI"
+          required
+        />
+        <.input
+          field={{f, :rarity_symbol}}
+          name="rarity_symbol"
+          id="rarity_symbol"
+          type="text"
+          label="Rarity Symbol (SVG)"
           required
         />
         <:actions>

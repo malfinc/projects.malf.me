@@ -197,7 +197,7 @@ defmodule CoreWeb.CoreComponents do
                 <%= @current_account.email_address %>
               </li>
               <li class="nav-item">
-                <.link href={~p"/accounts/settings"} class="nav-link">Settings</.link>
+                <.link href={~p"/accounts/settings"} class="nav-link">Account</.link>
               </li>
               <li class="nav-item">
                 <.link href={~p"/accounts/log_out"} method="delete" class="nav-link">Log out</.link>
@@ -237,10 +237,10 @@ defmodule CoreWeb.CoreComponents do
           <ul class="nav flex-column">
             <%= if @current_account do %>
               <li class="nav-item">
-                <strong class="nav-link"><%= @current_account.username %></strong>
+                <strong class="nav-link p-0"><%= @current_account.username %></strong>
               </li>
               <li class="nav-item">
-                <.link href={~p"/accounts/settings"} class="nav-link p-0">Settings</.link>
+                <.link href={~p"/accounts/settings"} class="nav-link p-0">Account</.link>
               </li>
               <li class="nav-item">
                 <.link href={~p"/accounts/log_out"} method="delete" class="nav-link p-0">

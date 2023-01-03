@@ -6,7 +6,7 @@ defmodule Core.Gameplay.CoinTransaction do
   @foreign_key_type :binary_id
   schema "coin_transactions" do
     field(:value, :integer, default: 0)
-    belongs_to(:account_id, Core.Users.Account)
+    belongs_to(:account, Core.Users.Account)
 
     timestamps()
   end
