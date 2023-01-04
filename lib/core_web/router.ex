@@ -40,7 +40,6 @@ defmodule CoreWeb.Router do
 
     live_session :redirect_if_account_is_authenticated,
       on_mount: [{CoreWeb.AccountAuthenticationHelpers, :redirect_if_account_is_authenticated}] do
-      live "/accounts/register", CoreWeb.AccountRegistrationLive, :new
       live "/accounts/log_in", CoreWeb.AccountLoginLive, :new
       live "/accounts/reset_password", CoreWeb.AccountForgotPasswordLive, :new
       live "/accounts/reset_password/:token", CoreWeb.AccountResetPasswordLive, :edit
@@ -70,12 +69,19 @@ defmodule CoreWeb.Router do
       live "/contact", CoreWeb.PageLive, :contact
       live "/accounts/confirm/:token", CoreWeb.AccountConfirmationLive, :edit
       live "/accounts/confirm", CoreWeb.AccountConfirmationInstructionsLive, :new
-      live "/seasons/:id", CoreWeb.SeasonLive, :show
-      live "/seasons", CoreWeb.SeasonLive, :list
-      live "/plants/:id", CoreWeb.PlantLive, :show
-      live "/plants", CoreWeb.PlantLive, :list
-      live "/champions/:id", CoreWeb.ChampionLive, :show
-      live "/champions/", CoreWeb.ChampionLive, :list
+
+      scope "/lop" do
+        live "/", CoreWeb.GameplayLive, :lop
+        live "/conferences/:id", CoreWeb.ConferenceLive, :show
+        live "/divisions/:id", CoreWeb.DivisionLive, :show
+        live "/seasons/:id", CoreWeb.SeasonLive, :show
+        live "/seasons", CoreWeb.SeasonLive, :list
+        live "/plants/:id", CoreWeb.PlantLive, :show
+        live "/plants", CoreWeb.PlantLive, :list
+        live "/champions/:id", CoreWeb.ChampionLive, :show
+        live "/champions/", CoreWeb.ChampionLive, :list
+        live "/challenges/:id", CoreWeb.ChallengeLive, :show
+      end
     end
   end
 
@@ -107,7 +113,10 @@ defmodule CoreWeb.Router do
       live "/organizations", CoreWeb.OrganizationLive, :list
       live "/accounts/:id", CoreWeb.AccountLive, :show
       live "/accounts", CoreWeb.AccountLive, :list
-      live "/plants/:id/edit", CoreWeb.PlantLive, :edit
+
+      scope "/lop" do
+        live "/plants/:id/edit", CoreWeb.PlantLive, :edit
+      end
     end
   end
 

@@ -5,9 +5,9 @@ defmodule Core.Gameplay.Season do
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "seasons" do
-    field(:position, :float)
-    has_many(:seasonal_statistics, Core.Gameplay.SeasonalStatistic)
-    has_many(:plants, through: [:seasonal_statistics, :plant])
+    field(:position, :integer)
+    has_many(:challenges, Core.Gameplay.Challenge)
+    many_to_many(:plants, Core.Gameplay.Plant, join_through: "season_plants", unique: true)
 
     timestamps()
   end
@@ -19,9 +19,11 @@ defmodule Core.Gameplay.Season do
   @doc false
   @spec changeset(struct, map) :: Ecto.Changeset.t(t())
   def changeset(record, attributes) do
-    record
-    |> Ecto.Changeset.cast(attributes, [:position])
-    |> Ecto.Changeset.validate_required([:position])
-    |> Ecto.Changeset.unique_constraint(:position)
+    record_with_preload = Core.Repo.preload(record, [:plants])
+
+    record_with_preload
+    |> Ecto.Changeset.cast(attributes, [])
+    |> Ecto.Changeset.put_assoc(:plants, attributes[:plants])
+    |> Ecto.Changeset.validate_required([:plants])
   end
 end

@@ -62,7 +62,8 @@ defmodule CoreWeb.PlantLive do
     |> case do
       {:ok, record} ->
         socket
-        |> redirect(to: ~p"/plants/#{record.id}")
+        |> put_flash(:info, "Plant #{record.name} created")
+        |> redirect(to: ~p"/lop/plants")
 
       {:error, changeset} ->
         socket
@@ -75,31 +76,54 @@ defmodule CoreWeb.PlantLive do
   def render(%{live_action: :list} = assigns) do
     ~H"""
     <h1>Plants</h1>
-    <ul>
-      <%= for plant <- @records do %>
-        <li>
-          <.link href={~p"/plants/#{plant.id}"}><%= plant.name %> (<%= plant.rarity %>)</.link>
-        </li>
-      <% end %>
-    </ul>
-    <.simple_form :let={f} for={@changeset} id="new_plant" phx-submit="create_plant">
-      <.input field={{f, :name}} name="name" id="name" type="text" label="Name" required />
-      <.input
-        field={{f, :rarity}}
-        name="rarity"
-        id="rarity"
-        type="select"
-        label="Rarity"
-        prompt="Select one..."
-        options={rarity_options()}
-        required
-      />
-      <:actions>
-        <.button phx-disable-with="Planting..." type="submit" class="btn btn-primary">
-          Spawn Plant
-        </.button>
-      </:actions>
-    </.simple_form>
+    <%= if length(@records) > 0 do %>
+      <ul>
+        <%= for plant <- @records do %>
+          <li>
+            <.link href={~p"/lop/plants"}><%= plant.name %> (<em><%= plant.species %></em>)</.link>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p>
+        No seasons setup yet.
+      </p>
+    <% end %>
+
+    <%= if Core.Users.has_permission?(@current_account, "global", "administrator") do %>
+      <.simple_form :let={f} for={@changeset} id="new_plant" phx-submit="create_plant">
+        <.input field={{f, :name}} name="name" id="name" type="text" label="Name" required />
+        <.input
+          field={{f, :species}}
+          name="species"
+          id="species"
+          type="text"
+          label="Species"
+          required
+        />
+        <.input
+          field={{f, :image_uri}}
+          name="image_uri"
+          id="image_uri"
+          type="text"
+          label="Image URI"
+          required
+        />
+        <.input
+          field={{f, :rarity_symbol}}
+          name="rarity_symbol"
+          id="rarity_symbol"
+          type="text"
+          label="Rarity Symbol (SVG)"
+          required
+        />
+        <:actions>
+          <.button phx-disable-with="Planting..." type="submit" class="btn btn-primary">
+            Spawn Plant
+          </.button>
+        </:actions>
+      </.simple_form>
+    <% end %>
     """
   end
 
@@ -107,26 +131,22 @@ defmodule CoreWeb.PlantLive do
   def render(%{live_action: :show} = assigns) do
     ~H"""
     <h1>Plant <%= @record.name %></h1>
+    <img src={@record.image_uri} />
     <dl>
       <dt>Name</dt>
       <dd><%= @record.name %></dd>
-      <dt>Rarity</dt>
-      <dd><%= @record.rarity %></dd>
+      <dt>Species</dt>
+      <dd><%= @record.species %></dd>
     </dl>
 
     <h2>Champions</h2>
     <ul>
       <%= for champion <- @record.champions do %>
-        <li><%= champion.name %></li>
+        <li>
+          <.link href={~p"/lop/champions/#{champion.id}"}><%= champion.name %></.link>
+        </li>
       <% end %>
     </ul>
     """
   end
-
-  defp rarity_options(),
-    do: [
-      {"Normal", "normal"},
-      {"Rare", "rare"},
-      {"Epic", "epic"}
-    ]
 end

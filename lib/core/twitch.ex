@@ -104,7 +104,8 @@ defmodule Core.Twitch do
         },
         "transport" => %{
           "method" => "webhook",
-          "callback" => "https://www-malf-me.fly.dev/twitch/webhooks",
+          "callback" =>
+            "#{Application.get_env(:core, :base_url)}#{Application.get_env(:core, :twitch)[:webhook_path]}",
           "secret" => "xxxxxxxxxx"
         }
       })

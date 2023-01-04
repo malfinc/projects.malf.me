@@ -161,6 +161,15 @@ defmodule CoreWeb.CoreComponents do
                 Contact
               </.link>
             </li>
+
+            <%= for {path, name} <- regular_links() do %>
+              <li class="nav-item">
+                <.link href={path} class="nav-link">
+                  <%= name %>
+                </.link>
+              </li>
+            <% end %>
+
             <%= if @current_account do %>
               <%= if Core.Users.has_permission?(@current_account, "global", "administrator") do %>
                 <li class="nav-item">
@@ -188,17 +197,14 @@ defmodule CoreWeb.CoreComponents do
                 <%= @current_account.email_address %>
               </li>
               <li class="nav-item">
-                <.link href={~p"/accounts/settings"} class="nav-link">Settings</.link>
+                <.link href={~p"/accounts/settings"} class="nav-link">Account</.link>
               </li>
               <li class="nav-item">
                 <.link href={~p"/accounts/log_out"} method="delete" class="nav-link">Log out</.link>
               </li>
             <% else %>
               <li class="nav-item">
-                <.link href={~p"/accounts/register"} class="nav-link">Register</.link>
-              </li>
-              <li class="nav-item">
-                <.link href={~p"/accounts/log_in"} class="nav-link">Log in</.link>
+                <.link href={~p"/auth/twitch"} class="nav-link">Authenticate via Twitch</.link>
               </li>
             <% end %>
           </ul>
@@ -231,10 +237,10 @@ defmodule CoreWeb.CoreComponents do
           <ul class="nav flex-column">
             <%= if @current_account do %>
               <li class="nav-item">
-                <strong class="nav-link"><%= @current_account.username %></strong>
+                <strong class="nav-link p-0"><%= @current_account.username %></strong>
               </li>
               <li class="nav-item">
-                <.link href={~p"/accounts/settings"} class="nav-link p-0">Settings</.link>
+                <.link href={~p"/accounts/settings"} class="nav-link p-0">Account</.link>
               </li>
               <li class="nav-item">
                 <.link href={~p"/accounts/log_out"} method="delete" class="nav-link p-0">
@@ -243,10 +249,7 @@ defmodule CoreWeb.CoreComponents do
               </li>
             <% else %>
               <li class="nav-item">
-                <.link href={~p"/accounts/register"} class="nav-link p-0">Register</.link>
-              </li>
-              <li class="nav-item">
-                <.link href={~p"/accounts/log_in"} class="nav-link p-0">Log in</.link>
+                <.link href={~p"/auth/twitch"} class="nav-link p-0">Authenticate via Twitch</.link>
               </li>
             <% end %>
           </ul>
@@ -265,6 +268,8 @@ defmodule CoreWeb.CoreComponents do
   attr :id, :string, default: "flash", doc: "the optional id of flash container"
   attr :flash, :map, default: %{}, doc: "the map of flash messages to display"
   attr :title, :string, default: nil
+  attr :icon, :string, default: nil
+  attr :context, :string, default: nil
   attr :kind, :atom, values: [:info, :error], doc: "used for styling and flash lookup"
   attr :close, :boolean, default: true, doc: "whether the flash can be closed"
   attr :rest, :global, doc: "the arbitrary HTML attributes to add to the flash container"
@@ -282,14 +287,15 @@ defmodule CoreWeb.CoreComponents do
         @kind == :info && "alert-primary",
         @kind == :error && "alert-warning"
       ]}
-      style="margin-top: 5px; "
-      {@rest}
       {@rest}
     >
-      <p :if={@title}>
-        icon <%= @title %>
-      </p>
-      <div><%= msg %></div>
+      <h4 :if={@title} class="alert-heading">
+        <i :if={@icon} class={"fa fa-#{@icon}"} /> <%= @title %>
+      </h4>
+
+      <p><%= msg %></p>
+      <hr :if={@context} />
+      <p :if={@context} class="mb-0"><%= @context %></p>
       <.button :if={@close} class="btn-close" data-bs-dismiss="alert" aria-label="close"></.button>
     </div>
     """
@@ -428,7 +434,7 @@ defmodule CoreWeb.CoreComponents do
     assigns = assign_new(assigns, :checked, fn -> input_equals?(assigns.value, "true") end)
 
     ~H"""
-    <div class={"form-check #{unless(Enum.empty?(@errors), do: "is-invalid")}"}>
+    <div class="form-check" }>
       <input type="hidden" name={@name} value="false" />
       <input
         type="checkbox"
@@ -436,11 +442,11 @@ defmodule CoreWeb.CoreComponents do
         name={@name}
         value="true"
         checked={@checked}
-        class="form-check-input"
-        {@rest}
+        class={"form-check-input #{unless(Enum.empty?(@errors), do: "is-invalid")}"}
         {@rest}
       />
       <label phx-feedback-for={@name} class="form-check-label"><%= @label %></label>
+      <.error :for={msg <- @errors} describing={@id}><%= msg %></.error>
     </div>
     """
   end
@@ -455,7 +461,6 @@ defmodule CoreWeb.CoreComponents do
         class={"form-select #{unless(Enum.empty?(@errors), do: "is-invalid")}"}
         multiple={@multiple}
         aria-describedby={"#{@id}-feedback"}
-        {@rest}
         {@rest}
       >
         <option :if={@prompt}><%= @prompt %></option>
@@ -476,7 +481,6 @@ defmodule CoreWeb.CoreComponents do
         class={"form-control #{unless(Enum.empty?(@errors), do: "is-invalid")}"}
         aria-describedby={"#{@id}-feedback"}
         {@rest}
-        {@rest}
       ><%= @value %></textarea>
       <.error :for={msg <- @errors} describing={@id}><%= msg %></.error>
     </div>
@@ -494,7 +498,6 @@ defmodule CoreWeb.CoreComponents do
         value={@value}
         class={"form-control #{unless(Enum.empty?(@errors), do: "is-invalid")}"}
         aria-describedby={"#{@id}-feedback"}
-        {@rest}
         {@rest}
       />
       <.error :for={msg <- @errors} describing={@id}><%= msg %></.error>
@@ -577,5 +580,12 @@ defmodule CoreWeb.CoreComponents do
       {~p"/admin/accounts", "Accounts"},
       {~p"/admin/organizations", "Organizations"},
       {~p"/admin/jobs", "Jobs"}
+    ]
+
+  defp regular_links(),
+    do: [
+      {~p"/lop/seasons", "Seasons"},
+      {~p"/lop/champions", "Champions"},
+      {~p"/lop/plants", "Plants"}
     ]
 end

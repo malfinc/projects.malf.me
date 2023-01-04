@@ -14,11 +14,6 @@ defmodule CoreWeb.PageLive do
     |> assign(:page_title, "Michael Al Fox")
   end
 
-  defp as(socket, :admin, _params) do
-    socket
-    |> assign(:page_title, "Admin")
-  end
-
   defp as(socket, :faq, _params) do
     socket
     |> assign(:page_title, "Frequently Asked Questions")

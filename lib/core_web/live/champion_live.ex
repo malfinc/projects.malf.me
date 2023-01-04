@@ -4,7 +4,7 @@ defmodule CoreWeb.ChampionLive do
 
   defp list_records(_assigns, _params) do
     Core.Gameplay.list_champions()
-    |> Core.Repo.preload([])
+    |> Core.Repo.preload([:upgrades, :plant])
     |> Core.Decorate.deep()
   end
 
@@ -16,7 +16,7 @@ defmodule CoreWeb.ChampionLive do
 
       record ->
         record
-        |> Core.Repo.preload([])
+        |> Core.Repo.preload([:upgrades, :plant])
         |> Core.Decorate.deep()
     end
   end
@@ -67,37 +67,13 @@ defmodule CoreWeb.ChampionLive do
     |> case do
       {:ok, record} ->
         socket
-        |> redirect(to: ~p"/champions/#{record.id}")
+        |> redirect(to: ~p"/lop/champions/#{record.id}")
 
       {:error, changeset} ->
         socket
         |> assign(:changeset, changeset)
     end
     |> (&{:noreply, &1}).()
-  end
-
-  @impl true
-  def render(%{live_action: :new} = assigns) do
-    ~H"""
-    <.simple_form :let={f} for={@changeset} id="new_champion" phx-submit="create_champion">
-      <.input field={{f, :name}} name="name" id="name" type="text" label="Name" required />
-      <.input
-        field={{f, :plant}}
-        name="plant"
-        id="plant"
-        type="select"
-        label="Rarity"
-        prompt="Select one..."
-        options={Core.Gameplay.list_plants() |> Enum.map(fn plant -> {plant.id, plant.name} end)}
-        required
-      />
-      <:actions>
-        <.button phx-disable-with="Defining origin story..." type="submit" class="btn btn-primary">
-          Announce Champion
-        </.button>
-      </:actions>
-    </.simple_form>
-    """
   end
 
   @impl true
@@ -110,7 +86,20 @@ defmodule CoreWeb.ChampionLive do
   @impl true
   def render(%{live_action: :show} = assigns) do
     ~H"""
-
+    <h1><%= @record.name %> (Alive)</h1>
+    <p><%= @record.name %> is a <%= @record.plant.species %>.</p>
+    <dl>
+      <%= for {name, value} <- total_attributes(@record) do %>
+        <dt><%= Utilities.String.titlecase(name) %></dt>
+        <dd><%= value %></dd>
+      <% end %>
+    </dl>
     """
+  end
+
+  defp total_attributes(%{upgrades: upgrades, plant: %{starting_attributes: starting_attributes}}) do
+    Enum.reduce(upgrades, starting_attributes, fn upgrade, attributes ->
+      Map.merge(attributes, Map.take(upgrade, Map.keys(attributes)))
+    end)
   end
 end
