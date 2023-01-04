@@ -182,7 +182,7 @@ defmodule CoreWeb.TwitchWebhookController do
   defp give_coins(reason, twitch_user_id, amount) do
     %{
       twitch_user_id: twitch_user_id,
-      value: Float.ceil(amount),
+      value: amount,
       reason: reason
     }
     |> Core.Job.DepositCoinJob.new()

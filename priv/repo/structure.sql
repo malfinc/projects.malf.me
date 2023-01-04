@@ -384,10 +384,11 @@ ALTER SEQUENCE public.champions_position_seq OWNED BY public.champions."position
 
 CREATE TABLE public.coin_transactions (
     id uuid NOT NULL,
-    value integer NOT NULL,
+    value double precision NOT NULL,
     account_id uuid NOT NULL,
     inserted_at timestamp(0) without time zone NOT NULL,
-    updated_at timestamp(0) without time zone NOT NULL
+    updated_at timestamp(0) without time zone NOT NULL,
+    reason text DEFAULT 'unknown'::text NOT NULL
 );
 
 
@@ -1453,5 +1454,6 @@ INSERT INTO public."schema_migrations" (version) VALUES (20230102014048);
 INSERT INTO public."schema_migrations" (version) VALUES (20230102014849);
 INSERT INTO public."schema_migrations" (version) VALUES (20230103033245);
 INSERT INTO public."schema_migrations" (version) VALUES (20230103120615);
-INSERT INTO public."schema_migrations" (version) VALUES (20230104221313);
+INSERT INTO public."schema_migrations" (version) VALUES (20230104221314);
 INSERT INTO public."schema_migrations" (version) VALUES (20230104221333);
+INSERT INTO public."schema_migrations" (version) VALUES (20230104234152);

@@ -5,7 +5,7 @@ defmodule Core.Gameplay.CoinTransaction do
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "coin_transactions" do
-    field(:value, :integer, default: 0)
+    field(:value, :float, default: 0.0)
     field(:reason, :string)
     belongs_to(:account, Core.Users.Account)
 
