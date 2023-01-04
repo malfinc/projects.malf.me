@@ -418,6 +418,20 @@ CREATE TABLE public.divisions (
 
 
 --
+-- Name: matches; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.matches (
+    id uuid NOT NULL,
+    left_champion_id uuid,
+    right_champion_id uuid,
+    challenge_id uuid NOT NULL,
+    inserted_at timestamp(0) without time zone NOT NULL,
+    updated_at timestamp(0) without time zone NOT NULL
+);
+
+
+--
 -- Name: oban_jobs; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -781,6 +795,14 @@ ALTER TABLE ONLY public.divisions
 
 
 --
+-- Name: matches matches_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.matches
+    ADD CONSTRAINT matches_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: oban_jobs oban_jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -987,6 +1009,27 @@ CREATE UNIQUE INDEX divisions_name_index ON public.divisions USING btree (name);
 --
 
 CREATE UNIQUE INDEX divisions_slug_index ON public.divisions USING btree (slug);
+
+
+--
+-- Name: matches_challenge_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX matches_challenge_id_index ON public.matches USING btree (challenge_id);
+
+
+--
+-- Name: matches_left_champion_id_right_champion_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX matches_left_champion_id_right_champion_id_index ON public.matches USING btree (left_champion_id, right_champion_id);
+
+
+--
+-- Name: matches_right_champion_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX matches_right_champion_id_index ON public.matches USING btree (right_champion_id);
 
 
 --
@@ -1248,6 +1291,30 @@ ALTER TABLE ONLY public.coin_transactions
 
 
 --
+-- Name: matches matches_challenge_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.matches
+    ADD CONSTRAINT matches_challenge_id_fkey FOREIGN KEY (challenge_id) REFERENCES public.challenges(id) ON DELETE CASCADE;
+
+
+--
+-- Name: matches matches_left_champion_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.matches
+    ADD CONSTRAINT matches_left_champion_id_fkey FOREIGN KEY (left_champion_id) REFERENCES public.champions(id) ON DELETE CASCADE;
+
+
+--
+-- Name: matches matches_right_champion_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.matches
+    ADD CONSTRAINT matches_right_champion_id_fkey FOREIGN KEY (right_champion_id) REFERENCES public.champions(id) ON DELETE CASCADE;
+
+
+--
 -- Name: organization_memberships organization_memberships_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1358,3 +1425,4 @@ INSERT INTO public."schema_migrations" (version) VALUES (20230102013833);
 INSERT INTO public."schema_migrations" (version) VALUES (20230102014048);
 INSERT INTO public."schema_migrations" (version) VALUES (20230102014849);
 INSERT INTO public."schema_migrations" (version) VALUES (20230103033245);
+INSERT INTO public."schema_migrations" (version) VALUES (20230103120615);

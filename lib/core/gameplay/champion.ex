@@ -25,6 +25,7 @@ defmodule Core.Gameplay.Champion do
   @spec changeset(struct, map) :: Ecto.Changeset.t(t())
   def changeset(record, attributes) do
     record_with_preload = Core.Repo.preload(record, [:plant])
+
     record_with_preload
     |> Ecto.Changeset.cast(attributes, [:name])
     |> Slugy.slugify(:name)

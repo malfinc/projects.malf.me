@@ -148,7 +148,8 @@ defmodule CoreWeb.SeasonLive do
       <%= for plant <- @record.plants do %>
         <%= for champion <- plant.champions do %>
           <li>
-            <.link href={~p"/lop/champions/#{champion.id}"}><%= champion.name %></.link> (<%= plant.name %>)
+            <.link href={~p"/lop/champions/#{champion.id}"}><%= champion.name %></.link>
+            (<%= plant.name %>)
           </li>
         <% end %>
       <% end %>

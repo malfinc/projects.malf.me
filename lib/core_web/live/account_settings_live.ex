@@ -11,7 +11,10 @@ defmodule CoreWeb.AccountSettingsLive do
     <%= if length(@current_account.coin_transactions) > 0 do %>
       <ul>
         <%= for coin_transaction <- @current_account.coin_transactions do %>
-          <li><i class="fa fa-coin" /> <%= coin_transaction.value %> <em>at <%= coin_transaction.inserted_at %> due to <%= coin_transaction.reason %></em></li>
+          <li>
+            <i class="fa fa-coin" /> <%= coin_transaction.value %>
+            <em>at <%= coin_transaction.inserted_at %> due to <%= coin_transaction.reason %></em>
+          </li>
         <% end %>
       </ul>
     <% else %>
@@ -106,7 +109,10 @@ defmodule CoreWeb.AccountSettingsLive do
       socket
       |> assign(:current_account, account)
       |> assign(:current_password, nil)
-      |> assign(:total_balance, Enum.reduce(account.coin_transactions, 0, fn %{value: value}, total -> total + value end))
+      |> assign(
+        :total_balance,
+        Enum.reduce(account.coin_transactions, 0, fn %{value: value}, total -> total + value end)
+      )
       |> assign(:email_form_current_password, nil)
       |> assign(:current_email, account.email_address)
       |> assign(:email_changeset, Core.Users.change_account_email_address(account))

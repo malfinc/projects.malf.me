@@ -1,6 +1,6 @@
 defmodule Core.Job.StartSeasonJob do
   @moduledoc """
-  After starting a season fill the season with champions and then put those champions into conferences and divisions.
+  After starting a season fill the season with capable champions and then put those champions into conferences and divisions.
   """
   use Oban.Worker
 

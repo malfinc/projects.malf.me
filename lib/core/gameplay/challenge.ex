@@ -6,6 +6,7 @@ defmodule Core.Gameplay.Challenge do
   @foreign_key_type :binary_id
   schema "challenges" do
     belongs_to(:season, Core.Gameplay.Season)
+    has_many(:matches, Core.Gameplay.Match)
     many_to_many(:champions, Core.Gameplay.Champion, join_through: "challenge_champions")
 
     timestamps()
@@ -20,5 +21,6 @@ defmodule Core.Gameplay.Challenge do
     |> Core.Repo.preload([:season])
     |> Ecto.Changeset.cast(attributes, [])
     |> Ecto.Changeset.validate_required([:season])
+    |> Ecto.Changeset.foreign_key_constraint(:season_id)
   end
 end
