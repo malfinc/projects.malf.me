@@ -28,7 +28,7 @@ defmodule Core.Users.Account do
     field(:confirmed_at, :naive_datetime)
     embeds_one(:settings, Core.Users.Settings)
     embeds_one(:profile, Core.Users.Profile)
-    has_many(:upgrades, Core.Gameplay.Upgrade)
+    has_many(:upgrades, Core.Gameplay.Upgrade, foreign_key: :patron_account_id)
     has_many(:champions, through: [:upgrades, :champion])
     has_many(:coin_transactions, Core.Gameplay.CoinTransaction)
     has_many(:organization_memberships, Core.Users.OrganizationMembership)

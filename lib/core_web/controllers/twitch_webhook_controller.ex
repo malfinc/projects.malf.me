@@ -1,10 +1,15 @@
 defmodule CoreWeb.TwitchWebhookController do
   use CoreWeb, :controller
 
-  def create(conn, %{
-        "subscription" => %{"status" => "webhook_callback_verification_pending"},
-        "challenge" => challenge
-      }) do
+  def create(
+        conn,
+        %{
+          "subscription" => %{"status" => "webhook_callback_verification_pending"},
+          "challenge" => challenge
+        } = payload
+      ) do
+    record_webhook(payload, conn.req_headers)
+
     conn
     |> put_status(200)
     |> text(challenge)
@@ -85,81 +90,110 @@ defmodule CoreWeb.TwitchWebhookController do
   }
   ```
   """
-  def create(conn, %{
-        "subscription" => %{"type" => "channel.channel_points_custom_reward_redemption.add"},
-        "event" => %{
-          "user_id" => twitch_user_id,
-          "reward" => %{
-            "cost" => amount
+  def create(
+        conn,
+        %{
+          "subscription" => %{"type" => "channel.channel_points_custom_reward_redemption.add"},
+          "event" => %{
+            "user_id" => twitch_user_id,
+            "reward" => %{
+              "cost" => amount
+            }
           }
-        }
-      }) do
-    give_coins(twitch_user_id, amount / 20000)
+        } = payload
+      ) do
+    record_webhook(payload, conn.req_headers)
+    give_coins("channel point redemption", twitch_user_id, amount / 20000)
 
     conn
     |> put_status(200)
     |> text("OK")
   end
 
-  def create(conn, %{
-        "subscription" => %{"type" => "channel.subscription.gift"},
-        "event" => %{
-          "user_id" => twitch_user_id
-        }
-      }) do
-    give_coins(twitch_user_id, 1)
+  def create(
+        conn,
+        %{
+          "subscription" => %{"type" => "channel.subscription.gift"},
+          "event" => %{
+            "user_id" => twitch_user_id
+          }
+        } = payload
+      ) do
+    record_webhook(payload, conn.req_headers)
+    give_coins("gift subscription", twitch_user_id, 1)
 
     conn
     |> put_status(200)
     |> text("OK")
   end
 
-  def create(conn, %{
-        "subscription" => %{"type" => "channel.subscribe"},
-        "event" => %{
-          "user_id" => twitch_user_id
-        }
-      }) do
-    give_coins(twitch_user_id, 1)
+  def create(
+        conn,
+        %{
+          "subscription" => %{"type" => "channel.subscribe"},
+          "event" => %{
+            "user_id" => twitch_user_id
+          }
+        } = payload
+      ) do
+    record_webhook(payload, conn.req_headers)
+    give_coins("subscription", twitch_user_id, 1)
 
     conn
     |> put_status(200)
     |> text("OK")
   end
 
-  def create(conn, %{
-        "subscription" => %{"type" => "channel.subscription.message"},
-        "event" => %{
-          "user_id" => twitch_user_id
-        }
-      }) do
-    give_coins(twitch_user_id, 1)
+  def create(
+        conn,
+        %{
+          "subscription" => %{"type" => "channel.subscription.message"},
+          "event" => %{
+            "user_id" => twitch_user_id
+          }
+        } = payload
+      ) do
+    record_webhook(payload, conn.req_headers)
+    give_coins("resubscription", twitch_user_id, 1)
 
     conn
     |> put_status(200)
     |> text("OK")
   end
 
-  def create(conn, %{
-        "subscription" => %{"type" => "channel.cheer"},
-        "event" => %{
-          "user_id" => twitch_user_id,
-          "bits" => bits
-        }
-      }) do
-    give_coins(twitch_user_id, bits / 500)
+  def create(
+        conn,
+        %{
+          "subscription" => %{"type" => "channel.cheer"},
+          "event" => %{
+            "user_id" => twitch_user_id,
+            "bits" => bits
+          }
+        } = payload
+      ) do
+    record_webhook(payload, conn.req_headers)
+    give_coins("cheer", twitch_user_id, bits / 500)
 
     conn
     |> put_status(200)
     |> text("OK")
   end
 
-  defp give_coins(twitch_user_id, amount) do
+  defp give_coins(reason, twitch_user_id, amount) do
     %{
       twitch_user_id: twitch_user_id,
-      value: amount
+      value: amount,
+      reason: reason
     }
     |> Core.Job.DepositCoinJob.new()
     |> Oban.insert()
+  end
+
+  defp record_webhook(payload, headers) do
+    Core.Content.create_webhook(%{
+      provider: "twitter",
+      payload: payload,
+      headers: headers
+    })
   end
 end

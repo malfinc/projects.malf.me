@@ -703,6 +703,18 @@ ALTER SEQUENCE public.versions_id_seq OWNED BY public.versions.id;
 
 
 --
+-- Name: webhooks; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.webhooks (
+    id uuid NOT NULL,
+    provider public.citext NOT NULL,
+    headers jsonb NOT NULL,
+    payload jsonb NOT NULL
+);
+
+
+--
 -- Name: champions position; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -904,6 +916,14 @@ ALTER TABLE ONLY public.upgrades
 
 ALTER TABLE ONLY public.versions
     ADD CONSTRAINT versions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: webhooks webhooks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.webhooks
+    ADD CONSTRAINT webhooks_pkey PRIMARY KEY (id);
 
 
 --
@@ -1236,6 +1256,13 @@ CREATE INDEX versions_originator_id_index ON public.versions USING btree (origin
 
 
 --
+-- Name: webhooks_provider_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX webhooks_provider_index ON public.webhooks USING btree (provider);
+
+
+--
 -- Name: oban_jobs oban_notify; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -1426,3 +1453,5 @@ INSERT INTO public."schema_migrations" (version) VALUES (20230102014048);
 INSERT INTO public."schema_migrations" (version) VALUES (20230102014849);
 INSERT INTO public."schema_migrations" (version) VALUES (20230103033245);
 INSERT INTO public."schema_migrations" (version) VALUES (20230103120615);
+INSERT INTO public."schema_migrations" (version) VALUES (20230104221313);
+INSERT INTO public."schema_migrations" (version) VALUES (20230104221333);

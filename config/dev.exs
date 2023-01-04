@@ -31,8 +31,7 @@ config :core, CoreWeb.Endpoint,
   debug_errors: true,
   secret_key_base: "hPnBNsKd4PUfmSLk2QUu4wLsIFY5Mt1kzplLpgEGQnTkWcNmk9kovkbMujnsm3OI",
   watchers: [
-    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
-    tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]}
+    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
   ]
 
 # ## SSL Support
