@@ -4,10 +4,16 @@ defmodule Core.Job.DepositCoinJob do
   """
   use Oban.Worker
   import Ecto.Query
+  require Logger
 
   @impl Oban.Worker
   @spec perform(Oban.Job.t()) ::
-          {:ok, Core.Gameplay.Coin.t()} | {:error, Ecto.Changeset.t()} | {:snooze, pos_integer()}
+          {:ok, Core.Gameplay.Coin.t()} | {:error, Ecto.Changeset.t()}
+
+  def perform(%Oban.Job{args: %{"twitch_user_id" => nil}}) do
+    {:cancel, "No twitch_user_id given, we can't allocate points"}
+  end
+
   def perform(%Oban.Job{
         args: %{"twitch_user_id" => twitch_user_id, "value" => value, "reason" => reason}
       }) do
