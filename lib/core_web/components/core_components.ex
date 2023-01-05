@@ -290,7 +290,7 @@ defmodule CoreWeb.CoreComponents do
       {@rest}
     >
       <h4 :if={@title} class="alert-heading">
-        <i :if={@icon} class={"fa fa-#{@icon}"} /> <%= @title %>
+        <i :if={@icon} class={"fa-solid fa-#{@icon}"} /> <%= @title %>
       </h4>
 
       <p><%= msg %></p>

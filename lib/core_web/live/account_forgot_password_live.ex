@@ -6,10 +6,10 @@ defmodule CoreWeb.AccountForgotPasswordLive do
   def render(assigns) do
     ~H"""
     <div class="mx-auto max-w-sm">
-      <header class="text-center">
+      <p class="text-center">
         Forgot your password?
         We'll send a password reset link to your inbox
-      </header>
+      </p>
 
       <.simple_form :let={f} id="reset_password_form" for={:account} phx-submit="send_email">
         <.input field={{f, :email_address}} type="email" placeholder="Email" required />

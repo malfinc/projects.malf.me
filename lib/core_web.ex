@@ -89,6 +89,7 @@ defmodule CoreWeb do
       import Phoenix.HTML
       # Core UI components and translation
       import CoreWeb.CoreComponents
+      import CoreWeb.GameplayComponents
       import CoreWeb.Gettext
 
       # Shortcut for generating JS commands
