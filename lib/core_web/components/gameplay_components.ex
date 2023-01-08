@@ -3,6 +3,19 @@ defmodule CoreWeb.GameplayComponents do
   use Phoenix.Component
   use CoreWeb, :verified_routes
 
+  attr :pack, Core.Gameplay.Pack
+  attr :rest, :global
+
+  def card_pack(assigns) do
+    ~H"""
+    <%= if @pack.opened do %>
+      <div><img src={~p"/images/"} /></div>
+    <% else %>
+      <div phx-hook="UnopenedCardPack" id={@pack.id} class="CardPack--isDraggable animate__animated" style="display: inline-block;"><img src={~p"/images/unopened_pack.png"} /></div>
+    <% end %>
+    """
+  end
+
   attr :champion, Core.Gameplay.Champion
   attr :width, :integer, default: 512
   attr :height, :integer, default: 768
@@ -10,14 +23,16 @@ defmodule CoreWeb.GameplayComponents do
 
   def card(assigns) do
     ~H"""
-    <section style={"background-image: linear-gradient(to right, darkblue, darkorchid); padding: 15px; width: #{@width + (15 * 2)}px; height: #{@height + (15 * 2)}px; border-radius: 12px; color: white;"}>
-      <section>
+    <div id={@champion.id} phx-hook="Card" data-tilt-glare style={"background-image: url(#{~p"/images/rainbow_frame.png"}); padding: 15px; width: #{@width + (15 * 2)}px; height: #{@height + (15 * 2)}px; border-radius: 12px; color: white; margin-left: auto; margin-right: auto; box-shadow: 2px 2px 9px 0px rgba(0,0,0,0.5);"}>
+      <div>
         <img src={~p"/images/apocalypse_scorpion.png"} width={"#{@width}px"} height={"#{@height}px"} style="border-radius: 12px; position: absolute;" />
-        <header style="position: relative; padding-top: 15px; padding-left: 15px;">
-          <h2><%= @champion.name %></h2>
-          <h5><%= @champion.plant.name %> <em><small>(<%= @champion.plant.species %>)</small></em></h5>
+
+        <header style="position: relative; padding: 15px; ">
+          <h4 style="text-shadow: 1px 1px 5px rgb(221, 160, 220);"><%= @champion.name %></h4>
+          <h6 style="text-shadow: 1px 1px 5px rgb(221, 160, 220);"><%= @champion.plant.name %> <em><small>(<%= @champion.plant.species %>)</small></em></h6>
         </header>
-        <section style="position: relative; display: grid; grid-template-rows: 1fr; justify-items: end; row-gap: 15px;">
+
+        <div style="position: relative; display: grid; grid-template-rows: 1fr; justify-items: end; row-gap: 15px; margin-top: 45%;">
           <.circle>
             <%= for icon <- evolution_markers(@champion.upgrades) do %>
               <i class={icon}></i>
@@ -26,17 +41,18 @@ defmodule CoreWeb.GameplayComponents do
           <.circle>
             <i class="fa-solid fa-pepper-hot fa-2x"></i>
           </.circle>
-        </section>
-        <footer style="position: relative; display: grid; grid-template-rows: repeat(5, 1fr);">
+        </div>
+
+        <footer style="position: relative; display: grid; grid-template-columns: repeat(5, 1fr); justify-items: center; margin-top: 40%;">
           <%= for {name, value} <- total_attributes(@champion) do %>
             <.circle>
-              <section><%= value %></section>
-              <section style="padding: 3px; border-radius: 5px; background-color: rgba(250, 250, 250, 0.85); color: black;"><%= slab(name) %></section>
+              <div><%= value %></div>
+              <div style="padding: 3px; border-radius: 5px; background-color: rgba(250, 250, 250, 0.85); color: black;"><%= slab(name) %></div>
             </.circle>
           <% end %>
         </footer>
-      </section>
-    </section>
+      </div>
+    </div>
     """
   end
 

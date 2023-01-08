@@ -92,8 +92,6 @@ defmodule CoreWeb.AccountLive do
 
   @impl true
   def render(%{live_action: :show} = assigns) do
-    dbg(assigns)
-
     ~H"""
     <h2>
       <%= @record.username %>

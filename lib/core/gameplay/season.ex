@@ -7,6 +7,7 @@ defmodule Core.Gameplay.Season do
   schema "seasons" do
     field(:position, :integer)
     has_many(:challenges, Core.Gameplay.Challenge)
+    has_many(:packs, Core.Gameplay.Pack)
     many_to_many(:plants, Core.Gameplay.Plant, join_through: "season_plants", unique: true)
 
     timestamps()

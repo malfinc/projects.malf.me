@@ -17,13 +17,31 @@ defmodule Core.Job.StartSeasonJob do
         {:snooze, 60}
 
       season ->
-        IO.puts("Start season!")
-
-        Utilities.Enum.times(64, fn ->
-          Core.Gameplay.create_champion(%{plant: plant(season), name: name(words)})
+        Core.Repo.transaction(fn ->
+          Utilities.Enum.times(64, fn ->
+            Core.Gameplay.create_champion!(%{plant: plant(season), name: name(words)})
+          end)
+          |> Enum.chunk_every(8)
+          |> Enum.map(fn champions ->
+            {
+              Core.Gameplay.create_pack!(%{
+                season: season
+              }),
+              champions
+            }
+          end)
+          |> Enum.flat_map(fn {pack, champions} ->
+            Enum.map(champions, fn champion ->
+              {pack, champion}
+            end)
+          end)
+          |> Enum.each(fn {pack, champion} ->
+            Core.Gameplay.create_pack_slot!(%{
+              pack: pack,
+              champion: champion
+            })
+          end)
         end)
-
-        :ok
     end
   end
 

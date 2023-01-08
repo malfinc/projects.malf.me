@@ -21,6 +21,8 @@ import "phoenix_html"
 import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar";
+import "../vendor/tilt";
+import { Sortable, Plugins } from "../vendor/shopify/draggable";
 import "../css/app.css"
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
@@ -29,6 +31,41 @@ let liveSocket = new LiveSocket("/live", Socket, {
     _csrf_token: csrfToken,
   },
   hooks: {
+    Card: {
+      mounted() {
+        VanillaTilt.init(this.el);
+      }
+    },
+    UnopenedCardPack: {
+      mounted() {
+        VanillaTilt.init(this.el, {
+          glare: true
+        });
+      }
+    },
+    UnopenedCardPacks: {
+      mounted() {
+        let packOpeningArea = document.querySelector("#PackOpener");
+        this.sortableList = new Sortable(this.el, {
+          draggable: '.CardPack--isDraggable',
+          // mirror: {
+          //   constrainDimensions: true,
+          // },
+          plugins: [Plugins.SortAnimation],
+          // swapAnimation: {
+          //   duration: 200,
+          //   easingFunction: 'ease-in-out',
+          // },
+
+        })
+        this.el.addEventListener("drag:start", () => {
+          packOpeningArea.style.display = "inherit";
+        });
+        this.el.addEventListener("drag:stop", () => {
+          packOpeningArea.style.display = "none";
+        });
+      }
+    },
     Face: {
       setup() {
         const SpeechRecognition = window.SpeechRecognition || webkitSpeechRecognition;

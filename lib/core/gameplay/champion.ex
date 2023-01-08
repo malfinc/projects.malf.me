@@ -8,6 +8,7 @@ defmodule Core.Gameplay.Champion do
     field(:name, :string)
     field(:slug, :string)
     field(:position, :integer)
+    has_many(:pack_slots, Core.Gameplay.Champion)
     many_to_many(:challenges, Core.Gameplay.Champion, join_through: "challenge_champions")
     belongs_to(:plant, Core.Gameplay.Plant)
     has_many(:upgrades, Core.Gameplay.Upgrade)
