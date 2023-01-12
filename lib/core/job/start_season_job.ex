@@ -8,7 +8,7 @@ defmodule Core.Job.StartSeasonJob do
   @spec perform(Oban.Job.t()) ::
           :ok | {:snooze, pos_integer()}
   def perform(%Oban.Job{args: %{"season_id" => season_id}}) do
-    words = File.read!("priv/data/words.txt") |> String.split("\n")
+    words = File.read!(Application.app_dir(:core, "priv/data/words.txt")) |> String.split("\n")
 
     Core.Gameplay.get_season(season_id)
     |> Core.Repo.preload([:plants])

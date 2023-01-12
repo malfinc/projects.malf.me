@@ -2,9 +2,12 @@ defmodule CoreWeb.SeasonLive do
   @moduledoc false
   use CoreWeb, :live_view
 
+  @card_width ""
+  @card_height ""
+
   defp list_records(_assigns, _params) do
     Core.Gameplay.list_seasons()
-    |> Core.Repo.preload(packs: [:pack_slots], plants: [:champions], challenges: [champion: [:plant, :upgrades]])
+    |> Core.Repo.preload([packs: [:pack_slots], plants: [:champions], challenges: [champion: [:plant, :upgrades]]])
     |> Core.Decorate.deep()
   end
 
@@ -16,7 +19,7 @@ defmodule CoreWeb.SeasonLive do
 
       record ->
         record
-        |> Core.Repo.preload(packs: [:pack_slots], plants: [:champions], challenges: [champion: [:plant, :upgrades]])
+        |> Core.Repo.preload([packs: [:pack_slots], plants: [:champions], challenges: [champion: [:plant, :upgrades]]])
         |> Core.Decorate.deep()
     end
   end
@@ -130,7 +133,6 @@ defmodule CoreWeb.SeasonLive do
 
     <%= if unopened_packs?(@record.packs) do %>
       <h2 id="packs">Packs</h2>
-      <section id="PackOpener" style="background-color: red; display: none; height: 150px;"></section>
       <section id="UnopenedCardPacks" phx-hook="UnopenedCardPacks" style="display: grid; grid-template-columns: repeat(auto-fit, 350px); gap: 15px; align-items: center; justify-items: center;">
         <%= for pack <- @record.packs do %>
           <.card_pack pack={pack} />

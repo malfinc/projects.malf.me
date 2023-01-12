@@ -79,7 +79,13 @@ defmodule CoreWeb.ChampionLive do
   @impl true
   def render(%{live_action: :list} = assigns) do
     ~H"""
+    <h1>Champions</h1>
 
+    <ul>
+      <%= for champion <- @records do %>
+        <li><.link href={~p"/lop/champions/#{champion.id}"}><%= champion.name %></.link></li>
+      <% end %>
+    </ul>
     """
   end
 

@@ -33,7 +33,9 @@ let liveSocket = new LiveSocket("/live", Socket, {
   hooks: {
     Card: {
       mounted() {
-        VanillaTilt.init(this.el);
+        VanillaTilt.init(this.el, {
+          glare: true
+        });
       }
     },
     UnopenedCardPack: {
@@ -45,25 +47,6 @@ let liveSocket = new LiveSocket("/live", Socket, {
     },
     UnopenedCardPacks: {
       mounted() {
-        let packOpeningArea = document.querySelector("#PackOpener");
-        this.sortableList = new Sortable(this.el, {
-          draggable: '.CardPack--isDraggable',
-          // mirror: {
-          //   constrainDimensions: true,
-          // },
-          plugins: [Plugins.SortAnimation],
-          // swapAnimation: {
-          //   duration: 200,
-          //   easingFunction: 'ease-in-out',
-          // },
-
-        })
-        this.el.addEventListener("drag:start", () => {
-          packOpeningArea.style.display = "inherit";
-        });
-        this.el.addEventListener("drag:stop", () => {
-          packOpeningArea.style.display = "none";
-        });
       }
     },
     Face: {
