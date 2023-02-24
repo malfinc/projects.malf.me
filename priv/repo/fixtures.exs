@@ -59,6 +59,43 @@ if Mix.env() == :dev do
         rarity_symbol: "x"
       })
     end)
+
+    Core.Gameplay.create_rarity!(%{
+      name: "Common",
+      color: "grey",
+      season_pick_rate: 100,
+      pack_pick_percentage: [100.0, 100.0, 70.0, 0.0, 0.0, 0.0]
+    })
+    Core.Gameplay.create_rarity!(%{
+      name: "Uncommon",
+      color: "green",
+      season_pick_rate: 75,
+      pack_pick_percentage: [0.0, 0.0, 30.0, 100.0, 70.0, 0.0]
+    })
+    Core.Gameplay.create_rarity!(%{
+      name: "Rare",
+      color: "blue",
+      season_pick_rate: 30,
+      pack_pick_percentage: [0.0, 0.0, 0.0, 0.0, 30.0, 54.0]
+    })
+    Core.Gameplay.create_rarity!(%{
+      name: "Epic",
+      color: "yellow",
+      season_pick_rate: 11,
+      pack_pick_percentage: [0.0, 0.0, 0.0, 0.0, 0.0, 29.72]
+    })
+    Core.Gameplay.create_rarity!(%{
+      name: "Legendary",
+      color: "orange",
+      season_pick_rate: 5,
+      pack_pick_percentage: [0.0, 0.0, 0.0, 0.0, 0.0, 13.51]
+    })
+    Core.Gameplay.create_rarity!(%{
+      name: "Mythical",
+      color: "red",
+      season_pick_rate: 1,
+      pack_pick_percentage: [0.0, 0.0, 0.0, 0.0, 0.0, 2.70]
+    })
   end)
 end
 

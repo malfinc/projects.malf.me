@@ -11,4 +11,6 @@ defmodule Core.Gameplay do
   resource(:coin_transactions, :coin_transaction, Core.Gameplay.CoinTransaction)
   resource(:challenges, :challenge, Core.Gameplay.Challenge)
   resource(:matches, :match, Core.Gameplay.Match)
+  resource(:cards, :card, Core.Gameplay.Card)
+  resource(:weeklies, :weekly, Core.Gameplay.Weekly)
 end

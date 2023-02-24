@@ -322,6 +322,20 @@ CREATE TABLE public.accounts_tokens (
 
 
 --
+-- Name: cards; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.cards (
+    id uuid NOT NULL,
+    rarity_id uuid NOT NULL,
+    champion_id uuid NOT NULL,
+    season_id uuid NOT NULL,
+    inserted_at timestamp(0) without time zone NOT NULL,
+    updated_at timestamp(0) without time zone NOT NULL
+);
+
+
+--
 -- Name: challenge_champions; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -541,6 +555,32 @@ CREATE TABLE public.organizations (
 
 
 --
+-- Name: pack_slots; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.pack_slots (
+    id uuid NOT NULL,
+    pack_id uuid NOT NULL,
+    card_id uuid NOT NULL,
+    inserted_at timestamp(0) without time zone NOT NULL,
+    updated_at timestamp(0) without time zone NOT NULL
+);
+
+
+--
+-- Name: packs; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.packs (
+    id uuid NOT NULL,
+    opened boolean DEFAULT false NOT NULL,
+    season_id uuid NOT NULL,
+    inserted_at timestamp(0) without time zone NOT NULL,
+    updated_at timestamp(0) without time zone NOT NULL
+);
+
+
+--
 -- Name: permissions; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -580,7 +620,9 @@ CREATE TABLE public.rarities (
     slug public.citext NOT NULL,
     color text NOT NULL,
     inserted_at timestamp(0) without time zone NOT NULL,
-    updated_at timestamp(0) without time zone NOT NULL
+    updated_at timestamp(0) without time zone NOT NULL,
+    season_pick_rates integer DEFAULT 0 NOT NULL,
+    pack_pick_percentage double precision DEFAULT 0.0 NOT NULL
 );
 
 
@@ -716,6 +758,18 @@ CREATE TABLE public.webhooks (
 
 
 --
+-- Name: weeklies; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.weeklies (
+    id uuid NOT NULL,
+    season_id uuid NOT NULL,
+    inserted_at timestamp(0) without time zone NOT NULL,
+    updated_at timestamp(0) without time zone NOT NULL
+);
+
+
+--
 -- Name: champions position; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -757,6 +811,14 @@ ALTER TABLE ONLY public.accounts
 
 ALTER TABLE ONLY public.accounts_tokens
     ADD CONSTRAINT accounts_tokens_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: cards cards_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cards
+    ADD CONSTRAINT cards_pkey PRIMARY KEY (id);
 
 
 --
@@ -856,6 +918,22 @@ ALTER TABLE ONLY public.organizations
 
 
 --
+-- Name: pack_slots pack_slots_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.pack_slots
+    ADD CONSTRAINT pack_slots_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: packs packs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.packs
+    ADD CONSTRAINT packs_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: permissions permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -928,6 +1006,14 @@ ALTER TABLE ONLY public.webhooks
 
 
 --
+-- Name: weeklies weeklies_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.weeklies
+    ADD CONSTRAINT weeklies_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: accounts_email_address_index; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -953,6 +1039,27 @@ CREATE INDEX accounts_tokens_account_id_index ON public.accounts_tokens USING bt
 --
 
 CREATE UNIQUE INDEX accounts_tokens_context_token_index ON public.accounts_tokens USING btree (context, token);
+
+
+--
+-- Name: cards_champion_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX cards_champion_id_index ON public.cards USING btree (champion_id);
+
+
+--
+-- Name: cards_rarity_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX cards_rarity_id_index ON public.cards USING btree (rarity_id);
+
+
+--
+-- Name: cards_season_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX cards_season_id_index ON public.cards USING btree (season_id);
 
 
 --
@@ -1110,6 +1217,27 @@ CREATE UNIQUE INDEX organizations_slug_index ON public.organizations USING btree
 
 
 --
+-- Name: pack_slots_card_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX pack_slots_card_id_index ON public.pack_slots USING btree (card_id);
+
+
+--
+-- Name: pack_slots_pack_id_card_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX pack_slots_pack_id_card_id_index ON public.pack_slots USING btree (pack_id, card_id);
+
+
+--
+-- Name: packs_season_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX packs_season_id_index ON public.packs USING btree (season_id);
+
+
+--
 -- Name: permissions_slug_index; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1264,6 +1392,13 @@ CREATE INDEX webhooks_provider_index ON public.webhooks USING btree (provider);
 
 
 --
+-- Name: weeklies_season_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX weeklies_season_id_index ON public.weeklies USING btree (season_id);
+
+
+--
 -- Name: oban_jobs oban_notify; Type: TRIGGER; Schema: public; Owner: -
 --
 
@@ -1276,6 +1411,30 @@ CREATE TRIGGER oban_notify AFTER INSERT ON public.oban_jobs FOR EACH ROW EXECUTE
 
 ALTER TABLE ONLY public.accounts_tokens
     ADD CONSTRAINT accounts_tokens_account_id_fkey FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE CASCADE;
+
+
+--
+-- Name: cards cards_champion_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cards
+    ADD CONSTRAINT cards_champion_id_fkey FOREIGN KEY (champion_id) REFERENCES public.champions(id) ON DELETE CASCADE;
+
+
+--
+-- Name: cards cards_rarity_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cards
+    ADD CONSTRAINT cards_rarity_id_fkey FOREIGN KEY (rarity_id) REFERENCES public.rarities(id) ON DELETE CASCADE;
+
+
+--
+-- Name: cards cards_season_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cards
+    ADD CONSTRAINT cards_season_id_fkey FOREIGN KEY (season_id) REFERENCES public.seasons(id) ON DELETE CASCADE;
 
 
 --
@@ -1375,6 +1534,30 @@ ALTER TABLE ONLY public.organization_permissions
 
 
 --
+-- Name: pack_slots pack_slots_card_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.pack_slots
+    ADD CONSTRAINT pack_slots_card_id_fkey FOREIGN KEY (card_id) REFERENCES public.cards(id) ON DELETE CASCADE;
+
+
+--
+-- Name: pack_slots pack_slots_pack_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.pack_slots
+    ADD CONSTRAINT pack_slots_pack_id_fkey FOREIGN KEY (pack_id) REFERENCES public.packs(id) ON DELETE CASCADE;
+
+
+--
+-- Name: packs packs_season_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.packs
+    ADD CONSTRAINT packs_season_id_fkey FOREIGN KEY (season_id) REFERENCES public.seasons(id) ON DELETE CASCADE;
+
+
+--
 -- Name: season_plants season_plants_plant_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1412,6 +1595,14 @@ ALTER TABLE ONLY public.upgrades
 
 ALTER TABLE ONLY public.versions
     ADD CONSTRAINT versions_originator_id_fkey FOREIGN KEY (originator_id) REFERENCES public.accounts(id);
+
+
+--
+-- Name: weeklies weeklies_season_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.weeklies
+    ADD CONSTRAINT weeklies_season_id_fkey FOREIGN KEY (season_id) REFERENCES public.seasons(id) ON DELETE CASCADE;
 
 
 --
@@ -1457,3 +1648,8 @@ INSERT INTO public."schema_migrations" (version) VALUES (20230103120615);
 INSERT INTO public."schema_migrations" (version) VALUES (20230104221314);
 INSERT INTO public."schema_migrations" (version) VALUES (20230104221333);
 INSERT INTO public."schema_migrations" (version) VALUES (20230104234152);
+INSERT INTO public."schema_migrations" (version) VALUES (20230107210325);
+INSERT INTO public."schema_migrations" (version) VALUES (20230224040723);
+INSERT INTO public."schema_migrations" (version) VALUES (20230224044447);
+INSERT INTO public."schema_migrations" (version) VALUES (20230224044538);
+INSERT INTO public."schema_migrations" (version) VALUES (20230224051217);

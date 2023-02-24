@@ -2,9 +2,6 @@ defmodule CoreWeb.SeasonLive do
   @moduledoc false
   use CoreWeb, :live_view
 
-  @card_width ""
-  @card_height ""
-
   defp list_records(_assigns, _params) do
     Core.Gameplay.list_seasons()
     |> Core.Repo.preload([packs: [:pack_slots], plants: [:champions], challenges: [champion: [:plant, :upgrades]]])
