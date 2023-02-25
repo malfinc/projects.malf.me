@@ -6,8 +6,8 @@ defmodule Core.Gameplay.Card do
   @foreign_key_type :binary_id
   schema "cards" do
     belongs_to(:season, Core.Gameplay.Season)
-    belongs_to(:rarity, Core.Gameplay.Season)
-    belongs_to(:champions, Core.Gameplay.Champion)
+    belongs_to(:rarity, Core.Gameplay.Rarity)
+    belongs_to(:champion, Core.Gameplay.Champion)
 
     timestamps()
   end

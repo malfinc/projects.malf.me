@@ -3,8 +3,8 @@ defmodule Core.Repo.Migrations.AddCardRatesToRarities do
 
   def change do
     alter(table(:rarities)) do
-      add :season_pick_rates, :integer, null: false, default: 0
-      add :pack_pick_percentage, :float, null: false, default: 0.0
+      add :season_pick_rate, :integer, null: false, default: 0
+      add :pack_pick_percentages, {:array, :float}, null: false, default: []
     end
   end
 end

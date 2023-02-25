@@ -621,8 +621,8 @@ CREATE TABLE public.rarities (
     color text NOT NULL,
     inserted_at timestamp(0) without time zone NOT NULL,
     updated_at timestamp(0) without time zone NOT NULL,
-    season_pick_rates integer DEFAULT 0 NOT NULL,
-    pack_pick_percentage double precision DEFAULT 0.0 NOT NULL
+    season_pick_rate integer DEFAULT 0 NOT NULL,
+    pack_pick_percentages double precision[] DEFAULT ARRAY[]::double precision[] NOT NULL
 );
 
 

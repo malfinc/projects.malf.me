@@ -7,3 +7,15 @@ druid
 warlock
 sorcerer
 paladin
+ferocious
+brawler
+swarthy
+swashbuckler
+pirate
+kingslayer
+lover
+killer
+butcher
+fisher
+singer
+stablehand

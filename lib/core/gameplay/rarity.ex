@@ -9,7 +9,7 @@ defmodule Core.Gameplay.Rarity do
     field(:slug, :string)
     field(:color, :string)
     field(:season_pick_rate, :integer)
-    field(:pack_pick_percentage, :float)
+    field(:pack_pick_percentages, {:array, :float})
     has_many(:cards, Core.Gameplay.Card)
 
     timestamps()
@@ -20,16 +20,16 @@ defmodule Core.Gameplay.Rarity do
           slug: float(),
           color: float(),
           season_pick_rate: integer(),
-          pack_pick_percentage: float()
+          pack_pick_percentages: float()
         }
 
   @doc false
   @spec changeset(struct, map) :: Ecto.Changeset.t(t())
   def changeset(record, attributes) do
     record
-    |> Ecto.Changeset.cast(attributes, [:name, :color, :season_pick_rate, :pack_pick_percentage])
+    |> Ecto.Changeset.cast(attributes, [:name, :color, :season_pick_rate, :pack_pick_percentages])
     |> Slugy.slugify(:name)
-    |> Ecto.Changeset.validate_required([:name, :slug, :color, :season_pick_rate, :pack_pick_percentage])
+    |> Ecto.Changeset.validate_required([:name, :slug, :color, :season_pick_rate, :pack_pick_percentages])
     |> Ecto.Changeset.unique_constraint(:name)
     |> Ecto.Changeset.unique_constraint(:slug)
   end
