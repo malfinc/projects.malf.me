@@ -8,6 +8,7 @@ defmodule Core.Gameplay.Pack do
     field(:opened, :boolean, default: false)
     belongs_to(:season, Core.Gameplay.Season)
     has_many(:pack_slots, Core.Gameplay.PackSlot)
+    has_many(:cards, through: [:pack_slots, :card])
 
     timestamps()
   end

@@ -25,6 +25,6 @@ defmodule Core.Gameplay.PackSlot do
     |> Ecto.Changeset.validate_required([:pack, :card])
     |> Ecto.Changeset.foreign_key_constraint(:pack_id)
     |> Ecto.Changeset.foreign_key_constraint(:card_id)
-    |> Ecto.Changeset.unique_constraint([:card_id, :pack_id])
+    |> Ecto.Changeset.unique_constraint([:pack_id, :card_id])
   end
 end

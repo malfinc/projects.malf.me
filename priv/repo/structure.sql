@@ -1220,7 +1220,7 @@ CREATE UNIQUE INDEX organizations_slug_index ON public.organizations USING btree
 -- Name: pack_slots_card_id_index; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX pack_slots_card_id_index ON public.pack_slots USING btree (card_id);
+CREATE UNIQUE INDEX pack_slots_card_id_index ON public.pack_slots USING btree (card_id);
 
 
 --
