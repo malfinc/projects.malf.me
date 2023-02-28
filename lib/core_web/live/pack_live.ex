@@ -72,7 +72,12 @@ defmodule CoreWeb.PackLive do
 
   @impl true
   def handle_event("purchase_packs", %{"amount" => amount}, %{assigns: assigns} = socket) do
-    Core.Gameplay.purchase_packs(assigns.current_season, assigns.current_account, String.to_integer(amount))
+    Core.Gameplay.purchase_packs(
+      assigns.current_season,
+      assigns.current_account,
+      String.to_integer(amount)
+    )
+
     socket
     |> push_patch(to: ~p"/lop/packs")
     |> (&{:noreply, &1}).()
@@ -84,11 +89,11 @@ defmodule CoreWeb.PackLive do
     |> case do
       nil ->
         socket
+
       pack ->
         Core.Gameplay.update_pack(pack, %{opened: true})
         |> case do
           {:ok, pack} ->
-
             socket
             |> push_patch(to: ~p"/lop/packs/#{id}")
         end
@@ -104,13 +109,21 @@ defmodule CoreWeb.PackLive do
     <h1>Unopened Packs</h1>
 
     <section class="btn-group" role="group" aria-label="Purchase packs">
-      <button type="button" class="btn btn-primary" phx-click="purchase_packs" phx-value-amount={1}>Purchase 1 Pack</button>
-      <button type="button" class="btn btn-primary" phx-click="purchase_packs" phx-value-amount={2}>2 Packs</button>
-      <button type="button" class="btn btn-primary" phx-click="purchase_packs" phx-value-amount={6}>6 Packs</button>
-      <button type="button" class="btn btn-primary" phx-click="purchase_packs" phx-value-amount={15}>15 Packs</button>
+      <button type="button" class="btn btn-primary" phx-click="purchase_packs" phx-value-amount={1}>
+        Purchase 1 Pack
+      </button>
+      <button type="button" class="btn btn-primary" phx-click="purchase_packs" phx-value-amount={2}>
+        2 Packs
+      </button>
+      <button type="button" class="btn btn-primary" phx-click="purchase_packs" phx-value-amount={6}>
+        6 Packs
+      </button>
+      <button type="button" class="btn btn-primary" phx-click="purchase_packs" phx-value-amount={15}>
+        15 Packs
+      </button>
     </section>
 
-    <hr/>
+    <hr />
 
     <%= if Enum.any?(@records) do %>
       <section

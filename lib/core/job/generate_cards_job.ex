@@ -18,21 +18,24 @@ defmodule Core.Job.GenerateCardsJob do
         # I believe there needs to be some connection between season and champion?
         champions = Core.Gameplay.list_champions()
 
-        Core.Repo.transaction(fn ->
-          for rarity <- rarities, champion <- champions do
-            for _ <- 1..rarity.season_pick_rate do
-              Core.Gameplay.create_card!(%{
-                champion: champion,
-                season: season,
-                rarity: rarity
-              })
+        Core.Repo.transaction(
+          fn ->
+            for rarity <- rarities, champion <- champions do
+              for _ <- 1..rarity.season_pick_rate do
+                Core.Gameplay.create_card!(%{
+                  champion: champion,
+                  season: season,
+                  rarity: rarity
+                })
+              end
             end
-          end
 
-          %{season_id: season.id}
-          |> Core.Job.GeneratePacksJob.new()
-          |> Oban.insert()
-        end, timeout: 120_000)
+            %{season_id: season.id}
+            |> Core.Job.GeneratePacksJob.new()
+            |> Oban.insert()
+          end,
+          timeout: 120_000
+        )
     end
   end
 end

@@ -42,7 +42,10 @@ defmodule Core.Gameplay do
   @spec purchase_packs(Core.Gameplay.Season.t(), Core.Users.Account.t(), pos_integer) :: :ok
   def purchase_packs(season, account, count) do
     for _ <- 1..count do
-      pack = Core.Repo.preload(Core.Gameplay.random_pack(where: [season_id: season.id]), [cards: [:rarity, :champion]])
+      pack =
+        Core.Repo.preload(Core.Gameplay.random_pack(where: [season_id: season.id]),
+          cards: [:rarity, :champion]
+        )
 
       Core.Gameplay.update_pack!(pack, %{account: account})
 
@@ -55,7 +58,10 @@ defmodule Core.Gameplay do
   @spec open_packs(Core.Season.Gameplay.t(), pos_integer()) :: :ok
   def open_packs(season, count) do
     for number <- 1..count do
-      pack = Core.Repo.preload(Core.Gameplay.random_pack(where: [season_id: season.id]), [cards: [:rarity, :champion]])
+      pack =
+        Core.Repo.preload(Core.Gameplay.random_pack(where: [season_id: season.id]),
+          cards: [:rarity, :champion]
+        )
 
       for card <- pack.cards do
         Logger.info("Pulled #{card.champion.name} (#{card.rarity.name}) from pack #{number}")
@@ -65,6 +71,8 @@ defmodule Core.Gameplay do
     :ok
   end
 
-  def current_season(), do: from(Core.Gameplay.Season, where: [active: true], limit: 1) |> Core.Repo.one()
+  def current_season(),
+    do: from(Core.Gameplay.Season, where: [active: true], limit: 1) |> Core.Repo.one()
+
   def current_season_id(), do: current_season() |> Map.get(:id)
 end
