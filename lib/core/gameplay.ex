@@ -65,5 +65,6 @@ defmodule Core.Gameplay do
     :ok
   end
 
-  def current_season_id(), do: from(Core.Gameplay.Season, where: [active: true], limit: 1) |> Core.Repo.one() |> Map.get(:id)
+  def current_season(), do: from(Core.Gameplay.Season, where: [active: true], limit: 1) |> Core.Repo.one()
+  def current_season_id(), do: current_season() |> Map.get(:id)
 end

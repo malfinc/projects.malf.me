@@ -16,6 +16,8 @@ defmodule CoreWeb.GameplayComponents do
         id={@pack.id}
         class="CardPack--isDraggable animate__animated"
         style="display: inline-block;"
+        phx-click="open_pack"
+        phx-value-id={@pack.id}
       >
         <img src={~p"/images/unopened_pack.png"} />
       </div>

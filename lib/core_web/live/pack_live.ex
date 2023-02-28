@@ -3,8 +3,16 @@ defmodule CoreWeb.PackLive do
   use CoreWeb, :live_view
   import Ecto.Query
 
-  defp list_records(_assigns, _params) do
-    Core.Gameplay.list_packs()
+  defp list_records(assigns, _params) do
+    Core.Gameplay.Pack
+    |> from(
+      where: [
+        opened: false,
+        season_id: ^assigns.current_season.id,
+        account_id: ^assigns.current_account.id
+      ]
+    )
+    |> Core.Repo.all()
     |> Core.Repo.preload(
       cards: [:champion, :rarity],
       season: []
@@ -32,23 +40,13 @@ defmodule CoreWeb.PackLive do
   def mount(_params, _session, socket) do
     socket
     |> assign(:page_title, "Loading...")
+    |> assign(:current_season, Core.Gameplay.current_season())
     |> (&{:ok, &1}).()
   end
 
   defp as(socket, :list, params) do
     socket
     |> assign(:page_title, "Packs")
-    |> assign(:plants,
-      Core.Gameplay.Pack
-      |> from(
-        where: [
-          opened: false,
-          season_id: ^Core.Gameplay.current_season_id(),
-          account_id: ^socket.assigns.current_account.id
-        ]
-      )
-      |> Core.Repo.all()
-    )
     |> assign(:records, list_records(socket.assigns, params))
   end
 
@@ -73,9 +71,46 @@ defmodule CoreWeb.PackLive do
   end
 
   @impl true
+  def handle_event("purchase_packs", %{"amount" => amount}, %{assigns: assigns} = socket) do
+    Core.Gameplay.purchase_packs(assigns.current_season, assigns.current_account, String.to_integer(amount))
+    socket
+    |> push_patch(to: ~p"/lop/packs")
+    |> (&{:noreply, &1}).()
+  end
+
+  @impl true
+  def handle_event("open_pack", %{"id" => id}, socket) do
+    Core.Gameplay.get_pack(id)
+    |> case do
+      nil ->
+        socket
+      pack ->
+        Core.Gameplay.update_pack(pack, %{opened: true})
+        |> case do
+          {:ok, pack} ->
+
+            socket
+            |> push_patch(to: ~p"/lop/packs/#{id}")
+        end
+    end
+    |> (&{:noreply, &1}).()
+  end
+
+  @impl true
+  @spec render(%{:live_action => :list | :show, optional(any) => any}) ::
+          Phoenix.LiveView.Rendered.t()
   def render(%{live_action: :list} = assigns) do
     ~H"""
     <h1>Unopened Packs</h1>
+
+    <section class="btn-group" role="group" aria-label="Purchase packs">
+      <button type="button" class="btn btn-primary" phx-click="purchase_packs" phx-value-amount={1}>Purchase 1 Pack</button>
+      <button type="button" class="btn btn-primary" phx-click="purchase_packs" phx-value-amount={2}>2 Packs</button>
+      <button type="button" class="btn btn-primary" phx-click="purchase_packs" phx-value-amount={6}>6 Packs</button>
+      <button type="button" class="btn btn-primary" phx-click="purchase_packs" phx-value-amount={15}>15 Packs</button>
+    </section>
+
+    <hr/>
 
     <%= if Enum.any?(@records) do %>
       <section
@@ -83,10 +118,12 @@ defmodule CoreWeb.PackLive do
         phx-hook="UnopenedCardPacks"
         style="display: grid; grid-template-columns: repeat(auto-fit, 350px); gap: 15px; align-items: center; justify-items: center;"
       >
-        <%= for pack <- @record do %>
+        <%= for pack <- @records do %>
           <.card_pack pack={pack} />
         <% end %>
       </section>
+    <% else %>
+      <p>You have no unopened packs.</p>
     <% end %>
     """
   end
@@ -95,6 +132,14 @@ defmodule CoreWeb.PackLive do
   def render(%{live_action: :show} = assigns) do
     ~H"""
     <h1>Opened Pack</h1>
+
+    <section>
+      <%= for card <- @record.cards do %>
+        <section>
+          <%= card.champion.name %> (<%= card.rarity.name %>)
+        </section>
+      <% end %>
+    </section>
     """
   end
 end

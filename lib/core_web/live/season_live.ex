@@ -148,7 +148,7 @@ defmodule CoreWeb.SeasonLive do
     <h1>Season <%= @record.position %></h1>
 
     <section>
-      <button class="btn btn-primary" type="button" disabled={@record.active} phx-event="activate">Activate</button>
+      <button class="btn btn-primary" type="button" disabled={@record.active} phx-click="activate">Activate</button>
     </section>
 
     <h2>Champions</h2>
