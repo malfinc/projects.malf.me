@@ -10,7 +10,7 @@ defmodule Core.Repo.Migrations.RecreatePackSlots do
       timestamps()
     end
 
-    create(unique_index(:pack_slots, [:pack_id, :card_id]))
+    create(index(:pack_slots, [:pack_id]))
     create(unique_index(:pack_slots, [:card_id]))
   end
 end

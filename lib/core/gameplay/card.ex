@@ -12,14 +12,14 @@ defmodule Core.Gameplay.Card do
     timestamps()
   end
 
-  @type t :: %__MODULE__{
-  }
+  @type t :: %__MODULE__{}
 
   @doc false
   @spec changeset(struct, map) :: Ecto.Changeset.t(t())
   def changeset(record, attributes) do
-    record_with_preload = record
-    |> Core.Repo.preload([:season, :champion, :rarity])
+    record_with_preload =
+      record
+      |> Core.Repo.preload([:season, :champion, :rarity])
 
     record_with_preload
     |> Ecto.Changeset.cast(attributes, [])

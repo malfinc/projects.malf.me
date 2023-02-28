@@ -11,8 +11,7 @@ defmodule Core.Gameplay.PackSlot do
     timestamps()
   end
 
-  @type t :: %__MODULE__{
-  }
+  @type t :: %__MODULE__{}
 
   @doc false
   @spec changeset(struct, map) :: Ecto.Changeset.t(t())
@@ -25,6 +24,6 @@ defmodule Core.Gameplay.PackSlot do
     |> Ecto.Changeset.validate_required([:pack, :card])
     |> Ecto.Changeset.foreign_key_constraint(:pack_id)
     |> Ecto.Changeset.foreign_key_constraint(:card_id)
-    |> Ecto.Changeset.unique_constraint([:pack_id, :card_id])
+    |> Ecto.Changeset.unique_constraint([:card_id])
   end
 end

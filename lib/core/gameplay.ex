@@ -15,35 +15,55 @@ defmodule Core.Gameplay do
   resource(:cards, :card, Core.Gameplay.Card)
   resource(:weeklies, :weekly, Core.Gameplay.Weekly)
 
-  def rarity_distribution(season) do
-    list_cards()
+  @spec odds(Core.Gameplay.Season.t(), Core.Gameplay.Rarity.t(), pos_integer()) :: float
+  def odds(season, rarity, packs)
+      when is_struct(rarity, Core.Gameplay.Rarity) and is_integer(packs) do
+    total_packs = count_cards() / 6
+    cards = Core.Repo.preload(list_cards(), [:rarity])
+    distribution = card_rarity_distribution(season, cards)
+    chance_to_pick = Map.get(distribution, rarity.name) / total_packs
+    chance_to_not_pick = 1.0 - chance_to_pick
+
+    1.0 - Enum.reduce(1..(packs + 1), fn _, sum -> chance_to_not_pick * sum end)
+  end
+
+  @spec card_rarity_distribution(Core.Gameplay.Season.t()) :: map
+  def card_rarity_distribution(season), do: card_rarity_distribution(season, list_cards())
+
+  @spec card_rarity_distribution(Core.Gameplay.Season.t(), list(Core.Gameplay.Card.t())) :: map
+  def card_rarity_distribution(season, cards) do
+    cards
     |> Core.Repo.preload([:rarity])
     |> Enum.filter(fn %{season_id: season_id} -> season.id == season_id end)
     |> Enum.group_by(&Map.get(&1, :rarity))
     |> Map.new(fn {rarity, cards} -> {rarity.name, length(cards)} end)
   end
 
-  def distribution(season) do
-    list_packs()
-    |> Core.Repo.preload([cards: [:rarity]])
-    |> Enum.filter(fn %{season_id: season_id} -> season.id == season_id end)
-    |> Enum.map(fn pack ->
-      pack.cards
-      |> Enum.group_by(&Map.get(&1, :rarity))
-      |> Map.new(fn {rarity, cards} -> {rarity.name, length(cards)} end)
-    end)
-    |> List.flatten()
-    |> Enum.reduce(%{}, fn dist, acc -> Map.merge(acc, dist, fn _, a, b -> a + b end) end)
-    # |> Enum.group_by(fn x -> x end)
-    # |> Map.new(fn {rarity, packs} -> {rarity, length(packs)} end)
-    # |> Enum.reduce(rarity_mapping, fn pack, mapping ->
-    #   pack.cards
-    #   |> Enum.group_by(&Map.get(&1, :rarity))
-    #   |> Enum.map(fn
-    #     {rarity, []} -> {rarity.name, mapping[rarity.name]}
-    #     {rarity, cards} -> {rarity.name, [length(cards) | mapping[rarity.name]]}
-    #   end)
-    #   |> Map.new()
-    # end)
+  @spec purchase_packs(Core.Gameplay.Season.t(), Core.Users.Account.t(), pos_integer) :: :ok
+  def purchase_packs(season, account, count) do
+    for _ <- 1..count do
+      pack = Core.Repo.preload(Core.Gameplay.random_pack(where: [season_id: season.id]), [cards: [:rarity, :champion]])
+
+      Core.Gameplay.update_pack!(pack, %{account: account})
+
+      # Deduct coins
+    end
+
+    :ok
   end
+
+  @spec open_packs(Core.Season.Gameplay.t(), pos_integer()) :: :ok
+  def open_packs(season, count) do
+    for number <- 1..count do
+      pack = Core.Repo.preload(Core.Gameplay.random_pack(where: [season_id: season.id]), [cards: [:rarity, :champion]])
+
+      for card <- pack.cards do
+        Logger.info("Pulled #{card.champion.name} (#{card.rarity.name}) from pack #{number}")
+      end
+    end
+
+    :ok
+  end
+
+  def current_season_id(), do: from(Core.Gameplay.Season, where: [active: true], limit: 1) |> Core.Repo.one() |> Map.get(:id)
 end

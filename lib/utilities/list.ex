@@ -90,26 +90,40 @@ defmodule Utilities.List do
 
       element = Enum.random(0..(size - 1))
 
-      choice = if :rand.uniform() <= Map.fetch!(probability_table, element) do
-        element
-      else
-        Map.fetch!(alias_table, element)
-      end
+      choice =
+        if :rand.uniform() <= Map.fetch!(probability_table, element) do
+          element
+        else
+          Map.fetch!(alias_table, element)
+        end
 
       Enum.at(options, choice)
     end
   end
 
-  defp r_gen_tables(short, long, probability_table, alias_table) when short == [] or long == [], do: {probability_table, alias_table}
+  defp r_gen_tables(short, long, probability_table, alias_table) when short == [] or long == [],
+    do: {probability_table, alias_table}
+
   defp r_gen_tables(short, long, probability_table, alias_table) do
-    {remaining_short, [last_short]} = snip(short, - 1)
+    {remaining_short, [last_short]} = snip(short, -1)
     [first_long | remaining_long] = long
     alias_table = Map.put(alias_table, last_short, first_long)
 
-    probability_table = Map.update(probability_table, first_long, 0, &(&1 - (1 - Map.fetch!(probability_table, last_short))))
+    probability_table =
+      Map.update(
+        probability_table,
+        first_long,
+        0,
+        &(&1 - (1 - Map.fetch!(probability_table, last_short)))
+      )
 
     if Map.fetch!(probability_table, first_long) < 1 do
-      r_gen_tables(append(remaining_short, first_long), remaining_long, probability_table, alias_table)
+      r_gen_tables(
+        append(remaining_short, first_long),
+        remaining_long,
+        probability_table,
+        alias_table
+      )
     else
       r_gen_tables(remaining_short, long, probability_table, alias_table)
     end
@@ -117,10 +131,15 @@ defmodule Utilities.List do
 
   @spec index_and_filter(list(), function()) :: list(integer())
   def index_and_filter(list, function) when is_list(list) and is_function(function, 1),
-    do: list |> Enum.with_index() |> Enum.filter(fn {element, _index} -> function.(element) end) |> Enum.map(&elem(&1, 1))
+    do:
+      list
+      |> Enum.with_index()
+      |> Enum.filter(fn {element, _index} -> function.(element) end)
+      |> Enum.map(&elem(&1, 1))
 
   @spec snip(list(), integer()) :: {list(), any()}
-  def snip(list, position) when is_list(list) and is_integer(position), do: {Enum.drop(list, position), Enum.take(list, position)}
+  def snip(list, position) when is_list(list) and is_integer(position),
+    do: {Enum.drop(list, position), Enum.take(list, position)}
 
   @spec append(list(), any) :: list()
   def append(list, element) when is_list(list), do: Enum.concat(list, [element])

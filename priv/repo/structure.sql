@@ -622,7 +622,7 @@ CREATE TABLE public.rarities (
     inserted_at timestamp(0) without time zone NOT NULL,
     updated_at timestamp(0) without time zone NOT NULL,
     season_pick_rate integer DEFAULT 0 NOT NULL,
-    pack_pick_percentages double precision[] DEFAULT ARRAY[]::double precision[] NOT NULL
+    pack_slot_caps integer[] DEFAULT ARRAY[]::integer[] NOT NULL
 );
 
 
@@ -1224,10 +1224,10 @@ CREATE UNIQUE INDEX pack_slots_card_id_index ON public.pack_slots USING btree (c
 
 
 --
--- Name: pack_slots_pack_id_card_id_index; Type: INDEX; Schema: public; Owner: -
+-- Name: pack_slots_pack_id_index; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX pack_slots_pack_id_card_id_index ON public.pack_slots USING btree (pack_id, card_id);
+CREATE INDEX pack_slots_pack_id_index ON public.pack_slots USING btree (pack_id);
 
 
 --

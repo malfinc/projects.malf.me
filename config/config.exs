@@ -67,7 +67,6 @@ config :esbuild,
     env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
   ]
 
-
 # Configures Elixir's Logger
 import IO
 

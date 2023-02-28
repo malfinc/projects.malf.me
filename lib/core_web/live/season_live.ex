@@ -4,7 +4,11 @@ defmodule CoreWeb.SeasonLive do
 
   defp list_records(_assigns, _params) do
     Core.Gameplay.list_seasons()
-    |> Core.Repo.preload([packs: [:pack_slots], plants: [:champions], challenges: [champion: [:plant, :upgrades]]])
+    |> Core.Repo.preload(
+      packs: [:pack_slots],
+      plants: [:champions],
+      challenges: [champion: [:plant, :upgrades]]
+    )
     |> Core.Decorate.deep()
   end
 
@@ -16,7 +20,11 @@ defmodule CoreWeb.SeasonLive do
 
       record ->
         record
-        |> Core.Repo.preload([packs: [:pack_slots], plants: [:champions], challenges: [champion: [:plant, :upgrades]]])
+        |> Core.Repo.preload(
+          packs: [:pack_slots],
+          plants: [:champions],
+          challenges: [champion: [:plant, :upgrades]]
+        )
         |> Core.Decorate.deep()
     end
   end
@@ -56,6 +64,17 @@ defmodule CoreWeb.SeasonLive do
   def handle_params(params, _url, socket) do
     socket
     |> as(socket.assigns.live_action, params)
+    |> (&{:noreply, &1}).()
+  end
+
+  @impl true
+  def handle_event("activate", _params, socket) do
+    Core.Gameplay.update_season(socket.assigns.record, %{active: true})
+    |> case do
+      {:ok, record} ->
+        socket
+        |> assign(:record, record)
+    end
     |> (&{:noreply, &1}).()
   end
 
@@ -128,62 +147,53 @@ defmodule CoreWeb.SeasonLive do
     ~H"""
     <h1>Season <%= @record.position %></h1>
 
-    <%= if unopened_packs?(@record.packs) do %>
-      <h2 id="packs">Packs</h2>
-      <section id="UnopenedCardPacks" phx-hook="UnopenedCardPacks" style="display: grid; grid-template-columns: repeat(auto-fit, 350px); gap: 15px; align-items: center; justify-items: center;">
-        <%= for pack <- @record.packs do %>
-          <.card_pack pack={pack} />
+    <section>
+      <button class="btn btn-primary" type="button" disabled={@record.active} phx-event="activate">Activate</button>
+    </section>
+
+    <h2>Champions</h2>
+    <ul>
+      <%= for plant <- @record.plants do %>
+        <%= for champion <- plant.champions do %>
+          <li>
+            <.link href={~p"/lop/champions/#{champion.id}"}><%= champion.name %></.link>
+            (<%= plant.name %>)
+          </li>
         <% end %>
-      </section>
-    <% else %>
-      <h2>Champions</h2>
+      <% end %>
+    </ul>
+
+    <h2>Challenges</h2>
+    <%= if length(@record.challenges) > 0 do %>
       <ul>
-        <%= for plant <- @record.plants do %>
-          <%= for champion <- plant.champions do %>
-            <li>
-              <.link href={~p"/lop/champions/#{champion.id}"}><%= champion.name %></.link>
-              (<%= plant.name %>)
-            </li>
-          <% end %>
+        <%= for challenge <- @record.challenges do %>
+          <li>
+            <.link href={~p"/lop/challenges/#{challenge.id}"}><%= challenge.id %></.link>
+
+            <h3>Participants</h3>
+            <%= if length(challenge.champions) > 0 do %>
+              <ul>
+                <%= for champion <- @record.champions do %>
+                  <li>
+                    <.link href={~p"/lop/champions/#{champion.id}"}>
+                      <%= champion.name %>
+                    </.link>
+                  </li>
+                <% end %>
+              </ul>
+            <% else %>
+              <p>
+                No champions yet participating in this challenge.
+              </p>
+            <% end %>
+          </li>
         <% end %>
       </ul>
-
-      <h2>Challenges</h2>
-      <%= if length(@record.challenges) > 0 do %>
-        <ul>
-          <%= for challenge <- @record.challenges do %>
-            <li>
-              <.link href={~p"/lop/challenges/#{challenge.id}"}><%= challenge.id %></.link>
-
-              <h3>Participants</h3>
-              <%= if length(challenge.champions) > 0 do %>
-                <ul>
-                  <%= for champion <- @record.champions do %>
-                    <li>
-                      <.link href={~p"/lop/champions/#{champion.id}"}>
-                        <%= champion.name %>
-                      </.link>
-                    </li>
-                  <% end %>
-                </ul>
-              <% else %>
-                <p>
-                  No champions yet participating in this challenge.
-                </p>
-              <% end %>
-            </li>
-          <% end %>
-        </ul>
-      <% else %>
-        <p>
-          No challenges created for this season yet.
-        </p>
-      <% end %>
+    <% else %>
+      <p>
+        No challenges created for this season yet.
+      </p>
     <% end %>
     """
-  end
-
-  defp unopened_packs?(packs) do
-    !Enum.all?(packs, fn pack -> pack.opened end)
   end
 end
