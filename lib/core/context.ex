@@ -66,13 +66,6 @@ defmodule Core.Context do
 
       unless Enum.member?(unquote(actions), :list) do
         @doc """
-        Returns all `#{unquote(schema)}` records sorted by the given order, see Ecto's `Ecto.Query.API.order_by/1` for more details
-        """
-        @spec unquote(:"list_#{plural}")(Keyword.t()) :: list(unquote(schema).t())
-        def unquote(:"list_#{plural}")(order),
-          do: from(unquote(schema), order_by: ^order) |> Core.Repo.all()
-
-        @doc """
         Returns all `#{unquote(schema)}` records, unsorted
         """
         @spec unquote(:"list_#{plural}")() :: list(unquote(schema).t())

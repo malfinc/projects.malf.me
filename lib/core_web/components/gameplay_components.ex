@@ -11,7 +11,16 @@ defmodule CoreWeb.GameplayComponents do
     <%= if @pack.opened do %>
       <div><img src={~p"/images/"} /></div>
     <% else %>
-      <div phx-hook="UnopenedCardPack" id={@pack.id} class="CardPack--isDraggable animate__animated" style="display: inline-block;"><img src={~p"/images/unopened_pack.png"} /></div>
+      <div
+        phx-hook="UnopenedCardPack"
+        id={@pack.id}
+        class="CardPack--isDraggable animate__animated"
+        style="display: inline-block;"
+        phx-click="open_pack"
+        phx-value-id={@pack.id}
+      >
+        <img src={~p"/images/unopened_pack.png"} />
+      </div>
     <% end %>
     """
   end
@@ -23,13 +32,25 @@ defmodule CoreWeb.GameplayComponents do
 
   def card(assigns) do
     ~H"""
-    <div id={@champion.id} phx-hook="Card" data-tilt-glare style={"background-image: url(#{~p"/images/rainbow_frame.png"}); padding: 15px; width: #{@width + (15 * 2)}px; height: #{@height + (15 * 2)}px; border-radius: 12px; color: white; margin-left: auto; margin-right: auto; box-shadow: 2px 2px 9px 0px rgba(0,0,0,0.5);"}>
+    <div
+      id={@champion.id}
+      phx-hook="Card"
+      data-tilt-glare
+      style={"background-image: url(#{~p"/images/rainbow_frame.png"}); padding: 15px; width: #{@width + (15 * 2)}px; height: #{@height + (15 * 2)}px; border-radius: 12px; color: white; margin-left: auto; margin-right: auto; box-shadow: 2px 2px 9px 0px rgba(0,0,0,0.5);"}
+    >
       <div>
-        <img src={~p"/images/apocalypse_scorpion.png"} width={"#{@width}px"} height={"#{@height}px"} style="border-radius: 12px; position: absolute;" />
+        <img
+          src={~p"/images/apocalypse_scorpion.png"}
+          width={"#{@width}px"}
+          height={"#{@height}px"}
+          style="border-radius: 12px; position: absolute;"
+        />
 
         <header style="position: relative; padding: 15px; ">
           <h4 style="text-shadow: 1px 1px 5px rgb(221, 160, 220);"><%= @champion.name %></h4>
-          <h6 style="text-shadow: 1px 1px 5px rgb(221, 160, 220);"><%= @champion.plant.name %> <em><small>(<%= @champion.plant.species %>)</small></em></h6>
+          <h6 style="text-shadow: 1px 1px 5px rgb(221, 160, 220);">
+            <%= @champion.plant.name %> <em><small>(<%= @champion.plant.species %>)</small></em>
+          </h6>
         </header>
 
         <div style="position: relative; display: grid; grid-template-rows: 1fr; justify-items: end; row-gap: 15px; margin-top: 45%;">
@@ -47,7 +68,9 @@ defmodule CoreWeb.GameplayComponents do
           <%= for {name, value} <- total_attributes(@champion) do %>
             <.circle>
               <div><%= value %></div>
-              <div style="padding: 3px; border-radius: 5px; background-color: rgba(250, 250, 250, 0.85); color: black;"><%= slab(name) %></div>
+              <div style="padding: 3px; border-radius: 5px; background-color: rgba(250, 250, 250, 0.85); color: black;">
+                <%= slab(name) %>
+              </div>
             </.circle>
           <% end %>
         </footer>
@@ -57,6 +80,7 @@ defmodule CoreWeb.GameplayComponents do
   end
 
   slot :inner_block
+
   def circle(assigns) do
     ~H"""
     <section style="display: flex; align-items: center; justify-content: space-evenly; border-radius: 50%; border: 2px solid darkorchid; width: 4.5rem; height: 4.5rem;">
@@ -83,6 +107,7 @@ defmodule CoreWeb.GameplayComponents do
       Map.merge(attributes, Map.take(upgrade, Map.keys(attributes)))
     end)
   end
+
   defp slab("strength"), do: "STR"
   defp slab("endurance"), do: "END"
   defp slab("speed"), do: "SPD"

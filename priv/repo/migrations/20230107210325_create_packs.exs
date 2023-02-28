@@ -7,6 +7,7 @@ defmodule Core.Repo.Migrations.CreatePacks do
       add :season_id, references(:seasons, on_delete: :delete_all), null: false
       timestamps()
     end
+
     create(index(:packs, [:season_id]))
 
     create(table(:pack_slots)) do

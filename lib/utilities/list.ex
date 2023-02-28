@@ -8,9 +8,10 @@ defmodule Utilities.List do
   def find_header(headers, key, default \\ nil) when is_list(headers) and is_binary(key) do
     headers
     |> Enum.find(default, fn {header, _value} -> header == key end)
-    |> Utilities.Tuple.right()
+    |> then(fn {header, _value} -> header end)
   end
 
+  # Pick a better name
   @spec split(list(tuple())) :: {list(), list()}
   def split(list) when is_list(list) do
     list
@@ -69,72 +70,81 @@ defmodule Utilities.List do
   a result.
   """
   @spec random(list({any(), float() | integer()})) :: any()
-  def random(weighted_options) when is_list(weighted_options) do
-    {options, weights} = weighted_options |> Utilities.List.split()
-    total = Enum.sum(weights) / 1.0
-    length = length(weights)
+  def random(options_and_their_weights) when is_list(options_and_their_weights) do
+    {options, weights} = Utilities.List.split(options_and_their_weights)
+    sum_of_weights = Enum.sum(weights)
 
-    initial_probabilities =
-      Enum.map(weights, fn weight ->
-        weight * length / total
-      end)
+    if sum_of_weights == 0 do
+      nil
+    else
+      size = length(weights)
 
-    {inner, probabilities} =
-      initial_probabilities
-      |> Enum.with_index()
-      |> Enum.reduce({[], []}, fn {probability, index}, {shorts, longs} ->
-        if probability < 1 do
-          {List.insert_at(shorts, index, -1), longs}
+      probabilities = weights |> Enum.map(&(&1 * size / sum_of_weights))
+      short = probabilities |> index_and_filter(&(&1 <= 1.0))
+      long = probabilities |> index_and_filter(&(&1 > 1.0)) |> Enum.reverse()
+
+      probability_table = probabilities |> to_index_map
+      alias_table = Enum.to_list(0..(size - 1)) |> Enum.map(&{&1, 0}) |> Map.new()
+
+      {probability_table, alias_table} = r_gen_tables(short, long, probability_table, alias_table)
+
+      element = Enum.random(0..(size - 1))
+
+      choice =
+        if :rand.uniform() <= Map.fetch!(probability_table, element) do
+          element
         else
-          {shorts, List.insert_at(longs, index, -1)}
+          Map.fetch!(alias_table, element)
         end
-      end)
-      |> rebucket(List.duplicate(-1, length), initial_probabilities)
 
-    random_number = :rand.uniform() |> Float.round(4)
-
-    j = floor(random_number * length)
-
-    if random_number <= Enum.at(probabilities, j) do
-      Enum.at(options, j)
-    else
-      options |> Enum.at(Enum.at(inner, j))
+      Enum.at(options, choice)
     end
   end
 
-  # @spec rebucket({list(integer()), list(integer())}, list(integer()), list(float())) :: {list(integer()), list(integer())}
-  defp rebucket({_, []}, inner, probabilities) when is_list(inner) and is_list(probabilities),
-    do: {inner, probabilities}
+  defp r_gen_tables(short, long, probability_table, alias_table) when short == [] or long == [],
+    do: {probability_table, alias_table}
 
-  defp rebucket({[], _}, inner, probabilities) when is_list(inner) and is_list(probabilities),
-    do: {inner, probabilities}
+  defp r_gen_tables(short, long, probability_table, alias_table) do
+    {remaining_short, [last_short]} = snip(short, -1)
+    [first_long | remaining_long] = long
+    alias_table = Map.put(alias_table, last_short, first_long)
 
-  defp rebucket({shorts, longs}, inner, probabilities)
-       when is_list(shorts) and is_list(longs) and is_list(inner) and is_list(probabilities) do
-    {j, remaining_shorts} = List.pop_at(shorts, -1)
+    probability_table =
+      Map.update(
+        probability_table,
+        first_long,
+        0,
+        &(&1 - (1 - Map.fetch!(probability_table, last_short)))
+      )
 
-    k = Enum.at(longs, -1)
-
-    new_inner = List.replace_at(inner, j, k)
-
-    left =
-      probabilities
-      |> Enum.at(k, 0)
-      |> Float.round(4)
-
-    right =
-      probabilities
-      |> Enum.at(j)
-      |> Float.round(4)
-
-    new_probabilities = List.replace_at(probabilities, k, left - 1 - right)
-
-    if Enum.at(probabilities, k) < 1 do
-      {_, remaining_longs} = List.pop_at(longs, -1)
-
-      rebucket({remaining_shorts ++ [k], remaining_longs}, new_inner, new_probabilities)
+    if Map.fetch!(probability_table, first_long) < 1 do
+      r_gen_tables(
+        append(remaining_short, first_long),
+        remaining_long,
+        probability_table,
+        alias_table
+      )
     else
-      rebucket({remaining_shorts, longs}, new_inner, new_probabilities)
+      r_gen_tables(remaining_short, long, probability_table, alias_table)
     end
   end
+
+  @spec index_and_filter(list(), function()) :: list(integer())
+  def index_and_filter(list, function) when is_list(list) and is_function(function, 1),
+    do:
+      list
+      |> Enum.with_index()
+      |> Enum.filter(fn {element, _index} -> function.(element) end)
+      |> Enum.map(&elem(&1, 1))
+
+  @spec snip(list(), integer()) :: {list(), any()}
+  def snip(list, position) when is_list(list) and is_integer(position),
+    do: {Enum.drop(list, position), Enum.take(list, position)}
+
+  @spec append(list(), any) :: list()
+  def append(list, element) when is_list(list), do: Enum.concat(list, [element])
+
+  @spec to_index_map(list()) :: map()
+  def to_index_map(list) when is_list(list),
+    do: list |> Enum.with_index() |> Map.new(fn {v, i} -> {i, v} end)
 end

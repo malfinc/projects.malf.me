@@ -83,7 +83,9 @@ defmodule CoreWeb.ChampionLive do
 
     <ul>
       <%= for champion <- @records do %>
-        <li><.link href={~p"/lop/champions/#{champion.id}"}><%= champion.name %></.link></li>
+        <li>
+          <.link href={~p"/lop/champions/#{champion.id}"}><%= champion.name %></.link>
+        </li>
       <% end %>
     </ul>
     """

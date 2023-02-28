@@ -80,7 +80,9 @@ defmodule CoreWeb.PlantLive do
       <ul>
         <%= for plant <- @records do %>
           <li>
-            <.link href={~p"/lop/plants"}><%= plant.name %> (<em><%= plant.species %></em>)</.link>
+            <.link href={~p"/lop/plants/#{plant.id}"}>
+              <%= plant.name %> (<em><%= plant.species %></em>)
+            </.link>
           </li>
         <% end %>
       </ul>

@@ -4,32 +4,6 @@ defmodule Utilities do
   """
 
   @doc """
-  find duplicate-aware intersection between lists or stings
-
-  ## Examples:
-      iex> Utilities.intersect([1,2,3], [2,3,4])
-      [2, 3]
-      iex> Utilities.intersect([1,2,2,3], [2,3,4])
-      [2, 3]
-      iex> Utilities.intersect([1,2,2,3], [2,2,3,4])
-      [2, 2, 3]
-      iex> Utilities.intersect("abcb", "bbcx")
-      ["b", "c", "b"]
-      iex> Utilities.intersect("abcb", "")
-      []
-      iex> Utilities.intersect(["free","world"], ["free"])
-      ["free"]
-  """
-  @spec intersect(String.t() | list(), String.t() | list()) :: list(String.t())
-  def intersect(a, b) when is_binary(a) and is_binary(b) do
-    intersect(String.graphemes(a), String.graphemes(b))
-  end
-
-  def intersect(a, b) when is_list(a) and is_list(b) do
-    a -- a -- b
-  end
-
-  @doc """
   Determines if the value is considered present, which is non-empty for values that
   contain data like `[]`.
   """
@@ -53,5 +27,9 @@ defmodule Utilities do
     {nsec, value} = :timer.tc(function)
 
     {nsec / 1_000_000.0, value}
+  end
+
+  def until(function) when is_function(function, 0) do
+    function.() || until(function)
   end
 end

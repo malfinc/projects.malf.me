@@ -8,8 +8,7 @@ defmodule Core.Job.DepositCoinJob do
 
   @impl Oban.Worker
   @spec perform(Oban.Job.t()) ::
-          {:ok, Core.Gameplay.Coin.t()} | {:error, Ecto.Changeset.t()}
-
+          {:ok, Core.Gameplay.CoinTransaction.t()} | {:error, Ecto.Changeset.t()}
   def perform(%Oban.Job{args: %{"twitch_user_id" => nil}}) do
     {:cancel, "No twitch_user_id given, we can't allocate points"}
   end
@@ -25,7 +24,7 @@ defmodule Core.Job.DepositCoinJob do
     |> Core.Repo.one()
     |> case do
       nil ->
-        {:snooze, 86400}
+        {:snooze, 86_400}
 
       account ->
         Core.Gameplay.create_coin_transaction(%{
@@ -45,7 +44,7 @@ defmodule Core.Job.DepositCoinJob do
     |> Core.Repo.one()
     |> case do
       nil ->
-        {:snooze, 86400}
+        {:snooze, 86_400}
 
       account ->
         Core.Gameplay.create_coin_transaction(%{
