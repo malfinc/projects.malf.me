@@ -97,13 +97,33 @@ defmodule CoreWeb.TwitchWebhookController do
           "event" => %{
             "user_id" => twitch_user_id,
             "reward" => %{
-              "cost" => amount
+              "id" => "792b165b-3ace-4cc1-8050-6e01d71891a7"
             }
           }
         } = payload
       ) do
     record_webhook(payload, conn.req_headers)
-    give_coins("channel point redemption", twitch_user_id, amount / 20_000)
+    give_coins("channel point redemption", twitch_user_id, 1)
+
+    conn
+    |> put_status(200)
+    |> text("OK")
+  end
+
+  def create(
+        conn,
+        %{
+          "subscription" => %{"type" => "channel.channel_points_custom_reward_redemption.add"},
+          "event" => %{
+            "user_id" => twitch_user_id,
+            "reward" => %{
+              "id" => "a554946e-6eef-4ac6-a731-0d404a7d9dae"
+            }
+          }
+        } = payload
+      ) do
+    record_webhook(payload, conn.req_headers)
+    give_coins("channel point redemption", twitch_user_id, 5)
 
     conn
     |> put_status(200)
