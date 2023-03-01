@@ -102,7 +102,7 @@ defmodule CoreWeb.PackLive do
         |> case do
           {:ok, pack} ->
             socket
-            |> push_patch(to: ~p"/lop/packs/#{id}")
+            |> push_patch(to: ~p"/lop/packs/#{pack.id}")
         end
     end
     |> (&{:noreply, &1}).()

@@ -3,7 +3,6 @@ defmodule Core.Job.GenerateChampionsJob do
 
   """
   use Oban.Worker
-  @champion_pool_size 64
 
   @impl Oban.Worker
   @spec perform(Oban.Job.t()) :: {:snooze, pos_integer()}
@@ -22,9 +21,11 @@ defmodule Core.Job.GenerateChampionsJob do
 
       season ->
         Core.Repo.transaction(fn ->
-          for name <- names(words) do
-            Core.Gameplay.create_champion!(%{plant: plant(season), name: name})
-          end
+          season.plants
+          |> Enum.zip(names(words, length(season.plants)))
+          |> Enum.each(fn {plant, name} ->
+            Core.Gameplay.create_champion!(%{plant: plant, name: name})
+          end)
 
           %{season_id: season.id}
           |> Core.Job.GenerateCardsJob.new()
@@ -33,12 +34,8 @@ defmodule Core.Job.GenerateChampionsJob do
     end
   end
 
-  defp plant(season) when is_struct(season, Core.Gameplay.Season) do
-    season.plants |> Enum.random()
-  end
-
-  defp names(words) do
-    Utilities.Enum.multiple_unique(@champion_pool_size, @champion_pool_size, fn ->
+  defp names(words, size) do
+    Utilities.Enum.multiple_unique(size, size, fn ->
       "#{words |> Enum.random()} #{words |> Enum.random()}"
     end)
     |> Enum.map(&Utilities.String.titlecase/1)

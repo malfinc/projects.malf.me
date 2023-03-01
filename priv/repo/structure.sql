@@ -576,7 +576,8 @@ CREATE TABLE public.packs (
     opened boolean DEFAULT false NOT NULL,
     season_id uuid NOT NULL,
     inserted_at timestamp(0) without time zone NOT NULL,
-    updated_at timestamp(0) without time zone NOT NULL
+    updated_at timestamp(0) without time zone NOT NULL,
+    account_id uuid
 );
 
 
@@ -654,7 +655,8 @@ CREATE TABLE public.seasons (
     id uuid NOT NULL,
     inserted_at timestamp(0) without time zone NOT NULL,
     updated_at timestamp(0) without time zone NOT NULL,
-    "position" bigint NOT NULL
+    "position" bigint NOT NULL,
+    active boolean DEFAULT false NOT NULL
 );
 
 
@@ -1231,6 +1233,13 @@ CREATE INDEX pack_slots_pack_id_index ON public.pack_slots USING btree (pack_id)
 
 
 --
+-- Name: packs_account_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX packs_account_id_index ON public.packs USING btree (account_id);
+
+
+--
 -- Name: packs_season_id_index; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1284,6 +1293,13 @@ CREATE UNIQUE INDEX season_plants_plant_id_season_id_index ON public.season_plan
 --
 
 CREATE INDEX season_plants_season_id_index ON public.season_plants USING btree (season_id);
+
+
+--
+-- Name: seasons_active_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX seasons_active_index ON public.seasons USING btree (active);
 
 
 --
@@ -1550,6 +1566,14 @@ ALTER TABLE ONLY public.pack_slots
 
 
 --
+-- Name: packs packs_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.packs
+    ADD CONSTRAINT packs_account_id_fkey FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE SET NULL;
+
+
+--
 -- Name: packs packs_season_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1653,3 +1677,5 @@ INSERT INTO public."schema_migrations" (version) VALUES (20230224040723);
 INSERT INTO public."schema_migrations" (version) VALUES (20230224044447);
 INSERT INTO public."schema_migrations" (version) VALUES (20230224044538);
 INSERT INTO public."schema_migrations" (version) VALUES (20230224051217);
+INSERT INTO public."schema_migrations" (version) VALUES (20230228042615);
+INSERT INTO public."schema_migrations" (version) VALUES (20230228042631);
