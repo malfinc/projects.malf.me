@@ -4,12 +4,7 @@ defmodule CoreWeb.WebhookLive do
   use CoreWeb, :live_view
 
   defp list_records(_assigns, _params) do
-    from(
-      Core.Content.Webhook,
-      order_by: [desc: :inserted_at],
-      limit: 25
-    )
-    |> Core.Repo.all()
+    Core.Content.list_webhooks()
   end
 
   defp get_record(id) when is_binary(id) do
