@@ -8,8 +8,6 @@ defmodule Core.Content.Webhook do
     field(:provider, :string)
     field(:headers, :map)
     field(:payload, :map)
-
-    timestamps()
   end
 
   @type t :: %__MODULE__{
