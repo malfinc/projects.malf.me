@@ -6,7 +6,9 @@ defmodule CoreWeb.PackLive do
   defp list_records(assigns, _params) do
     assigns.current_season
     |> case do
-      nil -> []
+      nil ->
+        []
+
       season ->
         Core.Gameplay.Pack
         |> from(

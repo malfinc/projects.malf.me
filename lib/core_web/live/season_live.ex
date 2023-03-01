@@ -68,8 +68,8 @@ defmodule CoreWeb.SeasonLive do
   end
 
   @impl true
-  def handle_event("activate", _params, socket) do
-    Core.Gameplay.update_season(socket.assigns.record.source, %{active: true})
+  def handle_event("activate", _params, %{assigns: %{record: %{__source__: source}}} = socket) do
+    Core.Gameplay.update_season(source, %{active: true})
     |> case do
       {:ok, record} ->
         socket
