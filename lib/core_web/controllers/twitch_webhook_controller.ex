@@ -190,13 +190,10 @@ defmodule CoreWeb.TwitchWebhookController do
   end
 
   defp record_webhook(payload, headers) do
-    dbg(payload)
-    dbg(headers)
     Core.Content.create_webhook(%{
       provider: "twitch",
       payload: payload,
-      headers: headers
+      headers: Map.new(headers)
     })
-    |> dbg()
   end
 end
