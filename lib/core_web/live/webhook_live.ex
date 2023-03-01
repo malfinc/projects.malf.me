@@ -1,6 +1,5 @@
 defmodule CoreWeb.WebhookLive do
   @moduledoc false
-  import Ecto.Query
   use CoreWeb, :live_view
 
   defp list_records(_assigns, _params) do
@@ -13,7 +12,6 @@ defmodule CoreWeb.WebhookLive do
     |> case do
       nil ->
         {:error, :not_found}
-
       record ->
         record
     end
