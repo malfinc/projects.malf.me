@@ -4,20 +4,25 @@ defmodule CoreWeb.PackLive do
   import Ecto.Query
 
   defp list_records(assigns, _params) do
-    Core.Gameplay.Pack
-    |> from(
-      where: [
-        opened: false,
-        season_id: ^assigns.current_season.id,
-        account_id: ^assigns.current_account.id
-      ]
-    )
-    |> Core.Repo.all()
-    |> Core.Repo.preload(
-      cards: [:champion, :rarity],
-      season: []
-    )
-    |> Core.Decorate.deep()
+    assigns.current_season
+    |> case do
+      nil -> []
+      season ->
+        Core.Gameplay.Pack
+        |> from(
+          where: [
+            opened: false,
+            season_id: ^season.id,
+            account_id: ^assigns.current_account.id
+          ]
+        )
+        |> Core.Repo.all()
+        |> Core.Repo.preload(
+          cards: [:champion, :rarity],
+          season: []
+        )
+        |> Core.Decorate.deep()
+    end
   end
 
   defp get_record(id) when is_binary(id) do
