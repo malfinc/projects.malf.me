@@ -73,8 +73,7 @@ config :core, dev_routes: true
 
 # Do not include metadata nor timestamps in development logs
 config :logger, :console,
-  format: "$metadata[$level] #{IO.ANSI.bright()}$message#{IO.ANSI.normal()}\n",
-  metadata: [:label, :request_id]
+  format: "$time [$level] #{IO.ANSI.bright()}$message#{IO.ANSI.normal()}\n"
 
 config :ueberauth, Ueberauth.Strategy.Twitch.OAuth,
   client_id: System.get_env("TWITCH_CLIENT_ID"),

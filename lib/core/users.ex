@@ -6,6 +6,13 @@ defmodule Core.Users do
   import Ecto.Query, warn: false
   require Logger
 
+  # def can_read?(%Core.Universes.World{} = record, %Core.Users.Account{} = current_account) do
+  #   current_account
+  #   |> Core.Repo.preload([:worlds])
+  #   |> Map.get(:worlds)
+  #   |> Enum.member?(record)
+  # end
+
   def list_accounts() do
     Core.Repo.all(Core.Users.Account)
   end

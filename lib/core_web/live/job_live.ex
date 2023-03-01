@@ -13,7 +13,8 @@ defmodule CoreWeb.JobLive do
     from(
       Oban.Job,
       where: ^where,
-      order_by: [desc: :inserted_at]
+      order_by: [desc: :inserted_at],
+      limit: 25
     )
     |> Core.Repo.all()
   end
@@ -32,6 +33,8 @@ defmodule CoreWeb.JobLive do
 
   @impl true
   def mount(_params, _session, socket) do
+    if connected?(socket), do: Process.send_after(self(), :refresh, 2500)
+
     socket
     |> assign(:page_title, "Loading...")
     |> (&{:ok, &1}).()
@@ -54,6 +57,23 @@ defmodule CoreWeb.JobLive do
         |> assign(:record, record)
         |> assign(:page_title, "Job / #{record.id}")
     end
+  end
+
+  @impl true
+  def handle_info(:refresh, %{assigns: %{live_action: :list}} = socket) do
+    Process.send_after(self(), :refresh, 2500)
+    {:noreply, push_patch(socket, to: "/admin/jobs")}
+  end
+
+  @impl true
+  def handle_info(:refresh, %{assigns: %{live_action: :show, record: %{id: id}}} = socket) do
+    Process.send_after(self(), :refresh, 2500)
+    {:noreply, push_patch(socket, to: "/admin/jobs/#{id}")}
+  end
+
+  @impl true
+  def handle_info(:refresh, socket) do
+    {:noreply, socket}
   end
 
   @impl true
@@ -102,14 +122,25 @@ defmodule CoreWeb.JobLive do
   end
 
   @impl true
+  def handle_event("pause_default_queue", _params, socket) do
+    Oban.pause_queue(queue: :default)
+
+    socket
+    |> (&{:noreply, &1}).()
+  end
+
+  @impl true
   @spec render(%{live_action: :list | :show}) ::
           Phoenix.LiveView.Rendered.t()
   def render(%{live_action: :list} = assigns) do
     ~H"""
-    <h2>Jobs</h2>
+    <h2>Jobs <%= length(@records) %></h2>
 
     <h3 id="actions">Actions</h3>
     <section>
+      <button type="button" phx-click="pause_default_queue" class="btn btn-outline-info">
+        Pause Default Queue
+      </button>
       <button type="button" phx-click="retry_all" class="btn btn-outline-warning">Retry All</button>
       <button type="button" phx-click="cancel_all" class="btn btn-outline-danger">Cancel All</button>
     </section>
@@ -172,6 +203,27 @@ defmodule CoreWeb.JobLive do
   def render(%{live_action: :show} = assigns) do
     ~H"""
     <h2>Job / <%= @record.worker %> #<%= @record.id %></h2>
+
+    <h3 id="actions">Actions</h3>
+    <section>
+      <button
+        type="button"
+        phx-click="retry"
+        phx-value-id={@record.id}
+        class="btn btn-outline-warning"
+      >
+        Retry
+      </button>
+      <button
+        type="button"
+        phx-click="cancel"
+        phx-value-id={@record.id}
+        class="btn btn-outline-danger"
+      >
+        Cancel
+      </button>
+    </section>
+
     <p>
       <%= @record.queue %> queue -
       currently <%= @record.state %> -
@@ -185,13 +237,13 @@ defmodule CoreWeb.JobLive do
       <% end %>
     </p>
 
-    <h4 id="arguments">Arguments</h4>
+    <h3 id="arguments">Arguments</h3>
     <p>
       <code class="inline"><%= code_as_html(@record.args) %></code>
     </p>
 
     <%= if @record.attempted_by do %>
-      <h4 id="attempted">Attempted By</h4>
+      <h3 id="attempted">Attempted By</h3>
       <ul>
         <%= for node <- @record.attempted_by do %>
           <li><%= node %></li>
@@ -199,7 +251,7 @@ defmodule CoreWeb.JobLive do
       </ul>
     <% end %>
 
-    <h4 id="errors">Errors</h4>
+    <h3 id="errors">Errors</h3>
     <dl>
       <%= for error <- Enum.reverse(@record.errors) do %>
         <dt><time title={error["at"]} datetime={error["at"]}><%= error_at_ago(error) %></time></dt>
@@ -207,7 +259,7 @@ defmodule CoreWeb.JobLive do
       <% end %>
     </dl>
 
-    <h4 id="timestamps">Timestamps</h4>
+    <h3 id="timestamps">Timestamps</h3>
     <dl>
       <dt>Started At</dt>
       <dd>
