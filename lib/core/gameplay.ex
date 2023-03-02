@@ -39,40 +39,72 @@ defmodule Core.Gameplay do
     |> Map.new(fn {rarity, cards} -> {rarity.name, length(cards)} end)
   end
 
-  @spec purchase_packs(Core.Gameplay.Season.t(), Core.Users.Account.t(), pos_integer) :: :ok
+  @spec purchase_packs(Core.Gameplay.Season.t(), Core.Users.Account.t(), pos_integer) ::
+          list(atom())
   def purchase_packs(season, account, count) do
     for _ <- 1..count do
-      pack =
-        Core.Repo.preload(Core.Gameplay.random_pack(where: [season_id: season.id]),
-          cards: [:rarity, :champion]
-        )
+      Core.Repo.transaction(fn ->
+        Core.Gameplay.random_pack(where: [season_id: season.id])
+        |> Core.Repo.preload(cards: [:rarity, :champion])
+        |> case do
+          nil ->
+            {:error, "no packs available"}
 
-      Core.Gameplay.update_pack!(pack, %{account: account})
-
-      # Deduct coins
-    end
-
-    :ok
-  end
-
-  @spec open_packs(Core.Season.Gameplay.t(), pos_integer()) :: :ok
-  def open_packs(season, count) do
-    for number <- 1..count do
-      pack =
-        Core.Repo.preload(Core.Gameplay.random_pack(where: [season_id: season.id]),
-          cards: [:rarity, :champion]
-        )
-
-      for card <- pack.cards do
-        Logger.info("Pulled #{card.champion.name} (#{card.rarity.name}) from pack #{number}")
+          pack ->
+            if Core.Gameplay.can_spend?(account, 1.0) do
+              Core.Gameplay.spend_coins(account, 1.0, "purchasing a pack of cards")
+              |> case do
+                {:ok, _} ->
+                  Core.Gameplay.update_pack(pack, %{account: account})
+              end
+            else
+              {:error, "not enough funds"}
+            end
+        end
+      end)
+      |> case do
+        {:ok, transaction} -> transaction
+        {:error, changeset} = result -> result
       end
     end
-
-    :ok
   end
 
+  @spec can_spend?(Core.Gameplay.Account.t(), float()) :: boolean()
+  def can_spend?(account, value) do
+    account.coin_transactions
+    |> Utilities.List.pluck(:value)
+    |> Enum.sum()
+    |> Kernel.>=(value)
+  end
+
+  @spec spend_coins(Core.Users.Account.t(), float(), String.t()) ::
+          {:error, Ecto.Changeset.t()} | {:ok, Core.Gameplay.CoinTransaction.t()}
+  def spend_coins(account, value, reason) do
+    Core.Gameplay.create_coin_transaction(%{
+      reason: reason,
+      account: account,
+      value: value
+    })
+  end
+
+  @spec open_pack(Core.Gameplay.Pack.t(), Core.Users.Account.t()) :: :ok
+  def open_pack(pack, account) do
+    Core.Repo.transaction(fn ->
+      pack
+      |> Core.Gameplay.update_pack(%{opened: true})
+      |> case do
+        {:ok, %{cards: cards}} ->
+          for card <- cards do
+            Core.Gameplay.update_card(card, %{account: account})
+          end
+      end
+    end)
+  end
+
+  @spec current_season() :: Core.Gameplay.Season.t()
   def current_season(),
     do: from(Core.Gameplay.Season, where: [active: true], limit: 1) |> Core.Repo.one()
 
+  @spec current_season_id() :: String.t()
   def current_season_id(), do: current_season() |> Map.get(:id)
 end

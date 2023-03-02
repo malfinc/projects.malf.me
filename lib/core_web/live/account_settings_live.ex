@@ -5,14 +5,17 @@ defmodule CoreWeb.AccountSettingsLive do
     ~H"""
     <h1>Account</h1>
     <h2 id="wallet">Wallet</h2>
-    <p>You currently have <i class="fa-solid fa-coins"></i> <%= @total_balance %> coins</p>
+    <p>
+      You currently have
+      <i class="fa-solid fa-coins"></i> <%= Float.to_string(@total_balance, decimals: 2) %> coins
+    </p>
 
     <h3 id="transactions">Transactions</h3>
     <%= if length(@current_account.coin_transactions) > 0 do %>
       <ul>
-        <%= for coin_transaction <- @current_account.coin_transactions do %>
+        <%= for coin_transaction <- Enum.sort_by(@current_account.coin_transactions, &Map.get(&1, :inserted_at), :desc) do %>
           <li>
-            <i class="fa-solid fa-coins"></i> <%= coin_transaction.value %>
+            <i class="fa-solid fa-coins"></i> <%= Float.to_string(coin_transaction.value, decimals: 2) %>
             <em>at <%= coin_transaction.inserted_at %> due to <%= coin_transaction.reason %></em>
           </li>
         <% end %>

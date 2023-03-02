@@ -7,10 +7,11 @@ defmodule Core.Gameplay.Champion do
   schema "champions" do
     field(:name, :string)
     field(:slug, :string)
+    field(:image_uri, :string)
     field(:position, :integer)
+    belongs_to(:plant, Core.Gameplay.Plant)
     has_many(:pack_slots, Core.Gameplay.Champion)
     many_to_many(:challenges, Core.Gameplay.Champion, join_through: "challenge_champions")
-    belongs_to(:plant, Core.Gameplay.Plant)
     has_many(:upgrades, Core.Gameplay.Upgrade)
 
     timestamps()
@@ -18,8 +19,9 @@ defmodule Core.Gameplay.Champion do
 
   @type t :: %__MODULE__{
           name: String.t(),
-          position: integer(),
-          slug: String.t()
+          slug: String.t(),
+          image_uri: String.t(),
+          position: integer()
         }
 
   @doc false
@@ -28,10 +30,12 @@ defmodule Core.Gameplay.Champion do
     record_with_preload = Core.Repo.preload(record, [:plant])
 
     record_with_preload
-    |> Ecto.Changeset.cast(attributes, [:name])
+    |> Ecto.Changeset.cast(attributes, [:name, :image_uri])
     |> Slugy.slugify(:name)
     |> Ecto.Changeset.put_assoc(:plant, attributes[:plant] || record_with_preload.plant)
     |> Ecto.Changeset.validate_required([:name, :slug, :plant])
     |> Ecto.Changeset.unique_constraint(:name)
+    |> Ecto.Changeset.foreign_key_constraint(:plant_id)
+    |> Ecto.Changeset.unique_constraint(:plant_id)
   end
 end

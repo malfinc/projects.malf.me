@@ -19,10 +19,10 @@ defmodule CoreWeb.PackLive do
           ]
         )
         |> Core.Repo.all()
-        |> Core.Repo.preload(
-          cards: [:champion, :rarity],
-          season: []
-        )
+        |> Core.Repo.preload([
+          :cards,
+          :season
+        ])
         |> Core.Decorate.deep()
     end
   end
@@ -36,7 +36,7 @@ defmodule CoreWeb.PackLive do
       record ->
         record
         |> Core.Repo.preload(
-          cards: [:champion, :rarity],
+          cards: [champion: [:plant, :upgrades], rarity: []],
           season: []
         )
         |> Core.Decorate.deep()
@@ -79,30 +79,47 @@ defmodule CoreWeb.PackLive do
 
   @impl true
   def handle_event("purchase_packs", %{"amount" => amount}, %{assigns: assigns} = socket) do
-    Core.Gameplay.purchase_packs(
-      assigns.current_season,
-      assigns.current_account,
-      String.to_integer(amount)
-    )
+    results =
+      Core.Gameplay.purchase_packs(
+        assigns.current_season,
+        Core.Repo.preload(assigns.current_account, :coin_transactions),
+        String.to_integer(amount)
+      )
+
+    dbg(results)
 
     socket
     |> push_patch(to: ~p"/lop/packs")
+    |> put_flash(
+      :error,
+      results
+      |> Enum.filter(fn
+        {:error, _} -> true
+        {:ok, _} -> false
+      end)
+      |> Enum.map(fn {_, message} -> message end)
+    )
     |> (&{:noreply, &1}).()
   end
 
   @impl true
-  def handle_event("open_pack", %{"id" => id}, socket) do
+  def handle_event(
+        "open_pack",
+        %{"id" => id},
+        %{assigns: %{current_account: current_account}} = socket
+      ) do
     Core.Gameplay.get_pack(id)
+    |> Core.Repo.preload(:cards)
     |> case do
       nil ->
         socket
 
       pack ->
-        Core.Gameplay.update_pack(pack, %{opened: true})
+        Core.Gameplay.open_pack(pack, current_account)
         |> case do
-          {:ok, pack} ->
+          {:ok, _transaction} ->
             socket
-            |> push_patch(to: ~p"/lop/packs/#{pack.id}")
+            |> push_navigate(to: ~p"/lop/packs/#{pack.id}")
         end
     end
     |> (&{:noreply, &1}).()
@@ -156,7 +173,7 @@ defmodule CoreWeb.PackLive do
     <section>
       <%= for card <- @record.cards do %>
         <section>
-          <%= card.champion.name %> (<%= card.rarity.name %>)
+          <.card card={card} />
         </section>
       <% end %>
     </section>

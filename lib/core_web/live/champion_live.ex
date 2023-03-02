@@ -96,7 +96,7 @@ defmodule CoreWeb.ChampionLive do
     ~H"""
     <h1><%= @record.name %> (Alive)</h1>
     <p><%= @record.name %> is a <%= @record.plant.name %> (<em><%= @record.plant.species %></em>).</p>
-    <.card champion={@record} />
+    <.champion champion={@record} />
     """
   end
 end

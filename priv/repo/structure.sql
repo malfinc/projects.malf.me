@@ -331,7 +331,8 @@ CREATE TABLE public.cards (
     champion_id uuid NOT NULL,
     season_id uuid NOT NULL,
     inserted_at timestamp(0) without time zone NOT NULL,
-    updated_at timestamp(0) without time zone NOT NULL
+    updated_at timestamp(0) without time zone NOT NULL,
+    account_id uuid
 );
 
 
@@ -369,7 +370,8 @@ CREATE TABLE public.champions (
     plant_id uuid NOT NULL,
     inserted_at timestamp(0) without time zone NOT NULL,
     updated_at timestamp(0) without time zone NOT NULL,
-    "position" bigint NOT NULL
+    "position" bigint NOT NULL,
+    image_uri public.citext
 );
 
 
@@ -1044,6 +1046,13 @@ CREATE UNIQUE INDEX accounts_tokens_context_token_index ON public.accounts_token
 
 
 --
+-- Name: cards_account_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX cards_account_id_index ON public.cards USING btree (account_id);
+
+
+--
 -- Name: cards_champion_id_index; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1096,7 +1105,7 @@ CREATE UNIQUE INDEX champions_name_index ON public.champions USING btree (name);
 -- Name: champions_plant_id_index; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX champions_plant_id_index ON public.champions USING btree (plant_id);
+CREATE UNIQUE INDEX champions_plant_id_index ON public.champions USING btree (plant_id);
 
 
 --
@@ -1430,6 +1439,14 @@ ALTER TABLE ONLY public.accounts_tokens
 
 
 --
+-- Name: cards cards_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.cards
+    ADD CONSTRAINT cards_account_id_fkey FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON DELETE SET NULL;
+
+
+--
 -- Name: cards cards_champion_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1679,3 +1696,7 @@ INSERT INTO public."schema_migrations" (version) VALUES (20230224044538);
 INSERT INTO public."schema_migrations" (version) VALUES (20230224051217);
 INSERT INTO public."schema_migrations" (version) VALUES (20230228042615);
 INSERT INTO public."schema_migrations" (version) VALUES (20230228042631);
+INSERT INTO public."schema_migrations" (version) VALUES (20230302080008);
+INSERT INTO public."schema_migrations" (version) VALUES (20230302092317);
+INSERT INTO public."schema_migrations" (version) VALUES (20230302092335);
+INSERT INTO public."schema_migrations" (version) VALUES (20230302092937);

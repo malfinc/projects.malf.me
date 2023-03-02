@@ -12,6 +12,7 @@ defmodule CoreWeb.WebhookLive do
     |> case do
       nil ->
         {:error, :not_found}
+
       record ->
         record
     end

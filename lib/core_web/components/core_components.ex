@@ -41,7 +41,6 @@ defmodule CoreWeb.CoreComponents do
       <h4 :if={@title} class="alert-heading">
         <i :if={@icon} class={"fa-solid fa-#{@icon}"} /> <%= @title %>
       </h4>
-
       <p><%= msg %></p>
       <hr :if={@context} />
       <p :if={@context} class="mb-0"><%= @context %></p>
