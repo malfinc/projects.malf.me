@@ -28,7 +28,7 @@ defmodule Core.Gameplay.Card do
       |> Core.Repo.preload([:season, :champion, :rarity])
 
     record_with_preload
-    |> Ecto.Changeset.cast(attributes, [:boolean, :full_art])
+    |> Ecto.Changeset.cast(attributes, [:holographic, :full_art])
     |> Ecto.Changeset.put_assoc(:season, attributes[:season] || record_with_preload.season)
     |> Ecto.Changeset.put_assoc(:account, attributes[:account] || record_with_preload.account)
     |> Ecto.Changeset.put_assoc(:champion, attributes[:champion] || record_with_preload.champion)
