@@ -1,6 +1,6 @@
 defmodule Core.Job.GenerateWeekliesJob do
   @moduledoc """
-
+  Generates the weekly fights that will be a part of each season.
   """
   use Oban.Worker
   @weekly_size 12

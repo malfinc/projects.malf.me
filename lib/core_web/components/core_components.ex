@@ -25,6 +25,14 @@ defmodule CoreWeb.CoreComponents do
 
   slot :inner_block, doc: "the optional inner block that renders the flash message"
 
+  def flash(%{flash: %{"error" => error_messages}} = assigns) when is_list(error_messages) do
+    ~H"""
+    <.flash :for={error_message <- @flash["error"]} kind={:error}>
+      <%= error_message %>
+    </.flash>
+    """
+  end
+
   def flash(assigns) do
     ~H"""
     <div

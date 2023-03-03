@@ -86,8 +86,6 @@ defmodule CoreWeb.PackLive do
         String.to_integer(amount)
       )
 
-    dbg(results)
-
     socket
     |> push_patch(to: ~p"/lop/packs")
     |> put_flash(

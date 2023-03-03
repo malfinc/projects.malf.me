@@ -1,6 +1,6 @@
 defmodule Core.Job.GeneratePacksJob do
   @moduledoc """
-
+  Creates all the packs for the season, to be later stuffed.
   """
   use Oban.Worker
 

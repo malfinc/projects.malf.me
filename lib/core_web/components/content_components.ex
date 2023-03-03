@@ -22,7 +22,7 @@ defmodule CoreWeb.ContentComponents do
               <.link href="#">Community Cookbook</.link>
             </li>
             <li>
-              <.link href="#">League of Plants</.link>
+              <.link href="/ac">AggroCulture</.link>
             </li>
             <li>
               <.link href="#">Towers of Bebylon</.link>

@@ -69,7 +69,7 @@ defmodule Core.Gameplay do
     end
   end
 
-  @spec can_spend?(Core.Gameplay.Account.t(), float()) :: boolean()
+  @spec can_spend?(Core.Users.Account.t(), float()) :: boolean()
   def can_spend?(account, value) do
     account.coin_transactions
     |> Utilities.List.pluck(:value)
@@ -83,11 +83,11 @@ defmodule Core.Gameplay do
     Core.Gameplay.create_coin_transaction(%{
       reason: reason,
       account: account,
-      value: value
+      value: -value
     })
   end
 
-  @spec open_pack(Core.Gameplay.Pack.t(), Core.Users.Account.t()) :: :ok
+  @spec open_pack(Core.Gameplay.Pack.t(), Core.Users.Account.t()) :: {:ok, any()}
   def open_pack(pack, account) do
     Core.Repo.transaction(fn ->
       pack

@@ -1,6 +1,6 @@
 defmodule Core.Job.GenerateChampionsJob do
   @moduledoc """
-
+  Creates all the champions for each season.
   """
   use Oban.Worker
 

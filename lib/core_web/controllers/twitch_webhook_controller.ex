@@ -123,7 +123,7 @@ defmodule CoreWeb.TwitchWebhookController do
         } = payload
       ) do
     record_webhook(payload, conn.req_headers)
-    give_coins("channel point redemption", twitch_user_id, 5)
+    give_coins("big channel point redemption", twitch_user_id, 5)
 
     conn
     |> put_status(200)

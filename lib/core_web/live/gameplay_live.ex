@@ -11,7 +11,7 @@ defmodule CoreWeb.GameplayLive do
 
   defp as(socket, :lop, _params) do
     socket
-    |> assign(:page_title, "League Of Plants")
+    |> assign(:page_title, "AggroCulture")
   end
 
   @impl true
@@ -24,7 +24,7 @@ defmodule CoreWeb.GameplayLive do
   @impl true
   def render(%{live_action: :lop} = assigns) do
     ~H"""
-    <h1>Welcome to the League of Plants</h1>
+    <h1>Welcome to the AggroCulture</h1>
 
     <p>
       Still in progress.

@@ -1,6 +1,6 @@
 defmodule Core.Job.FillPackSlotsJob do
   @moduledoc """
-
+  Fills all the empty packs in a season.
   """
   use Oban.Worker
   require Logger

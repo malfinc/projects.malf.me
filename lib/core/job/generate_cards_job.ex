@@ -1,6 +1,6 @@
 defmodule Core.Job.GenerateCardsJob do
   @moduledoc """
-
+  Generates all the cards for the season, based on the champions and rarity rates.
   """
   use Oban.Worker
 
