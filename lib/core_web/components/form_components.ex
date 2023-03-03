@@ -66,6 +66,7 @@ defmodule CoreWeb.FormComponents do
   attr :id, :any
   attr :name, :any
   attr :label, :string, default: nil
+  attr :details, :string, default: nil
 
   attr :type, :string,
     default: "text",
@@ -135,6 +136,7 @@ defmodule CoreWeb.FormComponents do
         <option :if={@prompt}><%= @prompt %></option>
         <%= Phoenix.HTML.Form.options_for_select(@options, @value) %>
       </select>
+      <div :if={@details} class="form-text"><%= @details %></div>
       <.error :for={msg <- @errors} describing={@id}><%= msg %></.error>
     </div>
     """
@@ -151,6 +153,7 @@ defmodule CoreWeb.FormComponents do
         aria-describedby={"#{@id}-feedback"}
         {@rest}
       ><%= @value %></textarea>
+      <div :if={@details} class="form-text"><%= @details %></div>
       <.error :for={msg <- @errors} describing={@id}><%= msg %></.error>
     </div>
     """
@@ -169,6 +172,7 @@ defmodule CoreWeb.FormComponents do
         aria-describedby={"#{@id}-feedback"}
         {@rest}
       />
+      <div :if={@details} class="form-text"><%= @details %></div>
       <.error :for={msg <- @errors} describing={@id}><%= msg %></.error>
     </div>
     """

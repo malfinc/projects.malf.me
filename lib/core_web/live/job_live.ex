@@ -130,7 +130,7 @@ defmodule CoreWeb.JobLive do
   end
 
   @impl true
-  @spec render(%{live_action: :list | :show}) ::
+  @spec render(%{:live_action => :list | :show, optional(any) => any}) ::
           Phoenix.LiveView.Rendered.t()
   def render(%{live_action: :list} = assigns) do
     ~H"""

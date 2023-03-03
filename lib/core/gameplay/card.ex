@@ -5,6 +5,8 @@ defmodule Core.Gameplay.Card do
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "cards" do
+    field(:holographic, :boolean)
+    field(:full_art, :boolean)
     belongs_to(:account, Core.Users.Account)
     belongs_to(:season, Core.Gameplay.Season)
     belongs_to(:rarity, Core.Gameplay.Rarity)
@@ -13,7 +15,10 @@ defmodule Core.Gameplay.Card do
     timestamps()
   end
 
-  @type t :: %__MODULE__{}
+  @type t :: %__MODULE__{
+          holographic: boolean(),
+          full_art: boolean()
+        }
 
   @doc false
   @spec changeset(struct, map) :: Ecto.Changeset.t(t())
@@ -23,7 +28,7 @@ defmodule Core.Gameplay.Card do
       |> Core.Repo.preload([:season, :champion, :rarity])
 
     record_with_preload
-    |> Ecto.Changeset.cast(attributes, [])
+    |> Ecto.Changeset.cast(attributes, [:boolean, :full_art])
     |> Ecto.Changeset.put_assoc(:season, attributes[:season] || record_with_preload.season)
     |> Ecto.Changeset.put_assoc(:account, attributes[:account] || record_with_preload.account)
     |> Ecto.Changeset.put_assoc(:champion, attributes[:champion] || record_with_preload.champion)

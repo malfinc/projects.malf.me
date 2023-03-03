@@ -71,7 +71,7 @@ defmodule CoreWeb.WebhookLive do
   end
 
   @impl true
-  @spec render(%{live_action: :list | :show}) ::
+  @spec render(%{:live_action => :list | :show, optional(any) => any}) ::
           Phoenix.LiveView.Rendered.t()
   def render(%{live_action: :list} = assigns) do
     ~H"""
@@ -89,7 +89,7 @@ defmodule CoreWeb.WebhookLive do
           <tr>
             <td>
               <.link href={~p"/admin/webhooks/#{webhook.id}"}>
-                #<%= webhook.id %>
+                <%= webhook.id %>
               </.link>
             </td>
             <td>

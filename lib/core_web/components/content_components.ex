@@ -264,7 +264,8 @@ defmodule CoreWeb.ContentComponents do
       {~p"/admin/accounts", "Accounts"},
       {~p"/admin/organizations", "Organizations"},
       {~p"/admin/jobs", "Jobs"},
-      {~p"/admin/webhooks", "Webhooks"}
+      {~p"/admin/webhooks", "Webhooks"},
+      {~p"/admin/rarities", "Rarities"}
     ]
 
   defp regular_links(),

@@ -64,42 +64,54 @@ if Mix.env() == :dev do
       name: "Common",
       color: "grey",
       season_pick_rate: 100,
-      pack_slot_caps: [2368, 2368, 1664, 0, 0, 0]
+      pack_slot_caps: [2368, 2368, 1664, 0, 0, 0],
+      holographic_rate: 0.0,
+      full_art_rate: 0.0
     })
 
     Core.Gameplay.create_rarity!(%{
       name: "Uncommon",
       color: "green",
       season_pick_rate: 75,
-      pack_slot_caps: [0, 0, 704, 2368, 1728, 0]
+      pack_slot_caps: [0, 0, 704, 2368, 1728, 0],
+      holographic_rate: 0.0,
+      full_art_rate: 0.0
     })
 
     Core.Gameplay.create_rarity!(%{
       name: "Rare",
       color: "blue",
       season_pick_rate: 30,
-      pack_slot_caps: [0, 0, 0, 0, 640, 1280]
+      pack_slot_caps: [0, 0, 0, 0, 640, 1280],
+      holographic_rate: 0.0,
+      full_art_rate: 0.0
     })
 
     Core.Gameplay.create_rarity!(%{
       name: "Epic",
       color: "yellow",
       season_pick_rate: 11,
-      pack_slot_caps: [0, 0, 0, 0, 0, 704]
+      pack_slot_caps: [0, 0, 0, 0, 0, 704],
+      holographic_rate: 0.0,
+      full_art_rate: 0.0
     })
 
     Core.Gameplay.create_rarity!(%{
       name: "Legendary",
       color: "orange",
       season_pick_rate: 5,
-      pack_slot_caps: [0, 0, 0, 0, 0, 320]
+      pack_slot_caps: [0, 0, 0, 0, 0, 320],
+      holographic_rate: 0.0,
+      full_art_rate: 0.0
     })
 
     Core.Gameplay.create_rarity!(%{
       name: "Mythical",
       color: "red",
       season_pick_rate: 1,
-      pack_slot_caps: [0, 0, 0, 0, 0, 64]
+      pack_slot_caps: [0, 0, 0, 0, 0, 64],
+      holographic_rate: 0.0,
+      full_art_rate: 0.0
     })
   end)
 end

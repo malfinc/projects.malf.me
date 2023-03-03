@@ -77,6 +77,8 @@ defmodule CoreWeb.ChampionLive do
   end
 
   @impl true
+  @spec render(%{:live_action => :list | :show, optional(any) => any}) ::
+          Phoenix.LiveView.Rendered.t()
   def render(%{live_action: :list} = assigns) do
     ~H"""
     <h1>Champions</h1>

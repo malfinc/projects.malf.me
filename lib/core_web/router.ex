@@ -115,6 +115,8 @@ defmodule CoreWeb.Router do
       live "/jobs", CoreWeb.JobLive, :list
       live "/webhooks/:id", CoreWeb.WebhookLive, :show
       live "/webhooks", CoreWeb.WebhookLive, :list
+      live "/rarities/:id", CoreWeb.RarityLive, :show
+      live "/rarities", CoreWeb.RarityLive, :list
       live "/organizations/:id", CoreWeb.OrganizationLive, :show
       live "/organizations", CoreWeb.OrganizationLive, :list
       live "/accounts/:id", CoreWeb.AccountLive, :show
