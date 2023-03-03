@@ -1,5 +1,6 @@
 defmodule CoreWeb.AccountSettingsLive do
   use CoreWeb, :live_view
+  import Ecto.Query
 
   def render(assigns) do
     ~H"""
@@ -11,14 +12,14 @@ defmodule CoreWeb.AccountSettingsLive do
     </p>
 
     <h3 id="transactions">Transactions</h3>
-    <%= if length(@current_account.coin_transactions) > 0 do %>
+    <%= if length(@coin_transactions) > 0 do %>
       <ul>
-        <%= for coin_transaction <- Enum.sort_by(@current_account.coin_transactions, &Map.get(&1, :inserted_at), :desc) do %>
+        <%= for {reason, value} <- @coin_transactions do %>
           <li>
-            <i class="fa-solid fa-coins"></i> <%= :erlang.float_to_binary(coin_transaction.value,
+            <i class="fa-solid fa-coins"></i> <%= :erlang.float_to_binary(value,
               decimals: 2
             ) %>
-            <em>at <%= coin_transaction.inserted_at %> due to <%= coin_transaction.reason %></em>
+            <em> for <%= reason %></em>
           </li>
         <% end %>
       </ul>
@@ -117,6 +118,41 @@ defmodule CoreWeb.AccountSettingsLive do
       |> assign(
         :total_balance,
         Enum.reduce(account.coin_transactions, 0, fn %{value: value}, total -> total + value end)
+      )
+      |> assign(
+        :coin_transactions,
+        coin_transaction in Core.Gameplay.CoinTransaction
+        |> from(
+          where: [
+            account_id: ^account.id
+          ],
+          order_by: [
+            {:desc, :inserted_at}
+          ]
+        )
+        |> Core.Repo.all()
+        |> Enum.reduce([], fn coin_transcation, aggregated_statements ->
+          Utilities.List.snip(aggregated_statements, -1)
+          |> case do
+            {[], []} ->
+              Utilities.List.append(
+                  aggregated_statements,
+                  {coin_transcation.reason, coin_transcation.value}
+                )
+            {remaining_aggregated_statements, [{reason, previous_value}]} ->
+              if reason == coin_transcation.reason do
+                Utilities.List.append(
+                  remaining_aggregated_statements,
+                  {reason, previous_value + coin_transcation.value}
+                )
+              else
+                Utilities.List.append(
+                  aggregated_statements,
+                  {coin_transcation.reason, coin_transcation.value}
+                )
+              end
+          end
+        end)
       )
       |> assign(:email_form_current_password, nil)
       |> assign(:current_email, account.email_address)
