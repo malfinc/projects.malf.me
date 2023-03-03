@@ -10,11 +10,16 @@ defmodule CoreWeb.CardLive do
         []
 
       season ->
-        Core.Gameplay.Card
+        card in Core.Gameplay.Card
         |> from(
           where: [
             season_id: ^season.id,
             account_id: ^assigns.current_account.id
+          ],
+          join: rarity in Core.Gameplay.Rarity,
+          on: rarity.id == card.rarity_id,
+          order_by: [
+            rarity.season_pick_rate
           ]
         )
         |> Core.Repo.all()
