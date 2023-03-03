@@ -83,6 +83,8 @@ defmodule CoreWeb.Router do
         live "/challenges/:id", CoreWeb.ChallengeLive, :show
         live "/packs/", CoreWeb.PackLive, :list
         live "/packs/:id", CoreWeb.PackLive, :show
+        live "/cards/", CoreWeb.CardLive, :list
+        live "/cards/:id", CoreWeb.CardLive, :show
       end
     end
   end

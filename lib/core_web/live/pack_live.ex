@@ -109,7 +109,7 @@ defmodule CoreWeb.PackLive do
         %{assigns: %{current_account: current_account}} = socket
       ) do
     Core.Gameplay.get_pack(id)
-    |> Core.Repo.preload(:cards)
+    |> Core.Repo.preload(cards: [:account])
     |> case do
       nil ->
         socket
@@ -153,7 +153,7 @@ defmodule CoreWeb.PackLive do
       <section
         id="UnopenedCardPacks"
         phx-hook="UnopenedCardPacks"
-        style="display: grid; grid-template-columns: repeat(auto-fit, 350px); gap: 15px; align-items: center; justify-items: center;"
+        class="collection collection--packs"
       >
         <%= for pack <- @records do %>
           <.card_pack pack={pack} />
@@ -170,7 +170,7 @@ defmodule CoreWeb.PackLive do
     ~H"""
     <h1>Opened Pack</h1>
 
-    <section>
+    <section class="collection collection--cards">
       <%= for card <- @record.cards do %>
         <section>
           <.card card={card} />

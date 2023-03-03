@@ -64,7 +64,7 @@ defmodule Core.Gameplay do
       end)
       |> case do
         {:ok, transaction} -> transaction
-        {:error, changeset} = result -> result
+        {:error, _changeset} = result -> result
       end
     end
   end

@@ -5,6 +5,7 @@ defmodule Core.Gameplay.Card do
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "cards" do
+    belongs_to(:account, Core.Users.Account)
     belongs_to(:season, Core.Gameplay.Season)
     belongs_to(:rarity, Core.Gameplay.Rarity)
     belongs_to(:champion, Core.Gameplay.Champion)
@@ -24,8 +25,11 @@ defmodule Core.Gameplay.Card do
     record_with_preload
     |> Ecto.Changeset.cast(attributes, [])
     |> Ecto.Changeset.put_assoc(:season, attributes[:season] || record_with_preload.season)
+    |> Ecto.Changeset.put_assoc(:account, attributes[:account] || record_with_preload.account)
     |> Ecto.Changeset.put_assoc(:champion, attributes[:champion] || record_with_preload.champion)
     |> Ecto.Changeset.put_assoc(:rarity, attributes[:rarity] || record_with_preload.rarity)
+    |> Ecto.Changeset.validate_required([:account])
+    |> Ecto.Changeset.foreign_key_constraint(:account_id)
     |> Ecto.Changeset.validate_required([:champion])
     |> Ecto.Changeset.foreign_key_constraint(:champion_id)
     |> Ecto.Changeset.validate_required([:rarity])
