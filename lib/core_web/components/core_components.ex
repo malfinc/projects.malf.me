@@ -47,7 +47,7 @@ defmodule CoreWeb.CoreComponents do
       {@rest}
     >
       <h4 :if={@title} class="alert-heading">
-        <i :if={@icon} class={"fa-solid fa-#{@icon}"} /> <%= @title %>
+        <.icon :if={@icon} class={"fa-#{@icon}"} /> <%= @title %>
       </h4>
       <p><%= msg %></p>
       <hr :if={@context} />
@@ -68,19 +68,30 @@ defmodule CoreWeb.CoreComponents do
   attr :type, :string, default: "button"
   attr :loading, :boolean, default: false
   attr :icon, :string, default: nil
-  attr :rest, :global, include: ~w(disabled form name value class)
+  attr :class, :string, default: ""
+  attr :rest, :global, include: ~w(disabled form name value)
 
   slot :inner_block, required: true
 
   def button(assigns) do
     ~H"""
-    <button {@rest} type={@type} disabled={assigns[:loading]}>
+    <button {@rest} type={@type} disabled={assigns[:loading]} class={"btn #{@class}"}>
       <%= if assigns[:loading] do %>
-        <i class="fa-solid fa-circle-notch fa-spin fa-fade"></i> Loading...
+        <.icon as="fa-circle-notch fa-spin fa-fade" /> Loading...
       <% else %>
-        <i class={"fa-solid fa-#{assigns[:icon]}"}></i> <%= render_slot(@inner_block) %>
+        <.icon as={"fa-#{assigns[:icon]}"} /> <%= render_slot(@inner_block) %>
       <% end %>
     </button>
+    """
+  end
+
+  attr :as, :string
+  attr :type, :string, default: "fa-solid"
+  attr :rest, :global, include: ~w(disabled form name value class)
+
+  def icon(assigns) do
+    ~H"""
+    <i {@rest} class={"#{@type} #{@as}"}></i>
     """
   end
 end

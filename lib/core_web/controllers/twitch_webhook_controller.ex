@@ -133,6 +133,19 @@ defmodule CoreWeb.TwitchWebhookController do
   def create(
         conn,
         %{
+          "subscription" => %{"type" => "channel.channel_points_custom_reward_redemption.add"}
+        } = payload
+      ) do
+    record_webhook(payload, conn.req_headers)
+
+    conn
+    |> put_status(200)
+    |> text("OK")
+  end
+
+  def create(
+        conn,
+        %{
           "subscription" => %{"type" => "channel.subscription.gift"},
           "event" => %{
             "user_id" => twitch_user_id

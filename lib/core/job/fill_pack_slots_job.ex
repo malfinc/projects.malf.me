@@ -73,7 +73,7 @@ defmodule Core.Job.FillPackSlotsJob do
               end)
             end)
           end,
-          timeout: 30_000
+          timeout: 60_000
         )
     end
   end

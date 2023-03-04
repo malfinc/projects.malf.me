@@ -332,7 +332,9 @@ CREATE TABLE public.cards (
     season_id uuid NOT NULL,
     inserted_at timestamp(0) without time zone NOT NULL,
     updated_at timestamp(0) without time zone NOT NULL,
-    account_id uuid
+    account_id uuid,
+    full_art boolean DEFAULT false NOT NULL,
+    holographic boolean DEFAULT false NOT NULL
 );
 
 
@@ -625,7 +627,9 @@ CREATE TABLE public.rarities (
     inserted_at timestamp(0) without time zone NOT NULL,
     updated_at timestamp(0) without time zone NOT NULL,
     season_pick_rate integer DEFAULT 0 NOT NULL,
-    pack_slot_caps integer[] DEFAULT ARRAY[]::integer[] NOT NULL
+    pack_slot_caps integer[] DEFAULT ARRAY[]::integer[] NOT NULL,
+    holographic_rate double precision DEFAULT 0.0 NOT NULL,
+    full_art_rate double precision DEFAULT 0.0 NOT NULL
 );
 
 
@@ -1700,3 +1704,7 @@ INSERT INTO public."schema_migrations" (version) VALUES (20230302080008);
 INSERT INTO public."schema_migrations" (version) VALUES (20230302092317);
 INSERT INTO public."schema_migrations" (version) VALUES (20230302092335);
 INSERT INTO public."schema_migrations" (version) VALUES (20230302092937);
+INSERT INTO public."schema_migrations" (version) VALUES (20230303113328);
+INSERT INTO public."schema_migrations" (version) VALUES (20230303113901);
+INSERT INTO public."schema_migrations" (version) VALUES (20230303113911);
+INSERT INTO public."schema_migrations" (version) VALUES (20230303113922);

@@ -10,7 +10,7 @@ defmodule CoreWeb.CardLive do
         []
 
       season ->
-        card in Core.Gameplay.Card
+        (card in Core.Gameplay.Card)
         |> from(
           where: [
             season_id: ^season.id,

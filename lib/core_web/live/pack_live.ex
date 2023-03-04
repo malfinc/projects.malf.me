@@ -79,24 +79,32 @@ defmodule CoreWeb.PackLive do
 
   @impl true
   def handle_event("purchase_packs", %{"amount" => amount}, %{assigns: assigns} = socket) do
-    results =
-      Core.Gameplay.purchase_packs(
-        assigns.current_season,
-        Core.Repo.preload(assigns.current_account, :coin_transactions),
-        String.to_integer(amount)
-      )
+    assigns.current_season
+    |> case do
+      nil ->
+        socket
+        |> put_flash(:error, "No active season.")
 
-    socket
-    |> push_patch(to: ~p"/lop/packs")
-    |> put_flash(
-      :error,
-      results
-      |> Enum.filter(fn
-        {:error, _} -> true
-        {:ok, _} -> false
-      end)
-      |> Enum.map(fn {_, message} -> message end)
-    )
+      season ->
+        results =
+          Core.Gameplay.purchase_packs(
+            season,
+            Core.Repo.preload(assigns.current_account, :coin_transactions),
+            String.to_integer(amount)
+          )
+
+        socket
+        |> push_patch(to: ~p"/lop/packs")
+        |> put_flash(
+          :error,
+          results
+          |> Enum.filter(fn
+            {:error, _} -> true
+            {:ok, _} -> false
+          end)
+          |> Enum.map(fn {_, message} -> message end)
+        )
+    end
     |> (&{:noreply, &1}).()
   end
 
@@ -131,18 +139,18 @@ defmodule CoreWeb.PackLive do
     <h1>Unopened Packs</h1>
 
     <section class="btn-group" role="group" aria-label="Purchase packs">
-      <button type="button" class="btn btn-primary" phx-click="purchase_packs" phx-value-amount={1}>
+      <.button class="btn-primary" phx-click="purchase_packs" phx-value-amount={1}>
         Purchase 1 Pack
-      </button>
-      <button type="button" class="btn btn-primary" phx-click="purchase_packs" phx-value-amount={2}>
+      </.button>
+      <.button class="btn-primary" phx-click="purchase_packs" phx-value-amount={2}>
         2 Packs
-      </button>
-      <button type="button" class="btn btn-primary" phx-click="purchase_packs" phx-value-amount={6}>
+      </.button>
+      <.button class="btn-primary" phx-click="purchase_packs" phx-value-amount={6}>
         6 Packs
-      </button>
-      <button type="button" class="btn btn-primary" phx-click="purchase_packs" phx-value-amount={15}>
+      </.button>
+      <.button class="btn-primary" phx-click="purchase_packs" phx-value-amount={15}>
         15 Packs
-      </button>
+      </.button>
     </section>
 
     <hr />

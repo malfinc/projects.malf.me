@@ -8,7 +8,7 @@ defmodule CoreWeb.AccountSettingsLive do
     <h2 id="wallet">Wallet</h2>
     <p>
       You currently have
-      <i class="fa-solid fa-coins"></i> <%= :erlang.float_to_binary(@total_balance, decimals: 2) %> coins
+      <.icon as="fa-coins" /> <%= :erlang.float_to_binary(@total_balance, decimals: 2) %> coins
     </p>
 
     <h3 id="transactions">Transactions</h3>
@@ -16,10 +16,10 @@ defmodule CoreWeb.AccountSettingsLive do
       <ul>
         <%= for {reason, value} <- @coin_transactions do %>
           <li>
-            <i class="fa-solid fa-coins"></i> <%= :erlang.float_to_binary(value,
+            <.icon as="fa-coins" /> <%= :erlang.float_to_binary(value,
               decimals: 2
             ) %>
-            <em> for <%= reason %></em>
+            <em>for <%= reason %></em>
           </li>
         <% end %>
       </ul>
@@ -117,11 +117,11 @@ defmodule CoreWeb.AccountSettingsLive do
       |> assign(:current_password, nil)
       |> assign(
         :total_balance,
-        Enum.reduce(account.coin_transactions, 0, fn %{value: value}, total -> total + value end)
+        Enum.reduce(account.coin_transactions, 0.0, fn %{value: value}, total -> total + value end)
       )
       |> assign(
         :coin_transactions,
-        coin_transaction in Core.Gameplay.CoinTransaction
+        (coin_transaction in Core.Gameplay.CoinTransaction)
         |> from(
           where: [
             account_id: ^account.id
@@ -136,9 +136,10 @@ defmodule CoreWeb.AccountSettingsLive do
           |> case do
             {[], []} ->
               Utilities.List.append(
-                  aggregated_statements,
-                  {coin_transcation.reason, coin_transcation.value}
-                )
+                aggregated_statements,
+                {coin_transcation.reason, coin_transcation.value}
+              )
+
             {remaining_aggregated_statements, [{reason, previous_value}]} ->
               if reason == coin_transcation.reason do
                 Utilities.List.append(

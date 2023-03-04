@@ -65,7 +65,7 @@ if Mix.env() == :dev do
       color: "grey",
       season_pick_rate: 100,
       pack_slot_caps: [2368, 2368, 1664, 0, 0, 0],
-      holographic_rate: 0.0,
+      holographic_rate: 10.0,
       full_art_rate: 0.0
     })
 
@@ -74,8 +74,8 @@ if Mix.env() == :dev do
       color: "green",
       season_pick_rate: 75,
       pack_slot_caps: [0, 0, 704, 2368, 1728, 0],
-      holographic_rate: 0.0,
-      full_art_rate: 0.0
+      holographic_rate: 13.33,
+      full_art_rate: 50.0
     })
 
     Core.Gameplay.create_rarity!(%{
@@ -83,8 +83,8 @@ if Mix.env() == :dev do
       color: "blue",
       season_pick_rate: 30,
       pack_slot_caps: [0, 0, 0, 0, 640, 1280],
-      holographic_rate: 0.0,
-      full_art_rate: 0.0
+      holographic_rate: 100.0,
+      full_art_rate: 33.33
     })
 
     Core.Gameplay.create_rarity!(%{
@@ -92,8 +92,8 @@ if Mix.env() == :dev do
       color: "yellow",
       season_pick_rate: 11,
       pack_slot_caps: [0, 0, 0, 0, 0, 704],
-      holographic_rate: 0.0,
-      full_art_rate: 0.0
+      holographic_rate: 100.0,
+      full_art_rate: 100.0
     })
 
     Core.Gameplay.create_rarity!(%{
@@ -101,8 +101,8 @@ if Mix.env() == :dev do
       color: "orange",
       season_pick_rate: 5,
       pack_slot_caps: [0, 0, 0, 0, 0, 320],
-      holographic_rate: 0.0,
-      full_art_rate: 0.0
+      holographic_rate: 100.0,
+      full_art_rate: 100.0
     })
 
     Core.Gameplay.create_rarity!(%{
@@ -110,9 +110,12 @@ if Mix.env() == :dev do
       color: "red",
       season_pick_rate: 1,
       pack_slot_caps: [0, 0, 0, 0, 0, 64],
-      holographic_rate: 0.0,
-      full_art_rate: 0.0
+      holographic_rate: 100.0,
+      full_art_rate: 100.0
     })
+
+    season = Core.Gameplay.create_season!(%{plants: Core.Gameplay.list_plants()})
+    Oban.insert(Core.Job.StartSeasonJob.new(%{season_id: season.id}))
   end)
 end
 

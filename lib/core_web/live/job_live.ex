@@ -138,11 +138,11 @@ defmodule CoreWeb.JobLive do
 
     <h3 id="actions">Actions</h3>
     <section>
-      <button type="button" phx-click="pause_default_queue" class="btn btn-outline-info">
+      <.button phx-click="pause_default_queue" class="btn-outline-info">
         Pause Default Queue
-      </button>
-      <button type="button" phx-click="retry_all" class="btn btn-outline-warning">Retry All</button>
-      <button type="button" phx-click="cancel_all" class="btn btn-outline-danger">Cancel All</button>
+      </.button>
+      <.button phx-click="retry_all" class="btn-outline-warning">Retry All</.button>
+      <.button phx-click="cancel_all" class="btn-outline-danger">Cancel All</.button>
     </section>
 
     <table class="table">
@@ -174,22 +174,12 @@ defmodule CoreWeb.JobLive do
             <td><time datetime={job.inserted_at}><%= Timex.from_now(job.inserted_at) %></time></td>
             <td>
               <section>
-                <button
-                  type="button"
-                  phx-click="retry"
-                  phx-value-id={job.id}
-                  class="btn btn-outline-warning"
-                >
+                <.button phx-click="retry" phx-value-id={job.id} class="btn-outline-warning">
                   Retry
-                </button>
-                <button
-                  type="button"
-                  phx-click="cancel"
-                  phx-value-id={job.id}
-                  class="btn btn-outline-danger"
-                >
+                </.button>
+                <.button phx-click="cancel" phx-value-id={job.id} class="btn-outline-danger">
                   Cancel
-                </button>
+                </.button>
               </section>
             </td>
           </tr>
@@ -206,22 +196,12 @@ defmodule CoreWeb.JobLive do
 
     <h3 id="actions">Actions</h3>
     <section>
-      <button
-        type="button"
-        phx-click="retry"
-        phx-value-id={@record.id}
-        class="btn btn-outline-warning"
-      >
+      <.button phx-click="retry" phx-value-id={@record.id} class="btn-outline-warning">
         Retry
-      </button>
-      <button
-        type="button"
-        phx-click="cancel"
-        phx-value-id={@record.id}
-        class="btn btn-outline-danger"
-      >
+      </.button>
+      <.button phx-click="cancel" phx-value-id={@record.id} class="btn-outline-danger">
         Cancel
-      </button>
+      </.button>
     </section>
 
     <p>

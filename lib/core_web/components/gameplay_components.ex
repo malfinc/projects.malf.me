@@ -56,7 +56,7 @@ defmodule CoreWeb.GameplayComponents do
         <div style="position: relative; display: grid; grid-template-rows: 1fr; justify-items: end; row-gap: 15px; margin-top: 45%;">
           <.circle>
             <%= for icon <- evolution_markers(@champion.upgrades) do %>
-              <i class={icon}></i>
+              <CoreWeb.CoreComponents.icon as={icon} />
             <% end %>
           </.circle>
         </div>
@@ -102,16 +102,25 @@ defmodule CoreWeb.GameplayComponents do
           <h6 style="text-shadow: 1px 1px 5px rgb(221, 160, 220);">
             <em><%= @card.champion.plant.name %></em>
           </h6>
+          <%= if @card.holographic do %>
+            HOLOGRAPHIC
+          <% end %>
+          <%= if @card.full_art do %>
+            FULLART
+          <% end %>
         </header>
 
         <div style="position: relative; display: grid; grid-template-rows: 1fr; justify-items: end; row-gap: 15px; margin-top: 45%;">
           <.circle>
             <%= for icon <- evolution_markers(@card.champion.upgrades) do %>
-              <i class={icon}></i>
+              <CoreWeb.CoreComponents.icon as={icon} />
             <% end %>
           </.circle>
           <.circle>
-            <i class="fa-solid fa-pepper-hot fa-2x" style={"color: #{@card.rarity.color}"}></i>
+            <CoreWeb.CoreComponents.icon
+              as="fa-pepper-hot fa-2x"
+              style={"color: #{@card.rarity.color};"}
+            />
           </.circle>
         </div>
 

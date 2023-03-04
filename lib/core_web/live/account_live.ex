@@ -68,7 +68,7 @@ defmodule CoreWeb.AccountLive do
       <%= for account <- @records do %>
         <tr>
           <td>
-            <i class="fa-solid fa-envelope"></i>
+            <.icon as="fa-envelope" />
             <a href={"mailto:#{account.email_address}"}>
               <%= account.email_address %>
             </a>
