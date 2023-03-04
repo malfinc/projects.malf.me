@@ -114,6 +114,25 @@ if Mix.env() == :dev do
       full_art_rate: 100.0
     })
 
+    [
+      {"East", ["A", "B"]},
+      {"West", ["X", "Y"]}
+    ]
+    |> Enum.each(fn {conference_name, divisions} ->
+      conference =
+        Core.Gameplay.create_conference!(%{
+          name: conference_name
+        })
+
+      divisions
+      |> Enum.each(fn division_name ->
+        Core.Gameplay.create_division!(%{
+          name: division_name,
+          conference: conference
+        })
+      end)
+    end)
+
     season = Core.Gameplay.create_season!(%{plants: Core.Gameplay.list_plants()})
     Oban.insert(Core.Job.StartSeasonJob.new(%{season_id: season.id}))
   end)

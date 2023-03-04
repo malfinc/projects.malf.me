@@ -10,10 +10,11 @@ defmodule Core.Gameplay do
   resource(:champions, :champion, Core.Gameplay.Champion)
   resource(:rarities, :rarity, Core.Gameplay.Rarity)
   resource(:coin_transactions, :coin_transaction, Core.Gameplay.CoinTransaction)
-  resource(:challenges, :challenge, Core.Gameplay.Challenge)
   resource(:matches, :match, Core.Gameplay.Match)
   resource(:cards, :card, Core.Gameplay.Card)
   resource(:weeklies, :weekly, Core.Gameplay.Weekly)
+  resource(:divisions, :division, Core.Gameplay.Division)
+  resource(:conferences, :conference, Core.Gameplay.Conference)
 
   @spec odds(Core.Gameplay.Season.t(), Core.Gameplay.Rarity.t(), pos_integer()) :: float
   def odds(season, rarity, packs)

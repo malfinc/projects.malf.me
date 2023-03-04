@@ -5,12 +5,16 @@ defmodule Core.Gameplay.Weekly do
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "weeklies" do
+    field(:position, :integer, virtual: true)
     belongs_to(:season, Core.Gameplay.Season)
+    has_one(:match, Core.Gameplay.Match)
 
     timestamps()
   end
 
-  @type t :: %__MODULE__{}
+  @type t :: %__MODULE__{
+          position: integer()
+        }
 
   @doc false
   @spec changeset(struct, map) :: Ecto.Changeset.t(t())

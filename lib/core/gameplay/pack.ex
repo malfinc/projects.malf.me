@@ -5,6 +5,7 @@ defmodule Core.Gameplay.Pack do
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "packs" do
+    field(:position, :integer, virtual: true)
     field(:opened, :boolean, default: false)
     belongs_to(:season, Core.Gameplay.Season)
     belongs_to(:account, Core.Users.Account)
@@ -15,6 +16,7 @@ defmodule Core.Gameplay.Pack do
   end
 
   @type t :: %__MODULE__{
+          position: integer(),
           opened: boolean()
         }
 

@@ -5,9 +5,9 @@ defmodule Core.Gameplay.Season do
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "seasons" do
-    field(:position, :integer)
+    field(:position, :integer, virtual: true)
     field(:active, :boolean)
-    has_many(:challenges, Core.Gameplay.Challenge)
+    has_many(:weeklies, Core.Gameplay.Weekly)
     has_many(:packs, Core.Gameplay.Pack)
     has_many(:cards, Core.Gameplay.Card)
     many_to_many(:plants, Core.Gameplay.Plant, join_through: "season_plants", unique: true)
@@ -16,7 +16,7 @@ defmodule Core.Gameplay.Season do
   end
 
   @type t :: %__MODULE__{
-          position: float(),
+          position: integer(),
           active: boolean
         }
 

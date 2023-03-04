@@ -6,8 +6,7 @@ defmodule CoreWeb.SeasonLive do
     Core.Gameplay.list_seasons()
     |> Core.Repo.preload(
       packs: [:pack_slots],
-      plants: [:champions],
-      challenges: [champion: [:plant, :upgrades]]
+      plants: [:champions]
     )
     |> Core.Decorate.deep()
   end
@@ -22,8 +21,7 @@ defmodule CoreWeb.SeasonLive do
         record
         |> Core.Repo.preload(
           packs: [:pack_slots],
-          plants: [:champions],
-          challenges: [champion: [:plant, :upgrades]]
+          plants: [:champions]
         )
         |> Core.Decorate.deep()
     end
@@ -166,38 +164,6 @@ defmodule CoreWeb.SeasonLive do
         <% end %>
       <% end %>
     </ul>
-
-    <h2>Challenges</h2>
-    <%= if length(@record.challenges) > 0 do %>
-      <ul>
-        <%= for challenge <- @record.challenges do %>
-          <li>
-            <.link href={~p"/lop/challenges/#{challenge.id}"}><%= challenge.id %></.link>
-
-            <h3>Participants</h3>
-            <%= if length(challenge.champions) > 0 do %>
-              <ul>
-                <%= for champion <- @record.champions do %>
-                  <li>
-                    <.link href={~p"/lop/champions/#{champion.id}"}>
-                      <%= champion.name %>
-                    </.link>
-                  </li>
-                <% end %>
-              </ul>
-            <% else %>
-              <p>
-                No champions yet participating in this challenge.
-              </p>
-            <% end %>
-          </li>
-        <% end %>
-      </ul>
-    <% else %>
-      <p>
-        No challenges created for this season yet.
-      </p>
-    <% end %>
     """
   end
 end

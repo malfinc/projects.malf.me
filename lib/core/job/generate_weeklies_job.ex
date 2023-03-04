@@ -18,6 +18,8 @@ defmodule Core.Job.GenerateWeekliesJob do
         for _ <- 1..@weekly_size do
           Core.Gameplay.create_weekly!(%{season: season})
         end
+
+        :ok
     end
   end
 end

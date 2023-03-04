@@ -5,6 +5,7 @@ defmodule Core.Gameplay.Card do
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "cards" do
+    field(:position, :integer, virtual: true)
     field(:holographic, :boolean)
     field(:full_art, :boolean)
     belongs_to(:account, Core.Users.Account)
@@ -17,7 +18,8 @@ defmodule Core.Gameplay.Card do
 
   @type t :: %__MODULE__{
           holographic: boolean(),
-          full_art: boolean()
+          full_art: boolean(),
+          position: integer()
         }
 
   @doc false
