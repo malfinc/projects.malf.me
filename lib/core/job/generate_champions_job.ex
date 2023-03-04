@@ -7,6 +7,10 @@ defmodule Core.Job.GenerateChampionsJob do
   @impl Oban.Worker
   @spec perform(Oban.Job.t()) :: {:snooze, pos_integer()}
   def perform(%Oban.Job{args: %{"season_id" => season_id}}) do
+    names =
+      File.read!(Application.app_dir(:core, "priv/data/names.txt"))
+      |> String.trim()
+      |> String.split("\n")
     words =
       File.read!(Application.app_dir(:core, "priv/data/words.txt"))
       |> String.trim()
@@ -22,7 +26,7 @@ defmodule Core.Job.GenerateChampionsJob do
       season ->
         Core.Repo.transaction(fn ->
           season.plants
-          |> Enum.zip(names(words, length(season.plants)))
+          |> Enum.zip(names(names, words, length(season.plants)))
           |> Enum.each(fn {plant, name} ->
             Core.Gameplay.create_champion!(%{plant: plant, name: name})
           end)
@@ -34,9 +38,9 @@ defmodule Core.Job.GenerateChampionsJob do
     end
   end
 
-  defp names(words, size) do
+  defp names(names, words, size) do
     Utilities.Enum.multiple_unique(size, size, fn ->
-      "#{words |> Enum.random()} #{words |> Enum.random()}"
+      Utilities.String.titlecase("#{names |> Enum.random()} the #{words |> Enum.random()}")
     end)
     |> Enum.map(&Utilities.String.titlecase/1)
   end
