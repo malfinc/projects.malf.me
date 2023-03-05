@@ -7,6 +7,15 @@ defmodule CoreWeb.CoreComponents do
 
   # alias Phoenix.LiveView.JS
   # import CoreWeb.Gettext
+  attr :rest, :global, doc: "the arbitrary HTML attributes to add to the flash container"
+
+  slot :inner_block, doc: "the optional inner block that renders the flash message"
+
+  def tag(assigns) do
+    ~H"""
+    <span {@rest} class="badge bg-secondary"><%= render_slot(@inner_block) %></span>
+    """
+  end
 
   @doc """
   Renders flash notices.

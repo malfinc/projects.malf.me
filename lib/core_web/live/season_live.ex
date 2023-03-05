@@ -1,13 +1,11 @@
 defmodule CoreWeb.SeasonLive do
   @moduledoc false
   use CoreWeb, :live_view
+  import Ecto.Query
 
   defp list_records(_assigns, _params) do
-    Core.Gameplay.list_seasons()
-    |> Core.Repo.preload(
-      packs: [:pack_slots],
-      plants: [:champions]
-    )
+    Core.Gameplay.list_seasons(fn schema -> from(schema, order_by: [:position]) end)
+    # |> Core.Repo.preload()
     |> Core.Decorate.deep()
   end
 
@@ -19,10 +17,7 @@ defmodule CoreWeb.SeasonLive do
 
       record ->
         record
-        |> Core.Repo.preload(
-          packs: [:pack_slots],
-          plants: [:champions]
-        )
+        |> Core.Repo.preload(champions: [:plant])
         |> Core.Decorate.deep()
     end
   end
@@ -155,13 +150,11 @@ defmodule CoreWeb.SeasonLive do
 
     <h2>Champions</h2>
     <ul>
-      <%= for plant <- @record.plants do %>
-        <%= for champion <- plant.champions do %>
-          <li>
-            <.link href={~p"/lop/champions/#{champion.id}"}><%= champion.name %></.link>
-            (<%= plant.name %>)
-          </li>
-        <% end %>
+      <%= for champion <- @record.champions do %>
+        <li>
+          <.link href={~p"/lop/champions/#{champion.id}"}><%= champion.name %></.link>
+          (<%= champion.plant.name %>)
+        </li>
       <% end %>
     </ul>
     """

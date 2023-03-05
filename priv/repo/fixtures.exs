@@ -133,7 +133,7 @@ if Mix.env() == :dev do
       end)
     end)
 
-    season = Core.Gameplay.create_season!(%{plants: Core.Gameplay.list_plants()})
+    season = Core.Gameplay.create_season!(%{plants: Core.Gameplay.list_plants(), position: 1})
     Oban.insert(Core.Job.StartSeasonJob.new(%{season_id: season.id}))
   end)
 end

@@ -334,7 +334,8 @@ CREATE TABLE public.cards (
     updated_at timestamp(0) without time zone NOT NULL,
     account_id uuid,
     full_art boolean DEFAULT false NOT NULL,
-    holographic boolean DEFAULT false NOT NULL
+    holographic boolean DEFAULT false NOT NULL,
+    "position" integer DEFAULT 0 NOT NULL
 );
 
 
@@ -349,7 +350,8 @@ CREATE TABLE public.champions (
     plant_id uuid NOT NULL,
     inserted_at timestamp(0) without time zone NOT NULL,
     updated_at timestamp(0) without time zone NOT NULL,
-    image_uri public.citext
+    image_uri public.citext,
+    "position" integer DEFAULT 0 NOT NULL
 );
 
 
@@ -541,7 +543,8 @@ CREATE TABLE public.packs (
     season_id uuid NOT NULL,
     inserted_at timestamp(0) without time zone NOT NULL,
     updated_at timestamp(0) without time zone NOT NULL,
-    account_id uuid
+    account_id uuid,
+    "position" integer DEFAULT 0 NOT NULL
 );
 
 
@@ -621,7 +624,8 @@ CREATE TABLE public.seasons (
     id uuid NOT NULL,
     inserted_at timestamp(0) without time zone NOT NULL,
     updated_at timestamp(0) without time zone NOT NULL,
-    active boolean DEFAULT false NOT NULL
+    active boolean DEFAULT false NOT NULL,
+    "position" integer DEFAULT 0 NOT NULL
 );
 
 
@@ -713,7 +717,8 @@ CREATE TABLE public.weeklies (
     id uuid NOT NULL,
     season_id uuid NOT NULL,
     inserted_at timestamp(0) without time zone NOT NULL,
-    updated_at timestamp(0) without time zone NOT NULL
+    updated_at timestamp(0) without time zone NOT NULL,
+    "position" integer DEFAULT 0 NOT NULL
 );
 
 
@@ -974,6 +979,13 @@ CREATE INDEX cards_champion_id_index ON public.cards USING btree (champion_id);
 
 
 --
+-- Name: cards_position_season_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX cards_position_season_id_index ON public.cards USING btree ("position", season_id);
+
+
+--
 -- Name: cards_rarity_id_index; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -999,6 +1011,13 @@ CREATE UNIQUE INDEX champions_name_index ON public.champions USING btree (name);
 --
 
 CREATE UNIQUE INDEX champions_plant_id_index ON public.champions USING btree (plant_id);
+
+
+--
+-- Name: champions_position_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX champions_position_index ON public.champions USING btree ("position");
 
 
 --
@@ -1163,6 +1182,13 @@ CREATE INDEX packs_account_id_index ON public.packs USING btree (account_id);
 
 
 --
+-- Name: packs_position_season_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX packs_position_season_id_index ON public.packs USING btree ("position", season_id);
+
+
+--
 -- Name: packs_season_id_index; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1223,6 +1249,13 @@ CREATE INDEX season_plants_season_id_index ON public.season_plants USING btree (
 --
 
 CREATE INDEX seasons_active_index ON public.seasons USING btree (active);
+
+
+--
+-- Name: seasons_position_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX seasons_position_index ON public.seasons USING btree ("position");
 
 
 --
@@ -1328,6 +1361,13 @@ CREATE INDEX versions_originator_id_index ON public.versions USING btree (origin
 --
 
 CREATE INDEX webhooks_provider_index ON public.webhooks USING btree (provider);
+
+
+--
+-- Name: weeklies_position_season_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX weeklies_position_season_id_index ON public.weeklies USING btree ("position", season_id);
 
 
 --

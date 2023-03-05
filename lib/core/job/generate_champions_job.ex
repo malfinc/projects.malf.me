@@ -28,12 +28,13 @@ defmodule Core.Job.GenerateChampionsJob do
         Core.Repo.transaction(fn ->
           season.plants
           |> Enum.zip(names(names, words, length(season.plants)))
-          |> Enum.each(fn {plant, name} ->
-            Core.Gameplay.create_champion!(%{plant: plant, name: name})
+          |> Enum.with_index()
+          |> Enum.each(fn {{plant, name}, index} ->
+            Core.Gameplay.create_champion!(%{plant: plant, name: name, position: index + 1})
           end)
 
           %{season_id: season.id}
-          |> Core.Job.FillConferencesJob.new()
+          |> Core.Job.AllocateMatchesJob.new()
           |> Oban.insert()
 
           %{season_id: season.id}

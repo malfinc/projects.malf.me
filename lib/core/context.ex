@@ -74,43 +74,6 @@ defmodule Core.Context do
         end
 
         @doc """
-        Returns all `#{unquote(schema)}` records with a positional property based on order of inserted_at, wrapped by a query callback
-        """
-        @spec unquote(:"list_#{plural}_with_position")(function()) :: list(unquote(schema).t())
-        def unquote(:"list_#{plural}_with_position")(with_callback)
-            when is_function(with_callback, 1) do
-          unquote(:"list_#{plural}")(fn schema ->
-            from(
-              record in subquery(with_callback.(unquote(schema))),
-              order_by: {:asc, fragment("position")},
-              select: %{
-                record
-                | position:
-                    fragment("row_number() OVER (ORDER BY ?) AS position", record.inserted_at)
-              }
-            )
-          end)
-        end
-
-        @doc """
-        Returns all `#{unquote(schema)}` records with a positional property based on order of inserted_at
-        """
-        @spec unquote(:"list_#{plural}_with_position")() :: list(unquote(schema).t())
-        def unquote(:"list_#{plural}_with_position")() do
-          unquote(:"list_#{plural}")(fn schema ->
-            from(
-              record in schema,
-              order_by: {:asc, fragment("position")},
-              select: %{
-                record
-                | position:
-                    fragment("row_number() OVER (ORDER BY ?) AS position", record.inserted_at)
-              }
-            )
-          end)
-        end
-
-        @doc """
         Returns all `#{unquote(schema)}` records, unsorted
         """
         @spec unquote(:"list_#{plural}")() :: list(unquote(schema).t())

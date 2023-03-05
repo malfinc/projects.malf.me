@@ -1,10 +1,12 @@
-defmodule Core.Job.FillConferencesJob do
+defmodule Core.Job.AllocateMatchesJob do
   @moduledoc """
   Fills the divisions of conferences with champions who are ready to fight.
   """
   use Oban.Worker
 
-  @pack_size 6
+  import Ecto.Query
+
+  @conference_size 16
 
   @impl Oban.Worker
   @spec perform(Oban.Job.t()) :: {:snooze, pos_integer()}
@@ -17,20 +19,27 @@ defmodule Core.Job.FillConferencesJob do
         {:snooze, 15}
 
       season ->
+        first_weekly =
+          List.first(
+            Core.Gameplay.list_weeklies(fn weeklies ->
+              from(weeklies, order_by: {:asc, :position})
+            end)
+          )
+
         Core.Repo.transaction(fn ->
           # Turn a season into a list of champions, instead of getting all champions
           Core.Gameplay.list_champions()
-          |> Enum.chunk_every(16)
+          |> Enum.chunk_every(@conference_size)
           |> Enum.zip(Core.Gameplay.list_divisions())
           |> Enum.each(fn {chunk_of_champions, division} ->
-            Enum.chunk_every(chunk_of_champions, 2)
-            |> Enum.zip(season.weeklies)
-            |> Enum.each(fn {[left_champion, right_champion], weekly} ->
+            chunk_of_champions
+            |> Enum.chunk_every(2)
+            |> Enum.each(fn [left_champion, right_champion] ->
               Core.Gameplay.create_match!(%{
                 season: season,
                 left_champion: left_champion,
                 right_champion: right_champion,
-                weekly: weekly,
+                weekly: first_weekly,
                 division: division
               })
             end)

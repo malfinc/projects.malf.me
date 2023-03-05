@@ -15,8 +15,8 @@ defmodule Core.Job.GenerateWeekliesJob do
         {:snooze, 15}
 
       season ->
-        for _ <- 1..@weekly_size do
-          Core.Gameplay.create_weekly!(%{season: season})
+        for position <- 1..@weekly_size do
+          Core.Gameplay.create_weekly!(%{season: season, position: position})
         end
 
         :ok

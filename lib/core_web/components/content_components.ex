@@ -274,6 +274,7 @@ defmodule CoreWeb.ContentComponents do
       {~p"/lop/seasons", "Seasons"},
       {~p"/lop/champions", "Champions"},
       {~p"/lop/packs", "Packs"},
-      {~p"/lop/cards", "Cards"}
+      {~p"/lop/cards", "Cards"},
+      {~p"/lop/matches", "Matches"}
     ]
 end

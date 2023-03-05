@@ -17,8 +17,8 @@ defmodule Core.Job.GeneratePacksJob do
 
       season ->
         Core.Repo.transaction(fn ->
-          for _ <- 1..Core.Gameplay.count_cards()//@pack_size do
-            Core.Gameplay.create_pack!(%{season: season})
+          for {_, index} <- Enum.with_index(1..Core.Gameplay.count_cards()//@pack_size) do
+            Core.Gameplay.create_pack!(%{season: season, position: index + 1})
           end
         end)
 

@@ -5,7 +5,7 @@ defmodule Core.Gameplay.Weekly do
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "weeklies" do
-    field(:position, :integer, virtual: true)
+    field(:position, :integer)
     belongs_to(:season, Core.Gameplay.Season)
     has_one(:match, Core.Gameplay.Match)
 
@@ -24,9 +24,9 @@ defmodule Core.Gameplay.Weekly do
       |> Core.Repo.preload([:season])
 
     record_with_preload
-    |> Ecto.Changeset.cast(attributes, [])
+    |> Ecto.Changeset.cast(attributes, [:position])
     |> Ecto.Changeset.put_assoc(:season, attributes[:season] || record_with_preload.season)
-    |> Ecto.Changeset.validate_required([:season])
+    |> Ecto.Changeset.validate_required([:season, :position])
     |> Ecto.Changeset.foreign_key_constraint(:season_id)
   end
 end

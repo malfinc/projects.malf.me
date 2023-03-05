@@ -5,11 +5,12 @@ defmodule Core.Gameplay.Season do
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "seasons" do
-    field(:position, :integer, virtual: true)
+    field(:position, :integer)
     field(:active, :boolean)
     has_many(:weeklies, Core.Gameplay.Weekly)
     has_many(:packs, Core.Gameplay.Pack)
     has_many(:cards, Core.Gameplay.Card)
+    has_many(:champions, through: [:cards, :champion])
     many_to_many(:plants, Core.Gameplay.Plant, join_through: "season_plants", unique: true)
 
     timestamps()
@@ -26,8 +27,8 @@ defmodule Core.Gameplay.Season do
     record_with_preload = Core.Repo.preload(record, [:plants])
 
     record_with_preload
-    |> Ecto.Changeset.cast(attributes, [:active])
+    |> Ecto.Changeset.cast(attributes, [:active, :position])
     |> Ecto.Changeset.put_assoc(:plants, attributes[:plants] || record_with_preload.plants)
-    |> Ecto.Changeset.validate_required([:plants])
+    |> Ecto.Changeset.validate_required([:plants, :position])
   end
 end
