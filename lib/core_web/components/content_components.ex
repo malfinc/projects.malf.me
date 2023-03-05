@@ -270,10 +270,11 @@ defmodule CoreWeb.ContentComponents do
 
   defp regular_links(),
     do: [
+      {~p"/lop/plants", "Plants"},
       {~p"/lop/seasons", "Seasons"},
       {~p"/lop/champions", "Champions"},
-      {~p"/lop/plants", "Plants"},
       {~p"/lop/packs", "Packs"},
-      {~p"/lop/cards", "Cards"}
+      {~p"/lop/cards", "Cards"},
+      {~p"/lop/matches", "Matches"}
     ]
 end

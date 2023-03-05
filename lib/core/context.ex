@@ -23,7 +23,7 @@ defmodule Core.Context do
            when is_atom(plural) and is_atom(singular) and is_list(actions) do
     # credo:disable-for-next-line Credo.Check.Refactor.LongQuoteBlocks
     quote do
-      import Ecto.Query, only: [from: 2]
+      import Ecto.Query, only: [from: 2, subquery: 1]
 
       unless Enum.member?(unquote(actions), :count) do
         @doc """
@@ -65,6 +65,14 @@ defmodule Core.Context do
       end
 
       unless Enum.member?(unquote(actions), :list) do
+        @doc """
+        Returns all `#{unquote(schema)}` records, wrapped by a query callback
+        """
+        @spec unquote(:"list_#{plural}")(function()) :: list(unquote(schema).t())
+        def unquote(:"list_#{plural}")(with_callback) when is_function(with_callback, 1) do
+          with_callback.(unquote(schema)) |> Core.Repo.all()
+        end
+
         @doc """
         Returns all `#{unquote(schema)}` records, unsorted
         """

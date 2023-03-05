@@ -11,6 +11,7 @@ defmodule Core.Job.GenerateChampionsJob do
       File.read!(Application.app_dir(:core, "priv/data/names.txt"))
       |> String.trim()
       |> String.split("\n")
+
     words =
       File.read!(Application.app_dir(:core, "priv/data/words.txt"))
       |> String.trim()
@@ -27,9 +28,14 @@ defmodule Core.Job.GenerateChampionsJob do
         Core.Repo.transaction(fn ->
           season.plants
           |> Enum.zip(names(names, words, length(season.plants)))
-          |> Enum.each(fn {plant, name} ->
-            Core.Gameplay.create_champion!(%{plant: plant, name: name})
+          |> Enum.with_index()
+          |> Enum.each(fn {{plant, name}, index} ->
+            Core.Gameplay.create_champion!(%{plant: plant, name: name, position: index + 1})
           end)
+
+          %{season_id: season.id}
+          |> Core.Job.AllocateMatchesJob.new()
+          |> Oban.insert()
 
           %{season_id: season.id}
           |> Core.Job.GenerateCardsJob.new()

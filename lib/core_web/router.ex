@@ -80,11 +80,15 @@ defmodule CoreWeb.Router do
         live "/plants", CoreWeb.PlantLive, :list
         live "/champions/:id", CoreWeb.ChampionLive, :show
         live "/champions/", CoreWeb.ChampionLive, :list
-        live "/challenges/:id", CoreWeb.ChallengeLive, :show
         live "/packs/", CoreWeb.PackLive, :list
         live "/packs/:id", CoreWeb.PackLive, :show
         live "/cards/", CoreWeb.CardLive, :list
         live "/cards/:id", CoreWeb.CardLive, :show
+        # live "/conferences/", CoreWeb.CardLive, :list
+        # live "/conferences/:id", CoreWeb.CardLive, :show
+        # live "/divisions/", CoreWeb.CardLive, :list
+        # live "/divisions/:id", CoreWeb.CardLive, :show
+        live "/matches/", CoreWeb.MatchLive, :list
       end
     end
   end

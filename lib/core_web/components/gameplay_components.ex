@@ -6,22 +6,21 @@ defmodule CoreWeb.GameplayComponents do
   attr :pack, Core.Gameplay.Pack
   attr :rest, :global
 
-  def card_pack(assigns) do
+  def pack(assigns) do
     ~H"""
-    <%= if @pack.opened do %>
-      <div><img src={~p"/images/"} /></div>
-    <% else %>
-      <div
-        phx-hook="UnopenedCardPack"
-        id={@pack.id}
-        class="CardPack--isDraggable animate__animated"
-        style="display: inline-block;"
-        phx-click="open_pack"
-        phx-value-id={@pack.id}
-      >
-        <img src={~p"/images/unopened_pack.png"} />
-      </div>
-    <% end %>
+    <div
+      phx-hook="UnopenedCardPack"
+      id={@pack.id}
+      class="CardPack--isDraggable animate__animated"
+      style="display: inline-block;"
+      phx-click="open_pack"
+      phx-value-id={@pack.id}
+    >
+      <img src={~p"/images/unopened_pack.png"} />
+      <section>
+        <CoreWeb.CoreComponents.tag>Season <%= @pack.season.position %></CoreWeb.CoreComponents.tag>
+      </section>
+    </div>
     """
   end
 

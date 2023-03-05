@@ -10,19 +10,18 @@ defmodule CoreWeb.PackLive do
         []
 
       season ->
-        Core.Gameplay.Pack
-        |> from(
-          where: [
-            opened: false,
-            season_id: ^season.id,
-            account_id: ^assigns.current_account.id
-          ]
-        )
-        |> Core.Repo.all()
-        |> Core.Repo.preload([
-          :cards,
-          :season
-        ])
+        Core.Gameplay.list_packs(fn schema ->
+          schema
+          |> from(
+            where: [
+              opened: false,
+              season_id: ^season.id,
+              account_id: ^assigns.current_account.id
+            ],
+            order_by: {:asc, :position}
+          )
+        end)
+        |> Core.Repo.preload([:cards, :season])
         |> Core.Decorate.deep()
     end
   end
@@ -162,7 +161,7 @@ defmodule CoreWeb.PackLive do
         class="collection collection--packs"
       >
         <%= for pack <- @records do %>
-          <.card_pack pack={pack} />
+          <.pack pack={pack} />
         <% end %>
       </section>
     <% else %>

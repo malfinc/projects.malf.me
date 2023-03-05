@@ -16,25 +16,32 @@ defmodule Core.Job.GenerateCardsJob do
       season ->
         rarities = Core.Gameplay.list_rarities()
         # I believe there needs to be some connection between season and champion?
-        # The answer is challenges. We should be looking at this seasons's champions via challenges
         champions = Core.Gameplay.list_champions()
 
         Core.Repo.transaction(
           fn ->
-            for rarity <- rarities, champion <- champions do
-              for _ <- 1..rarity.season_pick_rate do
-                holographic = randomize(rarity.holographic_rate)
-                full_art = holographic && randomize(rarity.full_art_rate)
+            champions
+            |> Enum.map(fn champion -> {champion, rarities} end)
+            |> Enum.flat_map(fn {champion, rarities} ->
+              Enum.map(rarities, fn rarity -> {champion, rarity, rarity.season_pick_rate} end)
+            end)
+            |> Enum.flat_map(fn {champion, rarity, season_pick_rate} ->
+              Enum.map(1..season_pick_rate, fn _ -> {champion, rarity} end)
+            end)
+            |> Enum.with_index()
+            |> Enum.each(fn {{champion, rarity}, index} ->
+              holographic = randomize(rarity.holographic_rate)
+              full_art = holographic && randomize(rarity.full_art_rate)
 
-                Core.Gameplay.create_card!(%{
-                  holographic: holographic,
-                  full_art: full_art,
-                  champion: champion,
-                  season: season,
-                  rarity: rarity
-                })
-              end
-            end
+              Core.Gameplay.create_card!(%{
+                holographic: holographic,
+                full_art: full_art,
+                champion: champion,
+                season: season,
+                rarity: rarity,
+                position: index + 1
+              })
+            end)
 
             %{season_id: season.id}
             |> Core.Job.GeneratePacksJob.new()

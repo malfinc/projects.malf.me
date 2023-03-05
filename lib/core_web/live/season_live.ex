@@ -1,14 +1,11 @@
 defmodule CoreWeb.SeasonLive do
   @moduledoc false
   use CoreWeb, :live_view
+  import Ecto.Query
 
   defp list_records(_assigns, _params) do
-    Core.Gameplay.list_seasons()
-    |> Core.Repo.preload(
-      packs: [:pack_slots],
-      plants: [:champions],
-      challenges: [champion: [:plant, :upgrades]]
-    )
+    Core.Gameplay.list_seasons(fn schema -> from(schema, order_by: [:position]) end)
+    # |> Core.Repo.preload()
     |> Core.Decorate.deep()
   end
 
@@ -20,11 +17,7 @@ defmodule CoreWeb.SeasonLive do
 
       record ->
         record
-        |> Core.Repo.preload(
-          packs: [:pack_slots],
-          plants: [:champions],
-          challenges: [champion: [:plant, :upgrades]]
-        )
+        |> Core.Repo.preload(champions: [:plant])
         |> Core.Decorate.deep()
     end
   end
@@ -157,47 +150,13 @@ defmodule CoreWeb.SeasonLive do
 
     <h2>Champions</h2>
     <ul>
-      <%= for plant <- @record.plants do %>
-        <%= for champion <- plant.champions do %>
-          <li>
-            <.link href={~p"/lop/champions/#{champion.id}"}><%= champion.name %></.link>
-            (<%= plant.name %>)
-          </li>
-        <% end %>
+      <%= for champion <- @record.champions do %>
+        <li>
+          <.link href={~p"/lop/champions/#{champion.id}"}><%= champion.name %></.link>
+          (<%= champion.plant.name %>)
+        </li>
       <% end %>
     </ul>
-
-    <h2>Challenges</h2>
-    <%= if length(@record.challenges) > 0 do %>
-      <ul>
-        <%= for challenge <- @record.challenges do %>
-          <li>
-            <.link href={~p"/lop/challenges/#{challenge.id}"}><%= challenge.id %></.link>
-
-            <h3>Participants</h3>
-            <%= if length(challenge.champions) > 0 do %>
-              <ul>
-                <%= for champion <- @record.champions do %>
-                  <li>
-                    <.link href={~p"/lop/champions/#{champion.id}"}>
-                      <%= champion.name %>
-                    </.link>
-                  </li>
-                <% end %>
-              </ul>
-            <% else %>
-              <p>
-                No champions yet participating in this challenge.
-              </p>
-            <% end %>
-          </li>
-        <% end %>
-      </ul>
-    <% else %>
-      <p>
-        No challenges created for this season yet.
-      </p>
-    <% end %>
     """
   end
 end

@@ -334,30 +334,8 @@ CREATE TABLE public.cards (
     updated_at timestamp(0) without time zone NOT NULL,
     account_id uuid,
     full_art boolean DEFAULT false NOT NULL,
-    holographic boolean DEFAULT false NOT NULL
-);
-
-
---
--- Name: challenge_champions; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.challenge_champions (
-    id uuid NOT NULL,
-    champion_id uuid NOT NULL,
-    challenge_id uuid NOT NULL
-);
-
-
---
--- Name: challenges; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.challenges (
-    id uuid NOT NULL,
-    season_id uuid NOT NULL,
-    inserted_at timestamp(0) without time zone NOT NULL,
-    updated_at timestamp(0) without time zone NOT NULL
+    holographic boolean DEFAULT false NOT NULL,
+    "position" integer DEFAULT 0 NOT NULL
 );
 
 
@@ -372,28 +350,9 @@ CREATE TABLE public.champions (
     plant_id uuid NOT NULL,
     inserted_at timestamp(0) without time zone NOT NULL,
     updated_at timestamp(0) without time zone NOT NULL,
-    "position" bigint NOT NULL,
-    image_uri public.citext
+    image_uri public.citext,
+    "position" integer DEFAULT 0 NOT NULL
 );
-
-
---
--- Name: champions_position_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.champions_position_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: champions_position_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.champions_position_seq OWNED BY public.champions."position";
 
 
 --
@@ -432,7 +391,8 @@ CREATE TABLE public.divisions (
     name text NOT NULL,
     slug public.citext NOT NULL,
     inserted_at timestamp(0) without time zone NOT NULL,
-    updated_at timestamp(0) without time zone NOT NULL
+    updated_at timestamp(0) without time zone NOT NULL,
+    conference_id uuid NOT NULL
 );
 
 
@@ -444,9 +404,11 @@ CREATE TABLE public.matches (
     id uuid NOT NULL,
     left_champion_id uuid,
     right_champion_id uuid,
-    challenge_id uuid NOT NULL,
     inserted_at timestamp(0) without time zone NOT NULL,
-    updated_at timestamp(0) without time zone NOT NULL
+    updated_at timestamp(0) without time zone NOT NULL,
+    season_id uuid NOT NULL,
+    division_id uuid NOT NULL,
+    weekly_id uuid NOT NULL
 );
 
 
@@ -581,7 +543,8 @@ CREATE TABLE public.packs (
     season_id uuid NOT NULL,
     inserted_at timestamp(0) without time zone NOT NULL,
     updated_at timestamp(0) without time zone NOT NULL,
-    account_id uuid
+    account_id uuid,
+    "position" integer DEFAULT 0 NOT NULL
 );
 
 
@@ -661,28 +624,9 @@ CREATE TABLE public.seasons (
     id uuid NOT NULL,
     inserted_at timestamp(0) without time zone NOT NULL,
     updated_at timestamp(0) without time zone NOT NULL,
-    "position" bigint NOT NULL,
-    active boolean DEFAULT false NOT NULL
+    active boolean DEFAULT false NOT NULL,
+    "position" integer DEFAULT 0 NOT NULL
 );
-
-
---
--- Name: seasons_position_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.seasons_position_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: seasons_position_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.seasons_position_seq OWNED BY public.seasons."position";
 
 
 --
@@ -773,15 +717,9 @@ CREATE TABLE public.weeklies (
     id uuid NOT NULL,
     season_id uuid NOT NULL,
     inserted_at timestamp(0) without time zone NOT NULL,
-    updated_at timestamp(0) without time zone NOT NULL
+    updated_at timestamp(0) without time zone NOT NULL,
+    "position" integer DEFAULT 0 NOT NULL
 );
-
-
---
--- Name: champions position; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.champions ALTER COLUMN "position" SET DEFAULT nextval('public.champions_position_seq'::regclass);
 
 
 --
@@ -789,13 +727,6 @@ ALTER TABLE ONLY public.champions ALTER COLUMN "position" SET DEFAULT nextval('p
 --
 
 ALTER TABLE ONLY public.oban_jobs ALTER COLUMN id SET DEFAULT nextval('public.oban_jobs_id_seq'::regclass);
-
-
---
--- Name: seasons position; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.seasons ALTER COLUMN "position" SET DEFAULT nextval('public.seasons_position_seq'::regclass);
 
 
 --
@@ -827,22 +758,6 @@ ALTER TABLE ONLY public.accounts_tokens
 
 ALTER TABLE ONLY public.cards
     ADD CONSTRAINT cards_pkey PRIMARY KEY (id);
-
-
---
--- Name: challenge_champions challenge_champions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.challenge_champions
-    ADD CONSTRAINT challenge_champions_pkey PRIMARY KEY (id);
-
-
---
--- Name: challenges challenges_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.challenges
-    ADD CONSTRAINT challenges_pkey PRIMARY KEY (id);
 
 
 --
@@ -1064,6 +979,13 @@ CREATE INDEX cards_champion_id_index ON public.cards USING btree (champion_id);
 
 
 --
+-- Name: cards_position_season_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX cards_position_season_id_index ON public.cards USING btree ("position", season_id);
+
+
+--
 -- Name: cards_rarity_id_index; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1078,27 +1000,6 @@ CREATE INDEX cards_season_id_index ON public.cards USING btree (season_id);
 
 
 --
--- Name: challenge_champions_challenge_id_index; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX challenge_champions_challenge_id_index ON public.challenge_champions USING btree (challenge_id);
-
-
---
--- Name: challenge_champions_champion_id_challenge_id_index; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX challenge_champions_champion_id_challenge_id_index ON public.challenge_champions USING btree (champion_id, challenge_id);
-
-
---
--- Name: challenges_season_id_index; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX challenges_season_id_index ON public.challenges USING btree (season_id);
-
-
---
 -- Name: champions_name_index; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1110,6 +1011,13 @@ CREATE UNIQUE INDEX champions_name_index ON public.champions USING btree (name);
 --
 
 CREATE UNIQUE INDEX champions_plant_id_index ON public.champions USING btree (plant_id);
+
+
+--
+-- Name: champions_position_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX champions_position_index ON public.champions USING btree ("position");
 
 
 --
@@ -1155,10 +1063,10 @@ CREATE UNIQUE INDEX divisions_slug_index ON public.divisions USING btree (slug);
 
 
 --
--- Name: matches_challenge_id_index; Type: INDEX; Schema: public; Owner: -
+-- Name: matches_division_id_index; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX matches_challenge_id_index ON public.matches USING btree (challenge_id);
+CREATE INDEX matches_division_id_index ON public.matches USING btree (division_id);
 
 
 --
@@ -1173,6 +1081,27 @@ CREATE INDEX matches_left_champion_id_right_champion_id_index ON public.matches 
 --
 
 CREATE INDEX matches_right_champion_id_index ON public.matches USING btree (right_champion_id);
+
+
+--
+-- Name: matches_season_id_division_id_weekly_id_left_champion_id_right_; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX matches_season_id_division_id_weekly_id_left_champion_id_right_ ON public.matches USING btree (season_id, division_id, weekly_id, left_champion_id, right_champion_id);
+
+
+--
+-- Name: matches_season_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX matches_season_id_index ON public.matches USING btree (season_id);
+
+
+--
+-- Name: matches_weekly_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX matches_weekly_id_index ON public.matches USING btree (weekly_id);
 
 
 --
@@ -1253,6 +1182,13 @@ CREATE INDEX packs_account_id_index ON public.packs USING btree (account_id);
 
 
 --
+-- Name: packs_position_season_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX packs_position_season_id_index ON public.packs USING btree ("position", season_id);
+
+
+--
 -- Name: packs_season_id_index; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1313,6 +1249,13 @@ CREATE INDEX season_plants_season_id_index ON public.season_plants USING btree (
 --
 
 CREATE INDEX seasons_active_index ON public.seasons USING btree (active);
+
+
+--
+-- Name: seasons_position_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX seasons_position_index ON public.seasons USING btree ("position");
 
 
 --
@@ -1421,6 +1364,13 @@ CREATE INDEX webhooks_provider_index ON public.webhooks USING btree (provider);
 
 
 --
+-- Name: weeklies_position_season_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX weeklies_position_season_id_index ON public.weeklies USING btree ("position", season_id);
+
+
+--
 -- Name: weeklies_season_id_index; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1475,30 +1425,6 @@ ALTER TABLE ONLY public.cards
 
 
 --
--- Name: challenge_champions challenge_champions_challenge_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.challenge_champions
-    ADD CONSTRAINT challenge_champions_challenge_id_fkey FOREIGN KEY (challenge_id) REFERENCES public.challenges(id) ON DELETE CASCADE;
-
-
---
--- Name: challenge_champions challenge_champions_champion_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.challenge_champions
-    ADD CONSTRAINT challenge_champions_champion_id_fkey FOREIGN KEY (champion_id) REFERENCES public.champions(id) ON DELETE CASCADE;
-
-
---
--- Name: challenges challenges_season_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.challenges
-    ADD CONSTRAINT challenges_season_id_fkey FOREIGN KEY (season_id) REFERENCES public.seasons(id) ON DELETE CASCADE;
-
-
---
 -- Name: champions champions_plant_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1515,11 +1441,19 @@ ALTER TABLE ONLY public.coin_transactions
 
 
 --
--- Name: matches matches_challenge_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: divisions divisions_conference_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.divisions
+    ADD CONSTRAINT divisions_conference_id_fkey FOREIGN KEY (conference_id) REFERENCES public.conferences(id) ON DELETE CASCADE;
+
+
+--
+-- Name: matches matches_division_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.matches
-    ADD CONSTRAINT matches_challenge_id_fkey FOREIGN KEY (challenge_id) REFERENCES public.challenges(id) ON DELETE CASCADE;
+    ADD CONSTRAINT matches_division_id_fkey FOREIGN KEY (division_id) REFERENCES public.divisions(id) ON DELETE CASCADE;
 
 
 --
@@ -1536,6 +1470,22 @@ ALTER TABLE ONLY public.matches
 
 ALTER TABLE ONLY public.matches
     ADD CONSTRAINT matches_right_champion_id_fkey FOREIGN KEY (right_champion_id) REFERENCES public.champions(id) ON DELETE CASCADE;
+
+
+--
+-- Name: matches matches_season_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.matches
+    ADD CONSTRAINT matches_season_id_fkey FOREIGN KEY (season_id) REFERENCES public.seasons(id) ON DELETE CASCADE;
+
+
+--
+-- Name: matches matches_weekly_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.matches
+    ADD CONSTRAINT matches_weekly_id_fkey FOREIGN KEY (weekly_id) REFERENCES public.weeklies(id) ON DELETE CASCADE;
 
 
 --
@@ -1708,3 +1658,8 @@ INSERT INTO public."schema_migrations" (version) VALUES (20230303113328);
 INSERT INTO public."schema_migrations" (version) VALUES (20230303113901);
 INSERT INTO public."schema_migrations" (version) VALUES (20230303113911);
 INSERT INTO public."schema_migrations" (version) VALUES (20230303113922);
+INSERT INTO public."schema_migrations" (version) VALUES (20230304190159);
+INSERT INTO public."schema_migrations" (version) VALUES (20230304190218);
+INSERT INTO public."schema_migrations" (version) VALUES (20230304190224);
+INSERT INTO public."schema_migrations" (version) VALUES (20230304191908);
+INSERT INTO public."schema_migrations" (version) VALUES (20230304194037);

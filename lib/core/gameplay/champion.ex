@@ -11,7 +11,6 @@ defmodule Core.Gameplay.Champion do
     field(:position, :integer)
     belongs_to(:plant, Core.Gameplay.Plant)
     has_many(:pack_slots, Core.Gameplay.Champion)
-    many_to_many(:challenges, Core.Gameplay.Champion, join_through: "challenge_champions")
     has_many(:upgrades, Core.Gameplay.Upgrade)
 
     timestamps()
@@ -30,10 +29,10 @@ defmodule Core.Gameplay.Champion do
     record_with_preload = Core.Repo.preload(record, [:plant])
 
     record_with_preload
-    |> Ecto.Changeset.cast(attributes, [:name, :image_uri])
+    |> Ecto.Changeset.cast(attributes, [:name, :image_uri, :position])
     |> Slugy.slugify(:name)
     |> Ecto.Changeset.put_assoc(:plant, attributes[:plant] || record_with_preload.plant)
-    |> Ecto.Changeset.validate_required([:name, :slug, :plant])
+    |> Ecto.Changeset.validate_required([:name, :slug, :plant, :position])
     |> Ecto.Changeset.unique_constraint(:name)
     |> Ecto.Changeset.foreign_key_constraint(:plant_id)
     |> Ecto.Changeset.unique_constraint(:plant_id)

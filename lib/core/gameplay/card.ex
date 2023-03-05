@@ -5,6 +5,7 @@ defmodule Core.Gameplay.Card do
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "cards" do
+    field(:position, :integer)
     field(:holographic, :boolean)
     field(:full_art, :boolean)
     belongs_to(:account, Core.Users.Account)
@@ -17,7 +18,8 @@ defmodule Core.Gameplay.Card do
 
   @type t :: %__MODULE__{
           holographic: boolean(),
-          full_art: boolean()
+          full_art: boolean(),
+          position: integer()
         }
 
   @doc false
@@ -28,11 +30,12 @@ defmodule Core.Gameplay.Card do
       |> Core.Repo.preload([:season, :champion, :rarity, :account])
 
     record_with_preload
-    |> Ecto.Changeset.cast(attributes, [:holographic, :full_art])
+    |> Ecto.Changeset.cast(attributes, [:holographic, :full_art, :position])
     |> Ecto.Changeset.put_assoc(:season, attributes[:season] || record_with_preload.season)
     |> Ecto.Changeset.put_assoc(:account, attributes[:account] || record_with_preload.account)
     |> Ecto.Changeset.put_assoc(:champion, attributes[:champion] || record_with_preload.champion)
     |> Ecto.Changeset.put_assoc(:rarity, attributes[:rarity] || record_with_preload.rarity)
+    |> Ecto.Changeset.validate_required([:position])
     |> Ecto.Changeset.foreign_key_constraint(:account_id)
     |> Ecto.Changeset.validate_required([:champion])
     |> Ecto.Changeset.foreign_key_constraint(:champion_id)

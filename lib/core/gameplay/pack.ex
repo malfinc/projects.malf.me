@@ -5,6 +5,7 @@ defmodule Core.Gameplay.Pack do
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "packs" do
+    field(:position, :integer)
     field(:opened, :boolean, default: false)
     belongs_to(:season, Core.Gameplay.Season)
     belongs_to(:account, Core.Users.Account)
@@ -15,6 +16,7 @@ defmodule Core.Gameplay.Pack do
   end
 
   @type t :: %__MODULE__{
+          position: integer(),
           opened: boolean()
         }
 
@@ -24,10 +26,10 @@ defmodule Core.Gameplay.Pack do
     record_with_preloads = Core.Repo.preload(record, [:season, :account])
 
     record_with_preloads
-    |> Ecto.Changeset.cast(attributes, [:opened])
+    |> Ecto.Changeset.cast(attributes, [:opened, :position])
     |> Ecto.Changeset.put_assoc(:account, attributes[:account] || record_with_preloads.account)
     |> Ecto.Changeset.put_assoc(:season, attributes[:season] || record_with_preloads.season)
-    |> Ecto.Changeset.validate_required([:opened, :season])
+    |> Ecto.Changeset.validate_required([:opened, :season, :position])
     |> Ecto.Changeset.foreign_key_constraint(:season_id)
     |> Ecto.Changeset.foreign_key_constraint(:account_id)
   end
