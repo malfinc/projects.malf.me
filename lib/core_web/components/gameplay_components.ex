@@ -25,6 +25,7 @@ defmodule CoreWeb.GameplayComponents do
   end
 
   attr :champion, Core.Gameplay.Champion
+  attr :winner, :boolean, default: nil
   attr :width, :integer, default: 512
   attr :height, :integer, default: 768
   attr :rest, :global
@@ -35,7 +36,11 @@ defmodule CoreWeb.GameplayComponents do
       id={@champion.id}
       phx-hook="Card"
       data-tilt-glare
-      style={"background-image: url(#{~p"/images/rainbow_frame.png"}); padding: 15px; width: #{@width + (15 * 2)}px; height: #{@height + (15 * 2)}px; border-radius: 12px; color: white; margin-left: auto; margin-right: auto; box-shadow: 2px 2px 9px 0px rgba(0,0,0,0.5);"}
+      class={[
+        "champion",
+        if(@winner, do: "champion--winner")
+      ]}
+      style={"background-image: url(#{~p"/images/rainbow_frame.png"}); width: #{@width + (15 * 2)}px; height: #{@height + (15 * 2)}px;"}
     >
       <div>
         <img

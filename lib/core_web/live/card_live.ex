@@ -72,7 +72,7 @@ defmodule CoreWeb.CardLive do
       record ->
         socket
         |> assign(:record, record)
-        |> assign(:page_title, "Pack / #{record.id}")
+        |> assign(:page_title, "Pack / #{record.champion.name} (#{record.rarity.name})")
     end
   end
 

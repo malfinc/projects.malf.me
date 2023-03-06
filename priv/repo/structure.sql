@@ -408,7 +408,9 @@ CREATE TABLE public.matches (
     updated_at timestamp(0) without time zone NOT NULL,
     season_id uuid NOT NULL,
     division_id uuid NOT NULL,
-    weekly_id uuid NOT NULL
+    weekly_id uuid NOT NULL,
+    rounds text[] DEFAULT ARRAY[]::text[] NOT NULL,
+    winning_champion_id uuid
 );
 
 
@@ -1105,6 +1107,13 @@ CREATE INDEX matches_weekly_id_index ON public.matches USING btree (weekly_id);
 
 
 --
+-- Name: matches_winning_champion_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX matches_winning_champion_id_index ON public.matches USING btree (winning_champion_id);
+
+
+--
 -- Name: oban_jobs_args_index; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1489,6 +1498,14 @@ ALTER TABLE ONLY public.matches
 
 
 --
+-- Name: matches matches_winning_champion_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.matches
+    ADD CONSTRAINT matches_winning_champion_id_fkey FOREIGN KEY (winning_champion_id) REFERENCES public.champions(id) ON DELETE CASCADE;
+
+
+--
 -- Name: organization_memberships organization_memberships_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1663,3 +1680,5 @@ INSERT INTO public."schema_migrations" (version) VALUES (20230304190218);
 INSERT INTO public."schema_migrations" (version) VALUES (20230304190224);
 INSERT INTO public."schema_migrations" (version) VALUES (20230304191908);
 INSERT INTO public."schema_migrations" (version) VALUES (20230304194037);
+INSERT INTO public."schema_migrations" (version) VALUES (20230306012942);
+INSERT INTO public."schema_migrations" (version) VALUES (20230306012949);

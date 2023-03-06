@@ -29,7 +29,8 @@ defmodule Core.Decorate do
     record
     |> Map.merge(wrap(record))
     |> Map.from_struct()
-    |> Map.merge(%{decorated: true, __source__: record})
+    |> Map.put(:decorated, true)
+    |> Map.put(:__source__, record)
     |> Enum.map(fn
       {key, value} when key in @ignored_keys -> {key, value}
       {key, value} -> {key, deep(value)}
@@ -38,6 +39,14 @@ defmodule Core.Decorate do
   end
 
   def deep(value), do: value
+
+  defp wrap(
+         %Core.Gameplay.Match{left_champion: left_champion, right_champion: right_champion} =
+           match
+       ) do
+    match
+    |> Map.put(:name, "#{left_champion.name} Vs #{right_champion.name}")
+  end
 
   defp wrap(value), do: value
 end

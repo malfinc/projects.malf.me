@@ -42,7 +42,7 @@ defmodule CoreWeb.RarityLive do
         socket
         |> assign(:record, record)
         |> assign(:changeset, Core.Gameplay.Rarity.changeset(record, %{}))
-        |> assign(:page_title, "Rarity / #{record.id}")
+        |> assign(:page_title, "Rarity / #{record.name}")
     end
   end
 

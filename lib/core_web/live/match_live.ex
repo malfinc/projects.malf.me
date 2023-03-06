@@ -18,7 +18,8 @@ defmodule CoreWeb.MatchLive do
       :season,
       division: [:conference],
       left_champion: [:upgrades, :plant],
-      right_champion: [:upgrades, :plant]
+      right_champion: [:upgrades, :plant],
+      winning_champion: [:upgrades, :plant]
     ])
     |> Core.Decorate.deep()
     |> Enum.group_by(&Map.get(&1, :weekly))
@@ -49,7 +50,8 @@ defmodule CoreWeb.MatchLive do
           :season,
           division: [:conference],
           left_champion: [:upgrades, :plant],
-          right_champion: [:upgrades, :plant]
+          right_champion: [:upgrades, :plant],
+          winning_champion: [:upgrades, :plant]
         ])
         |> Core.Decorate.deep()
     end
@@ -77,7 +79,7 @@ defmodule CoreWeb.MatchLive do
       record ->
         socket
         |> assign(:record, record)
-        |> assign(:page_title, "Match / #{record.name}")
+        |> assign(:page_title, "Match / #{record.id}")
     end
   end
 
@@ -95,20 +97,27 @@ defmodule CoreWeb.MatchLive do
     ~H"""
     <h1>Matches</h1>
     <%= for {weekly, matches_by_conference} <- @records do %>
-      <h2>Week <%= weekly.position %></h2>
-      <%= for {conference, matches_by_division} <- matches_by_conference do %>
-        <h3><%= conference.name %> Conference</h3>
-        <%= for {division, matches} <- matches_by_division do %>
-          <h4><%= division.name %> Division</h4>
-          <ul>
-            <%= for match <- matches do %>
-              <li>
-                <%= match.left_champion.name %> (<%= match.left_champion.plant.name %>) Vs <%= match.right_champion.name %> (<%= match.right_champion.plant.name %>)
-              </li>
+      <div style="padding-left: 25px;">
+        <h2>Week <%= weekly.position %></h2>
+        <%= for {conference, matches_by_division} <- matches_by_conference do %>
+          <div style="padding-left: 25px;">
+            <h3><%= conference.name %> Conference</h3>
+            <%= for {division, matches} <- matches_by_division do %>
+              <div style="padding-left: 25px;">
+                <h4><%= division.name %> Division</h4>
+                <ul>
+                  <%= for match <- matches do %>
+                    <li>
+                      <%= match.name %> (winner <%= match.winning_champion.name %>)
+                      <.link href={~p"/lop/matches/#{match.id}"}>View</.link>
+                    </li>
+                  <% end %>
+                </ul>
+              </div>
             <% end %>
-          </ul>
+          </div>
         <% end %>
-      <% end %>
+      </div>
     <% end %>
     """
   end
@@ -116,7 +125,22 @@ defmodule CoreWeb.MatchLive do
   @impl true
   def render(%{live_action: :show} = assigns) do
     ~H"""
-
+    <h1><%= @record.name %></h1>
+    <section style="display: grid; grid-template-columns: 3fr 1fr 3fr; place-items: center">
+      <.champion
+        champion={@record.left_champion}
+        winner={@record.winning_champion == @record.left_champion}
+      /> Vs
+      <.champion
+        champion={@record.right_champion}
+        winner={@record.winning_champion == @record.right_champion}
+      />
+    </section>
+    <%= for round <- @record.rounds do %>
+      <p>
+        <%= round %>
+      </p>
+    <% end %>
     """
   end
 end

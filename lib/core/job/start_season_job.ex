@@ -19,10 +19,6 @@ defmodule Core.Job.StartSeasonJob do
       season ->
         Core.Repo.transaction(fn ->
           %{season_id: season.id}
-          |> Core.Job.GenerateWeekliesJob.new()
-          |> Oban.insert()
-
-          %{season_id: season.id}
           |> Core.Job.GenerateChampionsJob.new()
           |> Oban.insert()
         end)

@@ -108,4 +108,54 @@ defmodule Core.Gameplay do
 
   @spec current_season_id() :: String.t()
   def current_season_id(), do: current_season() |> Map.get(:id)
+
+  @doc """
+  Takes a match and generates each round of action between two combatants, ending when one has no HP left.
+
+  Each round is a tuple of the "round actor" and a log of the action (`{Core.Gameplay.Champion.t(), String.t()}`).
+  """
+  @spec fight(Core.Gameplay.Match.t()) :: list(tuple())
+  def fight(%Core.Gameplay.Match{left_champion: left_champion, right_champion: right_champion}) do
+    Stream.unfold(Enum.map([left_champion, right_champion], &as_combatants/1), &clash/1)
+    |> Enum.to_list()
+  end
+
+  defp as_combatants(champion) do
+    Map.put(champion, :hp, 10)
+  end
+
+  defp clash([%{hp: hp}, _]) when hp <= 0, do: nil
+
+  defp clash([_, %{hp: hp}]) when hp <= 0, do: nil
+
+  defp clash([left_champion, right_champion]) do
+    damage = Enum.random(1..3)
+
+    Enum.random([:left_champion, :right_champion])
+    |> case do
+      :left_champion ->
+        {
+          {
+            left_champion,
+            "#{left_champion.name} did #{damage}HP in damage to #{right_champion.name}"
+          },
+          [
+            Map.put(left_champion, :hp, left_champion.hp - damage),
+            right_champion
+          ]
+        }
+
+      :right_champion ->
+        {
+          {
+            right_champion,
+            "#{right_champion.name} did #{damage}HP in damage to #{right_champion.name}"
+          },
+          [
+            left_champion,
+            Map.put(right_champion, :hp, right_champion.hp - damage)
+          ]
+        }
+    end
+  end
 end

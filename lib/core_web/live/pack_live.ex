@@ -65,7 +65,7 @@ defmodule CoreWeb.PackLive do
       record ->
         socket
         |> assign(:record, record)
-        |> assign(:page_title, "Pack / #{record.id}")
+        |> assign(:page_title, "Pack / #{record.position}")
     end
   end
 

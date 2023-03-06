@@ -53,7 +53,7 @@ defmodule Core.Repo.Migrations.RefactorPositionProperties do
     end)
     |> Enum.with_index()
     |> Enum.group_by(&Map.get(&1, :season_id))
-    |> Enum.each(fn {season_id, weeklies} ->
+    |> Enum.each(fn {_season_id, weeklies} ->
       Enum.each(weeklies, fn {weekly, index} ->
         Core.Gameplay.update_weekly(weekly, %{position: index + 1})
       end)
@@ -74,7 +74,7 @@ defmodule Core.Repo.Migrations.RefactorPositionProperties do
     end)
     |> Enum.with_index()
     |> Enum.group_by(&Map.get(&1, :season_id))
-    |> Enum.each(fn {season_id, cards} ->
+    |> Enum.each(fn {_season_id, cards} ->
       Enum.each(cards, fn {card, index} ->
         Core.Gameplay.update_card(card, %{position: index + 1})
       end)
@@ -95,7 +95,7 @@ defmodule Core.Repo.Migrations.RefactorPositionProperties do
     end)
     |> Enum.with_index()
     |> Enum.group_by(&Map.get(&1, :season_id))
-    |> Enum.each(fn {season_id, packs} ->
+    |> Enum.each(fn {_season_id, packs} ->
       Enum.each(packs, fn {pack, index} ->
         Core.Gameplay.update_pack(pack, %{position: index + 1})
       end)

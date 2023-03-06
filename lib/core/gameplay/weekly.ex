@@ -7,7 +7,7 @@ defmodule Core.Gameplay.Weekly do
   schema "weeklies" do
     field(:position, :integer)
     belongs_to(:season, Core.Gameplay.Season)
-    has_one(:match, Core.Gameplay.Match)
+    has_many(:matches, Core.Gameplay.Match)
 
     timestamps()
   end

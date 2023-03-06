@@ -49,7 +49,7 @@ defmodule CoreWeb.SeasonLive do
       record ->
         socket
         |> assign(:record, record)
-        |> assign(:page_title, "Season / #{record.id}")
+        |> assign(:page_title, "Season / #{record.position}")
     end
   end
 
