@@ -51,10 +51,11 @@ defmodule Core.Repo.Migrations.RefactorPositionProperties do
     Core.Gameplay.list_weeklies(fn schema ->
       from(schema, order_by: {:asc, :inserted_at})
     end)
-    |> Enum.with_index()
     |> Enum.group_by(&Map.get(&1, :season_id))
     |> Enum.each(fn {_season_id, weeklies} ->
-      Enum.each(weeklies, fn {weekly, index} ->
+      weeklies
+      |> Enum.with_index()
+      |> Enum.each(fn {weekly, index} ->
         Core.Gameplay.update_weekly(weekly, %{position: index + 1})
       end)
     end)
@@ -72,10 +73,11 @@ defmodule Core.Repo.Migrations.RefactorPositionProperties do
     Core.Gameplay.list_cards(fn schema ->
       from(schema, order_by: {:asc, :inserted_at})
     end)
-    |> Enum.with_index()
     |> Enum.group_by(&Map.get(&1, :season_id))
     |> Enum.each(fn {_season_id, cards} ->
-      Enum.each(cards, fn {card, index} ->
+      cards
+      |> Enum.with_index()
+      |> Enum.each(fn {card, index} ->
         Core.Gameplay.update_card(card, %{position: index + 1})
       end)
     end)
@@ -93,10 +95,11 @@ defmodule Core.Repo.Migrations.RefactorPositionProperties do
     Core.Gameplay.list_packs(fn schema ->
       from(schema, order_by: {:asc, :inserted_at})
     end)
-    |> Enum.with_index()
     |> Enum.group_by(&Map.get(&1, :season_id))
     |> Enum.each(fn {_season_id, packs} ->
-      Enum.each(packs, fn {pack, index} ->
+      packs
+      |> Enum.with_index()
+      |> Enum.each(fn {pack, index} ->
         Core.Gameplay.update_pack(pack, %{position: index + 1})
       end)
     end)
