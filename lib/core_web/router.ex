@@ -80,10 +80,6 @@ defmodule CoreWeb.Router do
         live "/plants", CoreWeb.PlantLive, :list
         live "/champions/:id", CoreWeb.ChampionLive, :show
         live "/champions/", CoreWeb.ChampionLive, :list
-        live "/packs/", CoreWeb.PackLive, :list
-        live "/packs/:id", CoreWeb.PackLive, :show
-        live "/cards/", CoreWeb.CardLive, :list
-        live "/cards/:id", CoreWeb.CardLive, :show
         # live "/conferences/", CoreWeb.CardLive, :list
         # live "/conferences/:id", CoreWeb.CardLive, :show
         # live "/divisions/", CoreWeb.CardLive, :list
@@ -138,6 +134,10 @@ defmodule CoreWeb.Router do
 
     live_session :require_authenticated_account,
       on_mount: [{CoreWeb.AccountAuthenticationHelpers, :ensure_authenticated}] do
+      live "/packs/", CoreWeb.PackLive, :list
+      live "/packs/:id", CoreWeb.PackLive, :show
+      live "/cards/", CoreWeb.CardLive, :list
+      live "/cards/:id", CoreWeb.CardLive, :show
       live "/accounts/settings", CoreWeb.AccountSettingsLive, :edit
       live "/accounts/settings/confirm_email/:token", CoreWeb.AccountSettingsLive, :confirm_email
     end
