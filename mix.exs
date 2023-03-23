@@ -36,7 +36,7 @@ defmodule Core.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.7.0-rc.3", override: true},
+      {:phoenix, "~> 1.7.1", override: true},
       {:phoenix_ecto, "~> 4.4"},
       {:ecto_sql, "~> 3.7"},
       {:postgrex, "~> 0.16.0"},
@@ -46,9 +46,9 @@ defmodule Core.MixProject do
       {:bcrypt_elixir, "~> 3.0"},
       {:floki, "~> 0.34.0", only: :test},
       {:phoenix_live_dashboard, "~> 0.7.2"},
-      {:esbuild, "~> 0.6.0", runtime: Mix.env() == :dev},
+      {:esbuild, "~> 0.7.0", runtime: Mix.env() == :dev},
       {:swoosh, "~> 1.3"},
-      {:finch, "~> 0.14.0"},
+      {:finch, "~> 0.15.0"},
       {:telemetry_metrics, "~> 0.6.0"},
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.22.1"},
