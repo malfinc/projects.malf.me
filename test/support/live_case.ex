@@ -35,7 +35,10 @@ defmodule CoreWeb.LiveCase do
   setup tags do
     Core.DataCase.setup_sandbox(tags)
 
-    {:ok, conn: CoreWeb.ConnCase.build_conn(session: true, live: true)}
+    {:ok,
+     conn:
+       Phoenix.ConnTest.build_conn()
+       |> Phoenix.ConnTest.init_test_session(%{})}
   end
 
   def with_element(html, selector) do
@@ -43,5 +46,11 @@ defmodule CoreWeb.LiveCase do
     |> Floki.parse_fragment!()
     |> Floki.find(selector)
     |> Floki.raw_html()
+  end
+
+  def web_text(text) do
+    text
+    |> Phoenix.HTML.html_escape()
+    |> Phoenix.HTML.safe_to_string()
   end
 end

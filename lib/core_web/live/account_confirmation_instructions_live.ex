@@ -7,7 +7,7 @@ defmodule CoreWeb.AccountConfirmationInstructionsLive do
     ~H"""
     <h1>Resend confirmation instructions</h1>
 
-    <.simple_form :let={f} for={:account} id="resend_confirmation_form" phx-submit="send_instructions">
+    <.simple_form :let={f} for={%{}} id="resend_confirmation_form" phx-submit="send_instructions">
       <.input field={{f, :email_address}} type="email" label="Email" required />
       <:actions>
         <.button phx-disable-with="Sending..." type="submit" class="btn btn-primary">
@@ -28,7 +28,7 @@ defmodule CoreWeb.AccountConfirmationInstructionsLive do
 
   def handle_event(
         "send_instructions",
-        %{"account" => %{"email_address" => email_address}},
+        %{"email_address" => email_address},
         socket
       ) do
     if account = Users.get_account_by_email_address(email_address) do

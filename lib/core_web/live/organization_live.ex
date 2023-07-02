@@ -5,7 +5,6 @@ defmodule CoreWeb.OrganizationLive do
   defp list_records(_assigns, _params) do
     Core.Users.list_organizations()
     |> Core.Repo.preload([])
-    |> Core.Decorate.deep()
   end
 
   defp get_record(id) when is_binary(id) do
@@ -17,7 +16,6 @@ defmodule CoreWeb.OrganizationLive do
       record ->
         record
         |> Core.Repo.preload([:accounts])
-        |> Core.Decorate.deep()
     end
   end
 
@@ -43,7 +41,7 @@ defmodule CoreWeb.OrganizationLive do
       record ->
         socket
         |> assign(:record, record)
-        |> assign(:page_title, "Organization / #{record.name}")
+        |> assign(:page_title, "Organization / #{Pretty.get(record, :name)}")
     end
   end
 
@@ -55,8 +53,6 @@ defmodule CoreWeb.OrganizationLive do
   end
 
   @impl true
-  @spec render(%{:live_action => :list | :show, optional(any) => any}) ::
-          Phoenix.LiveView.Rendered.t()
   def render(%{live_action: :list} = assigns) do
     ~H"""
     <h2>Organizations</h2>
@@ -69,7 +65,7 @@ defmodule CoreWeb.OrganizationLive do
       <%= for organization <- @records do %>
         <tr>
           <td>
-            <%= organization.name %>
+            <%= Pretty.get(organization, :name) %>
           </td>
           <td>
             <%= timestamp_in_words_ago(organization) %>
@@ -89,7 +85,7 @@ defmodule CoreWeb.OrganizationLive do
   def render(%{live_action: :show} = assigns) do
     ~H"""
     <h2>
-      <%= @record.name %>
+      <%= Pretty.get(@record, :name) %>
     </h2>
 
     <h3 id="accounts">Accounts</h3>

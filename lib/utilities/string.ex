@@ -21,7 +21,7 @@ defmodule Utilities.String do
     |> String.split()
     |> Enum.map_join(" ", fn string ->
       cond do
-        String.match?(string, ~r/^(and|the|with|in|is|a|an|of)$/) ->
+        String.match?(string, ~r/^(and|the|with|in|is|a|an|of|or)$/) ->
           string
 
         String.match?(string, ~r/-/) ->

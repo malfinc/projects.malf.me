@@ -21,9 +21,9 @@ config :core,
 config :core, :twitch, webhook_path: "twitch/webhooks"
 
 config :core,
-       Core.Repo,
-       migration_primary_key: [name: :id, type: :binary_id],
-       migration_foreign_key: [column: :id, type: :binary_id]
+  Core.Repo,
+  migration_primary_key: [name: :id, type: :binary_id],
+  migration_foreign_key: [column: :id, type: :binary_id]
 
 # Configures the endpoint
 config :core, CoreWeb.Endpoint,
@@ -59,10 +59,10 @@ config :core, Core.Mailer, adapter: Swoosh.Adapters.Local
 
 # Configure esbuild (the version is required)
 config :esbuild,
-  version: "0.14.41",
+  version: "0.17.11",
   default: [
     args:
-      ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
+      ~w(js/application.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
     cd: Path.expand("../assets", __DIR__),
     env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
   ]
@@ -70,6 +70,7 @@ config :esbuild,
 # Configures Elixir's Logger
 import IO
 
+# Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] #{IO.ANSI.bright()}$message#{IO.ANSI.normal()}\n",
   metadata: [:request_id],
@@ -85,8 +86,7 @@ config :sentry,
 
 config :core, Oban,
   repo: Core.Repo,
-  plugins: [Oban.Plugins.Pruner],
-  queues: [default: 10]
+  queues: [default: 5]
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

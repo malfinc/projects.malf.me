@@ -4,6 +4,8 @@ defmodule CoreWeb.AdminPageLive do
 
   @impl true
   def mount(_params, _session, socket) do
+    if connected?(socket), do: Process.send_after(self(), :refresh, 5000)
+
     socket
     |> assign(:page_title, "Loading...")
     |> (&{:ok, &1}).()
@@ -42,6 +44,17 @@ defmodule CoreWeb.AdminPageLive do
     socket
     |> as(socket.assigns.live_action, params)
     |> (&{:noreply, &1}).()
+  end
+
+  @impl true
+  def handle_info(:refresh, %{assigns: %{live_action: :dashboard}} = socket) do
+    Process.send_after(self(), :refresh, 5000)
+    {:noreply, push_patch(socket, to: "/admin", replace: true)}
+  end
+
+  @impl true
+  def handle_info(:refresh, socket) do
+    {:noreply, socket}
   end
 
   @impl true

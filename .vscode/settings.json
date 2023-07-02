@@ -1,11 +1,8 @@
 {
   "atomKeymap.promptV3Features": true,
   "diffEditor.renderSideBySide": false,
-  "editor.codeActionsOnSave": { "source.fixAll": true },
-  "emmet.includeLanguages": {
-      "phoenix-heex": "html",
-      "html-eex": "html",
-      "elixir": "html"
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true
   },
   "editor.fontFamily": "'Fira Code', Menlo, Monaco, 'Courier New', monospace",
   "editor.fontLigatures": true,
@@ -18,18 +15,28 @@
   "elixirLS.fetchDeps": false,
   "elixirLS.mixEnv": "dev",
   "elixirLS.trace.server": "messages",
-  "explorer.confirmDragAndDrop": false,
+  "emmet.includeLanguages": {
+    "phoenix-heex": "html",
+    "html-eex": "html",
+    "elixir": "html"
+  },
+  "files.associations": {
+    "*.heex": "phoenix-heex"
+  },
   "files.autoSave": "onFocusChange",
   "files.insertFinalNewline": true,
+  "files.readonlyInclude": {
+    "mix.lock": true,
+    ".elixir_ls": true,
+    "_build": true,
+    "node_modules": true,
+    "cover": true,
+    "deps": true
+  },
   "files.trimFinalNewlines": true,
   "files.trimTrailingWhitespace": true,
-  "git.autofetch": true,
-  "git.confirmSync": false,
-  "liveshare.presence": true,
-  "terminal.integrated.copyOnSelection": true,
-  "window.autoDetectColorScheme": true,
-  "workbench.sideBar.location": "right",
-  "terminal.integrated.defaultLocation": "editor",
+  "javascript.format.semicolons": "insert",
+  "javascript.updateImportsOnFileMove.enabled": "always",
   "sqltools.connections": [
     {
       "previewLimit": 50,
@@ -42,10 +49,12 @@
       "password": ""
     }
   ],
-  "cSpell.words": [
-    "Cldr",
-    "Randomizer",
-    "spellout",
-    "titlecase"
-  ]
+  "terminal.integrated.copyOnSelection": true,
+  "terminal.integrated.defaultLocation": "editor",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "typescript.format.semicolons": "insert",
+  "typescript.implementationsCodeLens.enabled": true,
+  "typescript.referencesCodeLens.enabled": true,
+  "typescript.referencesCodeLens.showOnAllFunctions": true,
+  "typescript.suggest.completeFunctionCalls": true
 }

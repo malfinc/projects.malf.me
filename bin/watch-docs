@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
 inotifywait -q -r -e modify -m lib/ | while read DIRECTORY EVENT FILE; do
-
   mix docs --formatter html
 done

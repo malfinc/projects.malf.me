@@ -36,19 +36,19 @@ defmodule Core.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.7.1", override: true},
+      {:phoenix, "~> 1.7", override: true},
       {:phoenix_ecto, "~> 4.4"},
-      {:ecto_sql, "~> 3.7"},
-      {:postgrex, "~> 0.16.0"},
-      {:phoenix_html, "~> 3.0"},
+      {:ecto_sql, "~> 3.10"},
+      {:postgrex, "~> 0.17.1"},
+      {:phoenix_html, "~> 3.3"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:phoenix_live_view, "~> 0.18.3"},
+      {:phoenix_live_view, "~> 0.19.0"},
       {:bcrypt_elixir, "~> 3.0"},
       {:floki, "~> 0.34.0", only: :test},
-      {:phoenix_live_dashboard, "~> 0.7.2"},
+      {:phoenix_live_dashboard, "~> 0.8.0"},
       {:esbuild, "~> 0.7.0", runtime: Mix.env() == :dev},
       {:swoosh, "~> 1.3"},
-      {:finch, "~> 0.15.0"},
+      {:finch, "~> 0.16.0"},
       {:telemetry_metrics, "~> 0.6.0"},
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.22.1"},
@@ -61,8 +61,8 @@ defmodule Core.MixProject do
       {:inflex, "~> 2.1"},
       {:earmark, "~> 1.4"},
       {:plug_telemetry_server_timing, "~> 0.3.0"},
-      {:slugy, "~> 4.1.1"},
-      {:oban, "~> 2.12"},
+      {:slugy, "~> 4.1"},
+      {:oban, "~> 2.14"},
       {:hackney, "~> 1.18"},
       {:sentry, "~> 8.0"},
       {:timex, "~> 3.7"},
@@ -70,7 +70,9 @@ defmodule Core.MixProject do
       {:ex_doc, "~> 0.27", only: :dev, runtime: false},
       {:paper_trail, "~> 1.0"},
       {:ueberauth, "~> 0.7"},
-      {:ueberauth_twitch, "~> 0.1.0"}
+      {:ueberauth_twitch, "~> 0.1.0"},
+      {:bandit, "~> 1.0-pre"},
+      {:nx, "~> 0.5.3"}
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
     ]
