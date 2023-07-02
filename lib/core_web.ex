@@ -39,7 +39,6 @@ defmodule CoreWeb do
   def controller do
     quote do
       use Phoenix.Controller,
-        namespace: CoreWeb,
         formats: [:html, :json],
         layouts: [html: CoreWeb.Layouts]
 

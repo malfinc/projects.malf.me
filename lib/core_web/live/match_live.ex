@@ -21,7 +21,6 @@ defmodule CoreWeb.MatchLive do
       right_champion: [:upgrades, :plant],
       winning_champion: [:upgrades, :plant]
     ])
-    |> Core.Decorate.deep()
     |> Enum.group_by(&Map.get(&1, :weekly))
     |> Enum.to_list()
     |> Enum.sort_by(fn {key, _} -> key.position end)
@@ -53,7 +52,6 @@ defmodule CoreWeb.MatchLive do
           right_champion: [:upgrades, :plant],
           winning_champion: [:upgrades, :plant]
         ])
-        |> Core.Decorate.deep()
     end
   end
 

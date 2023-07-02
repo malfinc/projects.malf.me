@@ -56,10 +56,12 @@ defmodule Utilities.Ecto.HasThroughWhere do
           Keyword.t(map())
         ) ::
           Ecto.Changeset.t()
+
+  def put_assoc(changeset, nil, _, _, _, _), do: changeset
+
   def put_assoc(changeset, record_or_records, association, join_relationship, end_relationship,
         where: where
-      )
-      when not is_nil(record_or_records) do
+      ) do
     changeset
     |> Ecto.Changeset.put_assoc(
       join_relationship,
@@ -74,6 +76,4 @@ defmodule Utilities.Ecto.HasThroughWhere do
       end
     )
   end
-
-  def put_assoc(changeset, nil, _, _, _, _), do: changeset
 end

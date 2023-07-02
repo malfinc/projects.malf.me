@@ -5,7 +5,6 @@ defmodule CoreWeb.ChampionLive do
   defp list_records(_assigns, _params) do
     Core.Gameplay.list_champions()
     |> Core.Repo.preload([:upgrades, :plant])
-    |> Core.Decorate.deep()
   end
 
   defp get_record(id) when is_binary(id) do
@@ -17,7 +16,6 @@ defmodule CoreWeb.ChampionLive do
       record ->
         record
         |> Core.Repo.preload([:upgrades, :plant])
-        |> Core.Decorate.deep()
     end
   end
 

@@ -6,7 +6,6 @@ defmodule CoreWeb.SeasonLive do
   defp list_records(_assigns, _params) do
     Core.Gameplay.list_seasons(fn schema -> from(schema, order_by: [:position]) end)
     # |> Core.Repo.preload()
-    |> Core.Decorate.deep()
   end
 
   defp get_record(id) when is_binary(id) do
@@ -18,7 +17,6 @@ defmodule CoreWeb.SeasonLive do
       record ->
         record
         |> Core.Repo.preload(champions: [:plant])
-        |> Core.Decorate.deep()
     end
   end
 

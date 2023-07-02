@@ -7,12 +7,12 @@ defmodule CoreWeb.Endpoint do
   # Set :encryption_salt if you would also like to encrypt it.
   @session_options [
     store: :cookie,
+    key: "_core_key",
     signing_salt: "guX+dkB1",
-    key: "_coreweb_key",
     same_site: "Lax"
   ]
 
-  socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
+  socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options, compress: true]]
 
   # Serve at "/" the static files from "priv/static" directory.
   #

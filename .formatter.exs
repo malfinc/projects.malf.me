@@ -13,5 +13,6 @@
     |> Kernel.--([
       "lib/core_web/controllers/lib/core_web/controllers/error/404.html.heex",
       "lib/core_web/controllers/lib/core_web/controllers/error/500.html.heex"
-    ])
+    ]),
+  heex_line_length: 1000
 ]

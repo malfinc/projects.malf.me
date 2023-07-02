@@ -6,16 +6,15 @@ defmodule Core.Users do
   import Ecto.Query, warn: false
   require Logger
 
+  use Scaffolding.Read, [Core.Users.Account, :accounts, :account]
+  use Scaffolding, [Core.Users.Organization, :organizations, :organization]
+
   # def can_read?(%Core.Universes.World{} = record, %Core.Users.Account{} = current_account) do
   #   current_account
   #   |> Core.Repo.preload([:worlds])
   #   |> Map.get(:worlds)
   #   |> Enum.member?(record)
   # end
-
-  def list_accounts() do
-    Core.Repo.all(Core.Users.Account)
-  end
 
   @doc """
   Gets a account by email_address.
@@ -32,14 +31,6 @@ defmodule Core.Users do
     account = Core.Repo.get_by(Core.Users.Account, email_address: email_address)
     if Core.Users.Account.valid_password?(account, password), do: account
   end
-
-  @doc """
-  Gets a single account.
-
-  Raises `Ecto.NoResultsError` if the Account does not exist.
-  """
-  def get_account!(id), do: Core.Repo.get!(Core.Users.Account, id)
-  def get_account(id), do: Core.Repo.get(Core.Users.Account, id)
 
   @doc """
   Find or create an account based on OAuth data.
@@ -422,98 +413,5 @@ defmodule Core.Users do
     %Core.Users.OrganizationPermission{}
     |> Core.Users.OrganizationPermission.changeset(attributes)
     |> Core.Repo.insert()
-  end
-
-  @doc """
-  Returns the list of permissions.
-  """
-  def list_permissions do
-    Core.Repo.all(Core.Users.Permission)
-  end
-
-  @doc """
-  Gets a single permission.
-
-  Raises `Ecto.NoResultsError` if the Permission does not exist.
-  """
-  def get_permission!(id), do: Core.Repo.get!(Core.Users.Permission, id)
-
-  @doc """
-  Creates a permission.
-  """
-  def create_permission(attrs \\ %{}) do
-    %Core.Users.Permission{}
-    |> Core.Users.Permission.changeset(attrs)
-    |> Core.Repo.insert()
-  end
-
-  @doc """
-  Updates a permission.
-  """
-  def update_permission(%Core.Users.Permission{} = permission, attrs) do
-    permission
-    |> Core.Users.Permission.changeset(attrs)
-    |> Core.Repo.update()
-  end
-
-  @doc """
-  Deletes a permission.
-  """
-  def delete_permission(%Core.Users.Permission{} = permission) do
-    Core.Repo.delete(permission)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking permission changes.
-  """
-  def change_permission(%Core.Users.Permission{} = permission, attrs \\ %{}) do
-    Core.Users.Permission.changeset(permission, attrs)
-  end
-
-  @doc """
-  Returns the list of organizations.
-  """
-  def list_organizations do
-    Core.Repo.all(Core.Users.Organization)
-  end
-
-  @doc """
-  Gets a single organization.
-
-  Raises `Ecto.NoResultsError` if the Organization does not exist.
-  """
-  def get_organization!(id), do: Core.Repo.get!(Core.Users.Organization, id)
-  def get_organization(id), do: Core.Repo.get(Core.Users.Organization, id)
-
-  @doc """
-  Creates a organization.
-  """
-  def create_organization(attrs \\ %{}) do
-    %Core.Users.Organization{}
-    |> Core.Users.Organization.changeset(attrs)
-    |> Core.Repo.insert()
-  end
-
-  @doc """
-  Updates a organization.
-  """
-  def update_organization(%Core.Users.Organization{} = organization, attrs) do
-    organization
-    |> Core.Users.Organization.changeset(attrs)
-    |> Core.Repo.update()
-  end
-
-  @doc """
-  Deletes a organization.
-  """
-  def delete_organization(%Core.Users.Organization{} = organization) do
-    Core.Repo.delete(organization)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking organization changes.
-  """
-  def change_organization(%Core.Users.Organization{} = organization, attrs \\ %{}) do
-    Core.Users.Organization.changeset(organization, attrs)
   end
 end

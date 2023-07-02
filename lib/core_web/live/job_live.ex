@@ -3,18 +3,23 @@ defmodule CoreWeb.JobLive do
   import Ecto.Query
   use CoreWeb, :live_view
 
-  # "available" "scheduled" "executing" "retryable" "completed" "discarded"
-  defp list_records(_assigns, params) do
-    where =
-      params
-      |> Utilities.Map.atomize_keys()
-      |> Keyword.new()
+  defp default_states(),
+    do: [
+      "available",
+      "scheduled",
+      "executing",
+      "retryable",
+      "completed",
+      "discarded"
+    ]
 
+  defp list_records(_assigns, _params) do
     from(
-      Oban.Job,
-      where: ^where,
-      order_by: [desc: :inserted_at],
-      limit: 25
+      job in Oban.Job,
+      where: job.state in ^(default_states() -- ["completed"]),
+      # ,
+      order_by: [desc: :inserted_at]
+      # limit: 25
     )
     |> Core.Repo.all()
   end
@@ -33,7 +38,7 @@ defmodule CoreWeb.JobLive do
 
   @impl true
   def mount(_params, _session, socket) do
-    if connected?(socket), do: Process.send_after(self(), :refresh, 2500)
+    if connected?(socket), do: Process.send_after(self(), :refresh, 5000)
 
     socket
     |> assign(:page_title, "Loading...")
@@ -61,14 +66,20 @@ defmodule CoreWeb.JobLive do
 
   @impl true
   def handle_info(:refresh, %{assigns: %{live_action: :list}} = socket) do
-    Process.send_after(self(), :refresh, 2500)
-    {:noreply, push_patch(socket, to: "/admin/jobs")}
+    Process.send_after(self(), :refresh, 5000)
+
+    socket
+    |> push_patch(to: "/admin/jobs", replace: true)
+    |> (&{:noreply, &1}).()
   end
 
   @impl true
   def handle_info(:refresh, %{assigns: %{live_action: :show, record: %{id: id}}} = socket) do
-    Process.send_after(self(), :refresh, 2500)
-    {:noreply, push_patch(socket, to: "/admin/jobs/#{id}")}
+    Process.send_after(self(), :refresh, 5000)
+
+    socket
+    |> push_patch(to: "/admin/jobs/#{id}", replace: true)
+    |> (&{:noreply, &1}).()
   end
 
   @impl true
@@ -84,12 +95,37 @@ defmodule CoreWeb.JobLive do
   end
 
   @impl true
+  def handle_event("resume_default_queue", _params, socket) do
+    Oban.resume_queue(queue: :default)
+    |> case do
+      :ok ->
+        socket
+        |> put_flash(:info, "Resuming default queue")
+        |> push_patch(to: "/admin/jobs", replace: true)
+        |> (&{:noreply, &1}).()
+    end
+  end
+
+  @impl true
+  def handle_event("pause_default_queue", _params, socket) do
+    Oban.pause_queue(queue: :default)
+    |> case do
+      :ok ->
+        socket
+        |> put_flash(:info, "Pausing default queue")
+        |> push_patch(to: "/admin/jobs", replace: true)
+        |> (&{:noreply, &1}).()
+    end
+  end
+
+  @impl true
   def handle_event("retry_all", _params, socket) do
     Oban.retry_all_jobs(Oban.Job)
     |> case do
       {:ok, count} ->
         socket
         |> put_flash(:info, "Retrying #{count} jobs")
+        |> push_patch(to: "/admin/jobs", replace: true)
         |> (&{:noreply, &1}).()
     end
   end
@@ -101,6 +137,7 @@ defmodule CoreWeb.JobLive do
       {:ok, count} ->
         socket
         |> put_flash(:info, "Killed #{count} jobs")
+        |> push_patch(to: "/admin/jobs", replace: true)
         |> (&{:noreply, &1}).()
     end
   end
@@ -110,6 +147,7 @@ defmodule CoreWeb.JobLive do
     Oban.retry_job(String.to_integer(id))
 
     socket
+    |> push_patch(to: "/admin/jobs/#{id}", replace: true)
     |> (&{:noreply, &1}).()
   end
 
@@ -118,31 +156,39 @@ defmodule CoreWeb.JobLive do
     Oban.cancel_job(String.to_integer(id))
 
     socket
+    |> push_patch(to: "/admin/jobs/#{id}", replace: true)
     |> (&{:noreply, &1}).()
   end
 
-  @impl true
-  def handle_event("pause_default_queue", _params, socket) do
-    Oban.pause_queue(queue: :default)
-
-    socket
-    |> (&{:noreply, &1}).()
+  defp count_by_queue(records) do
+    records
+    |> Enum.group_by(&Map.get(&1, :state))
+    |> Enum.map(fn {state, list} -> "#{state}: #{length(list)}" end)
+    |> Utilities.List.to_sentence()
   end
 
   @impl true
-  @spec render(%{:live_action => :list | :show, optional(any) => any}) ::
+  @spec render(%{live_action: :list | :show}) ::
           Phoenix.LiveView.Rendered.t()
   def render(%{live_action: :list} = assigns) do
     ~H"""
-    <h2>Jobs <%= length(@records) %></h2>
+    <h2>
+      Jobs (<%= count_by_queue(@records) %>)
+    </h2>
 
     <h3 id="actions">Actions</h3>
     <section>
-      <.button phx-click="pause_default_queue" class="btn-outline-info">
-        Pause Default Queue
-      </.button>
-      <.button phx-click="retry_all" class="btn-outline-warning">Retry All</.button>
-      <.button phx-click="cancel_all" class="btn-outline-danger">Cancel All</.button>
+      <%= if Oban.check_queue(queue: :default).paused do %>
+        <button type="button" phx-click="resume_default_queue" class="btn btn-outline-info">
+          Resume Default Queue
+        </button>
+      <% else %>
+        <button type="button" phx-click="pause_default_queue" class="btn btn-outline-info">
+          Pause Default Queue
+        </button>
+      <% end %>
+      <button type="button" phx-click="retry_all" class="btn btn-outline-warning">Retry All</button>
+      <button type="button" phx-click="cancel_all" class="btn btn-outline-danger">Cancel All</button>
     </section>
 
     <table class="table">
@@ -152,7 +198,7 @@ defmodule CoreWeb.JobLive do
           <th>Worker</th>
           <th>State</th>
           <th>Queue</th>
-          <th>Node</th>
+          <th>Data</th>
           <th>Attempts</th>
           <th>Started</th>
           <th></th>
@@ -169,17 +215,35 @@ defmodule CoreWeb.JobLive do
             <td><%= job.worker %></td>
             <td><%= job.state %></td>
             <td><%= job.queue %></td>
-            <td><%= Utilities.List.to_sentence(job.attempted_by || []) %></td>
+            <td>
+              <%= case job.worker do %>
+                <% "Core.Job.GeneratePropertyJob" -> %>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Core.Randomizer</th>
+                        <th>Property</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><%= job.args["randomizer"] %></td>
+                        <td><%= job.args["property"] %></td>
+                      </tr>
+                    </tbody>
+                  </table>
+              <% end %>
+            </td>
             <td><%= job.attempt %>/<%= job.max_attempts %></td>
             <td><time datetime={job.inserted_at}><%= Timex.from_now(job.inserted_at) %></time></td>
             <td>
               <section>
-                <.button phx-click="retry" phx-value-id={job.id} class="btn-outline-warning">
+                <button type="button" phx-click="retry" phx-value-id={job.id} class="btn btn-outline-warning">
                   Retry
-                </.button>
-                <.button phx-click="cancel" phx-value-id={job.id} class="btn-outline-danger">
+                </button>
+                <button type="button" phx-click="cancel" phx-value-id={job.id} class="btn btn-outline-danger">
                   Cancel
-                </.button>
+                </button>
               </section>
             </td>
           </tr>
@@ -196,22 +260,19 @@ defmodule CoreWeb.JobLive do
 
     <h3 id="actions">Actions</h3>
     <section>
-      <.button phx-click="retry" phx-value-id={@record.id} class="btn-outline-warning">
+      <button type="button" phx-click="retry" phx-value-id={@record.id} class="btn btn-outline-warning">
         Retry
-      </.button>
-      <.button phx-click="cancel" phx-value-id={@record.id} class="btn-outline-danger">
+      </button>
+      <button type="button" phx-click="cancel" phx-value-id={@record.id} class="btn btn-outline-danger">
         Cancel
-      </.button>
+      </button>
     </section>
 
     <p>
       <%= @record.queue %> queue -
       currently <%= @record.state %> -
       <%= if @record.attempted_at do %>
-        <%= @record.attempt %> of <%= @record.max_attempts %> (last attempt <time
-          title={@record.attempted_at}
-          datetime={@record.attempted_at}
-        ><%= Timex.from_now(@record.attempted_at) %></time>)
+        <%= @record.attempt %> of <%= @record.max_attempts %> (last attempt <time title={@record.attempted_at} datetime={@record.attempted_at}><%= Timex.from_now(@record.attempted_at) %></time>)
       <% else %>
         never attempted
       <% end %>

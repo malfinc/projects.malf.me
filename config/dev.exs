@@ -20,8 +20,8 @@ config :core, Core.Repo,
 # debugging and code reloading.
 #
 # The watchers configuration can be used to run external
-# watchers to your application. For example, we use it
-# with esbuild to bundle .js and .css sources.
+# watchers to your application. For example, we can use it
+# to bundle .js and .css sources.
 config :core, CoreWeb.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
@@ -63,8 +63,7 @@ config :core, CoreWeb.Endpoint,
     patterns: [
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
-      ~r"lib/core_web/(live|components)/.*(ex)$",
-      ~r"lib/core_web/templates/.*(eex)$"
+      ~r"lib/core_web/(controllers|live|components)/.*(ex|heex|eex)$"
     ]
   ]
 
@@ -72,8 +71,7 @@ config :core, CoreWeb.Endpoint,
 config :core, dev_routes: true
 
 # Do not include metadata nor timestamps in development logs
-config :logger, :console,
-  format: "$time [$level] #{IO.ANSI.bright()}$message#{IO.ANSI.normal()}\n"
+config :logger, :console, format: "[$level] $message\n"
 
 config :ueberauth, Ueberauth.Strategy.Twitch.OAuth,
   client_id: System.get_env("TWITCH_CLIENT_ID"),

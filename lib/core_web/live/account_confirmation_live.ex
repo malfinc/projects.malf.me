@@ -7,7 +7,7 @@ defmodule CoreWeb.AccountConfirmationLive do
     ~H"""
     <h1>Confirm Account</h1>
 
-    <.simple_form :let={f} for={:account} id="confirmation_form" phx-submit="confirm_account">
+    <.simple_form :let={f} for={%{}} id="confirmation_form" phx-submit="confirm_account">
       <.input field={{f, :token}} type="hidden" value={@token} />
       <:actions>
         <.button phx-disable-with="Confirming..." type="submit" class="btn btn-primary">
@@ -28,7 +28,7 @@ defmodule CoreWeb.AccountConfirmationLive do
 
   # Do not log in the account after confirmation to avoid a
   # leaked token giving the account access to the account.
-  def handle_event("confirm_account", %{"account" => %{"token" => token}}, socket) do
+  def handle_event("confirm_account", %{"token" => token}, socket) do
     case Users.confirm_account(token) do
       {:ok, _} ->
         {:noreply,

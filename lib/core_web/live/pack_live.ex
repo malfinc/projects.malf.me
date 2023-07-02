@@ -22,7 +22,6 @@ defmodule CoreWeb.PackLive do
           )
         end)
         |> Core.Repo.preload([:cards, :season])
-        |> Core.Decorate.deep()
     end
   end
 
@@ -38,7 +37,6 @@ defmodule CoreWeb.PackLive do
           cards: [champion: [:plant, :upgrades], rarity: []],
           season: []
         )
-        |> Core.Decorate.deep()
     end
   end
 

@@ -29,10 +29,7 @@ defmodule CoreWeb.ChannelCase do
   end
 
   setup tags do
-    pid = Ecto.Adapters.SQL.Sandbox.start_owner!(Core.Repo, shared: not tags[:async])
-
-    on_exit(fn -> Ecto.Adapters.SQL.Sandbox.stop_owner(pid) end)
-
+    Core.DataCase.setup_sandbox(tags)
     :ok
   end
 end

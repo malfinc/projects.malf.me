@@ -5,7 +5,6 @@ defmodule CoreWeb.AccountLive do
   defp list_records(_assigns, _params) do
     Core.Users.list_accounts()
     |> Core.Repo.preload([])
-    |> Core.Decorate.deep()
   end
 
   defp get_record(id) when is_binary(id) do
@@ -17,7 +16,6 @@ defmodule CoreWeb.AccountLive do
       record ->
         record
         |> Core.Repo.preload(organization_memberships: [:organization, :permissions])
-        |> Core.Decorate.deep()
     end
   end
 
@@ -68,7 +66,7 @@ defmodule CoreWeb.AccountLive do
       <%= for account <- @records do %>
         <tr>
           <td>
-            <.icon as="fa-envelope" />
+            <i class="fa-solid fa-envelope"></i>
             <a href={"mailto:#{account.email_address}"}>
               <%= account.email_address %>
             </a>
@@ -110,7 +108,7 @@ defmodule CoreWeb.AccountLive do
           <%= for organization_membership <- @record.organization_memberships do %>
             <li>
               <.link href={~p"/admin/organizations/#{organization_membership.organization.id}"}>
-                <%= organization_membership.organization.name %>
+                <%= Pretty.get(organization_membership.organization, :name) %>
               </.link>
               (<%= organization_membership.permissions
               |> Utilities.List.pluck(:name)

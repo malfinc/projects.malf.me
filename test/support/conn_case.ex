@@ -14,9 +14,6 @@ defmodule CoreWeb.ConnCase do
   by setting `use CoreWeb.ConnCase, async: true`, although
   this option is not recommended for other databases.
   """
-
-  @__sid__ "x"
-
   use ExUnit.CaseTemplate
 
   using do
@@ -36,11 +33,10 @@ defmodule CoreWeb.ConnCase do
   setup tags do
     Core.DataCase.setup_sandbox(tags)
 
-    {:ok, conn: build_conn(session: true, live: true)}
-  end
-
-  def build_conn(session: true, live: true) do
-    Phoenix.ConnTest.build_conn()
+    {:ok,
+     conn:
+       Phoenix.ConnTest.build_conn()
+       |> Phoenix.ConnTest.init_test_session(%{})}
   end
 
   @doc """

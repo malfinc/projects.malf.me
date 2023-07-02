@@ -1,20 +1,19 @@
 defmodule Core.Gameplay do
   @moduledoc false
-  import Core.Context
   require Logger
 
-  resource(:plants, :plant, Core.Gameplay.Plant)
-  resource(:seasons, :season, Core.Gameplay.Season)
-  resource(:packs, :pack, Core.Gameplay.Pack)
-  resource(:pack_slots, :pack_slot, Core.Gameplay.PackSlot)
-  resource(:champions, :champion, Core.Gameplay.Champion)
-  resource(:rarities, :rarity, Core.Gameplay.Rarity)
-  resource(:coin_transactions, :coin_transaction, Core.Gameplay.CoinTransaction)
-  resource(:matches, :match, Core.Gameplay.Match)
-  resource(:cards, :card, Core.Gameplay.Card)
-  resource(:weeklies, :weekly, Core.Gameplay.Weekly)
-  resource(:divisions, :division, Core.Gameplay.Division)
-  resource(:conferences, :conference, Core.Gameplay.Conference)
+  use Scaffolding, [Core.Gameplay.Plant, :plants, :plant]
+  use Scaffolding, [Core.Gameplay.Season, :seasons, :season]
+  use Scaffolding, [Core.Gameplay.Pack, :packs, :pack]
+  use Scaffolding, [Core.Gameplay.PackSlot, :pack_slots, :pack_slot]
+  use Scaffolding, [Core.Gameplay.Champion, :champions, :champion]
+  use Scaffolding, [Core.Gameplay.Rarity, :rarities, :rarity]
+  use Scaffolding, [Core.Gameplay.CoinTransaction, :coin_transactions, :coin_transaction]
+  use Scaffolding, [Core.Gameplay.Match, :matches, :match]
+  use Scaffolding, [Core.Gameplay.Card, :cards, :card]
+  use Scaffolding, [Core.Gameplay.Weekly, :weeklies, :weekly]
+  use Scaffolding, [Core.Gameplay.Division, :divisions, :division]
+  use Scaffolding, [Core.Gameplay.Conference, :conferences, :conference]
 
   @spec odds(Core.Gameplay.Season.t(), Core.Gameplay.Rarity.t(), pos_integer()) :: float
   def odds(season, rarity, packs)

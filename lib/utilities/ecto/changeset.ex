@@ -2,6 +2,93 @@ defmodule Utilities.Ecto.Changeset do
   @moduledoc """
   Extra functionality relating to changesets
   """
+
+  @spec put_all_relationships(Ecto.Changeset.t(), map()) ::
+          Ecto.Changeset.t()
+  def put_all_relationships(changeset, attributes),
+    do: put_all_relationships(changeset, attributes, except: [])
+
+  @spec put_all_relationships(Ecto.Changeset.t(), map(), Keyword.t(list(atom()))) ::
+          Ecto.Changeset.t()
+  def put_all_relationships(changeset, attributes, except: except) when is_list(except) do
+    changeset
+    |> put_all_associations(attributes, except: except)
+    |> put_all_embeds(attributes, except: except)
+  end
+
+  @spec put_all_associations(Ecto.Changeset.t(), map()) ::
+          Ecto.Changeset.t()
+  def put_all_associations(changeset, attributes),
+    do: put_all_associations(changeset, attributes, except: [])
+
+  @spec put_all_associations(Ecto.Changeset.t(), map(), Keyword.t(list(atom()))) ::
+          Ecto.Changeset.t()
+  def put_all_associations(changeset, attributes, except: except) when is_list(except) do
+    changeset.data.__struct__.__schema__(:associations)
+    |> case do
+      [] ->
+        changeset
+
+      associations ->
+        associations
+        |> Enum.reject(&Enum.member?(except, &1))
+        |> Enum.map(&changeset.data.__struct__.__schema__(:association, &1))
+        |> Enum.reduce(changeset, fn
+          association, changeset
+          when is_struct(association, Ecto.Association.HasThrough) or
+                 is_struct(association, Ecto.Association.ManyToMany) ->
+            changeset
+
+          %Ecto.Association.BelongsTo{owner_key: owner_key, field: field}, changeset ->
+            changeset
+            |> Ecto.Changeset.put_assoc(
+              field,
+              change_with_fallbacks(field, attributes, changeset)
+            )
+            |> Ecto.Changeset.foreign_key_constraint(owner_key)
+            |> Ecto.Changeset.assoc_constraint(field)
+
+          %{field: field}, changeset ->
+            Ecto.Changeset.put_assoc(
+              changeset,
+              field,
+              change_with_fallbacks(field, attributes, changeset)
+            )
+        end)
+    end
+  end
+
+  @spec put_all_embeds(Ecto.Changeset.t(), map()) ::
+          Ecto.Changeset.t()
+  def put_all_embeds(changeset, attributes), do: put_all_embeds(changeset, attributes, except: [])
+
+  @spec put_all_embeds(Ecto.Changeset.t(), map(), Keyword.t(list(atom()))) ::
+          Ecto.Changeset.t()
+  def put_all_embeds(changeset, attributes, except: except) when is_list(except) do
+    changeset.data.__struct__.__schema__(:embeds)
+    |> case do
+      [] ->
+        changeset
+
+      embeds ->
+        embeds
+        |> Enum.reject(&Enum.member?(except, &1))
+        |> Enum.map(&changeset.data.__struct__.__schema__(:embed, &1))
+        |> Enum.reduce(changeset, fn
+          %Ecto.Embedded{field: field}, changeset ->
+            Ecto.Changeset.put_embed(
+              changeset,
+              field,
+              change_with_fallbacks(field, attributes, changeset)
+            )
+        end)
+    end
+  end
+
+  defp change_with_fallbacks(field, attributes, %Ecto.Changeset{changes: changes, data: data}) do
+    attributes[field] || Map.get(changes, field) || Map.get(data, field)
+  end
+
   @spec default_embeds_one(Ecto.Changeset.t(), atom(), any()) :: Ecto.Changeset.t()
   def default_embeds_one(%{changes: changes, data: data} = changeset, key, value)
       when is_struct(changeset, Ecto.Changeset) and is_atom(key) do

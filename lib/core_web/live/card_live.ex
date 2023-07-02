@@ -28,7 +28,6 @@ defmodule CoreWeb.CardLive do
           :rarity,
           champion: [:plant, :upgrades]
         ])
-        |> Core.Decorate.deep()
     end
   end
 
@@ -45,7 +44,6 @@ defmodule CoreWeb.CardLive do
           :rarity,
           champion: [:plant, :upgrades]
         ])
-        |> Core.Decorate.deep()
     end
   end
 

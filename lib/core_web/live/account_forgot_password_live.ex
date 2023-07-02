@@ -11,7 +11,7 @@ defmodule CoreWeb.AccountForgotPasswordLive do
         We'll send a password reset link to your inbox
       </p>
 
-      <.simple_form :let={f} id="reset_password_form" for={:account} phx-submit="send_email">
+      <.simple_form :let={f} id="reset_password_form" for={%{}} phx-submit="send_email">
         <.input field={{f, :email_address}} type="email" placeholder="Email" required />
         <:actions>
           <.button phx-disable-with="Sending..." type="submit" class="btn btn-primary">
@@ -27,7 +27,7 @@ defmodule CoreWeb.AccountForgotPasswordLive do
     {:ok, socket}
   end
 
-  def handle_event("send_email", %{"account" => %{"email_address" => email_address}}, socket) do
+  def handle_event("send_email", %{"email_address" => email_address}, socket) do
     if account = Users.get_account_by_email_address(email_address) do
       Users.deliver_account_reset_password_instructions(
         account,

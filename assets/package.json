@@ -1,0 +1,35 @@
+{
+  "name": "plotgenerator",
+  "version": "1.0.0",
+  "description": "A worldbuilding machine",
+  "private": true,
+  "main": "js/application.js",
+  "directories": {
+    "doc": "docs",
+    "lib": "js",
+    "test": "../test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/difference-engineers/plotgenerator.git"
+  },
+  "author": "Kurtis Rainbolt-Greene <kurtis@rainbolt-greene.online>",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/difference-engineers/plotgenerator/issues"
+  },
+  "homepage": "https://github.com/difference-engineers/plotgenerator#readme",
+  "dependencies": {
+    "animate.css": "^4.1.1",
+    "bootstrap": "^5.3.0",
+    "lit": "^2.7.5",
+    "topbar": "^2.0.1",
+    "phoenix": "file:../deps/phoenix",
+    "phoenix_html": "file:../deps/phoenix_html",
+    "phoenix-custom-event-hook": "^0.0.6",
+    "phoenix_live_view": "file:../deps/phoenix_live_view"
+  }
+}
