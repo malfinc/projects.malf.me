@@ -60,7 +60,7 @@ defmodule CoreWeb.CoreComponents do
       <p><%= msg %></p>
       <hr :if={@context} />
       <p :if={@context} class="mb-0"><%= @context %></p>
-      <.button :if={@close} class="btn-close" data-bs-dismiss="alert" aria-label="close"></.button>
+      <.button :if={@close} class="btn-close" data-bs-dismiss="alert" aria-label="close" usable_icon="times"></.button>
     </div>
     """
   end
@@ -79,7 +79,7 @@ defmodule CoreWeb.CoreComponents do
   attr :busy_icon, :string, default: "clock"
   attr :failure_icon, :string, default: "bug"
   attr :successful_icon, :string, default: "check"
-  attr :usable_icon, :string, default: "busy"
+  attr :usable_icon, :string, required: true
   attr :class, :string, default: ""
   attr :rest, :global, include: ~w(disabled form name value)
   slot :inner_block, required: true

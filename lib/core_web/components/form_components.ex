@@ -21,7 +21,7 @@ defmodule CoreWeb.FormComponents do
         </:actions>
       </.simple_form>
   """
-  attr :for, :any, default: nil, doc: "the datastructure for the form"
+  attr :for, :any, default: nil, doc: "the data structure for the form"
   attr :as, :any, default: nil, doc: "the server side parameter to collect all input under"
 
   attr :rest, :global,
@@ -34,16 +34,16 @@ defmodule CoreWeb.FormComponents do
   def simple_form(assigns) do
     ~H"""
     <%= if @for do %>
-      <.form :let={f} for={@for} as={@as} class="form" novalidate {@rest}>
+      <.form :let={f} for={@for} as={@as} novalidate {@rest}>
         <%= render_slot(@inner_block, f) %>
-        <div :for={action <- @actions} class="actionset">
+        <div :for={action <- @actions} class="actionset mt-3">
           <%= render_slot(action, f) %>
         </div>
       </.form>
     <% else %>
       <.form :let={f} for={@for} as={@as} class="form" {@rest}>
         <%= render_slot(@inner_block, f) %>
-        <div :for={action <- @actions} class="actionset">
+        <div :for={action <- @actions} class="actionset mt-3">
           <%= render_slot(action, f) %>
         </div>
       </.form>
@@ -123,7 +123,7 @@ defmodule CoreWeb.FormComponents do
 
   def input(%{type: "select"} = assigns) do
     ~H"""
-    <div phx-feedback-for={@name}>
+    <div phx-feedback-for={@name} class="mb-3">
       <.label for={@id}><%= @label %></.label>
       <select
         id={@id}
@@ -144,7 +144,7 @@ defmodule CoreWeb.FormComponents do
 
   def input(%{type: "textarea"} = assigns) do
     ~H"""
-    <div phx-feedback-for={@name}>
+    <div phx-feedback-for={@name} class="mb-3">
       <.label for={@id}><%= @label %></.label>
       <textarea
         id={@id || @name}
@@ -161,12 +161,12 @@ defmodule CoreWeb.FormComponents do
 
   def input(assigns) do
     ~H"""
-    <div phx-feedback-for={@name}>
+    <div phx-feedback-for={@name} class="mb-3">
       <.label for={@id}><%= @label %></.label>
       <input
         type={@type}
         name={@name}
-        id={@id || @name}
+        id={@id}
         value={@value}
         class={"form-control #{unless(Enum.empty?(@errors), do: "is-invalid")}"}
         aria-describedby={"#{@id}-feedback"}

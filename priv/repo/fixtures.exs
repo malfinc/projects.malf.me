@@ -20,7 +20,7 @@ Logger.configure(level: :info)
 
 if Mix.env() == :dev do
   Core.Repo.transaction(fn ->
-    {:ok, account} =
+    {:ok, krainboltgreene} =
       Core.Users.register_account(%{
         name: "Kurtis Rainbolt-Greene",
         email_address: "kurtis@rainbolt-greene.online",
@@ -36,13 +36,61 @@ if Mix.env() == :dev do
           "https://static-cdn.jtvnw.net/jtv_user_pictures/f6fb8ff7-1055-414f-86a8-7d2302b58e6f-profile_image-300x300.jpg"
       })
 
-    {encoded_token, account_token} = Core.Users.AccountToken.build_email_token(account, "confirm")
+    {encoded_token, account_token} = Core.Users.AccountToken.build_email_token(krainboltgreene, "confirm")
 
     {:ok, _} = Core.Repo.insert(account_token)
     {:ok, _} = Core.Users.confirm_account(encoded_token)
 
     {:ok, _organization} =
-      Core.Users.join_organization_by_slug(account, "global", "administrator")
+      Core.Users.join_organization_by_slug(krainboltgreene, "global", "administrator")
+
+    {:ok, malf} =
+      Core.Users.register_account(%{
+        name: "Michael Al Fox",
+        email_address: "michael@malf.me",
+        username: "malf",
+        password: "passwordpassword",
+        provider: "twitch",
+        provider_id: "36808634",
+        provider_access_token: "s77vyzbw7v5yjsl3ya2vvfm6jigo6f",
+        provider_refresh_token: "uaftj0trsgh311s6js0pbp09b87ctaj5tstk8rpeq1xvs26nfj",
+        provider_token_expiration: "1672456087",
+        provider_scopes: ["user:read:email"],
+        avatar_uri:
+          "https://static-cdn.jtvnw.net/jtv_user_pictures/f6fb8ff7-1055-414f-86a8-7d2302b58e6f-profile_image-300x300.jpg"
+      })
+
+    {encoded_token, account_token} = Core.Users.AccountToken.build_email_token(malf, "confirm")
+
+    {:ok, _} = Core.Repo.insert(account_token)
+    {:ok, _} = Core.Users.confirm_account(encoded_token)
+
+    {:ok, _organization} =
+      Core.Users.join_organization_by_slug(malf, "global", "administrator")
+
+    {:ok, gordon} =
+      Core.Users.register_account(%{
+        name: "Gordon Ramsey",
+        email_address: "gordon@example.com",
+        username: "gordon",
+        password: "passwordpassword",
+        provider: "twitch",
+        provider_id: "36308634",
+        provider_access_token: "s77vyzbw7v5yjsl3ya2vvfm6jigo6f",
+        provider_refresh_token: "uaftj0trsgh311s6js0pbp09b87ctaj5tstk8rpeq1xvs26nfj",
+        provider_token_expiration: "1672456087",
+        provider_scopes: ["user:read:email"],
+        avatar_uri:
+          "https://static-cdn.jtvnw.net/jtv_user_pictures/f6fb8ff7-1055-414f-86a8-7d2302b58e6f-profile_image-300x300.jpg"
+      })
+
+    {encoded_token, account_token} = Core.Users.AccountToken.build_email_token(gordon, "confirm")
+
+    {:ok, _} = Core.Repo.insert(account_token)
+    {:ok, _} = Core.Users.confirm_account(encoded_token)
+
+    {:ok, _organization} =
+      Core.Users.join_organization_by_slug(gordon, "global", "administrator")
 
     File.read!("priv/data/plants.csv")
     |> String.split("\n")
@@ -133,8 +181,52 @@ if Mix.env() == :dev do
       end)
     end)
 
-    season = Core.Gameplay.create_season!(%{plants: Core.Gameplay.list_plants(), position: 1})
-    Oban.insert(Core.Job.StartSeasonJob.new(%{season_id: season.id}))
+    # season = Core.Gameplay.create_season!(%{plants: Core.Gameplay.list_plants(), position: 1})
+    # Oban.insert(Core.Job.StartSeasonJob.new(%{season_id: season.id}))
+
+    speedrun = Core.Content.create_hall!(%{
+      category: "speedrun",
+      deadline_at: Timex.shift(Timex.now, days: -27)
+    })
+
+    hundred = Core.Content.create_hall!(%{
+      category: "hundred",
+      deadline_at: Timex.shift(Timex.now, days: 7)
+    })
+
+    Core.Content.create_nomination!(%{
+      hall: hundred,
+      account: krainboltgreene,
+      name: "The Sims 2",
+      box_art_url: "https://static-cdn.jtvnw.net/ttv-boxart/2274_IGDB-300x415.jpg",
+      external_game_id: "2274"
+    })
+
+    Core.Content.create_nomination!(%{
+      hall: hundred,
+      account: malf,
+      name: "The Sims Castaway Stories",
+      box_art_url: "https://static-cdn.jtvnw.net/ttv-boxart/9359_IGDB-300x415.jpg",
+      external_game_id: "9359"
+    })
+    |> Ecto.Changeset.change(%{state: "vetoed"})
+    |> Core.Repo.update!
+
+    Core.Content.create_nomination!(%{
+      hall: hundred,
+      account: gordon,
+      name: "The Sims Bustin' Out",
+      box_art_url: "https://static-cdn.jtvnw.net/ttv-boxart/12883_IGDB-300x415.jpg",
+      external_game_id: "12883"
+    })
+
+    Core.Content.create_nomination!(%{
+      hall: speedrun,
+      account: krainboltgreene,
+      name: "The Sims 2",
+      box_art_url: "https://static-cdn.jtvnw.net/ttv-boxart/2274_IGDB-300x415.jpg",
+      external_game_id: "2274"
+    })
   end)
 end
 

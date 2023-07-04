@@ -14,7 +14,7 @@ defmodule CoreWeb.AccountForgotPasswordLive do
       <.simple_form :let={f} id="reset_password_form" for={%{}} phx-submit="send_email">
         <.input field={{f, :email_address}} type="email" placeholder="Email" required />
         <:actions>
-          <.button phx-disable-with="Sending..." type="submit" class="btn btn-primary">
+          <.button phx-disable-with="Sending..." type="submit" class="btn btn-primary" usable_icon="envelope">
             Send password reset instructions
           </.button>
         </:actions>

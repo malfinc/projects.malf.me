@@ -106,7 +106,7 @@ defmodule CoreWeb.MatchLive do
                 <ul>
                   <%= for match <- matches do %>
                     <li>
-                      <%= match.name %> (winner <%= match.winning_champion.name %>)
+                      <%= Pretty.get(match, :name) %> (winner <%= match.winning_champion.name %>)
                       <.link href={~p"/lop/matches/#{match.id}"}>View</.link>
                     </li>
                   <% end %>
@@ -123,7 +123,7 @@ defmodule CoreWeb.MatchLive do
   @impl true
   def render(%{live_action: :show} = assigns) do
     ~H"""
-    <h1><%= @record.name %></h1>
+    <h1><%= Pretty.get(@record, :name) %></h1>
     <section style="display: grid; grid-template-columns: 3fr 1fr 3fr; place-items: center">
       <.champion
         champion={@record.left_champion}

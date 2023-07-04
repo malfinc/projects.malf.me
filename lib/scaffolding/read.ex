@@ -42,11 +42,11 @@ defmodule Scaffolding.Read do
         do: from(unquote(schema), limit: 1, order_by: fragment("random()")) |> Core.Repo.one()
 
       @doc """
-      Returns all `#{unquote(schema)}` records sorted by the given order, see Ecto's `Ecto.Query.API.order_by/1` for more details
+      Returns all `#{unquote(schema)}` records from a modified query
       """
       @spec unquote(:"list_#{plural}")(Keyword.t()) :: list(unquote(schema).t())
-      def unquote(:"list_#{plural}")(order),
-        do: from(unquote(schema), order_by: ^order) |> Core.Repo.all()
+      def unquote(:"list_#{plural}")(subquery),
+        do: subquery.(unquote(schema)) |> Core.Repo.all()
 
       @doc """
       Returns all `#{unquote(schema)}` records, unsorted

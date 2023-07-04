@@ -120,7 +120,7 @@ defmodule CoreWeb.PlantLive do
           required
         />
         <:actions>
-          <.button phx-disable-with="Planting..." type="submit" class="btn btn-primary">
+          <.button phx-disable-with="Planting..." type="submit" class="btn btn-primary" usable_icon="plant">
             Spawn Plant
           </.button>
         </:actions>

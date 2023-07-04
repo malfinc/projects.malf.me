@@ -157,7 +157,7 @@ defmodule CoreWeb.RarityLive do
       />
 
       <:actions>
-        <.button phx-disable-with="Saving..." type="submit" class="btn btn-primary">
+        <.button phx-disable-with="Saving..." type="submit" class="btn btn-primary" usable_icon="save">
           Save Changes
         </.button>
       </:actions>

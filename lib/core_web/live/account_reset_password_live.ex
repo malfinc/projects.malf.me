@@ -26,7 +26,7 @@ defmodule CoreWeb.AccountResetPasswordLive do
         required
       />
       <:actions>
-        <.button phx-disable-with="Resetting..." type="submit" class="btn btn-primary">
+        <.button phx-disable-with="Resetting..." type="submit" class="btn btn-primary" usable_icon="unlock">
           Reset Password
         </.button>
       </:actions>

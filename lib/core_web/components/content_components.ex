@@ -103,7 +103,7 @@ defmodule CoreWeb.ContentComponents do
   Renders the site header
   """
   attr :current_account, Core.Users.Account, default: nil
-  attr :admin_namespace, :boolean, default: false
+  attr :namespace, :string
 
   def site_header(assigns) do
     ~H"""
@@ -161,34 +161,28 @@ defmodule CoreWeb.ContentComponents do
                 Contact
               </.link>
             </li>
+            <li :if={@namespace == "halls"} :for={{path, name} <- hall_links()} class="nav-item">
+              <.link href={path} class="nav-link">
+                <%= name %>
+              </.link>
+            </li>
+            <li :if={@namespace == "lop"} :for={{path, name} <- aggroculture_links()} class="nav-item">
+              <.link href={path} class="nav-link">
+                <%= name %>
+              </.link>
+            </li>
 
-            <%= for {path, name} <- regular_links() do %>
-              <li class="nav-item">
-                <.link href={path} class="nav-link">
-                  <%= name %>
-                </.link>
-              </li>
-            <% end %>
+            <li :if={@current_account && Core.Users.has_permission?(@current_account, "global", "administrator")} class="nav-item">
+              <.link href={~p"/admin"} class="nav-link">
+                Admin
+              </.link>
+            </li>
 
-            <%= if @current_account do %>
-              <%= if Core.Users.has_permission?(@current_account, "global", "administrator") do %>
-                <li class="nav-item">
-                  <.link href={~p"/admin"} class="nav-link">
-                    Admin
-                  </.link>
-                </li>
-              <% end %>
-
-              <%= if @admin_namespace do %>
-                <%= for {path, name} <- admin_links() do %>
-                  <li class="nav-item">
-                    <.link href={path} class="nav-link">
-                      <%= name %>
-                    </.link>
-                  </li>
-                <% end %>
-              <% end %>
-            <% end %>
+            <li :if={@current_account && @namespace == "admin"} :for={{path, name} <- admin_links()} class="nav-item">
+              <.link href={path} class="nav-link">
+                <%= name %>
+              </.link>
+            </li>
           </ul>
 
           <ul class="navbar-nav me-right mb-2 mb-lg-0">
@@ -268,7 +262,12 @@ defmodule CoreWeb.ContentComponents do
       {~p"/admin/rarities", "Rarities"}
     ]
 
-  defp regular_links(),
+  defp hall_links(),
+    do: [
+      {~p"/halls/", "Halls"}
+    ]
+
+  defp aggroculture_links(),
     do: [
       {~p"/lop/plants", "Plants"},
       {~p"/lop/seasons", "Seasons"},

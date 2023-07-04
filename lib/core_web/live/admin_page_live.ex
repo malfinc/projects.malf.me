@@ -63,7 +63,7 @@ defmodule CoreWeb.AdminPageLive do
     <p>
       The administrative dashboard.
     </p>
-    <.button class="btn-primary" phx-click="award_points">Give me 1000 Coin</.button>
+    <.button class="btn-primary" phx-click="award_points" usable_icon="coin">Give me 1000 Coin</.button>
     <.link
       class="btn btn-primary"
       href={

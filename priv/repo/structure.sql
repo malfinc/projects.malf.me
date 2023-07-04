@@ -397,6 +397,20 @@ CREATE TABLE public.divisions (
 
 
 --
+-- Name: halls; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.halls (
+    id uuid NOT NULL,
+    state public.citext NOT NULL,
+    deadline_at timestamp(0) without time zone NOT NULL,
+    category public.citext NOT NULL,
+    inserted_at timestamp(0) without time zone NOT NULL,
+    updated_at timestamp(0) without time zone NOT NULL
+);
+
+
+--
 -- Name: matches; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -411,6 +425,23 @@ CREATE TABLE public.matches (
     weekly_id uuid NOT NULL,
     rounds text[] DEFAULT ARRAY[]::text[] NOT NULL,
     winning_champion_id uuid
+);
+
+
+--
+-- Name: nominations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.nominations (
+    id uuid NOT NULL,
+    name text NOT NULL,
+    box_art_url text NOT NULL,
+    state public.citext NOT NULL,
+    external_game_id text NOT NULL,
+    hall_id uuid NOT NULL,
+    account_id uuid NOT NULL,
+    inserted_at timestamp(0) without time zone NOT NULL,
+    updated_at timestamp(0) without time zone NOT NULL
 );
 
 
@@ -700,6 +731,21 @@ ALTER SEQUENCE public.versions_id_seq OWNED BY public.versions.id;
 
 
 --
+-- Name: votes; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.votes (
+    id uuid NOT NULL,
+    tier public.citext NOT NULL,
+    preference public.citext NOT NULL,
+    nomination_id uuid NOT NULL,
+    account_id uuid NOT NULL,
+    inserted_at timestamp(0) without time zone NOT NULL,
+    updated_at timestamp(0) without time zone NOT NULL
+);
+
+
+--
 -- Name: webhooks; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -795,11 +841,27 @@ ALTER TABLE ONLY public.divisions
 
 
 --
+-- Name: halls halls_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.halls
+    ADD CONSTRAINT halls_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: matches matches_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.matches
     ADD CONSTRAINT matches_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: nominations nominations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.nominations
+    ADD CONSTRAINT nominations_pkey PRIMARY KEY (id);
 
 
 --
@@ -920,6 +982,14 @@ ALTER TABLE ONLY public.upgrades
 
 ALTER TABLE ONLY public.versions
     ADD CONSTRAINT versions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: votes votes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.votes
+    ADD CONSTRAINT votes_pkey PRIMARY KEY (id);
 
 
 --
@@ -1065,6 +1135,27 @@ CREATE UNIQUE INDEX divisions_slug_index ON public.divisions USING btree (slug);
 
 
 --
+-- Name: halls_category_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX halls_category_index ON public.halls USING btree (category);
+
+
+--
+-- Name: halls_deadline_at_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX halls_deadline_at_index ON public.halls USING btree (deadline_at);
+
+
+--
+-- Name: halls_state_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX halls_state_index ON public.halls USING btree (state);
+
+
+--
 -- Name: matches_division_id_index; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1111,6 +1202,34 @@ CREATE INDEX matches_weekly_id_index ON public.matches USING btree (weekly_id);
 --
 
 CREATE INDEX matches_winning_champion_id_index ON public.matches USING btree (winning_champion_id);
+
+
+--
+-- Name: nominations_account_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX nominations_account_id_index ON public.nominations USING btree (account_id);
+
+
+--
+-- Name: nominations_external_game_id_hall_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX nominations_external_game_id_hall_id_index ON public.nominations USING btree (external_game_id, hall_id);
+
+
+--
+-- Name: nominations_hall_id_account_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX nominations_hall_id_account_id_index ON public.nominations USING btree (hall_id, account_id);
+
+
+--
+-- Name: nominations_state_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX nominations_state_index ON public.nominations USING btree (state);
 
 
 --
@@ -1366,6 +1485,34 @@ CREATE INDEX versions_originator_id_index ON public.versions USING btree (origin
 
 
 --
+-- Name: votes_account_id_nomination_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX votes_account_id_nomination_id_index ON public.votes USING btree (account_id, nomination_id);
+
+
+--
+-- Name: votes_nomination_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX votes_nomination_id_index ON public.votes USING btree (nomination_id);
+
+
+--
+-- Name: votes_preference_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX votes_preference_index ON public.votes USING btree (preference);
+
+
+--
+-- Name: votes_tier_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX votes_tier_index ON public.votes USING btree (tier);
+
+
+--
 -- Name: webhooks_provider_index; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1506,6 +1653,22 @@ ALTER TABLE ONLY public.matches
 
 
 --
+-- Name: nominations nominations_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.nominations
+    ADD CONSTRAINT nominations_account_id_fkey FOREIGN KEY (account_id) REFERENCES public.accounts(id);
+
+
+--
+-- Name: nominations nominations_hall_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.nominations
+    ADD CONSTRAINT nominations_hall_id_fkey FOREIGN KEY (hall_id) REFERENCES public.halls(id);
+
+
+--
 -- Name: organization_memberships organization_memberships_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1610,6 +1773,22 @@ ALTER TABLE ONLY public.versions
 
 
 --
+-- Name: votes votes_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.votes
+    ADD CONSTRAINT votes_account_id_fkey FOREIGN KEY (account_id) REFERENCES public.accounts(id);
+
+
+--
+-- Name: votes votes_nomination_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.votes
+    ADD CONSTRAINT votes_nomination_id_fkey FOREIGN KEY (nomination_id) REFERENCES public.nominations(id);
+
+
+--
 -- Name: weeklies weeklies_season_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1661,6 +1840,7 @@ INSERT INTO public."schema_migrations" (version) VALUES (20230104221314);
 INSERT INTO public."schema_migrations" (version) VALUES (20230104221333);
 INSERT INTO public."schema_migrations" (version) VALUES (20230104234152);
 INSERT INTO public."schema_migrations" (version) VALUES (20230107210325);
+INSERT INTO public."schema_migrations" (version) VALUES (20230109074432);
 INSERT INTO public."schema_migrations" (version) VALUES (20230224040723);
 INSERT INTO public."schema_migrations" (version) VALUES (20230224044447);
 INSERT INTO public."schema_migrations" (version) VALUES (20230224044538);
@@ -1682,3 +1862,6 @@ INSERT INTO public."schema_migrations" (version) VALUES (20230304191908);
 INSERT INTO public."schema_migrations" (version) VALUES (20230304194037);
 INSERT INTO public."schema_migrations" (version) VALUES (20230306012942);
 INSERT INTO public."schema_migrations" (version) VALUES (20230306012949);
+INSERT INTO public."schema_migrations" (version) VALUES (20230701221249);
+INSERT INTO public."schema_migrations" (version) VALUES (20230701221254);
+INSERT INTO public."schema_migrations" (version) VALUES (20230701221300);

@@ -4,7 +4,7 @@ defmodule CoreWeb.SeasonLive do
   import Ecto.Query
 
   defp list_records(_assigns, _params) do
-    Core.Gameplay.list_seasons(fn schema -> from(schema, order_by: [:position]) end)
+    Core.Gameplay.list_seasons(fn schema -> order_by(schema, [asc: :position]) end)
     # |> Core.Repo.preload()
   end
 
@@ -126,7 +126,7 @@ defmodule CoreWeb.SeasonLive do
         <% end %>
 
         <:actions>
-          <.button phx-disable-with="Starting..." type="submit" class="btn btn-primary">
+          <.button phx-disable-with="Starting..." type="submit" class="btn btn-primary" usable_icon="fireworks">
             Start Season
           </.button>
         </:actions>

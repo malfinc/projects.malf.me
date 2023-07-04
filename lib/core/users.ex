@@ -8,6 +8,7 @@ defmodule Core.Users do
 
   use Scaffolding.Read, [Core.Users.Account, :accounts, :account]
   use Scaffolding, [Core.Users.Organization, :organizations, :organization]
+  use Scaffolding, [Core.Users.Permission, :permissions, :permission]
 
   # def can_read?(%Core.Universes.World{} = record, %Core.Users.Account{} = current_account) do
   #   current_account

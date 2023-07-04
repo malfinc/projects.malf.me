@@ -136,16 +136,16 @@ defmodule CoreWeb.PackLive do
     <h1>Unopened Packs</h1>
 
     <section class="btn-group" role="group" aria-label="Purchase packs">
-      <.button class="btn-primary" phx-click="purchase_packs" phx-value-amount={1}>
+      <.button class="btn-primary" phx-click="purchase_packs" phx-value-amount={1} usable_icon="receipt">
         Purchase 1 Pack
       </.button>
-      <.button class="btn-primary" phx-click="purchase_packs" phx-value-amount={2}>
+      <.button class="btn-primary" phx-click="purchase_packs" phx-value-amount={2} usable_icon="receipt">
         2 Packs
       </.button>
-      <.button class="btn-primary" phx-click="purchase_packs" phx-value-amount={6}>
+      <.button class="btn-primary" phx-click="purchase_packs" phx-value-amount={6} usable_icon="receipt">
         6 Packs
       </.button>
-      <.button class="btn-primary" phx-click="purchase_packs" phx-value-amount={15}>
+      <.button class="btn-primary" phx-click="purchase_packs" phx-value-amount={15} usable_icon="receipt">
         15 Packs
       </.button>
     </section>
