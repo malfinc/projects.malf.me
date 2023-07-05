@@ -106,7 +106,7 @@ defmodule CoreWeb.HallLive do
           </div>
         </div>
         <:actions>
-          <.button phx-disable-with="Nominating..." type="submit" class="btn btn-primary" usable_icon="plus">
+          <.button phx-disable-with="Creating..." type="submit" class="btn btn-primary" usable_icon="plus">
             Create Hall
           </.button>
         </:actions>
@@ -139,7 +139,7 @@ defmodule CoreWeb.HallLive do
 
     <ul class="mt-3">
       <li :if={@record.state == "nominating"}><.link href={~p"/halls/#{@record.id}/nominations"}>Nominations</.link> (<%= length(@record.nominations) %>)</li>
-      <li :if={@record.state == "voting"}><.link href={"/halls/#{@record.id}/voting"}>Voting</.link> (<%= length(@record.votes) %>)</li>
+      <li :if={@record.state == "voting"}><.link href={"/halls/#{@record.id}/votes"}>Votes</.link> (<%= length(@record.votes) %>)</li>
       <li :if={@record.state == "closed"}><.link href={"/halls/#{@record.id}/results"}>Results</.link></li>
     </ul>
 

@@ -86,11 +86,11 @@ defmodule CoreWeb.CoreComponents do
 
   def button(assigns) do
     ~H"""
-    <button :if={@state == "rejection"} class={"btn btn-danger-outline #{@class}"} {@rest}><.icon as={@rejection_icon} /><%= render_slot(@inner_block) %> Rejected</button>
-    <button :if={@state == "failure"} class={"btn btn-danger #{@class}"} {@rest}><.icon as={@failure_icon} /><%= render_slot(@inner_block) %> Failed</button>
-    <button :if={@state == "successful"} class={"btn btn-success #{@class}"} {@rest}><.icon as={@successful_icon} /><%= render_slot(@inner_block) %> Successful</button>
-    <button :if={@state == "busy"} class={"btn btn-#{@as} #{@class}"} {@rest}><.icon as={@busy_icon} modifiers="fa-circle-notch fa-spin fa-fade" />Busy...</button>
-    <button :if={@state == "usable"} class={"btn btn-#{@as} #{@class}"} {@rest}><.icon as={@usable_icon} /><%= render_slot(@inner_block) %></button>
+    <button :if={@state == "rejection"} class={"btn btn-outline-danger #{@class}"} {@rest}><.icon as={@rejection_icon} /> <%= render_slot(@inner_block) %> Rejected</button>
+    <button :if={@state == "failure"} class={"btn btn-danger #{@class}"} {@rest}><.icon as={@failure_icon} /> <%= render_slot(@inner_block) %> Failed</button>
+    <button :if={@state == "successful"} class={"btn btn-success #{@class}"} {@rest}><.icon as={@successful_icon} /> <%= render_slot(@inner_block) %> Successful</button>
+    <button :if={@state == "busy"} class={"btn btn-outline-#{@as} #{@class}"} {@rest}><.icon as={@busy_icon} modifiers="fa-circle-notch fa-spin fa-fade" /> Busy...</button>
+    <button :if={@state == "usable"} class={"btn btn-#{@as} #{@class}"} {@rest}><.icon as={@usable_icon} /> <%= render_slot(@inner_block) %></button>
     """
   end
 

@@ -40,22 +40,6 @@ defmodule CoreWeb.NominationLive do
   end
 
   @impl true
-  def handle_event("create_nomination", params, socket) do
-    params
-    |> Core.Content.create_nomination()
-    |> case do
-      {:ok, record} ->
-        socket
-        |> put_flash(:info, "Nomination #{record.name} created")
-        |> redirect(to: ~p"/halls/nominations")
-
-      {:error, changeset} ->
-        socket
-        |> assign(:changeset, changeset)
-    end
-    |> (&{:noreply, &1}).()
-  end
-
   def handle_event("nominate", %{"id" => external_game_id, "box-art-url" => box_art_url, "name" => name}, socket) do
     Core.Content.create_nomination(%{
       hall: socket.assigns.hall,

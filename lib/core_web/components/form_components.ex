@@ -33,21 +33,12 @@ defmodule CoreWeb.FormComponents do
 
   def simple_form(assigns) do
     ~H"""
-    <%= if @for do %>
-      <.form :let={f} for={@for} as={@as} novalidate {@rest}>
-        <%= render_slot(@inner_block, f) %>
-        <div :for={action <- @actions} class="actionset mt-3">
-          <%= render_slot(action, f) %>
-        </div>
-      </.form>
-    <% else %>
-      <.form :let={f} for={@for} as={@as} class="form" {@rest}>
-        <%= render_slot(@inner_block, f) %>
-        <div :for={action <- @actions} class="actionset mt-3">
-          <%= render_slot(action, f) %>
-        </div>
-      </.form>
-    <% end %>
+    <.form :let={f} for={@for} as={@as} {@rest}>
+      <%= render_slot(@inner_block, f) %>
+      <div :for={action <- @actions} class="actionset mt-3">
+        <%= render_slot(action, f) %>
+      </div>
+    </.form>
     """
   end
 
@@ -104,7 +95,7 @@ defmodule CoreWeb.FormComponents do
     assigns = assign_new(assigns, :checked, fn -> input_equals?(assigns.value, "true") end)
 
     ~H"""
-    <div class="form-check" }>
+    <div class="form-check" phx-feedback-for={@name}>
       <input type="hidden" name={@name} value="false" />
       <input
         type="checkbox"
@@ -115,7 +106,7 @@ defmodule CoreWeb.FormComponents do
         class={"form-check-input #{unless(Enum.empty?(@errors), do: "is-invalid")}"}
         {@rest}
       />
-      <label phx-feedback-for={@name} class="form-check-label"><%= @label %></label>
+      <label class="form-check-label"><%= @label %></label>
       <.error :for={msg <- @errors} describing={@id}><%= msg %></.error>
     </div>
     """
