@@ -19,7 +19,7 @@ defmodule CoreWeb.HallLive do
 
       record ->
         record
-        |> Core.Repo.preload([:nominations, :votes])
+        |> Core.Repo.preload([:nominations])
     end
   end
 
@@ -139,7 +139,7 @@ defmodule CoreWeb.HallLive do
 
     <ul class="mt-3">
       <li :if={@record.state == "nominating"}><.link href={~p"/halls/#{@record.id}/nominations"}>Nominations</.link> (<%= length(@record.nominations) %>)</li>
-      <li :if={@record.state == "voting"}><.link href={"/halls/#{@record.id}/votes"}>Votes</.link> (<%= length(@record.votes) %>)</li>
+      <li :if={@record.state == "voting"}><.link href={"/halls/#{@record.id}/votes"}>Votes</.link></li>
       <li :if={@record.state == "closed"}><.link href={"/halls/#{@record.id}/results"}>Results</.link></li>
     </ul>
 

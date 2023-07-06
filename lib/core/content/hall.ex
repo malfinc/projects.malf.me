@@ -8,7 +8,6 @@ defmodule Core.Content.Hall do
     field(:category, :string)
     field(:deadline_at, :utc_datetime)
     has_many(:nominations, Core.Content.Nomination)
-    has_many(:votes, through: [:nominations, :votes])
 
     timestamps()
   end

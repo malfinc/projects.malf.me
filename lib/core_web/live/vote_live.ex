@@ -44,7 +44,7 @@ defmodule CoreWeb.VoteLive do
 
   @impl true
   def handle_event("unpick_priority", %{"value" => value} = params, socket) when is_binary(value), do: handle_event("unpick_priority", %{params | "value" => String.to_atom(value)}, socket)
-  def handle_event("unpick_priority", %{"id" => id, "value" => value}, socket) do
+  def handle_event("unpick_priority", %{"value" => value}, socket) do
     socket
     |> assign(:changeset,
       socket.assigns.changeset
@@ -91,6 +91,11 @@ defmodule CoreWeb.VoteLive do
   def render(%{live_action: :list} = assigns) do
     ~H"""
     <h1>Votes for <.link href={~p"/halls/#{@hall.id}"}><%= Pretty.get(@hall, :name) %></.link></h1>
+    <div class="mt-3 mb-3 row row-cols-1 row-cols-md-3 g-4">
+      <.render_vote :if={@changeset.changes[:primary_nomination]} key="primary_nomination" nomination={@changeset.changes.primary_nomination.data} />
+      <.render_vote :if={@changeset.changes[:secondary_nomination]} key="secondary_nomination" nomination={@changeset.changes.secondary_nomination.data} />
+      <.render_vote :if={@changeset.changes[:tertiary_nomination]} key="tertiary_nomination" nomination={@changeset.changes.tertiary_nomination.data} />
+    </div>
     <div :if={length(@records) > 0} class="mt-3 mb-3 row row-cols-1 row-cols-md-4 g-4">
       <div :if={!nomination_has_vote?(@changeset, record)} :for={record <- @records} class="col">
         <div disabled class="card">
@@ -102,11 +107,10 @@ defmodule CoreWeb.VoteLive do
               <div :for={{key, label} <- priorities()} class="col">
                 <.button
                   :if={priority_unused?(@changeset, key)}
-                  phx-click={if(picked?(@changeset, key, record), do: "unpick_priority", else: "pick_priority")}
+                  phx-click="pick_priority"
                   phx-value-id={record.id}
                   value={key}
-                  as={if(picked?(@changeset, key, record), do: "outline-danger", else: "primary")}
-                  usable_icon={if(picked?(@changeset, key, record), do: "xmark", else: "check-to-slot")}
+                  usable_icon="check-to-slot"
                   class="btn-sm"
                   type="button"><%= label %></.button>
               </div>
@@ -118,10 +122,29 @@ defmodule CoreWeb.VoteLive do
     </div>
     """
   end
-end
 
-              # <div class="d-grid gap-2">
-              #   <.input  field={{f, :primary_nomination_id}} type="checkbox" label="Primary" />
-              #   <.input field={{f, :primary_nomination_id}} type="checkbox" label="Secondary" />
-              #   <.input field={{f, :primary_nomination_id}} type="checkbox" label="Tertiary" />
-              # </div>
+  attr :nomination, Core.Content.Nomination, required: true
+  attr :key, :atom, required: true
+
+  defp render_vote(assigns) do
+    ~H"""
+    <div class="col">
+      <div disabled class="card">
+        <div class="card-header text-center">
+          <h6><strong><%= @nomination.name %></strong></h6>
+        </div>
+        <div class="card-body text-center">
+          <.button
+            phx-click="unpick_priority"
+            phx-value-id={@nomination.id}
+            value={@key}
+            as="outline-danger"
+            usable_icon="xmark"
+            type="button">Reset</.button>
+        </div>
+        <img src={@nomination.box_art_url} class="card-img-bottom" alt="The box art for the game">
+      </div>
+    </div>
+    """
+  end
+end
