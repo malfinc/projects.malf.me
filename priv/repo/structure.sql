@@ -737,8 +737,9 @@ ALTER SEQUENCE public.versions_id_seq OWNED BY public.versions.id;
 CREATE TABLE public.votes (
     id uuid NOT NULL,
     tier public.citext NOT NULL,
-    preference public.citext NOT NULL,
-    nomination_id uuid NOT NULL,
+    primary_nomination_id uuid NOT NULL,
+    secondary_nomination_id uuid NOT NULL,
+    tertiary_nomination_id uuid NOT NULL,
     account_id uuid NOT NULL,
     inserted_at timestamp(0) without time zone NOT NULL,
     updated_at timestamp(0) without time zone NOT NULL
@@ -1485,24 +1486,45 @@ CREATE INDEX versions_originator_id_index ON public.versions USING btree (origin
 
 
 --
--- Name: votes_account_id_nomination_id_index; Type: INDEX; Schema: public; Owner: -
+-- Name: votes_account_id_primary_nomination_id_index; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX votes_account_id_nomination_id_index ON public.votes USING btree (account_id, nomination_id);
-
-
---
--- Name: votes_nomination_id_index; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX votes_nomination_id_index ON public.votes USING btree (nomination_id);
+CREATE UNIQUE INDEX votes_account_id_primary_nomination_id_index ON public.votes USING btree (account_id, primary_nomination_id);
 
 
 --
--- Name: votes_preference_index; Type: INDEX; Schema: public; Owner: -
+-- Name: votes_account_id_secondary_nomination_id_index; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX votes_preference_index ON public.votes USING btree (preference);
+CREATE UNIQUE INDEX votes_account_id_secondary_nomination_id_index ON public.votes USING btree (account_id, secondary_nomination_id);
+
+
+--
+-- Name: votes_account_id_tertiary_nomination_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX votes_account_id_tertiary_nomination_id_index ON public.votes USING btree (account_id, tertiary_nomination_id);
+
+
+--
+-- Name: votes_primary_nomination_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX votes_primary_nomination_id_index ON public.votes USING btree (primary_nomination_id);
+
+
+--
+-- Name: votes_secondary_nomination_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX votes_secondary_nomination_id_index ON public.votes USING btree (secondary_nomination_id);
+
+
+--
+-- Name: votes_tertiary_nomination_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX votes_tertiary_nomination_id_index ON public.votes USING btree (tertiary_nomination_id);
 
 
 --
@@ -1781,11 +1803,27 @@ ALTER TABLE ONLY public.votes
 
 
 --
--- Name: votes votes_nomination_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: votes votes_primary_nomination_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.votes
-    ADD CONSTRAINT votes_nomination_id_fkey FOREIGN KEY (nomination_id) REFERENCES public.nominations(id);
+    ADD CONSTRAINT votes_primary_nomination_id_fkey FOREIGN KEY (primary_nomination_id) REFERENCES public.nominations(id);
+
+
+--
+-- Name: votes votes_secondary_nomination_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.votes
+    ADD CONSTRAINT votes_secondary_nomination_id_fkey FOREIGN KEY (secondary_nomination_id) REFERENCES public.nominations(id);
+
+
+--
+-- Name: votes votes_tertiary_nomination_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.votes
+    ADD CONSTRAINT votes_tertiary_nomination_id_fkey FOREIGN KEY (tertiary_nomination_id) REFERENCES public.nominations(id);
 
 
 --

@@ -209,8 +209,8 @@ if Mix.env() == :dev do
       box_art_url: "https://static-cdn.jtvnw.net/ttv-boxart/9359_IGDB-300x415.jpg",
       external_game_id: "9359"
     })
-    |> Ecto.Changeset.change(%{state: "vetoed"})
-    |> Core.Repo.update!
+    # |> Ecto.Changeset.change(%{state: "vetoed"})
+    # |> Core.Repo.update!
 
     Core.Content.create_nomination!(%{
       hall: hundred,
