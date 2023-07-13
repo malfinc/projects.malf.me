@@ -5,8 +5,8 @@ defmodule Core.Content.Tag do
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "tags" do
-    field :name, :string
-    field :slug, :string
+    field(:name, :string)
+    field(:slug, :string)
 
     timestamps()
   end

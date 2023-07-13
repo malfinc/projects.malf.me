@@ -6,19 +6,6 @@ defmodule CoreWeb.Plugs.Administration do
   import Plug.Conn
   import Phoenix.Controller
 
-  @spec set_admin_namespace(Plug.Conn.t(), any()) :: Plug.Conn.t()
-  def set_admin_namespace(%Plug.Conn{path_info: ["admin" | _]} = conn, _opts) do
-    conn
-    |> assign(:admin_namespace, true)
-    |> put_session(:admin_namespace, true)
-  end
-
-  def set_admin_namespace(conn, _opts) do
-    conn
-    |> assign(:admin_namespace, false)
-    |> put_session(:admin_namespace, false)
-  end
-
   def require_administrative_privilages(
         %Plug.Conn{assigns: %{current_account: current_account}} = conn,
         _opts
@@ -43,17 +30,6 @@ defmodule CoreWeb.Plugs.Administration do
   end
 
   defp maybe_store_return_to(conn), do: conn
-
-  def on_mount(
-        :set_admin_namespace,
-        _params,
-        _session,
-        socket
-      ) do
-    socket
-    |> Phoenix.Component.assign(:admin_namespace, true)
-    |> (&{:cont, &1}).()
-  end
 
   def on_mount(
         :require_administrative_privilages,

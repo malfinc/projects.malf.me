@@ -4,6 +4,7 @@ defmodule CoreWeb.AccountLive do
 
   defp list_records(_assigns, _params) do
     Core.Users.list_accounts()
+    |> Core.Repo.all()
     |> Core.Repo.preload([])
   end
 

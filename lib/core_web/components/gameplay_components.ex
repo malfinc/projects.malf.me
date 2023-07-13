@@ -8,14 +8,7 @@ defmodule CoreWeb.GameplayComponents do
 
   def pack(assigns) do
     ~H"""
-    <div
-      phx-hook="UnopenedCardPack"
-      id={@pack.id}
-      class="CardPack--isDraggable animate__animated"
-      style="display: inline-block;"
-      phx-click="open_pack"
-      phx-value-id={@pack.id}
-    >
+    <div phx-hook="UnopenedCardPack" id={@pack.id} class="CardPack--isDraggable animate__animated" style="display: inline-block;" phx-click="open_pack" phx-value-id={@pack.id}>
       <img src={~p"/images/unopened_pack.png"} />
       <section>
         <CoreWeb.CoreComponents.tag>Season <%= @pack.season.position %></CoreWeb.CoreComponents.tag>
@@ -43,12 +36,7 @@ defmodule CoreWeb.GameplayComponents do
       style={"background-image: url(#{~p"/images/rainbow_frame.png"}); width: #{@width + (15 * 2)}px; height: #{@height + (15 * 2)}px;"}
     >
       <div>
-        <img
-          src={@champion.image_uri}
-          width={"#{@width}px"}
-          height={"#{@height}px"}
-          style="border-radius: 12px; position: absolute;"
-        />
+        <img src={@champion.image_uri} width={"#{@width}px"} height={"#{@height}px"} style="border-radius: 12px; position: absolute;" />
 
         <header style="position: relative; padding: 15px; ">
           <h4 style="text-shadow: 1px 1px 5px rgb(221, 160, 220);"><%= @champion.name %></h4>
@@ -87,19 +75,9 @@ defmodule CoreWeb.GameplayComponents do
 
   def card(assigns) do
     ~H"""
-    <div
-      id={@card.champion.id}
-      phx-hook="Card"
-      data-tilt-glare
-      style={"background-image: url(#{~p"/images/rainbow_frame.png"}); padding: 15px; width: #{@width + (15 * 2)}px; height: #{@height + (15 * 2)}px; border-radius: 12px; color: white; margin-left: auto; margin-right: auto; box-shadow: 2px 2px 9px 0px rgba(0,0,0,0.5);"}
-    >
+    <div id={@card.champion.id} phx-hook="Card" data-tilt-glare style={"background-image: url(#{~p"/images/rainbow_frame.png"}); padding: 15px; width: #{@width + (15 * 2)}px; height: #{@height + (15 * 2)}px; border-radius: 12px; color: white; margin-left: auto; margin-right: auto; box-shadow: 2px 2px 9px 0px rgba(0,0,0,0.5);"}>
       <div>
-        <img
-          src={@card.champion.image_uri}
-          width={"#{@width}px"}
-          height={"#{@height}px"}
-          style="border-radius: 12px; position: absolute;"
-        />
+        <img src={@card.champion.image_uri} width={"#{@width}px"} height={"#{@height}px"} style="border-radius: 12px; position: absolute;" />
 
         <header style="position: relative; padding: 15px; ">
           <h4 style="text-shadow: 1px 1px 5px rgb(221, 160, 220);"><%= @card.champion.name %></h4>
@@ -121,10 +99,7 @@ defmodule CoreWeb.GameplayComponents do
             <% end %>
           </.circle>
           <.circle>
-            <CoreWeb.CoreComponents.icon
-              as="fa-pepper-hot fa-2x"
-              style={"color: #{@card.rarity.color};"}
-            />
+            <CoreWeb.CoreComponents.icon as="fa-pepper-hot fa-2x" style={"color: #{@card.rarity.color};"} />
           </.circle>
         </div>
 

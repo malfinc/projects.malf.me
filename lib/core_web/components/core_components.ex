@@ -60,7 +60,7 @@ defmodule CoreWeb.CoreComponents do
       <p><%= msg %></p>
       <hr :if={@context} />
       <p :if={@context} class="mb-0"><%= @context %></p>
-      <.button :if={@close} class="btn-close" data-bs-dismiss="alert" aria-label="close"></.button>
+      <.button :if={@close} class="btn-close" data-bs-dismiss="alert" aria-label="close" usable_icon="times"></.button>
     </div>
     """
   end
@@ -79,18 +79,18 @@ defmodule CoreWeb.CoreComponents do
   attr :busy_icon, :string, default: "clock"
   attr :failure_icon, :string, default: "bug"
   attr :successful_icon, :string, default: "check"
-  attr :usable_icon, :string, default: "busy"
+  attr :usable_icon, :string, required: true
   attr :class, :string, default: ""
   attr :rest, :global, include: ~w(disabled form name value)
   slot :inner_block, required: true
 
   def button(assigns) do
     ~H"""
-    <button :if={@state == "rejection"} class={"btn btn-danger-outline #{@class}"} {@rest}><.icon as={@rejection_icon} /><%= render_slot(@inner_block) %> Rejected</button>
-    <button :if={@state == "failure"} class={"btn btn-danger #{@class}"} {@rest}><.icon as={@failure_icon} /><%= render_slot(@inner_block) %> Failed</button>
-    <button :if={@state == "successful"} class={"btn btn-success #{@class}"} {@rest}><.icon as={@successful_icon} /><%= render_slot(@inner_block) %> Successful</button>
-    <button :if={@state == "busy"} class={"btn btn-#{@as} #{@class}"} {@rest}><.icon as={@busy_icon} modifiers="fa-circle-notch fa-spin fa-fade" />Busy...</button>
-    <button :if={@state == "usable"} class={"btn btn-#{@as} #{@class}"} {@rest}><.icon as={@usable_icon} /><%= render_slot(@inner_block) %></button>
+    <button :if={@state == "rejection"} class={"btn btn-outline-danger #{@class}"} {@rest}><.icon as={@rejection_icon} /> <%= render_slot(@inner_block) %> Rejected</button>
+    <button :if={@state == "failure"} class={"btn btn-danger #{@class}"} {@rest}><.icon as={@failure_icon} /> <%= render_slot(@inner_block) %> Failed</button>
+    <button :if={@state == "successful"} class={"btn btn-success #{@class}"} {@rest}><.icon as={@successful_icon} /> <%= render_slot(@inner_block) %> Successful</button>
+    <button :if={@state == "busy"} class={"btn btn-outline-#{@as} #{@class}"} {@rest}><.icon as={@busy_icon} modifiers="fa-circle-notch fa-spin fa-fade" /> Busy...</button>
+    <button :if={@state == "usable"} class={"btn btn-#{@as} #{@class}"} {@rest}><.icon as={@usable_icon} /> <%= render_slot(@inner_block) %></button>
     """
   end
 

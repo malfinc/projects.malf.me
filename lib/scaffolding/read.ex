@@ -42,17 +42,17 @@ defmodule Scaffolding.Read do
         do: from(unquote(schema), limit: 1, order_by: fragment("random()")) |> Core.Repo.one()
 
       @doc """
-      Returns all `#{unquote(schema)}` records sorted by the given order, see Ecto's `Ecto.Query.API.order_by/1` for more details
+      Returns all `#{unquote(schema)}` records from a modified query
       """
-      @spec unquote(:"list_#{plural}")(Keyword.t()) :: list(unquote(schema).t())
-      def unquote(:"list_#{plural}")(order),
-        do: from(unquote(schema), order_by: ^order) |> Core.Repo.all()
+      @spec unquote(:"list_#{plural}")((Ecto.Query.t() -> Ecto.Query.t())) :: Ecto.Query.t()
+      def unquote(:"list_#{plural}")(subquery),
+        do: subquery.(from(unquote(schema)))
 
       @doc """
       Returns all `#{unquote(schema)}` records, unsorted
       """
-      @spec unquote(:"list_#{plural}")() :: list(unquote(schema).t())
-      def unquote(:"list_#{plural}")(), do: unquote(schema) |> Core.Repo.all()
+      @spec unquote(:"list_#{plural}")() :: Ecto.Query.t()
+      def unquote(:"list_#{plural}")(), do: from(unquote(schema))
 
       @doc """
       Returns a singular `#{unquote(schema)}` based on a query, but if it isn't found will raise an exception
@@ -68,7 +68,7 @@ defmodule Scaffolding.Read do
       @spec unquote(:"get_#{singular}")((unquote(schema).t() -> Ecto.Query.t())) ::
               unquote(schema).t() | nil
       def unquote(:"get_#{singular}")(function) when is_function(function, 1),
-        do: function.(unquote(schema)) |> Core.Repo.one()
+        do: function.(unquote(schema))
 
       @doc """
       Returns a singular `#{unquote(schema)}` based on the primary key, but if it isn't found will raise an exception

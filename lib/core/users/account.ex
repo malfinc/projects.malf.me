@@ -32,6 +32,8 @@ defmodule Core.Users.Account do
     has_many(:champions, through: [:upgrades, :champion])
     has_many(:coin_transactions, Core.Gameplay.CoinTransaction)
     has_many(:organization_memberships, Core.Users.OrganizationMembership)
+    has_many(:votes, Core.Content.Vote)
+    has_many(:nominations, Core.Content.Nomination)
 
     has_many(:organizations, through: [:organization_memberships, :organization])
 

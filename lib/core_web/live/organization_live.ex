@@ -4,6 +4,7 @@ defmodule CoreWeb.OrganizationLive do
 
   defp list_records(_assigns, _params) do
     Core.Users.list_organizations()
+    |> Core.Repo.all()
     |> Core.Repo.preload([])
   end
 

@@ -14,7 +14,8 @@ defmodule Mix.Tasks.Livebook.Start do
     |> System.cmd(
       [
         "server",
-        "--home", "docs/livebook/",
+        "--home",
+        "docs/livebook/",
         "open"
       ],
       env: [

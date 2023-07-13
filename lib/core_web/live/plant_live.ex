@@ -4,6 +4,7 @@ defmodule CoreWeb.PlantLive do
 
   defp list_records(_assigns, _params) do
     Core.Gameplay.list_plants()
+    |> Core.Repo.all()
     |> Core.Repo.preload([:champions])
   end
 
@@ -95,32 +96,11 @@ defmodule CoreWeb.PlantLive do
     <%= if Core.Users.has_permission?(@current_account, "global", "administrator") do %>
       <.simple_form :let={f} for={@changeset} id="new_plant" phx-submit="create_plant">
         <.input field={{f, :name}} name="name" id="name" type="text" label="Name" required />
-        <.input
-          field={{f, :species}}
-          name="species"
-          id="species"
-          type="text"
-          label="Species"
-          required
-        />
-        <.input
-          field={{f, :image_uri}}
-          name="image_uri"
-          id="image_uri"
-          type="text"
-          label="Image URI"
-          required
-        />
-        <.input
-          field={{f, :rarity_symbol}}
-          name="rarity_symbol"
-          id="rarity_symbol"
-          type="text"
-          label="Rarity Symbol (SVG)"
-          required
-        />
+        <.input field={{f, :species}} name="species" id="species" type="text" label="Species" required />
+        <.input field={{f, :image_uri}} name="image_uri" id="image_uri" type="text" label="Image URI" required />
+        <.input field={{f, :rarity_symbol}} name="rarity_symbol" id="rarity_symbol" type="text" label="Rarity Symbol (SVG)" required />
         <:actions>
-          <.button phx-disable-with="Planting..." type="submit" class="btn btn-primary">
+          <.button phx-disable-with="Planting..." type="submit" class="btn btn-primary" usable_icon="plant">
             Spawn Plant
           </.button>
         </:actions>

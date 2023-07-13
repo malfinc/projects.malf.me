@@ -17,9 +17,7 @@ defmodule CoreWeb.JobLive do
     from(
       job in Oban.Job,
       where: job.state in ^(default_states() -- ["completed"]),
-      # ,
       order_by: [desc: :inserted_at]
-      # limit: 25
     )
     |> Core.Repo.all()
   end

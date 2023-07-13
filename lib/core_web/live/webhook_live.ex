@@ -4,6 +4,8 @@ defmodule CoreWeb.WebhookLive do
 
   defp list_records(_assigns, _params) do
     Core.Content.list_webhooks()
+    |> Core.Repo.all()
+    |> Core.Repo.preload([])
   end
 
   defp get_record(id) when is_binary(id) do

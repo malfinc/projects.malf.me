@@ -13,6 +13,7 @@ defmodule CoreWeb.MatchLive do
         order_by: {:asc, weekly.position}
       )
     end)
+    |> Core.Repo.all()
     |> Core.Repo.preload([
       :weekly,
       :season,
@@ -106,8 +107,7 @@ defmodule CoreWeb.MatchLive do
                 <ul>
                   <%= for match <- matches do %>
                     <li>
-                      <%= match.name %> (winner <%= match.winning_champion.name %>)
-                      <.link href={~p"/lop/matches/#{match.id}"}>View</.link>
+                      <%= Pretty.get(match, :name) %> (winner <%= match.winning_champion.name %>) <.link href={~p"/lop/matches/#{match.id}"}>View</.link>
                     </li>
                   <% end %>
                 </ul>
@@ -123,16 +123,9 @@ defmodule CoreWeb.MatchLive do
   @impl true
   def render(%{live_action: :show} = assigns) do
     ~H"""
-    <h1><%= @record.name %></h1>
+    <h1><%= Pretty.get(@record, :name) %></h1>
     <section style="display: grid; grid-template-columns: 3fr 1fr 3fr; place-items: center">
-      <.champion
-        champion={@record.left_champion}
-        winner={@record.winning_champion == @record.left_champion}
-      /> Vs
-      <.champion
-        champion={@record.right_champion}
-        winner={@record.winning_champion == @record.right_champion}
-      />
+      <.champion champion={@record.left_champion} winner={@record.winning_champion == @record.left_champion} /> Vs <.champion champion={@record.right_champion} winner={@record.winning_champion == @record.right_champion} />
     </section>
     <%= for round <- @record.rounds do %>
       <p>
