@@ -154,11 +154,7 @@ defmodule CoreWeb.PackLive do
     <hr />
 
     <%= if Enum.any?(@records) do %>
-      <section
-        id="UnopenedCardPacks"
-        phx-hook="UnopenedCardPacks"
-        class="collection collection--packs"
-      >
+      <section id="UnopenedCardPacks" phx-hook="UnopenedCardPacks" class="collection collection--packs">
         <%= for pack <- @records do %>
           <.pack pack={pack} />
         <% end %>

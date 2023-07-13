@@ -97,15 +97,7 @@ defmodule CoreWeb.FormComponents do
     ~H"""
     <div class="form-check" phx-feedback-for={@name}>
       <input type="hidden" name={@name} value="false" />
-      <input
-        type="checkbox"
-        id={@id || @name}
-        name={@name}
-        value="true"
-        checked={@checked}
-        class={"form-check-input #{unless(Enum.empty?(@errors), do: "is-invalid")}"}
-        {@rest}
-      />
+      <input type="checkbox" id={@id || @name} name={@name} value="true" checked={@checked} class={"form-check-input #{unless(Enum.empty?(@errors), do: "is-invalid")}"} {@rest} />
       <label class="form-check-label"><%= @label %></label>
       <.error :for={msg <- @errors} describing={@id}><%= msg %></.error>
     </div>
@@ -116,14 +108,7 @@ defmodule CoreWeb.FormComponents do
     ~H"""
     <div phx-feedback-for={@name} class="mb-3">
       <.label for={@id}><%= @label %></.label>
-      <select
-        id={@id}
-        name={@name}
-        class={"form-select #{unless(Enum.empty?(@errors), do: "is-invalid")}"}
-        multiple={@multiple}
-        aria-describedby={"#{@id}-feedback"}
-        {@rest}
-      >
+      <select id={@id} name={@name} class={"form-select #{unless(Enum.empty?(@errors), do: "is-invalid")}"} multiple={@multiple} aria-describedby={"#{@id}-feedback"} {@rest}>
         <option :if={@prompt}><%= @prompt %></option>
         <%= Phoenix.HTML.Form.options_for_select(@options, @value) %>
       </select>
@@ -137,13 +122,7 @@ defmodule CoreWeb.FormComponents do
     ~H"""
     <div phx-feedback-for={@name} class="mb-3">
       <.label for={@id}><%= @label %></.label>
-      <textarea
-        id={@id || @name}
-        name={@name}
-        class={"form-control #{unless(Enum.empty?(@errors), do: "is-invalid")}"}
-        aria-describedby={"#{@id}-feedback"}
-        {@rest}
-      ><%= @value %></textarea>
+      <textarea id={@id || @name} name={@name} class={"form-control #{unless(Enum.empty?(@errors), do: "is-invalid")}"} aria-describedby={"#{@id}-feedback"} {@rest}><%= @value %></textarea>
       <div :if={@details} class="form-text"><%= @details %></div>
       <.error :for={msg <- @errors} describing={@id}><%= msg %></.error>
     </div>
@@ -154,15 +133,7 @@ defmodule CoreWeb.FormComponents do
     ~H"""
     <div phx-feedback-for={@name} class="mb-3">
       <.label for={@id}><%= @label %></.label>
-      <input
-        type={@type}
-        name={@name}
-        id={@id}
-        value={@value}
-        class={"form-control #{unless(Enum.empty?(@errors), do: "is-invalid")}"}
-        aria-describedby={"#{@id}-feedback"}
-        {@rest}
-      />
+      <input type={@type} name={@name} id={@id} value={@value} class={"form-control #{unless(Enum.empty?(@errors), do: "is-invalid")}"} aria-describedby={"#{@id}-feedback"} {@rest} />
       <div :if={@details} class="form-text"><%= @details %></div>
       <.error :for={msg <- @errors} describing={@id}><%= msg %></.error>
     </div>
@@ -191,10 +162,7 @@ defmodule CoreWeb.FormComponents do
 
   def error(assigns) do
     ~H"""
-    <div
-      id={if(@describing, do: "#{@describing}_feedback")}
-      class="phx-no-feedback:hidden invalid-feedback"
-    >
+    <div id={if(@describing, do: "#{@describing}_feedback")} class="phx-no-feedback:hidden invalid-feedback">
       <%= render_slot(@inner_block) %>
     </div>
     """

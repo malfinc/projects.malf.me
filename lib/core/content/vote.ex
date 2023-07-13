@@ -1,4 +1,5 @@
 defmodule Core.Content.Vote do
+  @moduledoc false
   use Ecto.Schema
 
   @primary_key {:id, :binary_id, autogenerate: true}
@@ -19,9 +20,23 @@ defmodule Core.Content.Vote do
   def changeset(vote, attrs) do
     vote
     |> Ecto.Changeset.cast(attrs, [:tier])
-    |> Ecto.Changeset.put_assoc(:primary_nomination, attrs[:primary_nomination] || vote.primary_nomination)
-    |> Ecto.Changeset.put_assoc(:secondary_nomination, attrs[:secondary_nomination] || vote.secondary_nomination)
-    |> Ecto.Changeset.put_assoc(:tertiary_nomination, attrs[:tertiary_nomination] || vote.tertiary_nomination)
-    |> Ecto.Changeset.validate_required([:tier, :primary_nomination, :secondary_nomination, :tertiary_nomination])
+    |> Ecto.Changeset.put_assoc(
+      :primary_nomination,
+      attrs[:primary_nomination] || vote.primary_nomination
+    )
+    |> Ecto.Changeset.put_assoc(
+      :secondary_nomination,
+      attrs[:secondary_nomination] || vote.secondary_nomination
+    )
+    |> Ecto.Changeset.put_assoc(
+      :tertiary_nomination,
+      attrs[:tertiary_nomination] || vote.tertiary_nomination
+    )
+    |> Ecto.Changeset.validate_required([
+      :tier,
+      :primary_nomination,
+      :secondary_nomination,
+      :tertiary_nomination
+    ])
   end
 end

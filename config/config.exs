@@ -21,9 +21,9 @@ config :core,
 config :core, :twitch, webhook_path: "twitch/webhooks"
 
 config :core,
-  Core.Repo,
-  migration_primary_key: [name: :id, type: :binary_id],
-  migration_foreign_key: [column: :id, type: :binary_id]
+       Core.Repo,
+       migration_primary_key: [name: :id, type: :binary_id],
+       migration_foreign_key: [column: :id, type: :binary_id]
 
 # Configures the endpoint
 config :core, CoreWeb.Endpoint,

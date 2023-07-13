@@ -115,7 +115,6 @@ defmodule CoreWeb.Router do
     end
   end
 
-
   scope "/admin", as: :admin do
     pipe_through [
       :browser,

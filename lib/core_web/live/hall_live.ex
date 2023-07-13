@@ -134,7 +134,7 @@ defmodule CoreWeb.HallLive do
       <div :if={@hundreds_record_count > 0} class="row g-3">
         <div :for={hall <- @hundreds_records} class="col-auto">
           <div :if={!hall[:winner]} class="card text-bg-green shadow-sm" style="max-width: 200px;">
-            <img src={~p"/images/unknown.jpg"} class="card-img-top" alt="Missing box art">
+            <img src={~p"/images/unknown.jpg"} class="card-img-top" alt="Missing box art" />
             <div class="card-header text-center">
               <h6>
                 <strong>
@@ -161,7 +161,7 @@ defmodule CoreWeb.HallLive do
             </div>
           </div>
           <div :if={hall[:winner]} class="card text-bg-green shadow-sm" style="max-width: 200px;">
-            <img src={hall.winner.external_box_art_url} class="card-img-top" alt="The box art for the game">
+            <img src={hall.winner.external_box_art_url} class="card-img-top" alt="The box art for the game" />
             <div class="card-header text-center">
               <h6>
                 <strong>

@@ -9,6 +9,7 @@ defmodule Core.Repo.Migrations.CreateHalls do
 
       timestamps()
     end
+
     create index(:halls, [:state])
     create index(:halls, [:deadline_at])
     create index(:halls, [:category])

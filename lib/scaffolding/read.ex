@@ -20,7 +20,8 @@ defmodule Scaffolding.Read do
       @spec unquote(:"random_unique_#{singular}")(excluding: list()) :: unquote(schema).t() | nil
       def unquote(:"random_unique_#{singular}")(excluding: ids) when is_list(ids) do
         (record in unquote(schema))
-        |> from(limit: 1, order_by: fragment("random()"), where: record.id not in ^ids) |> Core.Repo.one()
+        |> from(limit: 1, order_by: fragment("random()"), where: record.id not in ^ids)
+        |> Core.Repo.one()
       end
 
       @doc """
@@ -29,7 +30,8 @@ defmodule Scaffolding.Read do
       @spec unquote(:"random_#{singular}")(Keyword.t()) :: unquote(schema).t() | nil
       def unquote(:"random_#{singular}")(where: where) do
         unquote(schema)
-        |> from(limit: 1, order_by: fragment("random()"), where: ^where) |> Core.Repo.one()
+        |> from(limit: 1, order_by: fragment("random()"), where: ^where)
+        |> Core.Repo.one()
       end
 
       @doc """

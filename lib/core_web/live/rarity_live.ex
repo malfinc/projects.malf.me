@@ -112,7 +112,7 @@ defmodule CoreWeb.RarityLive do
           <td class="text-end">
             <%= rarity.season_pick_rate %>
           </td>
-          <td class="text-end" :for={count <- rarity.pack_slot_caps |> Enum.with_index() |> Enum.sort_by(&elem(&1, 1)) |> Enum.map(&elem(&1, 0)) }>
+          <td :for={count <- rarity.pack_slot_caps |> Enum.with_index() |> Enum.sort_by(&elem(&1, 1)) |> Enum.map(&elem(&1, 0))} class="text-end">
             <%= count %>
           </td>
           <td class="text-end">
@@ -137,21 +137,11 @@ defmodule CoreWeb.RarityLive do
 
       <.input label="Color" field={{f, :color}} type="text" />
 
-      <.input
-        label="Season Pick Rate"
-        field={{f, :season_pick_rate}}
-        type="number"
-        details="How many cards of this rarity will be generated per season."
-      />
+      <.input label="Season Pick Rate" field={{f, :season_pick_rate}} type="number" details="How many cards of this rarity will be generated per season." />
 
       <.input label="Holographic Rate" field={{f, :holographic_rate}} type="number" />
 
-      <.input
-        label="Full Art Rate"
-        field={{f, :full_art_rate}}
-        type="number"
-        details="Remember that this rate is a percentage of the Holographic Rate."
-      />
+      <.input label="Full Art Rate" field={{f, :full_art_rate}} type="number" details="Remember that this rate is a percentage of the Holographic Rate." />
 
       <:actions>
         <.button phx-disable-with="Saving..." type="submit" class="btn btn-primary" usable_icon="save">

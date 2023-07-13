@@ -7,24 +7,13 @@ defmodule CoreWeb.AccountResetPasswordLive do
     ~H"""
     <h1>Reset Password</h1>
 
-    <.simple_form
-      :let={f}
-      for={@changeset}
-      id="reset_password_form"
-      phx-submit="reset_password"
-      phx-change="validate"
-    >
+    <.simple_form :let={f} for={@changeset} id="reset_password_form" phx-submit="reset_password" phx-change="validate">
       <.error :if={@changeset.action == :insert}>
         Oops, something went wrong! Please check the errors below.
       </.error>
 
       <.input field={{f, :password}} type="password" label="New password" required />
-      <.input
-        field={{f, :password_confirmation}}
-        type="password"
-        label="Confirm new password"
-        required
-      />
+      <.input field={{f, :password_confirmation}} type="password" label="Confirm new password" required />
       <:actions>
         <.button phx-disable-with="Resetting..." type="submit" class="btn btn-primary" usable_icon="unlock">
           Reset Password

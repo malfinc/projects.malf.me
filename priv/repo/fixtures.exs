@@ -36,7 +36,8 @@ if Mix.env() == :dev do
           "https://static-cdn.jtvnw.net/jtv_user_pictures/f6fb8ff7-1055-414f-86a8-7d2302b58e6f-profile_image-300x300.jpg"
       })
 
-    {encoded_token, account_token} = Core.Users.AccountToken.build_email_token(krainboltgreene, "confirm")
+    {encoded_token, account_token} =
+      Core.Users.AccountToken.build_email_token(krainboltgreene, "confirm")
 
     {:ok, _} = Core.Repo.insert(account_token)
     {:ok, _} = Core.Users.confirm_account(encoded_token)
@@ -65,8 +66,7 @@ if Mix.env() == :dev do
     {:ok, _} = Core.Repo.insert(account_token)
     {:ok, _} = Core.Users.confirm_account(encoded_token)
 
-    {:ok, _organization} =
-      Core.Users.join_organization_by_slug(malf, "global", "administrator")
+    {:ok, _organization} = Core.Users.join_organization_by_slug(malf, "global", "administrator")
 
     {:ok, gordon} =
       Core.Users.register_account(%{
@@ -202,15 +202,17 @@ if Mix.env() == :dev do
     # season = Core.Gameplay.create_season!(%{plants: Core.Gameplay.list_plants(), position: 1})
     # Oban.insert(Core.Job.StartSeasonJob.new(%{season_id: season.id}))
 
-    speedrun = Core.Content.create_hall!(%{
-      category: "speed",
-      deadline_at: Timex.shift(Timex.now, days: -27)
-    })
+    speedrun =
+      Core.Content.create_hall!(%{
+        category: "speed",
+        deadline_at: Timex.shift(Timex.now(), days: -27)
+      })
 
-    hundred = Core.Content.create_hall!(%{
-      category: "hundred",
-      deadline_at: Timex.shift(Timex.now, days: 7)
-    })
+    hundred =
+      Core.Content.create_hall!(%{
+        category: "hundred",
+        deadline_at: Timex.shift(Timex.now(), days: 7)
+      })
 
     Core.Content.create_nomination!(%{
       hall: hundred,
@@ -227,6 +229,7 @@ if Mix.env() == :dev do
       box_art_url: "https://static-cdn.jtvnw.net/ttv-boxart/2275_IGDB-300x415.jpg",
       external_game_id: "2275"
     })
+
     Core.Content.create_nomination!(%{
       hall: hundred,
       account: malf,
@@ -235,7 +238,7 @@ if Mix.env() == :dev do
       external_game_id: "9359"
     })
     |> Ecto.Changeset.change(%{state: "vetoed"})
-    |> Core.Repo.update!
+    |> Core.Repo.update!()
 
     Core.Content.create_nomination!(%{
       hall: hundred,

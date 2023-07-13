@@ -50,49 +50,27 @@ defmodule CoreWeb.ContentComponents do
         <ul>
           <li>
             <.link href="https://www.twitch.tv/michaelalfox">
-              <img
-                src={~p"/images/sidebar-social-twitch.png"}
-                alt="The twitch logo"
-                width="36px"
-                height="36px"
-              />
+              <img src={~p"/images/sidebar-social-twitch.png"} alt="The twitch logo" width="36px" height="36px" />
             </.link>
           </li>
           <li>
             <.link href="https://youtube.com/michaelalfox">
-              <img
-                src={~p"/images/sidebar-social-youtube.png"}
-                alt="The youtube logo"
-                width="36px"
-                height="36px"
-              />
+              <img src={~p"/images/sidebar-social-youtube.png"} alt="The youtube logo" width="36px" height="36px" />
             </.link>
           </li>
           <li>
             <.link href="https://twitter.com/michaelalfox">
-              <img
-                src={~p"/images/sidebar-social-twitter.png"}
-                alt="The twitter logo"
-                width="36px"
-                height="36px"
-              />
+              <img src={~p"/images/sidebar-social-twitter.png"} alt="The twitter logo" width="36px" height="36px" />
             </.link>
           </li>
           <li>
             <.link href="https://www.instagram.com/michaelalfox/">
-              <img
-                src={~p"/images/sidebar-social-instagram.png"}
-                alt="The instagram logo"
-                width="36px"
-                height="36px"
-              />
+              <img src={~p"/images/sidebar-social-instagram.png"} alt="The instagram logo" width="36px" height="36px" />
             </.link>
           </li>
         </ul>
         <p>
-          &copy; <%= DateTime.utc_now().year %> Michael Fox · Built by
-          <.link href="#">@th3mcnuggetz</.link>,
-          <.link href="https://twitter.com/krainboltgreene">@krainboltgreene</.link>
+          &copy; <%= DateTime.utc_now().year %> Michael Fox · Built by <.link href="#">@th3mcnuggetz</.link>, <.link href="https://twitter.com/krainboltgreene">@krainboltgreene</.link>
         </p>
       </section>
     </aside>
@@ -110,21 +88,9 @@ defmodule CoreWeb.ContentComponents do
     <nav class="navbar navbar-expand-md fixed-top bg-dark nav-shadow text-uppercase">
       <section class="container-fluid">
         <.link href={~p"/"} class="navbar-brand">
-          <img
-            src={~p"/images/banner-logo.svg"}
-            alt="the malf logo, which is two triangles arranged in a way that makes a cute fox head with ears"
-            title="the malf logo, which is two triangles arranged in a way that makes a cute fox head with ears"
-          />
+          <img src={~p"/images/banner-logo.svg"} alt="the malf logo, which is two triangles arranged in a way that makes a cute fox head with ears" title="the malf logo, which is two triangles arranged in a way that makes a cute fox head with ears" />
         </.link>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon" />
         </button>
 
@@ -151,12 +117,12 @@ defmodule CoreWeb.ContentComponents do
                 Contact
               </.link>
             </li>
-            <li :if={@namespace == "halls"} :for={{path, name} <- hall_links()} class="nav-item">
+            <li :for={{path, name} <- hall_links()} :if={@namespace == "halls"} class="nav-item">
               <.link href={path} class="nav-link">
                 <%= name %>
               </.link>
             </li>
-            <li :if={@namespace == "lop"} :for={{path, name} <- aggroculture_links()} class="nav-item">
+            <li :for={{path, name} <- aggroculture_links()} :if={@namespace == "lop"} class="nav-item">
               <.link href={path} class="nav-link">
                 <%= name %>
               </.link>
@@ -168,7 +134,7 @@ defmodule CoreWeb.ContentComponents do
               </.link>
             </li>
 
-            <li :if={@current_account && @namespace == "admin"} :for={{path, name} <- admin_links()} class="nav-item">
+            <li :for={{path, name} <- admin_links()} :if={@current_account && @namespace == "admin"} class="nav-item">
               <.link href={path} class="nav-link">
                 <%= name %>
               </.link>

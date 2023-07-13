@@ -35,6 +35,7 @@ defmodule CoreWeb.NominationLive do
 
   defp as(socket, :list, params) do
     records = list_records(socket.assigns, params)
+
     socket
     |> assign(:page_title, "Nominations")
     |> assign(:hall, Core.Content.get_hall!(params["hall_id"]))
@@ -53,7 +54,11 @@ defmodule CoreWeb.NominationLive do
   end
 
   @impl true
-  def handle_event("nominate", %{"id" => external_game_id, "box-art-url" => box_art_url, "name" => name}, socket) do
+  def handle_event(
+        "nominate",
+        %{"id" => external_game_id, "box-art-url" => box_art_url, "name" => name},
+        socket
+      ) do
     Core.Content.create_nomination(%{
       hall: socket.assigns.hall,
       account: socket.assigns.current_account,
@@ -65,6 +70,7 @@ defmodule CoreWeb.NominationLive do
       {:ok, _} ->
         socket
         |> push_patch(to: ~p"/halls/#{socket.assigns.hall.id}/nominations")
+
       {:error, changeset} ->
         socket
         |> assign(:changeset, changeset)
@@ -96,8 +102,12 @@ defmodule CoreWeb.NominationLive do
         "box_art_url",
         item |> Map.get("box_art_url") |> String.replace(~r/\d+x\d+/, "300x415")
       )
-      |> Map.put("nomination", records
-        |> Enum.find(fn %{external_game_id: external_game_id} -> external_game_id == Map.get(item, "id") end)
+      |> Map.put(
+        "nomination",
+        records
+        |> Enum.find(fn %{external_game_id: external_game_id} ->
+          external_game_id == Map.get(item, "id")
+        end)
       )
     end)
   end
@@ -108,13 +118,13 @@ defmodule CoreWeb.NominationLive do
   def render(%{live_action: :list} = assigns) do
     ~H"""
     <h1>Nominations for <.link href={~p"/halls/#{@hall.id}"}><%= Pretty.get(@hall, :name) %></.link></h1>
-    <.simple_form :if={@current_account && !@nominated?} :let={f} for={%{"query" => @query}} phx-change="search" data-bs-theme="light">
+    <.simple_form :let={f} :if={@current_account && !@nominated?} for={%{"query" => @query}} phx-change="search" data-bs-theme="light">
       <.input field={{f, :query}} label="Search Games" type="text" phx-debounce="450" />
     </.simple_form>
     <div :if={length(@results) > 0} class="mt-3 mb-3 row g-3">
       <div :for={result <- @results} class="col-auto">
         <div class="card text-bg-green shadow-sm" style="max-width: 200px;" id={result["id"]}>
-          <img src={result["box_art_url"]} class="card-img-top" alt="The box art for the game">
+          <img src={result["box_art_url"]} class="card-img-top" alt="The box art for the game" />
           <div class="card-header text-center">
             <h6><strong><%= result["name"] %></strong></h6>
           </div>
@@ -140,7 +150,7 @@ defmodule CoreWeb.NominationLive do
     <div :if={length(@records) > 0} class="mt-3 mb-3 row g-3">
       <div :for={record <- @records} class="col-auto">
         <div class="card text-bg-green shadow-sm" style="max-width: 200px;">
-          <img src={record.box_art_url} class="card-img-top" alt="The box art for the game">
+          <img src={record.box_art_url} class="card-img-top" alt="The box art for the game" />
           <div class="card-header text-center">
             <h6><strong><%= record.name %></strong></h6>
           </div>

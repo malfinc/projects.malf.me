@@ -1,4 +1,5 @@
 defmodule Core.Content.Hall do
+  @moduledoc false
   use Ecto.Schema
 
   @categories [

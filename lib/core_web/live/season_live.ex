@@ -4,7 +4,7 @@ defmodule CoreWeb.SeasonLive do
   import Ecto.Query
 
   defp list_records(_assigns, _params) do
-    Core.Gameplay.list_seasons(fn schema -> order_by(schema, [asc: :position]) end)
+    Core.Gameplay.list_seasons(fn schema -> order_by(schema, asc: :position) end)
     |> Core.Repo.all()
     |> Core.Repo.preload([])
   end
@@ -116,14 +116,7 @@ defmodule CoreWeb.SeasonLive do
       <h2>New Season</h2>
       <.simple_form :let={f} for={@changeset} id="new_season" phx-submit="create_season">
         <%= for plant <- @plants do %>
-          <.input
-            field={{f, :plants}}
-            type="checkbox"
-            checked={false}
-            id={"plants_#{plant.slug}"}
-            name={"plants[#{plant.id}]"}
-            label={plant.name}
-          />
+          <.input field={{f, :plants}} type="checkbox" checked={false} id={"plants_#{plant.slug}"} name={"plants[#{plant.id}]"} label={plant.name} />
         <% end %>
 
         <:actions>
@@ -151,8 +144,7 @@ defmodule CoreWeb.SeasonLive do
     <ul>
       <%= for champion <- @record.champions do %>
         <li>
-          <.link href={~p"/lop/champions/#{champion.id}"}><%= champion.name %></.link>
-          (<%= champion.plant.name %>)
+          <.link href={~p"/lop/champions/#{champion.id}"}><%= champion.name %></.link> (<%= champion.plant.name %>)
         </li>
       <% end %>
     </ul>
