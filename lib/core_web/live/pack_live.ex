@@ -21,6 +21,7 @@ defmodule CoreWeb.PackLive do
             order_by: {:asc, :position}
           )
         end)
+        |> Core.Repo.all()
         |> Core.Repo.preload([:cards, :season])
     end
   end

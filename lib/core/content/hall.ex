@@ -1,6 +1,19 @@
 defmodule Core.Content.Hall do
   use Ecto.Schema
 
+  @categories [
+    "speed",
+    "try",
+    "story",
+    "hundreds"
+  ]
+
+  @states [
+    "nominating",
+    "voting",
+    "closed"
+  ]
+
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "halls" do

@@ -21,7 +21,6 @@ defmodule Scaffolding.Read do
       def unquote(:"random_unique_#{singular}")(excluding: ids) when is_list(ids) do
         (record in unquote(schema))
         |> from(limit: 1, order_by: fragment("random()"), where: record.id not in ^ids)
-        |> Core.Repo.one()
       end
 
       @doc """
@@ -31,7 +30,6 @@ defmodule Scaffolding.Read do
       def unquote(:"random_#{singular}")(where: where) do
         unquote(schema)
         |> from(limit: 1, order_by: fragment("random()"), where: ^where)
-        |> Core.Repo.one()
       end
 
       @doc """
@@ -39,20 +37,20 @@ defmodule Scaffolding.Read do
       """
       @spec unquote(:"random_#{singular}")() :: unquote(schema).t() | nil
       def unquote(:"random_#{singular}")(),
-        do: from(unquote(schema), limit: 1, order_by: fragment("random()")) |> Core.Repo.one()
+        do: from(unquote(schema), limit: 1, order_by: fragment("random()"))
 
       @doc """
       Returns all `#{unquote(schema)}` records from a modified query
       """
       @spec unquote(:"list_#{plural}")(Keyword.t()) :: list(unquote(schema).t())
       def unquote(:"list_#{plural}")(subquery),
-        do: subquery.(unquote(schema)) |> Core.Repo.all()
+        do: subquery.(unquote(schema))
 
       @doc """
       Returns all `#{unquote(schema)}` records, unsorted
       """
       @spec unquote(:"list_#{plural}")() :: list(unquote(schema).t())
-      def unquote(:"list_#{plural}")(), do: unquote(schema) |> Core.Repo.all()
+      def unquote(:"list_#{plural}")(), do: unquote(schema)
 
       @doc """
       Returns a singular `#{unquote(schema)}` based on a query, but if it isn't found will raise an exception
@@ -68,7 +66,7 @@ defmodule Scaffolding.Read do
       @spec unquote(:"get_#{singular}")((unquote(schema).t() -> Ecto.Query.t())) ::
               unquote(schema).t() | nil
       def unquote(:"get_#{singular}")(function) when is_function(function, 1),
-        do: function.(unquote(schema)) |> Core.Repo.one()
+        do: function.(unquote(schema))
 
       @doc """
       Returns a singular `#{unquote(schema)}` based on the primary key, but if it isn't found will raise an exception

@@ -107,7 +107,7 @@ defmodule CoreWeb.ContentComponents do
 
   def site_header(assigns) do
     ~H"""
-    <nav class="navbar navbar-expand-lg navbar-dark  bg-dark ">
+    <nav class="navbar navbar-expand-md fixed-top bg-dark nav-shadow text-uppercase">
       <section class="container-fluid">
         <.link href={~p"/"} class="navbar-brand">
           <img
@@ -131,7 +131,7 @@ defmodule CoreWeb.ContentComponents do
         <section class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <.link href="https://www.twitch.tv/michaelalfox" class="nav-link">Watch Now</.link>
+              <.link href="https://www.twitch.tv/michaelalfox" class="nav-link">Watch</.link>
             </li>
             <li class="nav-item">
               <.link href="#blog_link_here" class="nav-link">Blog</.link>
@@ -142,18 +142,8 @@ defmodule CoreWeb.ContentComponents do
               </.link>
             </li>
             <li class="nav-item">
-              <.link href={~p"/discord"} class="nav-link">
-                Discord
-              </.link>
-            </li>
-            <li class="nav-item">
               <.link href={~p"/about"} class="nav-link">
                 About
-              </.link>
-            </li>
-            <li class="nav-item">
-              <.link href={~p"/projects"} class="nav-link">
-                Projects
               </.link>
             </li>
             <li class="nav-item">
@@ -186,10 +176,16 @@ defmodule CoreWeb.ContentComponents do
           </ul>
 
           <ul class="navbar-nav me-right mb-2 mb-lg-0">
+            <li :if={@namespace != "halls"} class="nav-item">
+              <.link href={~p"/halls"} class="nav-link">The Halls</.link>
+            </li>
+            <li :if={@namespace != "lop"} class="nav-item">
+              <.link href={~p"/lop"} class="nav-link">Aggroculture</.link>
+            </li>
+            <li class="nav-item">
+              <.link href={~p"/#"} class="nav-link">Neo Bebylon</.link>
+            </li>
             <%= if @current_account do %>
-              <li class="nav-item">
-                <%= @current_account.email_address %>
-              </li>
               <li class="nav-item">
                 <.link href={~p"/accounts/settings"} class="nav-link">Account</.link>
               </li>
@@ -264,7 +260,7 @@ defmodule CoreWeb.ContentComponents do
 
   defp hall_links(),
     do: [
-      {~p"/halls/", "Halls"}
+      {~p"/halls/", "The halls"}
     ]
 
   defp aggroculture_links(),

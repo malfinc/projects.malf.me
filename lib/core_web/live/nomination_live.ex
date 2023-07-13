@@ -14,6 +14,18 @@ defmodule CoreWeb.NominationLive do
     |> Core.Repo.all()
   end
 
+  defp has_nominated?(current_account, hall_id) do
+    from(
+      Core.Content.Nomination,
+      where: [
+        hall_id: ^hall_id,
+        account_id: ^current_account.id
+      ],
+      limit: 1
+    )
+    |> Core.Repo.exists?()
+  end
+
   @impl true
   def mount(_params, _session, socket) do
     socket
@@ -30,6 +42,7 @@ defmodule CoreWeb.NominationLive do
     |> assign(:query, params["query"])
     |> assign(:records, records)
     |> assign(:results, search_games(params["query"], records))
+    |> assign(:nominated?, has_nominated?(socket.assigns[:current_account], params["hall_id"]))
   end
 
   @impl true
@@ -95,47 +108,48 @@ defmodule CoreWeb.NominationLive do
   def render(%{live_action: :list} = assigns) do
     ~H"""
     <h1>Nominations for <.link href={~p"/halls/#{@hall.id}"}><%= Pretty.get(@hall, :name) %></.link></h1>
-    <.simple_form :let={f} for={%{"query" => @query}} phx-change="search">
+    <.simple_form :if={@current_account && !@nominated?} :let={f} for={%{"query" => @query}} phx-change="search" data-bs-theme="light">
       <.input field={{f, :query}} label="Search Games" type="text" phx-debounce="450" />
     </.simple_form>
-    <div :if={length(@results) > 0} class="mt-3 mb-3 row row-cols-1 row-cols-md-4 g-4">
-      <div :for={result <- @results} class="col">
-        <div disabled class="card" id={result["id"]}>
+    <div :if={length(@results) > 0} class="mt-3 mb-3 row g-3">
+      <div :for={result <- @results} class="col-auto">
+        <div class="card text-bg-green shadow-sm" style="max-width: 200px;" id={result["id"]}>
+          <img src={result["box_art_url"]} class="card-img-top" alt="The box art for the game">
           <div class="card-header text-center">
             <h6><strong><%= result["name"] %></strong></h6>
           </div>
           <div class="card-body text-center">
             <div class="d-grid gap-2">
-              <.button :if={result["nomination"] && result["nomination"].state == "nominated"} usable_icon="square-check" disabled as="light">
+              <.button :if={result["nomination"] && result["nomination"].state == "nominated"} class="btn-sm" usable_icon="square-check" disabled as="light">
                 Nominated
               </.button>
-              <.button :if={result["nomination"] && result["nomination"].state == "vetoed"} usable_icon="square-xmark" disabled as="danger">
+              <.button :if={result["nomination"] && result["nomination"].state == "vetoed"} class="btn-sm" usable_icon="square-xmark" disabled as="danger">
                 Vetoed
               </.button>
-              <.button :if={result["nomination"] && result["nomination"].state == "completed"} usable_icon="circle-check" disabled as="success">
+              <.button :if={result["nomination"] && result["nomination"].state == "completed"} class="btn-sm" usable_icon="circle-check" disabled as="success">
                 Completed
               </.button>
-              <.button :if={!result["nomination"]} usable_icon="check-to-slot" phx-click="nominate" phx-value-id={result["id"]} phx-value-box-art-url={result["box_art_url"]} phx-value-name={result["name"]}>
+              <.button :if={!result["nomination"]} class="btn-sm" usable_icon="check-to-slot" phx-click="nominate" phx-value-id={result["id"]} phx-value-box-art-url={result["box_art_url"]} phx-value-name={result["name"]}>
                 Nominate
               </.button>
             </div>
           </div>
-          <img src={result["box_art_url"]} class="card-img-bottom" alt="The box art for the game">
         </div>
       </div>
     </div>
-    <div :if={length(@records) > 0} class="mt-3 mb-3 row row-cols-1 row-cols-md-4 g-4">
-      <div :for={record <- @records} class="col">
-        <div disabled class="card">
+    <div :if={length(@records) > 0} class="mt-3 mb-3 row g-3">
+      <div :for={record <- @records} class="col-auto">
+        <div class="card text-bg-green shadow-sm" style="max-width: 200px;">
+          <img src={record.box_art_url} class="card-img-top" alt="The box art for the game">
           <div class="card-header text-center">
             <h6><strong><%= record.name %></strong></h6>
-            <%= if record.state == "vetoed" do %>
-              Vetoed by MALF
-            <% else %>
-              Nominated by <%= record.account.username %>
-            <% end %>
           </div>
-          <img src={record.box_art_url} class="card-img-bottom" alt="The box art for the game">
+          <div :if={record.state == "vetoed"} class="card-body text-center">
+            Vetoed by MALF
+          </div>
+          <div :if={record.state == "nominated"} class="card-body text-center">
+            Nominated by <%= record.account.username %>
+          </div>
         </div>
       </div>
     </div>

@@ -40,7 +40,7 @@ defmodule CoreWeb.AccountSessionController do
   def callback(%{assigns: %{ueberauth_failure: _}} = conn, _params) do
     conn
     |> put_flash(:error, "Failed to authenticate.")
-    |> redirect(to: ~p"/projects")
+    |> redirect(to: ~p"/")
   end
 
   def callback(%{assigns: %{ueberauth_auth: ueberauth_auth}} = conn, _params) do

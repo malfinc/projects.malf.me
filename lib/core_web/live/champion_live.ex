@@ -4,6 +4,7 @@ defmodule CoreWeb.ChampionLive do
 
   defp list_records(_assigns, _params) do
     Core.Gameplay.list_champions()
+    |> Core.Repo.all()
     |> Core.Repo.preload([:upgrades, :plant])
   end
 

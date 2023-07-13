@@ -4,6 +4,7 @@ defmodule CoreWeb.PlantLive do
 
   defp list_records(_assigns, _params) do
     Core.Gameplay.list_plants()
+    |> Core.Repo.all()
     |> Core.Repo.preload([:champions])
   end
 

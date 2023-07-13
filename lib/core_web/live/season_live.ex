@@ -5,7 +5,8 @@ defmodule CoreWeb.SeasonLive do
 
   defp list_records(_assigns, _params) do
     Core.Gameplay.list_seasons(fn schema -> order_by(schema, [asc: :position]) end)
-    # |> Core.Repo.preload()
+    |> Core.Repo.all()
+    |> Core.Repo.preload([])
   end
 
   defp get_record(id) when is_binary(id) do

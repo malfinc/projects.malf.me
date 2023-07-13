@@ -4,6 +4,7 @@ defmodule CoreWeb.RarityLive do
 
   defp list_records(_assigns, _params) do
     Core.Gameplay.list_rarities()
+    |> Core.Repo.all()
     |> Enum.sort_by(&Map.get(&1, :season_pick_rate), :desc)
   end
 
@@ -79,53 +80,49 @@ defmodule CoreWeb.RarityLive do
           Phoenix.LiveView.Rendered.t()
   def render(%{live_action: :list} = assigns) do
     ~H"""
-    <h2>Rarities <%= length(@records) %></h2>
+    <h2 class="mb-3">Rarities <%= length(@records) %></h2>
 
     <table class="table">
       <thead>
-        <tr>
-          <th>ID</th>
+        <tr class="text-center">
           <th>Name</th>
           <th>Color</th>
-          <th>Season Pick Rate</th>
-          <th>Cards Per Slot</th>
-          <th>Holographic Rate</th>
-          <th>Full Art Rate</th>
+          <th>Pick (%)</th>
+          <th>Slot 1</th>
+          <th>Slot 2</th>
+          <th>Slot 3</th>
+          <th>Slot 4</th>
+          <th>Slot 5</th>
+          <th>Slot 6</th>
+          <th>Holographic (%)</th>
+          <th>Full Art (%)</th>
           <th></th>
         </tr>
       </thead>
       <tbody>
-        <%= for rarity <- @records do %>
-          <tr>
-            <td>
-              <.link href={~p"/admin/rarities/#{rarity.id}"}>
-                <%= rarity.id %>
-              </.link>
-            </td>
-            <td>
+        <tr :for={rarity <- @records} id={rarity.id}>
+          <td>
+            <.link href={~p"/admin/rarities/#{rarity.id}"}>
               <%= rarity.name %>
-            </td>
-            <td>
-              <%= rarity.color %>
-            </td>
-            <td>
-              <%= rarity.season_pick_rate %>
-            </td>
-            <td>
-              <%= rarity.pack_slot_caps
-              |> Enum.with_index()
-              |> Enum.map(fn {count, slot} -> "Slot #{slot + 1}: #{count}" end)
-              |> Utilities.List.to_sentence() %>
-            </td>
-            <td>
-              <%= rarity.holographic_rate %>
-            </td>
-            <td>
-              <%= rarity.full_art_rate %>
-            </td>
-            <td></td>
-          </tr>
-        <% end %>
+            </.link>
+          </td>
+          <td>
+            <%= rarity.color %>
+          </td>
+          <td class="text-end">
+            <%= rarity.season_pick_rate %>
+          </td>
+          <td class="text-end" :for={count <- rarity.pack_slot_caps |> Enum.with_index() |> Enum.sort_by(&elem(&1, 1)) |> Enum.map(&elem(&1, 0)) }>
+            <%= count %>
+          </td>
+          <td class="text-end">
+            <%= rarity.holographic_rate %>
+          </td>
+          <td class="text-end">
+            <%= rarity.full_art_rate %>
+          </td>
+          <td></td>
+        </tr>
       </tbody>
     </table>
     """

@@ -13,6 +13,7 @@ defmodule CoreWeb.MatchLive do
         order_by: {:asc, weekly.position}
       )
     end)
+    |> Core.Repo.all()
     |> Core.Repo.preload([
       :weekly,
       :season,

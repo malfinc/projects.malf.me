@@ -71,7 +71,7 @@ if Mix.env() == :dev do
     {:ok, gordon} =
       Core.Users.register_account(%{
         name: "Gordon Ramsey",
-        email_address: "gordon@example.com",
+        email_address: "gordon@malf.me",
         username: "gordon",
         password: "passwordpassword",
         provider: "twitch",
@@ -89,8 +89,26 @@ if Mix.env() == :dev do
     {:ok, _} = Core.Repo.insert(account_token)
     {:ok, _} = Core.Users.confirm_account(encoded_token)
 
-    {:ok, _organization} =
-      Core.Users.join_organization_by_slug(gordon, "global", "administrator")
+    {:ok, julia} =
+      Core.Users.register_account(%{
+        name: "Julia Child",
+        email_address: "julia@malf.me",
+        username: "julia",
+        password: "passwordpassword",
+        provider: "twitch",
+        provider_id: "36408634",
+        provider_access_token: "s77vyzbw7v5yjsl3ya2vvfm6jigo6f",
+        provider_refresh_token: "uaftj0trsgh311s6js0pbp09b87ctaj5tstk8rpeq1xvs26nfj",
+        provider_token_expiration: "1672456087",
+        provider_scopes: ["user:read:email"],
+        avatar_uri:
+          "https://static-cdn.jtvnw.net/jtv_user_pictures/f6fb8ff7-1055-414f-86a8-7d2302b58e6f-profile_image-300x300.jpg"
+      })
+
+    {encoded_token, account_token} = Core.Users.AccountToken.build_email_token(julia, "confirm")
+
+    {:ok, _} = Core.Repo.insert(account_token)
+    {:ok, _} = Core.Users.confirm_account(encoded_token)
 
     File.read!("priv/data/plants.csv")
     |> String.split("\n")
@@ -185,7 +203,7 @@ if Mix.env() == :dev do
     # Oban.insert(Core.Job.StartSeasonJob.new(%{season_id: season.id}))
 
     speedrun = Core.Content.create_hall!(%{
-      category: "speedrun",
+      category: "speed",
       deadline_at: Timex.shift(Timex.now, days: -27)
     })
 
@@ -204,13 +222,20 @@ if Mix.env() == :dev do
 
     Core.Content.create_nomination!(%{
       hall: hundred,
+      account: julia,
+      name: "The Sims 3",
+      box_art_url: "https://static-cdn.jtvnw.net/ttv-boxart/2275_IGDB-300x415.jpg",
+      external_game_id: "2275"
+    })
+    Core.Content.create_nomination!(%{
+      hall: hundred,
       account: malf,
       name: "The Sims Castaway Stories",
       box_art_url: "https://static-cdn.jtvnw.net/ttv-boxart/9359_IGDB-300x415.jpg",
       external_game_id: "9359"
     })
-    # |> Ecto.Changeset.change(%{state: "vetoed"})
-    # |> Core.Repo.update!
+    |> Ecto.Changeset.change(%{state: "vetoed"})
+    |> Core.Repo.update!
 
     Core.Content.create_nomination!(%{
       hall: hundred,

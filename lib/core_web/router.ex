@@ -68,38 +68,53 @@ defmodule CoreWeb.Router do
       live "/socials", CoreWeb.PageLive, :socials
       live "/discord", CoreWeb.PageLive, :discord
       live "/about", CoreWeb.PageLive, :about
-      live "/projects", CoreWeb.PageLive, :projects
       live "/contact", CoreWeb.PageLive, :contact
       live "/accounts/confirm/:token", CoreWeb.AccountConfirmationLive, :edit
       live "/accounts/confirm", CoreWeb.AccountConfirmationInstructionsLive, :new
     end
-  end
 
-  scope "/lop" do
-    pipe_through [:browser, :set_namespace]
+    scope "/halls" do
+      pipe_through [:set_namespace]
 
-    live_session :current_account_for_lop,
-      on_mount: [
-        {CoreWeb.AccountAuthenticationHelpers, :mount_current_account},
-        {CoreWeb.Plugs.Namespace, :set_namespace}
-      ] do
-      live "/", CoreWeb.GameplayLive, :lop
-      live "/conferences/:id", CoreWeb.ConferenceLive, :show
-      live "/divisions/:id", CoreWeb.DivisionLive, :show
-      live "/seasons/:id", CoreWeb.SeasonLive, :show
-      live "/seasons", CoreWeb.SeasonLive, :list
-      live "/plants/:id", CoreWeb.PlantLive, :show
-      live "/plants", CoreWeb.PlantLive, :list
-      live "/champions/:id", CoreWeb.ChampionLive, :show
-      live "/champions/", CoreWeb.ChampionLive, :list
-      # live "/conferences/", CoreWeb.CardLive, :list
-      # live "/conferences/:id", CoreWeb.CardLive, :show
-      # live "/divisions/", CoreWeb.CardLive, :list
-      # live "/divisions/:id", CoreWeb.CardLive, :show
-      live "/matches/", CoreWeb.MatchLive, :list
-      live "/matches/:id", CoreWeb.MatchLive, :show
+      live_session :current_account_for_halls,
+        on_mount: [
+          {CoreWeb.AccountAuthenticationHelpers, :mount_current_account},
+          {CoreWeb.Plugs.Namespace, :set_namespace}
+        ] do
+        live "/", CoreWeb.HallLive, :list
+        live "/:id", CoreWeb.HallLive, :show
+        live "/:hall_id/nominations/", CoreWeb.NominationLive, :list
+        live "/:hall_id/votes/", CoreWeb.VoteLive, :list
+      end
+    end
+
+    scope "/lop" do
+      pipe_through [:set_namespace]
+
+      live_session :current_account_for_lop,
+        on_mount: [
+          {CoreWeb.AccountAuthenticationHelpers, :mount_current_account},
+          {CoreWeb.Plugs.Namespace, :set_namespace}
+        ] do
+        live "/", CoreWeb.GameplayLive, :lop
+        live "/conferences/:id", CoreWeb.ConferenceLive, :show
+        live "/divisions/:id", CoreWeb.DivisionLive, :show
+        live "/seasons/:id", CoreWeb.SeasonLive, :show
+        live "/seasons", CoreWeb.SeasonLive, :list
+        live "/plants/:id", CoreWeb.PlantLive, :show
+        live "/plants", CoreWeb.PlantLive, :list
+        live "/champions/:id", CoreWeb.ChampionLive, :show
+        live "/champions/", CoreWeb.ChampionLive, :list
+        # live "/conferences/", CoreWeb.CardLive, :list
+        # live "/conferences/:id", CoreWeb.CardLive, :show
+        # live "/divisions/", CoreWeb.CardLive, :list
+        # live "/divisions/:id", CoreWeb.CardLive, :show
+        live "/matches/", CoreWeb.MatchLive, :list
+        live "/matches/:id", CoreWeb.MatchLive, :show
+      end
     end
   end
+
 
   scope "/admin", as: :admin do
     pipe_through [
@@ -154,14 +169,6 @@ defmodule CoreWeb.Router do
         live "/packs/:id", CoreWeb.PackLive, :show
         live "/cards/", CoreWeb.CardLive, :list
         live "/cards/:id", CoreWeb.CardLive, :show
-      end
-
-      scope "/halls" do
-        pipe_through [:set_namespace]
-        live "/", CoreWeb.HallLive, :list
-        live "/:id", CoreWeb.HallLive, :show
-        live "/:hall_id/nominations/", CoreWeb.NominationLive, :list
-        live "/:hall_id/votes/", CoreWeb.VoteLive, :list
       end
 
       live "/accounts/settings", CoreWeb.AccountSettingsLive, :edit
