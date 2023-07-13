@@ -3,7 +3,7 @@ defmodule CoreWeb.PageLive do
   use CoreWeb, :live_view
 
   @impl true
-  def mount(params, _session, socket) do
+  def mount(_params, _session, socket) do
     socket
     |> assign(:page_title, "Loading...")
     |> (&{:ok, &1, layout: layout(socket.assigns)}).()

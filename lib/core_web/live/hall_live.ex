@@ -133,7 +133,7 @@ defmodule CoreWeb.HallLive do
     <section class="py-5 container">
       <div :if={@hundreds_record_count > 0} class="row g-3">
         <div :for={hall <- @hundreds_records} class="col-auto">
-          <div :if={true} class="card text-bg-green shadow-sm" style="max-width: 200px;">
+          <div :if={!hall[:winner]} class="card text-bg-green shadow-sm" style="max-width: 200px;">
             <img src={~p"/images/unknown.jpg"} class="card-img-top" alt="Missing box art">
             <div class="card-header text-center">
               <h6>
@@ -160,7 +160,7 @@ defmodule CoreWeb.HallLive do
               details details
             </div>
           </div>
-          <div :if={false} class="card text-bg-green shadow-sm" style="max-width: 200px;">
+          <div :if={hall[:winner]} class="card text-bg-green shadow-sm" style="max-width: 200px;">
             <img src={hall.winner.external_box_art_url} class="card-img-top" alt="The box art for the game">
             <div class="card-header text-center">
               <h6>

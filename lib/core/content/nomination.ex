@@ -10,10 +10,14 @@ defmodule Core.Content.Nomination do
     field(:external_game_id, :string)
     belongs_to(:hall, Core.Content.Hall)
     belongs_to(:account, Core.Users.Account)
-    has_many(:votes, Core.Content.Vote)
+    has_many(:primary_votes, Core.Content.Vote, foreign_key: :primary_nomination_id)
+    has_many(:secondary_votes, Core.Content.Vote, foreign_key: :secondary_nomination_id)
+    has_many(:tertiary_votes, Core.Content.Vote, foreign_key: :tertiary_nomination_id)
 
     timestamps()
   end
+
+  @type t() :: %__MODULE__{}
 
   @doc false
   def changeset(nomination, attrs) do

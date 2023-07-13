@@ -13,6 +13,8 @@ defmodule Core.Content.Vote do
     timestamps()
   end
 
+  @type t() :: %__MODULE__{}
+
   @doc false
   def changeset(vote, attrs) do
     vote

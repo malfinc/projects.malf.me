@@ -31,7 +31,7 @@ defmodule CoreWeb.Plugs.Namespace do
   def on_mount(
         :set_namespace,
         _params,
-        %{"namespace" => namespace} = session,
+        %{"namespace" => namespace},
         socket
       ) do
     socket

@@ -20,7 +20,7 @@ defmodule Scaffolding.Read do
       @spec unquote(:"random_unique_#{singular}")(excluding: list()) :: unquote(schema).t() | nil
       def unquote(:"random_unique_#{singular}")(excluding: ids) when is_list(ids) do
         (record in unquote(schema))
-        |> from(limit: 1, order_by: fragment("random()"), where: record.id not in ^ids)
+        |> from(limit: 1, order_by: fragment("random()"), where: record.id not in ^ids) |> Core.Repo.one()
       end
 
       @doc """
@@ -29,7 +29,7 @@ defmodule Scaffolding.Read do
       @spec unquote(:"random_#{singular}")(Keyword.t()) :: unquote(schema).t() | nil
       def unquote(:"random_#{singular}")(where: where) do
         unquote(schema)
-        |> from(limit: 1, order_by: fragment("random()"), where: ^where)
+        |> from(limit: 1, order_by: fragment("random()"), where: ^where) |> Core.Repo.one()
       end
 
       @doc """
@@ -37,20 +37,20 @@ defmodule Scaffolding.Read do
       """
       @spec unquote(:"random_#{singular}")() :: unquote(schema).t() | nil
       def unquote(:"random_#{singular}")(),
-        do: from(unquote(schema), limit: 1, order_by: fragment("random()"))
+        do: from(unquote(schema), limit: 1, order_by: fragment("random()")) |> Core.Repo.one()
 
       @doc """
       Returns all `#{unquote(schema)}` records from a modified query
       """
-      @spec unquote(:"list_#{plural}")(Keyword.t()) :: list(unquote(schema).t())
+      @spec unquote(:"list_#{plural}")((Ecto.Query.t() -> Ecto.Query.t())) :: Ecto.Query.t()
       def unquote(:"list_#{plural}")(subquery),
-        do: subquery.(unquote(schema))
+        do: subquery.(from(unquote(schema)))
 
       @doc """
       Returns all `#{unquote(schema)}` records, unsorted
       """
-      @spec unquote(:"list_#{plural}")() :: list(unquote(schema).t())
-      def unquote(:"list_#{plural}")(), do: unquote(schema)
+      @spec unquote(:"list_#{plural}")() :: Ecto.Query.t()
+      def unquote(:"list_#{plural}")(), do: from(unquote(schema))
 
       @doc """
       Returns a singular `#{unquote(schema)}` based on a query, but if it isn't found will raise an exception

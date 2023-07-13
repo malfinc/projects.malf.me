@@ -30,9 +30,10 @@ defmodule Core.Gameplay do
   @spec card_rarity_distribution(Core.Gameplay.Season.t()) :: map
   def card_rarity_distribution(season), do: card_rarity_distribution(season, list_cards())
 
-  @spec card_rarity_distribution(Core.Gameplay.Season.t(), list(Core.Gameplay.Card.t())) :: map
+  @spec card_rarity_distribution(Core.Gameplay.Season.t(), Ecto.Query.t()) :: map
   def card_rarity_distribution(season, cards) do
     cards
+    |> Core.Repo.all()
     |> Core.Repo.preload([:rarity])
     |> Enum.filter(fn %{season_id: season_id} -> season.id == season_id end)
     |> Enum.group_by(&Map.get(&1, :rarity))
