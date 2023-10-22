@@ -22,7 +22,7 @@ defmodule Utilities do
   the time between work start and work finish. The return value is
   the number of seconds.
   """
-  @spec measure((() -> any())) :: {float(), any()}
+  @spec measure((-> any())) :: {float(), any()}
   def measure(function) when is_function(function, 0) do
     {nsec, value} = :timer.tc(function)
 

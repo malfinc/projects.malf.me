@@ -10,7 +10,6 @@ defmodule Core.Users do
   use Scaffolding, [Core.Users.Organization, :organizations, :organization]
   use Scaffolding, [Core.Users.Permission, :permissions, :permission]
 
-
   @doc """
   Gets a account by email_address.
   """

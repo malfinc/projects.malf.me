@@ -35,7 +35,7 @@ defmodule Utilities.Enum do
 
   You have to have more than one {value, chance} tuple.
   """
-  @spec multiple(list(tuple()), (() -> any())) :: list()
+  @spec multiple(list(tuple()), (-> any())) :: list()
   def multiple(range_with_chance, function)
       when is_function(function, 0) and
              is_list(range_with_chance) and length(range_with_chance) > 1 do
@@ -51,7 +51,7 @@ defmodule Utilities.Enum do
   @doc """
   Executes a function a random number of times between minimum and maximum times and returns each return value in a list.
   """
-  @spec multiple(pos_integer, pos_integer, (() -> any())) :: list()
+  @spec multiple(pos_integer, pos_integer, (-> any())) :: list()
   def multiple(minimum, maximum, function)
       when is_function(function, 0) and is_integer(minimum) and is_integer(maximum) and
              minimum <= maximum and minimum > 0 do
@@ -75,7 +75,7 @@ defmodule Utilities.Enum do
 
   Will result in an infinite loop.
   """
-  @spec multiple_unique(pos_integer, pos_integer, (() -> any)) :: list(any())
+  @spec multiple_unique(pos_integer, pos_integer, (-> any)) :: list(any())
   def multiple_unique(minimum, maximum, function)
       when is_function(function, 0) and is_integer(minimum) and is_integer(maximum) and
              minimum <= maximum and minimum > 0 do
