@@ -10,27 +10,12 @@ defmodule Core.Users do
   use Scaffolding, [Core.Users.Organization, :organizations, :organization]
   use Scaffolding, [Core.Users.Permission, :permissions, :permission]
 
-  # def can_read?(%Core.Universes.World{} = record, %Core.Users.Account{} = current_account) do
-  #   current_account
-  #   |> Core.Repo.preload([:worlds])
-  #   |> Map.get(:worlds)
-  #   |> Enum.member?(record)
-  # end
 
   @doc """
   Gets a account by email_address.
   """
   def get_account_by_email_address(email_address) when is_binary(email_address) do
     Core.Repo.get_by(Core.Users.Account, email_address: email_address)
-  end
-
-  @doc """
-  Gets a account by email and password.
-  """
-  def get_account_by_email_address_and_password(email_address, password)
-      when is_binary(email_address) and is_binary(password) do
-    account = Core.Repo.get_by(Core.Users.Account, email_address: email_address)
-    if Core.Users.Account.valid_password?(account, password), do: account
   end
 
   @doc """
@@ -97,124 +82,12 @@ defmodule Core.Users do
   end
 
   @doc """
-  Returns an `%Ecto.Changeset{}` for tracking account changes.
-  """
-  def change_account_registration(%Core.Users.Account{} = account, attrs \\ %{}) do
-    Core.Users.Account.registration_changeset(account, attrs, hash_password: false)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for changing the account email_address.
-  """
-  def change_account_email_address(account, attrs \\ %{}) do
-    Core.Users.Account.email_address_changeset(account, attrs)
-  end
-
-  @doc """
-  Emulates that the email_address will change without actually changing
-  it in the database.
-  """
-  def apply_account_email_address(account, password, attrs) do
-    account
-    |> Core.Users.Account.email_address_changeset(attrs)
-    |> Core.Users.Account.validate_current_password(password)
-    |> Ecto.Changeset.apply_action(:update)
-  end
-
-  @doc """
-  Updates the account email_address using the given token.
-
-  If the token matches, the account email_address is updated and the token is deleted.
-  The confirmed_at date is also updated to the current time.
-  """
-  def update_account_email_address(account, token) do
-    context = "change:#{account.email_address}"
-
-    with {:ok, query} <-
-           Core.Users.AccountToken.verify_change_email_token_query(token, context),
-         %Core.Users.AccountToken{sent_to: email_address} <-
-           Core.Repo.one(query),
-         {:ok, _} <-
-           Core.Repo.transaction(account_email_address_multi(account, email_address, context)) do
-      :ok
-    else
-      _ -> :error
-    end
-  end
-
-  defp account_email_address_multi(account, email_address, context) do
-    changeset =
-      account
-      |> Core.Users.Account.email_address_changeset(%{email_address: email_address})
-      |> Core.Users.Account.confirm_changeset()
-
-    Ecto.Multi.new()
-    |> Ecto.Multi.update(:account, changeset)
-    |> Ecto.Multi.delete_all(
-      :tokens,
-      Core.Users.AccountToken.account_and_contexts_query(account, [context])
-    )
-  end
-
-  @doc """
-  Delivers the update email instructions to the given account.
-  """
-  def deliver_account_update_email_address_instructions(
-        %Core.Users.Account{} = account,
-        current_email_address,
-        update_email_address_url_fun
-      )
-      when is_function(update_email_address_url_fun, 1) do
-    {encoded_token, account_token} =
-      Core.Users.AccountToken.build_email_token(
-        account,
-        "change:#{current_email_address}"
-      )
-
-    Core.Repo.insert!(account_token)
-
-    Core.Users.AccountNotifier.deliver_update_email_address_instructions(
-      account,
-      update_email_address_url_fun.(encoded_token)
-    )
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for changing the account password.
-  """
-  def change_account_password(account, attrs \\ %{}) do
-    Core.Users.Account.password_changeset(account, attrs, hash_password: false)
-  end
-
-  @doc """
   Updates the accounts details.
   """
   def update_account_oauth(account, attributes) do
     account
     |> Core.Users.Account.oauth_changeset(attributes)
     |> Core.Repo.update()
-  end
-
-  @doc """
-  Updates the account password.
-  """
-  def update_account_password(account, password, attrs) do
-    changeset =
-      account
-      |> Core.Users.Account.password_changeset(attrs)
-      |> Core.Users.Account.validate_current_password(password)
-
-    Ecto.Multi.new()
-    |> Ecto.Multi.update(:account, changeset)
-    |> Ecto.Multi.delete_all(
-      :tokens,
-      Core.Users.AccountToken.account_and_contexts_query(account, :all)
-    )
-    |> Core.Repo.transaction()
-    |> case do
-      {:ok, %{account: account}} -> {:ok, account}
-      {:error, :account, changeset, _} -> {:error, changeset}
-    end
   end
 
   @doc """
@@ -241,109 +114,6 @@ defmodule Core.Users do
     Core.Repo.delete_all(Core.Users.AccountToken.token_and_context_query(token, "session"))
 
     :ok
-  end
-
-  ## Confirmation
-
-  @doc """
-  Delivers the confirmation email instructions to the given account.
-  """
-  def deliver_account_confirmation_instructions(
-        %Core.Users.Account{} = account,
-        confirmation_url_fun
-      )
-      when is_function(confirmation_url_fun, 1) do
-    if account.confirmed_at do
-      {:error, :already_confirmed}
-    else
-      {encoded_token, account_token} =
-        Core.Users.AccountToken.build_email_token(account, "confirm")
-
-      Core.Repo.insert!(account_token)
-
-      Core.Users.AccountNotifier.deliver_confirmation_instructions(
-        account,
-        confirmation_url_fun.(encoded_token)
-      )
-    end
-  end
-
-  @doc """
-  Confirms a account by the given token.
-
-  If the token matches, the account account is marked as confirmed
-  and the token is deleted.
-  """
-  def confirm_account(token) do
-    with {:ok, query} <-
-           Core.Users.AccountToken.verify_email_token_query(token, "confirm"),
-         %Core.Users.Account{} = account <- Core.Repo.one(query),
-         {:ok, %{account: account}} <-
-           Core.Repo.transaction(confirm_account_multi(account)) do
-      {:ok, account}
-    else
-      _ -> :error
-    end
-  end
-
-  defp confirm_account_multi(account) do
-    Ecto.Multi.new()
-    |> Ecto.Multi.update(:account, Core.Users.Account.confirm_changeset(account))
-    |> Ecto.Multi.delete_all(
-      :tokens,
-      Core.Users.AccountToken.account_and_contexts_query(account, ["confirm"])
-    )
-  end
-
-  ## Reset password
-
-  @doc """
-  Delivers the reset password email to the given account.
-  """
-  def deliver_account_reset_password_instructions(
-        %Core.Users.Account{} = account,
-        reset_password_url_fun
-      )
-      when is_function(reset_password_url_fun, 1) do
-    {encoded_token, account_token} =
-      Core.Users.AccountToken.build_email_token(account, "reset_password")
-
-    Core.Repo.insert!(account_token)
-
-    Core.Users.AccountNotifier.deliver_reset_password_instructions(
-      account,
-      reset_password_url_fun.(encoded_token)
-    )
-  end
-
-  @doc """
-  Gets the account by reset password token.
-  """
-  def get_account_by_reset_password_token(token) do
-    with {:ok, query} <-
-           Core.Users.AccountToken.verify_email_token_query(token, "reset_password"),
-         %Core.Users.Account{} = account <- Core.Repo.one(query) do
-      account
-    else
-      _ -> nil
-    end
-  end
-
-  @doc """
-  Resets the account password.
-  """
-  def reset_account_password(account, attrs) do
-    Ecto.Multi.new()
-    |> Ecto.Multi.update(:account, Core.Users.Account.password_changeset(account, attrs))
-    |> Ecto.Multi.delete_all(
-      :tokens,
-      Core.Users.AccountToken.account_and_contexts_query(account, :all)
-    )
-    |> Core.Repo.transaction()
-    |> case do
-      {:ok, %{account: account}} -> {:ok, account}
-      {:error, :account, changeset, _} -> {:error, changeset}
-    end
   end
 
   @spec join_organization(Core.Users.Account.t(), Core.Users.Organization.t(), String.t()) ::

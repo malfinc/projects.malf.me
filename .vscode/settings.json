@@ -1,5 +1,26 @@
 {
+  "[css]": {
+    "editor.defaultFormatter": "vscode.css-language-features"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
   "atomKeymap.promptV3Features": true,
+  "cSpell.words": [
+    "Cldr",
+    "Randomizer",
+    "spellout",
+    "titlecase"
+  ],
   "diffEditor.renderSideBySide": false,
   "editor.codeActionsOnSave": {
     "source.fixAll": true

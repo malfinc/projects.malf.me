@@ -1,14 +1,10 @@
 import Config
 
 config :core,
-  signing_salt: System.get_env("SIGNING_SALT"),
+  signing_salt: "guX+dkB1",
   domain: "www-malf-me.fly.dev",
   base_url: "https://www-malf-me.fly.dev/",
   production: true
-
-# For production, don't forget to configure the url host
-# to something meaningful, Phoenix uses this information
-# when generating URLs.
 
 # Note we also include the path to a cache manifest
 # containing the digested version of static files. This
@@ -20,12 +16,21 @@ config :core, CoreWeb.Endpoint, cache_static_manifest: "priv/static/cache_manife
 # Configures Swoosh API Client
 config :swoosh, api_client: Swoosh.ApiClient.Finch, finch_name: Core.Finch
 
+# Disable Swoosh Local Memory Storage
+config :swoosh, local: false
+
 # Do not print debug messages in production
 config :logger,
   level: :info,
   backends: [:console, Sentry.LoggerBackend]
 
-config :oban, log_level: :info
+config :oban, log_level: :warning
+
+config :sentry,
+  environment_name: :prod,
+  enable_source_code_context: true,
+  root_source_code_paths: [File.cwd!()],
+  included_environments: [:prod]
 
 # Runtime production configuration, including reading
 # of environment variables, is done on config/runtime.exs.

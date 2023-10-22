@@ -16,7 +16,6 @@ import Config
 #
 # Alternatively, you can use `mix phx.gen.release` to generate a `bin/server`
 # script that automatically sets the env var above.
-
 if System.get_env("PHX_SERVER") && System.get_env("RELEASE_NAME") do
   config :core, CoreWeb.Endpoint, server: true
 end
@@ -24,11 +23,7 @@ end
 if config_env() == :prod do
   # Configure Sentry, the service we use to alert us to issues in the application
   config :sentry,
-    dsn: System.get_env("SENTRY_DSN"),
-    environment_name: :prod,
-    enable_source_code_context: true,
-    root_source_code_path: File.cwd!(),
-    included_environments: [:prod]
+    dsn: System.get_env("SENTRY_DSN")
 
   database_url =
     System.get_env("DATABASE_URL") ||
@@ -37,7 +32,7 @@ if config_env() == :prod do
       For example: ecto://USER:PASS@HOST/DATABASE
       """
 
-  maybe_ipv6 = if System.get_env("ECTO_IPV6"), do: [:inet6], else: []
+  maybe_ipv6 = if System.get_env("ECTO_IPV6") in ~w(true 1), do: [:inet6], else: []
 
   config :core, Core.Repo,
     # ssl: true,

@@ -44,8 +44,6 @@ defmodule CoreWeb.Router do
     live_session :redirect_if_account_is_authenticated,
       on_mount: [{CoreWeb.AccountAuthenticationHelpers, :redirect_if_account_is_authenticated}] do
       live "/accounts/log_in", CoreWeb.AccountLoginLive, :new
-      live "/accounts/reset_password", CoreWeb.AccountForgotPasswordLive, :new
-      live "/accounts/reset_password/:token", CoreWeb.AccountResetPasswordLive, :edit
     end
 
     post "/accounts/log_in", CoreWeb.AccountSessionController, :create

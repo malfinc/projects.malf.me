@@ -2,10 +2,10 @@ defmodule CoreWeb.WebhookLive do
   @moduledoc false
   use CoreWeb, :live_view
 
-  defp list_records(_assigns, _params) do
-    Core.Content.list_webhooks()
-    |> Core.Repo.all()
-    |> Core.Repo.preload([])
+  def list_records(_assigns, _params) do
+    Core.Content.list_webhooks(fn schema ->
+      from(schema, order_by: [desc: :updated_at], preload: [])
+    end)
   end
 
   defp get_record(id) when is_binary(id) do
@@ -111,12 +111,12 @@ defmodule CoreWeb.WebhookLive do
 
     <h3 id="headers">Headers</h3>
     <p>
-      <code class="inline"><%= code_as_html(@record.headers) %></code>
+      <%= elixir_as_html(@record.headers) %>
     </p>
 
     <h3 id="arguments">Arguments</h3>
     <p>
-      <code class="inline"><%= code_as_html(@record.payload) %></code>
+      <%= elixir_as_html(@record.payload) %>
     </p>
     """
   end

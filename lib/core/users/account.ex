@@ -159,7 +159,7 @@ defmodule Core.Users.Account do
       changeset
       # If using Bcrypt, then further validate it is at most 72 bytes long
       |> Ecto.Changeset.validate_length(:password, max: 72, count: :bytes)
-      |> Ecto.Changeset.put_change(:hashed_password, Bcrypt.hash_pwd_salt(password))
+      |> Ecto.Changeset.put_change(:hashed_password, Argon2.hash_pwd_salt(password))
       |> Ecto.Changeset.delete_change(:password)
     else
       changeset
@@ -186,59 +186,18 @@ defmodule Core.Users.Account do
   defp with_autousername(attributes), do: attributes
 
   @doc """
-  A account changeset for changing the email.
-
-  It requires the email to change otherwise an error is added.
-  """
-  def email_address_changeset(account, attributes, opts \\ []) do
-    account
-    |> Ecto.Changeset.cast(attributes, [:email_address])
-    |> validate_email_address(opts)
-    |> case do
-      %{changes: %{email_address: _}} = changeset -> changeset
-      %{} = changeset -> Ecto.Changeset.add_error(changeset, :email_address, "did not change")
-    end
-  end
-
-  @doc """
-  A account changeset for changing the password.
-
-  ## Options
-
-    * `:hash_password` - Hashes the password so it can be stored securely
-      in the database and ensures the password field is cleared to prevent
-      leaks in the logs. If password hashing is not needed and clearing the
-      password field is not desired (like when using this changeset for
-      validations on a LiveView form), this option can be set to `false`.
-      Defaults to `true`.
-  """
-  def password_changeset(account, attributes, opts \\ []) do
-    account
-    |> Ecto.Changeset.cast(attributes, [:password])
-    |> Ecto.Changeset.validate_confirmation(:password, message: "does not match password")
-    |> validate_password(opts)
-  end
-
-  @doc """
-  Confirms the account by setting `confirmed_at`.
-  """
-  def confirm_changeset(account) do
-    Ecto.Changeset.change(account, confirmed_at: Utilities.Time.now())
-  end
-
-  @doc """
   Verifies the password.
 
   If there is no account or the account doesn't have a password, we call
-  `Bcrypt.no_user_verify/0` to avoid timing attacks.
+  `Argon2.no_user_verify/0` to avoid timing attacks.
   """
   def valid_password?(%__MODULE__{hashed_password: hashed_password}, password)
       when is_binary(hashed_password) and byte_size(password) > 0 do
-    Bcrypt.verify_pass(password, hashed_password)
+    Argon2.verify_pass(password, hashed_password)
   end
 
   def valid_password?(_, _) do
-    Bcrypt.no_user_verify()
+    Argon2.no_user_verify()
     false
   end
 

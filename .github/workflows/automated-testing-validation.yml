@@ -40,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:14.5
+        image: postgres:15.1
         ports:
           - 5432:5432
         env:
@@ -51,34 +51,38 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: erlef/setup-beam@v1
         id: beam
         with:
-          otp-version: 25.0
-          elixir-version: 1.14
+          otp-version: 26.0
+          elixir-version: 1.15
       - uses: actions/cache@v3
         with:
           path: |
             deps
             _build
-          key: ${{ runner.os }}-${{ steps.beam.outputs.elixir-version }}-${{ steps.beam.outputs.otp-version }}-deps-${{ hashFiles('**/mix.lock') }}
+          key: ${{ runner.os }}-${{ steps.beam.outputs.elixir-version }}-${{ steps.beam.outputs.otp-version }}-test-deps-${{ hashFiles('**/mix.lock') }}
       - run: mix local.rebar --force
       - run: mix local.hex --force
       - run: mix deps.get
       - run: mix deps.compile
+        env:
+          MIX_ENV: test
       - run: mix compile
+        env:
+          MIX_ENV: test
       - run: mix test
   audit:
     needs: [dialyzer]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: erlef/setup-beam@v1
         id: beam
         with:
-          otp-version: 25.0
-          elixir-version: 1.14
+          otp-version: 26.0
+          elixir-version: 1.15
       - uses: actions/cache@v3
         with:
           path: |
@@ -93,12 +97,12 @@ jobs:
     needs: [dialyzer]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: erlef/setup-beam@v1
         id: beam
         with:
-          otp-version: 25.0
-          elixir-version: 1.14
+          otp-version: 26.0
+          elixir-version: 1.15
       - uses: actions/cache@v3
         with:
           path: |
@@ -114,12 +118,12 @@ jobs:
     needs: [dialyzer]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: erlef/setup-beam@v1
         id: beam
         with:
-          otp-version: 25.0
-          elixir-version: 1.14
+          otp-version: 26.0
+          elixir-version: 1.15
       - uses: actions/cache@v3
         with:
           path: |
@@ -133,15 +137,14 @@ jobs:
       - run: mix compile
       - run: mix credo --ignore-checks Credo.Check.Design
   dialyzer:
-    needs: [test]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: erlef/setup-beam@v1
         id: beam
         with:
-          otp-version: 25.0
-          elixir-version: 1.14
+          otp-version: 26.0
+          elixir-version: 1.15
       - uses: actions/cache@v3
         with:
           path: |

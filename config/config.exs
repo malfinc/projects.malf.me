@@ -18,8 +18,6 @@ config :core,
   google_site_verification: "",
   google_tag_manager_id: ""
 
-config :core, :twitch, webhook_path: "twitch/webhooks"
-
 config :core,
        Core.Repo,
        migration_primary_key: [name: :id, type: :binary_id],
@@ -72,7 +70,7 @@ import IO
 
 # Configures Elixir's Logger
 config :logger, :console,
-  format: "$time $metadata[$level] #{IO.ANSI.bright()}$message#{IO.ANSI.normal()}\n",
+  format: "$metadata[$level] #{IO.ANSI.bright()}$message#{IO.ANSI.normal()}\n",
   metadata: [:request_id],
   color: :enabled
 
@@ -84,9 +82,12 @@ config :sentry,
   environment_name: Mix.env(),
   included_environments: [:prod]
 
+config :core, :twitch, webhook_path: "twitch/webhooks"
+
 config :core, Oban,
   repo: Core.Repo,
-  queues: [default: 5]
+  plugins: [Oban.Plugins.Lifeline, Oban.Plugins.Reindexer],
+  queues: [default: 15]
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

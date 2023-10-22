@@ -90,3 +90,5 @@ config :swoosh, :api_client, false
 
 config :oban,
   log_level: :info
+
+# config :core, Oban, testing: :inline

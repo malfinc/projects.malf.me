@@ -41,10 +41,12 @@ defmodule Utilities.Ecto.Changeset do
 
           %Ecto.Association.BelongsTo{owner_key: owner_key, field: field}, changeset ->
             changeset
-            |> Ecto.Changeset.put_assoc(
-              field,
-              change_with_fallbacks(field, attributes, changeset)
-            )
+            |> Ecto.Changeset.change(%{
+              owner_key =>
+                association_with_fallback(field, attributes, changeset)
+                |> Kernel.||(%{})
+                |> Map.get(:id)
+            })
             |> Ecto.Changeset.foreign_key_constraint(owner_key)
             |> Ecto.Changeset.assoc_constraint(field)
 
@@ -52,7 +54,7 @@ defmodule Utilities.Ecto.Changeset do
             Ecto.Changeset.put_assoc(
               changeset,
               field,
-              change_with_fallbacks(field, attributes, changeset)
+              association_with_fallback(field, attributes, changeset)
             )
         end)
     end
@@ -79,13 +81,13 @@ defmodule Utilities.Ecto.Changeset do
             Ecto.Changeset.put_embed(
               changeset,
               field,
-              change_with_fallbacks(field, attributes, changeset)
+              association_with_fallback(field, attributes, changeset)
             )
         end)
     end
   end
 
-  defp change_with_fallbacks(field, attributes, %Ecto.Changeset{changes: changes, data: data}) do
+  defp association_with_fallback(field, attributes, %Ecto.Changeset{changes: changes, data: data}) do
     attributes[field] || Map.get(changes, field) || Map.get(data, field)
   end
 

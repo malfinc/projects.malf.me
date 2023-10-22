@@ -44,15 +44,16 @@ defmodule Scaffolding.Read do
       @doc """
       Returns all `#{unquote(schema)}` records from a modified query
       """
-      @spec unquote(:"list_#{plural}")((Ecto.Query.t() -> Ecto.Query.t())) :: Ecto.Query.t()
+      @spec unquote(:"list_#{plural}")((Ecto.Query.t() -> Ecto.Query.t())) ::
+              list(unquote(schema))
       def unquote(:"list_#{plural}")(subquery),
-        do: subquery.(from(unquote(schema)))
+        do: subquery.(from(unquote(schema))) |> Core.Repo.all()
 
       @doc """
       Returns all `#{unquote(schema)}` records, unsorted
       """
-      @spec unquote(:"list_#{plural}")() :: Ecto.Query.t()
-      def unquote(:"list_#{plural}")(), do: from(unquote(schema))
+      @spec unquote(:"list_#{plural}")() :: list(unquote(schema))
+      def unquote(:"list_#{plural}")(), do: from(unquote(schema)) |> Core.Repo.all()
 
       @doc """
       Returns a singular `#{unquote(schema)}` based on a query, but if it isn't found will raise an exception

@@ -9,6 +9,8 @@ defmodule Mix.Tasks.Postgres.Stop do
       {_, 0} -> "pg_ctl"
       _ -> "/usr/lib/postgresql/13/bin/pg_ctl"
     end
-    |> System.cmd(["-D", "tmp/postgres/data", "-l", "tmp/postgres.log", "stop"], into: IO.stream())
+    |> System.cmd(["-D", "tmp/postgres/data", "-l", "tmp/postgres.log", "stop"],
+      into: IO.stream()
+    )
   end
 end

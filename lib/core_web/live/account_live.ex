@@ -2,10 +2,10 @@ defmodule CoreWeb.AccountLive do
   @moduledoc false
   use CoreWeb, :live_view
 
-  defp list_records(_assigns, _params) do
-    Core.Users.list_accounts()
-    |> Core.Repo.all()
-    |> Core.Repo.preload([])
+  def list_records(_assigns, _params) do
+    Core.Users.list_accounts(fn schema ->
+      from(schema, order_by: [desc: :updated_at], preload: [])
+    end)
   end
 
   defp get_record(id) when is_binary(id) do

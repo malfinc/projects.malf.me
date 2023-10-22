@@ -10,6 +10,7 @@
     "jamilabreu.vscode-phoenix-snippets",
     "ecmel.vscode-html-css",
     "mechatroner.rainbow-csv",
-    "mtxr.sqltools-driver-pg"
+    "mtxr.sqltools-driver-pg",
+    "streetsidesoftware.code-spell-checker"
   ]
 }

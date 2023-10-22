@@ -54,45 +54,44 @@ defmodule CoreWeb.FormComponents do
       <.input field={{f, :email}} type="email" />
       <.input name="my-input" errors={["oh no!"]} />
   """
-  attr :id, :any
+  attr :id, :any, default: nil
   attr :name, :any
   attr :label, :string, default: nil
   attr :details, :string, default: nil
+  attr :value, :any
 
   attr :type, :string,
     default: "text",
     values: ~w(checkbox color date datetime-local email file hidden month number password
                range radio search select tel text textarea time url week)
 
-  attr :value, :any
+  attr :field, Phoenix.HTML.FormField,
+    doc: "a form field struct retrieved from the form, for example: @form[:email_address]"
 
-  attr :field, :any,
-    doc: "a %Phoenix.HTML.Form{}/field name tuple, for example: {f, :email_address}"
-
-  attr :errors, :list
+  attr :errors, :list, default: []
   attr :checked, :boolean, doc: "the checked flag for checkbox inputs"
   attr :prompt, :string, default: nil, doc: "the prompt for select inputs"
   attr :options, :list, doc: "the options to pass to Phoenix.HTML.Form.options_for_select/2"
   attr :multiple, :boolean, default: false, doc: "the multiple flag for select inputs"
-  attr :rest, :global, include: ~w(autocomplete disabled form max maxlength min minlength
-                                   pattern placeholder readonly required size step)
+
+  attr :rest, :global,
+    include: ~w(accept autocomplete capture cols disabled form list max maxlength min minlength
+                multiple pattern placeholder readonly required rows size step)
+
   slot :inner_block
 
-  def input(%{field: {f, field}} = assigns) do
+  def input(%{field: %Phoenix.HTML.FormField{} = field} = assigns) do
     assigns
-    |> assign(field: nil)
-    |> assign_new(:name, fn ->
-      name = Phoenix.HTML.Form.input_name(f, field)
-      if assigns.multiple, do: name <> "[]", else: name
-    end)
-    |> assign_new(:id, fn -> Phoenix.HTML.Form.input_id(f, field) end)
-    |> assign_new(:value, fn -> Phoenix.HTML.Form.input_value(f, field) end)
-    |> assign_new(:errors, fn -> translate_errors(f.errors || [], field) end)
+    |> assign(field: nil, id: assigns.id || field.id)
+    |> assign(:errors, Enum.map(field.errors, &translate_error(&1)))
+    |> assign_new(:name, fn -> if assigns.multiple, do: field.name <> "[]", else: field.name end)
+    |> assign_new(:value, fn -> field.value end)
     |> input()
   end
 
-  def input(%{type: "checkbox"} = assigns) do
-    assigns = assign_new(assigns, :checked, fn -> input_equals?(assigns.value, "true") end)
+  def input(%{type: "checkbox", value: value} = assigns) do
+    assigns =
+      assign_new(assigns, :checked, fn -> Phoenix.HTML.Form.normalize_value("checkbox", value) end)
 
     ~H"""
     <div class="form-check" phx-feedback-for={@name}>
@@ -201,9 +200,5 @@ defmodule CoreWeb.FormComponents do
   """
   def translate_errors(errors, field) when is_list(errors) do
     for {^field, {msg, opts}} <- errors, do: translate_error({msg, opts})
-  end
-
-  defp input_equals?(val1, val2) do
-    Phoenix.HTML.html_escape(val1) == Phoenix.HTML.html_escape(val2)
   end
 end
