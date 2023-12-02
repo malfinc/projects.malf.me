@@ -34,3 +34,13 @@ It is highly recommended you use a Github Codespaces instance as we've setup qui
 ## Working on the project
 
 Once you've installed all the tooling detailed above branch off of the `main` branch and make some changes to the source. It's heavily recommended that you create a draft pull request as soon as possible so you can get feedback.
+
+
+## Core concepts
+
+Every MALF Project has a set of shared core concepts:
+
+  - A user, backed by a twitch account
+  - A coin transaction, which is a deposit or withdraw of fictional coins
+  - An organization which separates what projects a user is a part of
+  - A permission set which determines what the user can do in that organization
