@@ -1,6 +1,7 @@
 defmodule CoreWeb.WebhookLive do
   @moduledoc false
   use CoreWeb, :live_view
+  import Ecto.Query
 
   def list_records(_assigns, _params) do
     Core.Content.list_webhooks(fn schema ->
@@ -87,18 +88,16 @@ defmodule CoreWeb.WebhookLive do
         </tr>
       </thead>
       <tbody>
-        <%= for webhook <- @records do %>
-          <tr>
-            <td>
-              <.link href={~p"/admin/webhooks/#{webhook.id}"}>
-                <%= webhook.id %>
-              </.link>
-            </td>
-            <td>
-              <%= webhook.provider %>
-            </td>
-          </tr>
-        <% end %>
+        <tr :for={webhook <- @records}>
+          <td>
+            <.link href={~p"/admin/webhooks/#{webhook.id}"}>
+              <%= webhook.id %>
+            </.link>
+          </td>
+          <td>
+            <%= webhook.provider %>
+          </td>
+        </tr>
       </tbody>
     </table>
     """

@@ -4,17 +4,15 @@ defmodule CoreWeb.HallLive do
   import Ecto.Query
 
   defp list_records(_assigns, _params, category) do
-    Core.Content.list_halls(fn subquery ->
-      from(subquery, where: [category: ^category], limit: 6, preload: [])
+    Core.Content.list_halls(fn halls ->
+      from(halls, where: [category: ^category], limit: 6, preload: [])
     end)
-    |> Core.Repo.all()
   end
 
   def count_records(_assigns, _params, category) do
-    Core.Content.list_halls(fn subquery ->
-      from(subquery, where: [category: ^category], limit: 10, preload: [])
+    Core.Content.count_halls(fn halls ->
+      from(halls, where: [category: ^category], limit: 10, preload: [])
     end)
-    |> Core.Repo.aggregate(:count)
   end
 
   defp get_record(id) when is_binary(id) do
@@ -100,16 +98,16 @@ defmodule CoreWeb.HallLive do
     ~H"""
     <%= if Core.Users.has_permission?(@current_account, "global", "administrator") do %>
       <h2>New Hall</h2>
-      <.simple_form :let={f} for={@changeset} id="new_hall" phx-submit="create_hall" class="mb-3" data-bs-theme="light">
+      <.simple_form for={@form} phx-change="validate" phx-submit="save" class="mb-3" data-bs-theme="light">
         <div class="row">
           <div class="col">
-            <.input field={{f, :name}} name="name" id="name" type="text" label="Name" required />
+            <.input field={@form[:name]} type="text" label="Name" required />
           </div>
           <div class="col">
-            <.input field={{f, :deadline_at}} name="deadline_at" id="deadline_at" type="text" label="Deadline" required />
+            <.input field={@form[:deadline_at]} type="text" label="Deadline" required />
           </div>
           <div class="col">
-            <.input field={{f, :category}} name="category" id="category" type="text" label="Category" required />
+            <.input field={@form[:category]} type="text" label="Category" required />
           </div>
         </div>
         <:actions>

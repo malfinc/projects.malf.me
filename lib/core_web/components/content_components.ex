@@ -5,9 +5,6 @@ defmodule CoreWeb.ContentComponents do
   use Phoenix.Component
   use CoreWeb, :verified_routes
 
-  # alias Phoenix.LiveView.JS
-  # import CoreWeb.Gettext
-
   @doc """
   Renders the sidebar
   """

@@ -3,23 +3,23 @@ defmodule Core.Content.Hall do
   use Ecto.Schema
 
   @categories [
-    "speed",
-    "try",
-    "story",
-    "hundreds"
+    :speed,
+    :try,
+    :story,
+    :hundreds
   ]
 
   @states [
-    "nominating",
-    "voting",
-    "closed"
+    :nominating,
+    :voting,
+    :closed
   ]
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "halls" do
-    field(:state, :string, default: "nominating")
-    field(:category, :string)
+    field(:state, Ecto.Enum, values: @states, default: :nominating)
+    field(:category, Ecto.Enum, values: @categories)
     field(:deadline_at, :utc_datetime)
     has_many(:nominations, Core.Content.Nomination)
 
@@ -32,6 +32,6 @@ defmodule Core.Content.Hall do
   def changeset(hall, attrs) do
     hall
     |> Ecto.Changeset.cast(attrs, [:deadline_at, :category])
-    |> Ecto.Changeset.validate_required([:deadline_at, :category])
+    |> Ecto.Changeset.validate_required([:deadline_at, :category, :state])
   end
 end

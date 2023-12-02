@@ -4,15 +4,16 @@ defmodule CoreWeb.VoteLive do
   import Ecto.Query
 
   defp list_records(_assigns, params) do
-    from(
-      Core.Content.Nomination,
-      where: [
-        hall_id: ^params["hall_id"],
-        state: "nominated"
-      ],
-      preload: [:hall, :account]
-    )
-    |> Core.Repo.all()
+    Core.Content.list_nominations(fn nominations ->
+      from(
+        nominations,
+        where: [
+          hall_id: ^params["hall_id"],
+          state: :nominated
+        ],
+        preload: [:hall, :account]
+      )
+    end)
   end
 
   @impl true

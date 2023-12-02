@@ -20,6 +20,17 @@ if System.get_env("PHX_SERVER") && System.get_env("RELEASE_NAME") do
   config :core, CoreWeb.Endpoint, server: true
 end
 
+Application.put_env(
+  :core,
+  :secrets,
+  EncryptedSecrets.read!()[Mix.env()]
+)
+
+config :ueberauth, Ueberauth.Strategy.Twitch.OAuth,
+  client_id: Application.get_env(:core, :secrets)[:TWITCH_CLIENT_ID],
+  client_secret: Application.get_env(:core, :secrets)[:TWITCH_CLIENT_SECRET],
+  redirect_uri: Application.get_env(:core, :secrets)[:TWITCH_REDIRECT_URI]
+
 if config_env() == :prod do
   # Configure Sentry, the service we use to alert us to issues in the application
   config :sentry,
@@ -116,9 +127,4 @@ if config_env() == :prod do
   #     config :swoosh, :api_client, Swoosh.ApiClient.Hackney
   #
   # See https://hexdocs.pm/swoosh/Swoosh.html#module-installation for details.
-
-  config :ueberauth, Ueberauth.Strategy.Twitch.OAuth,
-    client_id: System.get_env("TWITCH_CLIENT_ID"),
-    client_secret: System.get_env("TWITCH_CLIENT_SECRET"),
-    redirect_uri: System.get_env("TWITCH_REDIRECT_URI")
 end

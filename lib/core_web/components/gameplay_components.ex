@@ -47,21 +47,17 @@ defmodule CoreWeb.GameplayComponents do
 
         <div style="position: relative; display: grid; grid-template-rows: 1fr; justify-items: end; row-gap: 15px; margin-top: 45%;">
           <.circle>
-            <%= for icon <- evolution_markers(@champion.upgrades) do %>
-              <CoreWeb.CoreComponents.icon as={icon} />
-            <% end %>
+            <CoreWeb.CoreComponents.icon :for={icon <- evolution_markers(@champion.upgrades)} as={icon} />
           </.circle>
         </div>
 
         <footer style="position: relative; display: grid; grid-template-columns: repeat(5, 1fr); justify-items: center; margin-top: 40%;">
-          <%= for {name, value} <- total_attributes(@champion) do %>
-            <.circle>
-              <div><%= value %></div>
-              <div style="padding: 3px; border-radius: 5px; background-color: rgba(250, 250, 250, 0.85); color: black;">
-                <%= slab(name) %>
-              </div>
-            </.circle>
-          <% end %>
+          <.circle :for={{name, value} <- total_attributes(@champion)}>
+            <div><%= value %></div>
+            <div style="padding: 3px; border-radius: 5px; background-color: rgba(250, 250, 250, 0.85); color: black;">
+              <%= slab(name) %>
+            </div>
+          </.circle>
         </footer>
       </div>
     </div>
@@ -73,7 +69,7 @@ defmodule CoreWeb.GameplayComponents do
   attr :height, :integer, default: 768
   attr :rest, :global
 
-  def card(assigns) do
+  def battle_card(assigns) do
     ~H"""
     <div id={@card.champion.id} phx-hook="Card" data-tilt-glare style={"background-image: url(#{~p"/images/rainbow_frame.png"}); padding: 15px; width: #{@width + (15 * 2)}px; height: #{@height + (15 * 2)}px; border-radius: 12px; color: white; margin-left: auto; margin-right: auto; box-shadow: 2px 2px 9px 0px rgba(0,0,0,0.5);"}>
       <div>
@@ -94,9 +90,7 @@ defmodule CoreWeb.GameplayComponents do
 
         <div style="position: relative; display: grid; grid-template-rows: 1fr; justify-items: end; row-gap: 15px; margin-top: 45%;">
           <.circle>
-            <%= for icon <- evolution_markers(@card.champion.upgrades) do %>
-              <CoreWeb.CoreComponents.icon as={icon} />
-            <% end %>
+            <CoreWeb.CoreComponents.icon :for={icon <- evolution_markers(@card.champion.upgrades)} as={icon} />
           </.circle>
           <.circle>
             <CoreWeb.CoreComponents.icon as="fa-pepper-hot fa-2x" style={"color: #{@card.rarity.color};"} />
@@ -104,14 +98,12 @@ defmodule CoreWeb.GameplayComponents do
         </div>
 
         <footer style="position: relative; display: grid; grid-template-columns: repeat(5, 1fr); justify-items: center; margin-top: 40%;">
-          <%= for {name, value} <- total_attributes(@card.champion) do %>
-            <.circle>
-              <div><%= value %></div>
-              <div style="padding: 3px; border-radius: 5px; background-color: rgba(250, 250, 250, 0.85); color: black;">
-                <%= slab(name) %>
-              </div>
-            </.circle>
-          <% end %>
+          <.circle :for={{name, value} <- total_attributes(@card.champion)}>
+            <div><%= value %></div>
+            <div style="padding: 3px; border-radius: 5px; background-color: rgba(250, 250, 250, 0.85); color: black;">
+              <%= slab(name) %>
+            </div>
+          </.circle>
         </footer>
       </div>
     </div>

@@ -204,13 +204,13 @@ if Mix.env() == :dev do
 
     speedrun =
       Core.Content.create_hall!(%{
-        category: "speed",
+        category: :speed,
         deadline_at: Timex.shift(Timex.now(), days: -27)
       })
 
     hundred =
       Core.Content.create_hall!(%{
-        category: "hundred",
+        category: :hundreds,
         deadline_at: Timex.shift(Timex.now(), days: 7)
       })
 

@@ -4,7 +4,6 @@ defmodule CoreWeb.ChampionLive do
 
   defp list_records(_assigns, _params) do
     Core.Gameplay.list_champions()
-    |> Core.Repo.all()
     |> Core.Repo.preload([:upgrades, :plant])
   end
 
@@ -83,11 +82,9 @@ defmodule CoreWeb.ChampionLive do
     <h1>Champions</h1>
 
     <ul>
-      <%= for champion <- @records do %>
-        <li>
-          <.link href={~p"/lop/champions/#{champion.id}"}><%= champion.name %></.link>
-        </li>
-      <% end %>
+      <li :for={champion <- @records}>
+        <.link href={~p"/lop/champions/#{champion.id}"}><%= champion.name %></.link>
+      </li>
     </ul>
     """
   end

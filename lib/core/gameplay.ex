@@ -2,18 +2,18 @@ defmodule Core.Gameplay do
   @moduledoc false
   require Logger
 
-  use Scaffolding, [Core.Gameplay.Plant, :plants, :plant]
-  use Scaffolding, [Core.Gameplay.Season, :seasons, :season]
-  use Scaffolding, [Core.Gameplay.Pack, :packs, :pack]
-  use Scaffolding, [Core.Gameplay.PackSlot, :pack_slots, :pack_slot]
-  use Scaffolding, [Core.Gameplay.Champion, :champions, :champion]
-  use Scaffolding, [Core.Gameplay.Rarity, :rarities, :rarity]
-  use Scaffolding, [Core.Gameplay.CoinTransaction, :coin_transactions, :coin_transaction]
-  use Scaffolding, [Core.Gameplay.Match, :matches, :match]
-  use Scaffolding, [Core.Gameplay.Card, :cards, :card]
-  use Scaffolding, [Core.Gameplay.Weekly, :weeklies, :weekly]
-  use Scaffolding, [Core.Gameplay.Division, :divisions, :division]
-  use Scaffolding, [Core.Gameplay.Conference, :conferences, :conference]
+  use EctoInterface, [Core.Gameplay.Plant, :plants, :plant]
+  use EctoInterface, [Core.Gameplay.Season, :seasons, :season]
+  use EctoInterface, [Core.Gameplay.Pack, :packs, :pack]
+  use EctoInterface, [Core.Gameplay.PackSlot, :pack_slots, :pack_slot]
+  use EctoInterface, [Core.Gameplay.Champion, :champions, :champion]
+  use EctoInterface, [Core.Gameplay.Rarity, :rarities, :rarity]
+  use EctoInterface, [Core.Gameplay.CoinTransaction, :coin_transactions, :coin_transaction]
+  use EctoInterface, [Core.Gameplay.Match, :matches, :match]
+  use EctoInterface, [Core.Gameplay.Card, :cards, :card]
+  use EctoInterface, [Core.Gameplay.Weekly, :weeklies, :weekly]
+  use EctoInterface, [Core.Gameplay.Division, :divisions, :division]
+  use EctoInterface, [Core.Gameplay.Conference, :conferences, :conference]
 
   @spec odds(Core.Gameplay.Season.t(), Core.Gameplay.Rarity.t(), pos_integer()) :: float
   def odds(season, rarity, packs)
@@ -30,10 +30,9 @@ defmodule Core.Gameplay do
   @spec card_rarity_distribution(Core.Gameplay.Season.t()) :: map
   def card_rarity_distribution(season), do: card_rarity_distribution(season, list_cards())
 
-  @spec card_rarity_distribution(Core.Gameplay.Season.t(), Ecto.Query.t()) :: map
+  @spec card_rarity_distribution(Core.Gameplay.Season.t(), list(Core.Gameplay.Card.t())) :: map
   def card_rarity_distribution(season, cards) do
     cards
-    |> Core.Repo.all()
     |> Core.Repo.preload([:rarity])
     |> Enum.filter(fn %{season_id: season_id} -> season.id == season_id end)
     |> Enum.group_by(&Map.get(&1, :rarity))
@@ -45,7 +44,7 @@ defmodule Core.Gameplay do
   def purchase_packs(season, account, count) do
     for _ <- 1..count do
       Core.Repo.transaction(fn ->
-        Core.Gameplay.random_pack(where: [season_id: season.id])
+        Core.Gameplay.random_pack(fn cards -> from(cards, where: [season_id: ^season.id]) end)
         |> Core.Repo.preload(cards: [:rarity, :champion])
         |> case do
           nil ->

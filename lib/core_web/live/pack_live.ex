@@ -10,19 +10,18 @@ defmodule CoreWeb.PackLive do
         []
 
       season ->
-        Core.Gameplay.list_packs(fn schema ->
-          schema
-          |> from(
+        Core.Gameplay.list_packs(fn packs ->
+          from(
+            packs,
             where: [
               opened: false,
               season_id: ^season.id,
               account_id: ^assigns.current_account.id
             ],
-            order_by: {:asc, :position}
+            order_by: {:asc, :position},
+            preload: [:cards, :season]
           )
         end)
-        |> Core.Repo.all()
-        |> Core.Repo.preload([:cards, :season])
     end
   end
 
@@ -155,9 +154,7 @@ defmodule CoreWeb.PackLive do
 
     <%= if Enum.any?(@records) do %>
       <section id="UnopenedCardPacks" phx-hook="UnopenedCardPacks" class="collection collection--packs">
-        <%= for pack <- @records do %>
-          <.pack pack={pack} />
-        <% end %>
+        <.pack :for={pack <- @records} pack={pack} />
       </section>
     <% else %>
       <p>You have no unopened packs.</p>
@@ -171,11 +168,7 @@ defmodule CoreWeb.PackLive do
     <h1>Opened Pack</h1>
 
     <section class="collection collection--cards">
-      <%= for card <- @record.cards do %>
-        <section>
-          <.card card={card} />
-        </section>
-      <% end %>
+      <.battle_card :for={card <- @record.cards} card={card} />
     </section>
     """
   end

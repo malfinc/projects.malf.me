@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 14.2
--- Dumped by pg_dump version 14.2
+-- Dumped from database version 15.2 (Debian 15.2-1.pgdg110+1)
+-- Dumped by pg_dump version 15.5 (Ubuntu 15.5-1.pgdg22.04+1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -670,8 +670,7 @@ CREATE TABLE public.tags (
     id uuid NOT NULL,
     name text NOT NULL,
     slug public.citext NOT NULL,
-    inserted_at timestamp(0) without time zone NOT NULL,
-    updated_at timestamp(0) without time zone NOT NULL
+    description text DEFAULT ''::text NOT NULL
 );
 
 
@@ -1385,13 +1384,6 @@ CREATE INDEX seasons_active_index ON public.seasons USING btree (active);
 --
 
 CREATE UNIQUE INDEX seasons_position_index ON public.seasons USING btree ("position");
-
-
---
--- Name: tags_name_index; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX tags_name_index ON public.tags USING btree (name);
 
 
 --

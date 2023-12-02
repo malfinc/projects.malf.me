@@ -8,20 +8,20 @@ defmodule CoreWeb.MatchLive do
     Core.Gameplay.list_matches(fn matches ->
       from(
         match in matches,
+        # Switch to assoc
         join: weekly in Core.Gameplay.Weekly,
         on: weekly.id == match.weekly_id,
-        order_by: {:asc, weekly.position}
+        order_by: {:asc, weekly.position},
+        preload: [
+          :weekly,
+          :season,
+          division: [:conference],
+          left_champion: [:upgrades, :plant],
+          right_champion: [:upgrades, :plant],
+          winning_champion: [:upgrades, :plant]
+        ]
       )
     end)
-    |> Core.Repo.all()
-    |> Core.Repo.preload([
-      :weekly,
-      :season,
-      division: [:conference],
-      left_champion: [:upgrades, :plant],
-      right_champion: [:upgrades, :plant],
-      winning_champion: [:upgrades, :plant]
-    ])
     |> Enum.group_by(&Map.get(&1, :weekly))
     |> Enum.to_list()
     |> Enum.sort_by(fn {key, _} -> key.position end)
@@ -95,28 +95,20 @@ defmodule CoreWeb.MatchLive do
   def render(%{live_action: :list} = assigns) do
     ~H"""
     <h1>Matches</h1>
-    <%= for {weekly, matches_by_conference} <- @records do %>
-      <div style="padding-left: 25px;">
-        <h2>Week <%= weekly.position %></h2>
-        <%= for {conference, matches_by_division} <- matches_by_conference do %>
-          <div style="padding-left: 25px;">
-            <h3><%= conference.name %> Conference</h3>
-            <%= for {division, matches} <- matches_by_division do %>
-              <div style="padding-left: 25px;">
-                <h4><%= division.name %> Division</h4>
-                <ul>
-                  <%= for match <- matches do %>
-                    <li>
-                      <%= Pretty.get(match, :name) %> (winner <%= match.winning_champion.name %>) <.link href={~p"/lop/matches/#{match.id}"}>View</.link>
-                    </li>
-                  <% end %>
-                </ul>
-              </div>
-            <% end %>
-          </div>
-        <% end %>
+    <div :for={{weekly, matches_by_conference} <- @records} style="padding-left: 25px;">
+      <h2>Week <%= weekly.position %></h2>
+      <div :for={{conference, matches_by_division} <- matches_by_conference} style="padding-left: 25px;">
+        <h3><%= conference.name %> Conference</h3>
+        <div :for={{division, matches} <- matches_by_division} style="padding-left: 25px;">
+          <h4><%= division.name %> Division</h4>
+          <ul>
+            <li :for={match <- matches}>
+              <%= Pretty.get(match, :name) %> (winner <%= match.winning_champion.name %>) <.link href={~p"/lop/matches/#{match.id}"}>View</.link>
+            </li>
+          </ul>
+        </div>
       </div>
-    <% end %>
+    </div>
     """
   end
 
@@ -127,11 +119,9 @@ defmodule CoreWeb.MatchLive do
     <section style="display: grid; grid-template-columns: 3fr 1fr 3fr; place-items: center">
       <.champion champion={@record.left_champion} winner={@record.winning_champion == @record.left_champion} /> Vs <.champion champion={@record.right_champion} winner={@record.winning_champion == @record.right_champion} />
     </section>
-    <%= for round <- @record.rounds do %>
-      <p>
-        <%= round %>
-      </p>
-    <% end %>
+    <p :for={round <- @record.rounds}>
+      <%= round %>
+    </p>
     """
   end
 end

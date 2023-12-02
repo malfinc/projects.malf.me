@@ -4,7 +4,6 @@ defmodule CoreWeb.OrganizationLive do
 
   defp list_records(_assigns, _params) do
     Core.Users.list_organizations()
-    |> Core.Repo.all()
     |> Core.Repo.preload([])
   end
 
@@ -63,21 +62,19 @@ defmodule CoreWeb.OrganizationLive do
         <th>Updated</th>
         <th>Links</th>
       </tr>
-      <%= for organization <- @records do %>
-        <tr>
-          <td>
-            <%= Pretty.get(organization, :name) %>
-          </td>
-          <td>
-            <%= timestamp_in_words_ago(organization) %>
-          </td>
-          <td>
-            <.link href={~p"/admin/organizations/#{organization.id}"}>
-              Show
-            </.link>
-          </td>
-        </tr>
-      <% end %>
+      <tr :for={organization <- @records}>
+        <td>
+          <%= Pretty.get(organization, :name) %>
+        </td>
+        <td>
+          <%= timestamp_in_words_ago(organization) %>
+        </td>
+        <td>
+          <.link href={~p"/admin/organizations/#{organization.id}"}>
+            Show
+          </.link>
+        </td>
+      </tr>
     </table>
     """
   end
@@ -91,11 +88,9 @@ defmodule CoreWeb.OrganizationLive do
 
     <h3 id="accounts">Accounts</h3>
     <ul>
-      <%= for account <- @record.accounts do %>
-        <li>
-          <.link href={~p"/admin/accounts/#{account.id}"}><%= account.username %></.link>
-        </li>
-      <% end %>
+      <li :for={account <- @record.accounts}>
+        <.link href={~p"/admin/accounts/#{account.id}"}><%= account.username %></.link>
+      </li>
     </ul>
     """
   end

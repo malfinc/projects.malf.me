@@ -6,9 +6,9 @@ defmodule Core.Users do
   import Ecto.Query, warn: false
   require Logger
 
-  use Scaffolding.Read, [Core.Users.Account, :accounts, :account]
-  use Scaffolding, [Core.Users.Organization, :organizations, :organization]
-  use Scaffolding, [Core.Users.Permission, :permissions, :permission]
+  use EctoInterface.Read, [Core.Users.Account, :accounts, :account]
+  use EctoInterface, [Core.Users.Organization, :organizations, :organization]
+  use EctoInterface, [Core.Users.Permission, :permissions, :permission]
 
   @doc """
   Gets a account by email_address.
@@ -96,6 +96,33 @@ defmodule Core.Users do
     {token, account_token} = Core.Users.AccountToken.build_session_token(account)
     Core.Repo.insert!(account_token)
     token
+  end
+
+  @doc """
+  Confirms a account by the given token.
+
+  If the token matches, the account account is marked as confirmed
+  and the token is deleted.
+  """
+  def confirm_account(token) do
+    with {:ok, query} <-
+           Core.Users.AccountToken.verify_email_token_query(token, "confirm"),
+         %Core.Users.Account{} = account <- Core.Repo.one(query),
+         {:ok, %{account: account}} <-
+           Core.Repo.transaction(confirm_account_multi(account)) do
+      {:ok, account}
+    else
+      _ -> :error
+    end
+  end
+
+  defp confirm_account_multi(account) do
+    Ecto.Multi.new()
+    |> Ecto.Multi.update(:account, Core.Users.Account.confirm_changeset(account))
+    |> Ecto.Multi.delete_all(
+      :tokens,
+      Core.Users.AccountToken.account_and_contexts_query(account, ["confirm"])
+    )
   end
 
   @doc """

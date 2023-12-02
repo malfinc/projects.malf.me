@@ -65,6 +65,18 @@ config :esbuild,
     env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
   ]
 
+# Configure tailwind (the version is required)
+config :tailwind,
+  version: "3.3.2",
+  default: [
+    args: ~w(
+      --config=tailwind.config.js
+      --input=css/application.css
+      --output=../priv/static/assets/application.css
+    ),
+    cd: Path.expand("../assets", __DIR__)
+  ]
+
 # Configures Elixir's Logger
 import IO
 
@@ -88,6 +100,8 @@ config :core, Oban,
   repo: Core.Repo,
   plugins: [Oban.Plugins.Lifeline, Oban.Plugins.Reindexer],
   queues: [default: 15]
+
+config :ecto_interface, :default_repo, Core.Repo
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

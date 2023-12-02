@@ -1,7 +1,10 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+@import "bootstrap";
 @import "./phoenix.css";
 @import "./form.css";
 @import "./card.css";
-@import "./topbar.css";
 
 /* This file is for your main application CSS */
 :root {

@@ -10,24 +10,26 @@ defmodule CoreWeb.CardLive do
         []
 
       season ->
-        (card in Core.Gameplay.Card)
-        |> from(
-          where: [
-            season_id: ^season.id,
-            account_id: ^assigns.current_account.id
-          ],
-          join: rarity in Core.Gameplay.Rarity,
-          on: rarity.id == card.rarity_id,
-          order_by: [
-            rarity.season_pick_rate
-          ]
-        )
-        |> Core.Repo.all()
-        |> Core.Repo.preload([
-          :season,
-          :rarity,
-          champion: [:plant, :upgrades]
-        ])
+        Core.Gameplay.list_cards(fn cards ->
+          from(
+            card in cards,
+            where: [
+              season_id: ^season.id,
+              account_id: ^assigns.current_account.id
+            ],
+            # Switch to assoc()
+            join: rarity in Core.Gameplay.Rarity,
+            on: rarity.id == card.rarity_id,
+            order_by: [
+              rarity.season_pick_rate
+            ],
+            preload: [
+              :season,
+              :rarity,
+              champion: [:plant, :upgrades]
+            ]
+          )
+        end)
     end
   end
 
@@ -89,9 +91,7 @@ defmodule CoreWeb.CardLive do
     <h1>Collection</h1>
 
     <section class="collection collection--cards">
-      <%= for card <- @records do %>
-        <.card card={card} />
-      <% end %>
+      <.battle_card :for={card <- @records} card={card} />
     </section>
     """
   end
@@ -101,7 +101,7 @@ defmodule CoreWeb.CardLive do
     ~H"""
     <h1><%= @record.name %> (<%= @record.rarity.name %>)</h1>
 
-    <.card card={@record} />
+    <.battle_card card={@record} />
     """
   end
 end

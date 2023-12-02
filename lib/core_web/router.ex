@@ -18,7 +18,6 @@ defmodule CoreWeb.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug :fetch_current_account
-    plug Ueberauth
   end
 
   pipeline :api do

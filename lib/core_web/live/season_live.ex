@@ -4,8 +4,7 @@ defmodule CoreWeb.SeasonLive do
   import Ecto.Query
 
   defp list_records(_assigns, _params) do
-    Core.Gameplay.list_seasons(fn schema -> order_by(schema, asc: :position) end)
-    |> Core.Repo.all()
+    Core.Gameplay.list_seasons(fn seasons -> order_by(seasons, asc: :position) end)
     |> Core.Repo.preload([])
   end
 
@@ -71,7 +70,7 @@ defmodule CoreWeb.SeasonLive do
   end
 
   @impl true
-  def handle_event("create_season", params, socket) do
+  def handle_event("save", params, socket) do
     with {:ok, season} <-
            Core.Gameplay.create_season(%{
              plants:
@@ -97,35 +96,26 @@ defmodule CoreWeb.SeasonLive do
   def render(%{live_action: :list} = assigns) do
     ~H"""
     <h1>Seasons</h1>
+    <ul :if={length(@records) > 0}>
+      <li :for={season <- @records}>
+        <.link href={~p"/lop/seasons/#{season.id}"}>Season <%= season.position %></.link>
+      </li>
+    </ul>
+    <p :if={!length(@records) > 0}>
+      No seasons setup yet.
+    </p>
 
-    <%= if length(@records) > 0 do %>
-      <ul>
-        <%= for season <- @records do %>
-          <li>
-            <.link href={~p"/lop/seasons/#{season.id}"}>Season <%= season.position %></.link>
-          </li>
-        <% end %>
-      </ul>
-    <% else %>
-      <p>
-        No seasons setup yet.
-      </p>
-    <% end %>
+    <.simple_form :if={Core.Users.has_permission?(@current_account, "global", "administrator")} for={@form} phx-submit="save" phx-change="validate">
+      <h2 :if={Core.Users.has_permission?(@current_account, "global", "administrator")}>New Season</h2>
+      <%!-- Select instead --%>
+      <.input :for={plant <- @plants} field={@form[:plants]} type="checkbox" checked={false} label={plant.name} />
 
-    <%= if Core.Users.has_permission?(@current_account, "global", "administrator") do %>
-      <h2>New Season</h2>
-      <.simple_form :let={f} for={@changeset} id="new_season" phx-submit="create_season">
-        <%= for plant <- @plants do %>
-          <.input field={{f, :plants}} type="checkbox" checked={false} id={"plants_#{plant.slug}"} name={"plants[#{plant.id}]"} label={plant.name} />
-        <% end %>
-
-        <:actions>
-          <.button phx-disable-with="Starting..." type="submit" class="btn btn-primary" usable_icon="fireworks">
-            Start Season
-          </.button>
-        </:actions>
-      </.simple_form>
-    <% end %>
+      <:actions>
+        <.button phx-disable-with="Starting..." type="submit" class="btn btn-primary" usable_icon="fireworks">
+          Start Season
+        </.button>
+      </:actions>
+    </.simple_form>
     """
   end
 
@@ -142,11 +132,9 @@ defmodule CoreWeb.SeasonLive do
 
     <h2>Champions</h2>
     <ul>
-      <%= for champion <- @record.champions do %>
-        <li>
-          <.link href={~p"/lop/champions/#{champion.id}"}><%= champion.name %></.link> (<%= champion.plant.name %>)
-        </li>
-      <% end %>
+      <li :for={champion <- @record.champions}>
+        <.link href={~p"/lop/champions/#{champion.id}"}><%= champion.name %></.link> (<%= champion.plant.name %>)
+      </li>
     </ul>
     """
   end

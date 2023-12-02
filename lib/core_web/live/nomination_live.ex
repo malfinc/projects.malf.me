@@ -4,14 +4,15 @@ defmodule CoreWeb.NominationLive do
   import Ecto.Query
 
   defp list_records(_assigns, params) do
-    from(
-      Core.Content.Nomination,
-      where: [
-        hall_id: ^params["hall_id"]
-      ],
-      preload: [:hall, :account]
-    )
-    |> Core.Repo.all()
+    Core.Content.list_nominations(fn nominations ->
+      from(
+        nominations,
+        where: [
+          hall_id: ^params["hall_id"]
+        ],
+        preload: [:hall, :account]
+      )
+    end)
   end
 
   defp has_nominated?(current_account, hall_id) do
@@ -118,8 +119,8 @@ defmodule CoreWeb.NominationLive do
   def render(%{live_action: :list} = assigns) do
     ~H"""
     <h1>Nominations for <.link href={~p"/halls/#{@hall.id}"}><%= Pretty.get(@hall, :name) %></.link></h1>
-    <.simple_form :let={f} :if={@current_account && !@nominated?} for={%{"query" => @query}} phx-change="search" data-bs-theme="light">
-      <.input field={{f, :query}} label="Search Games" type="text" phx-debounce="450" />
+    <.simple_form :if={@current_account && !@nominated?} for={@form} phx-change="search" phx-submit="search" data-bs-theme="light">
+      <.input field={@form[:query]} label="Search Games" type="text" phx-debounce="450" />
     </.simple_form>
     <div :if={length(@results) > 0} class="mt-3 mb-3 row g-3">
       <div :for={result <- @results} class="col-auto">

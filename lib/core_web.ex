@@ -57,7 +57,6 @@ defmodule CoreWeb do
         layout: {CoreWeb.Layouts, unquote(layout)}
 
       unquote(html_helpers())
-      unquote(live_view_helpers())
     end
   end
 
@@ -99,18 +98,17 @@ defmodule CoreWeb do
       # Routes generation with the ~p sigil
       unquote(verified_routes())
 
-      def timestamp_in_words_ago(%{updated_at: updated_at}) do
-        Timex.from_now(updated_at)
-      end
-
-      def timestamp_in_words_ago(%{inserted_at: inserted_at}) do
-        Timex.from_now(inserted_at)
+      def elixir_as_html(source) do
+        inspect(source, pretty: true, limit: :infinity)
+        |> (&"```\n#{&1}\n```").()
+        |> Earmark.as_html!(smartypants: false, inner_html: true)
+        |> Phoenix.HTML.raw()
       end
 
       def code_as_html(source) do
-        inspect(source, pretty: true, limit: :infinity)
+        source
         |> (&"```\n#{&1}\n```").()
-        |> Earmark.as_html!()
+        |> Earmark.as_html!(smartypants: false, inner_html: true)
         |> Phoenix.HTML.raw()
       end
 
@@ -122,13 +120,6 @@ defmodule CoreWeb do
           {:error, _} -> at
         end
       end
-    end
-  end
-
-  defp live_view_helpers() do
-    quote do
-      def handle_info({:live_session_updated, _session}, socket),
-        do: socket |> (&{:noreply, &1}).()
     end
   end
 

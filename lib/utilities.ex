@@ -29,7 +29,5 @@ defmodule Utilities do
     {nsec / 1_000_000.0, value}
   end
 
-  def until(function) when is_function(function, 0) do
-    function.() || until(function)
-  end
+  def until(function) when is_function(function, 0), do: function.() || until(function)
 end

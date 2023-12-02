@@ -4,7 +4,6 @@ defmodule CoreWeb.RarityLive do
 
   defp list_records(_assigns, _params) do
     Core.Gameplay.list_rarities()
-    |> Core.Repo.all()
     |> Enum.sort_by(&Map.get(&1, :season_pick_rate), :desc)
   end
 
@@ -132,16 +131,12 @@ defmodule CoreWeb.RarityLive do
   def render(%{live_action: :show} = assigns) do
     ~H"""
     <h2>Rarity / <%= @record.name %></h2>
-    <.simple_form :let={f} for={@changeset} id="edit_rarity" phx-submit="update_rarity">
-      <.input label="Name" field={{f, :name}} type="text" />
-
-      <.input label="Color" field={{f, :color}} type="text" />
-
-      <.input label="Season Pick Rate" field={{f, :season_pick_rate}} type="number" details="How many cards of this rarity will be generated per season." />
-
-      <.input label="Holographic Rate" field={{f, :holographic_rate}} type="number" />
-
-      <.input label="Full Art Rate" field={{f, :full_art_rate}} type="number" details="Remember that this rate is a percentage of the Holographic Rate." />
+    <.simple_form for={@form} phx-change="validate" phx-submit="save">
+      <.input label="Name" field={@form[:name]} type="text" />
+      <.input label="Color" field={@form[:color]} type="text" />
+      <.input label="Season Pick Rate" field={@form[:season_pick_rate]} type="number" details="How many cards of this rarity will be generated per season." />
+      <.input label="Holographic Rate" field={@form[:holographic_rate]} type="number" />
+      <.input label="Full Art Rate" field={@form[:full_art_rate]} type="number" details="Remember that this rate is a percentage of the Holographic Rate." />
 
       <:actions>
         <.button phx-disable-with="Saving..." type="submit" class="btn btn-primary" usable_icon="save">

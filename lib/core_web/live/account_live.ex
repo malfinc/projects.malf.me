@@ -1,6 +1,7 @@
 defmodule CoreWeb.AccountLive do
   @moduledoc false
   use CoreWeb, :live_view
+  import Ecto.Query
 
   def list_records(_assigns, _params) do
     Core.Users.list_accounts(fn schema ->
@@ -64,27 +65,25 @@ defmodule CoreWeb.AccountLive do
         <th>Updated</th>
         <th>Links</th>
       </tr>
-      <%= for account <- @records do %>
-        <tr>
-          <td>
-            <i class="fa-solid fa-envelope"></i>
-            <a href={"mailto:#{account.email_address}"}>
-              <%= account.email_address %>
-            </a>
-          </td>
-          <td>
-            <%= account.username %>
-          </td>
-          <td>
-            <%= account.updated_at %>
-          </td>
-          <td>
-            <.link href={~p"/admin/accounts/#{account.id}"}>
-              Show
-            </.link>
-          </td>
-        </tr>
-      <% end %>
+      <tr :for={account <- @records}>
+        <td>
+          <i class="fa-solid fa-envelope"></i>
+          <a href={"mailto:#{account.email_address}"}>
+            <%= account.email_address %>
+          </a>
+        </td>
+        <td>
+          <%= account.username %>
+        </td>
+        <td>
+          <%= account.updated_at %>
+        </td>
+        <td>
+          <.link href={~p"/admin/accounts/#{account.id}"}>
+            Show
+          </.link>
+        </td>
+      </tr>
     </table>
     """
   end
@@ -106,16 +105,14 @@ defmodule CoreWeb.AccountLive do
       <div style="padding: 15px; border: 1px solid var(--highlight-color);">
         <strong>Organizations</strong>
         <ul>
-          <%= for organization_membership <- @record.organization_memberships do %>
-            <li>
-              <.link href={~p"/admin/organizations/#{organization_membership.organization.id}"}>
-                <%= Pretty.get(organization_membership.organization, :name) %>
-              </.link>
-              (<%= organization_membership.permissions
-              |> Utilities.List.pluck(:name)
-              |> Utilities.List.to_sentence() %>)
-            </li>
-          <% end %>
+          <li :for={organization_membership <- @record.organization_memberships}>
+            <.link href={~p"/admin/organizations/#{organization_membership.organization.id}"}>
+              <%= Pretty.get(organization_membership.organization, :name) %>
+            </.link>
+            (<%= organization_membership.permissions
+            |> Utilities.List.pluck(:name)
+            |> Utilities.List.to_sentence() %>)
+          </li>
         </ul>
       </div>
 

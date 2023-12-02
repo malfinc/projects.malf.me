@@ -1,13 +1,6 @@
 defmodule CoreWeb.AccountSessionController do
   use CoreWeb, :controller
-
-  def create(conn, %{"_action" => "registered"} = params) do
-    create(conn, params, "Account created successfully!")
-  end
-
-  def create(conn, params) do
-    create(conn, params, "Welcome back!")
-  end
+  plug Ueberauth
 
   def delete(conn, _params) do
     conn

@@ -2,6 +2,7 @@ defmodule CoreWeb.AccountSettingsLive do
   use CoreWeb, :live_view
   import Ecto.Query
 
+  @spec render(map()) :: Phoenix.LiveView.Rendered.t()
   def render(assigns) do
     ~H"""
     <h1>Account</h1>
@@ -13,14 +14,12 @@ defmodule CoreWeb.AccountSettingsLive do
     <h3 id="transactions">Transactions</h3>
     <%= if length(@coin_transactions) > 0 do %>
       <ul>
-        <%= for {reason, value} <- @coin_transactions do %>
-          <li>
-            <.icon as="fa-coins" /> <%= :erlang.float_to_binary(value,
-              decimals: 2
-            ) %>
-            <em>for <%= reason %></em>
-          </li>
-        <% end %>
+        <li :for={{reason, value} <- @coin_transactions}>
+          <.icon as="fa-coins" /> <%= :erlang.float_to_binary(value,
+            decimals: 2
+          ) %>
+          <em>for <%= reason %></em>
+        </li>
       </ul>
     <% else %>
       <p>You have no coin transactions currently.</p>
@@ -40,35 +39,36 @@ defmodule CoreWeb.AccountSettingsLive do
       )
       |> assign(
         :coin_transactions,
-        (coin_transaction in Core.Gameplay.CoinTransaction)
-        |> from(
-          where: [
-            account_id: ^account.id
-          ],
-          order_by: [
-            {:desc, :inserted_at}
-          ]
-        )
-        |> Core.Repo.all()
-        |> Enum.reduce([], fn coin_transcation, aggregated_statements ->
+        Core.Gameplay.list_coin_transactions(fn coins ->
+          from(
+            coins,
+            where: [
+              account_id: ^account.id
+            ],
+            order_by: [
+              {:desc, :inserted_at}
+            ]
+          )
+        end)
+        |> Enum.reduce([], fn coin_transaction, aggregated_statements ->
           Utilities.List.snip(aggregated_statements, -1)
           |> case do
             {[], []} ->
               Utilities.List.append(
                 aggregated_statements,
-                {coin_transcation.reason, coin_transcation.value}
+                {coin_transaction.reason, coin_transaction.value}
               )
 
             {remaining_aggregated_statements, [{reason, previous_value}]} ->
-              if reason == coin_transcation.reason do
+              if reason == coin_transaction.reason do
                 Utilities.List.append(
                   remaining_aggregated_statements,
-                  {reason, previous_value + coin_transcation.value}
+                  {reason, previous_value + coin_transaction.value}
                 )
               else
                 Utilities.List.append(
                   aggregated_statements,
-                  {coin_transcation.reason, coin_transcation.value}
+                  {coin_transaction.reason, coin_transaction.value}
                 )
               end
           end

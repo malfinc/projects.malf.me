@@ -22,10 +22,11 @@ defmodule Core.Users.Account do
     field(:avatar_uri, :string)
     field(:email_address, :string)
     field(:username, :string)
-    field(:onboarding_state, :string, default: "converted")
+    field(:onboarding_state, Ecto.Enum, values: [:converted], default: :converted)
     field(:password, :string, virtual: true, redact: true)
     field(:hashed_password, :string, redact: true)
     field(:confirmed_at, :naive_datetime)
+    timestamps()
     embeds_one(:settings, Core.Users.Settings)
     embeds_one(:profile, Core.Users.Profile)
     has_many(:upgrades, Core.Gameplay.Upgrade, foreign_key: :patron_account_id)
@@ -36,8 +37,6 @@ defmodule Core.Users.Account do
     has_many(:nominations, Core.Content.Nomination)
 
     has_many(:organizations, through: [:organization_memberships, :organization])
-
-    timestamps()
   end
 
   @type t :: %__MODULE__{
@@ -184,6 +183,13 @@ defmodule Core.Users.Account do
   end
 
   defp with_autousername(attributes), do: attributes
+
+  @doc """
+  Confirms the account by setting `confirmed_at`.
+  """
+  def confirm_changeset(account) do
+    Ecto.Changeset.change(account, confirmed_at: Utilities.Time.now())
+  end
 
   @doc """
   Verifies the password.

@@ -36,7 +36,7 @@ defmodule Core.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:argon2_elixir, "~> 3.0"},
+      {:argon2_elixir, "~> 4.0"},
       {:phoenix, "~> 1.7", override: true},
       {:phoenix_ecto, "~> 4.4"},
       {:ecto_sql, "~> 3.10"},
@@ -44,9 +44,10 @@ defmodule Core.MixProject do
       {:phoenix_html, "~> 3.3"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:phoenix_live_view, "~> 0.20.0"},
-      {:floki, "~> 0.34.0", only: :test},
+      {:floki, "~> 0.35.2", only: :test},
       {:phoenix_live_dashboard, "~> 0.8.0"},
-      {:esbuild, "~> 0.7.0", runtime: Mix.env() == :dev},
+      {:esbuild, "~> 0.8.0", runtime: Mix.env() == :dev},
+      {:tailwind, "~> 0.2.0", runtime: Mix.env() == :dev},
       {:swoosh, "~> 1.3"},
       {:finch, "~> 0.16.0"},
       {:telemetry_metrics, "~> 0.6.0"},
@@ -71,8 +72,11 @@ defmodule Core.MixProject do
       {:paper_trail, "~> 1.0"},
       {:ueberauth, "~> 0.7"},
       {:ueberauth_twitch, "~> 0.1.0"},
-      {:bandit, "~> 1.0-pre"},
-      {:ex_machina, "~> 2.7", only: :test}
+      {:bandit, "~> 1.0"},
+      {:ex_machina, "~> 2.7", only: :test},
+      {:ecto_function, "~> 1.0"},
+      {:ecto_interface, "~> 1.0"},
+      {:encrypted_secrets, "~> 0.3.0"}
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
     ]
@@ -86,7 +90,7 @@ defmodule Core.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
-      setup: ["deps.get", "ecto.setup"],
+      setup: ["deps.get", "ecto.setup", "assets.build"],
       "ecto.setup": ["ecto.create --quiet", "ecto.build"],
       "ecto.seeds": ["run priv/repo/seeds.exs --quiet"],
       "ecto.fixtures": ["run priv/repo/fixtures.exs --quiet"],
@@ -113,7 +117,13 @@ defmodule Core.MixProject do
         "ecto.seeds",
         "test"
       ],
-      "assets.deploy": ["esbuild default --minify", "phx.digest"],
+      "assets.setup": [
+        "tailwind.install --if-missing",
+        "esbuild.install --if-missing",
+        "cmd --cd assets/ npm install"
+      ],
+      "assets.build": ["assets.setup", "tailwind default", "esbuild default"],
+      "assets.deploy": ["tailwind default --minify", "esbuild default --minify", "phx.digest"],
       check: ["compile", "credo", "dialyzer --quiet"]
     ]
   end
