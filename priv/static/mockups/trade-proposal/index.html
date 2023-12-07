@@ -43,6 +43,18 @@
 	<path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
 	<path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
   </symbol>
+  <symbol id="bullseye" viewBox="0 0 16 16">
+	  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+	  <path d="M8 13A5 5 0 1 1 8 3a5 5 0 0 1 0 10m0 1A6 6 0 1 0 8 2a6 6 0 0 0 0 12"/>
+	  <path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6m0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8"/>
+	  <path d="M9.5 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+  </symbol>
+  <symbol id="packs" viewBox="0 0 16 16">
+	  <path d="M3 2.5a2.5 2.5 0 0 1 5 0 2.5 2.5 0 0 1 5 0v.006c0 .07 0 .27-.038.494H15a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 1 14.5V7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h2.038A2.968 2.968 0 0 1 3 2.506zm1.068.5H7v-.5a1.5 1.5 0 1 0-3 0c0 .085.002.274.045.43a.522.522 0 0 0 .023.07M9 3h2.932a.56.56 0 0 0 .023-.07c.043-.156.045-.345.045-.43a1.5 1.5 0 0 0-3 0zM1 4v2h6V4zm8 0v2h6V4zm5 3H9v8h4.5a.5.5 0 0 0 .5-.5zm-7 8V7H2v7.5a.5.5 0 0 0 .5.5z"/>
+  </symbol>
+  <symbol id="cards" viewBox="0 0 16 16">
+	  <path d="M13 0H6a2 2 0 0 0-2 2 2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 2 2 0 0 0 2-2V2a2 2 0 0 0-2-2m0 13V4a2 2 0 0 0-2-2H5a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1M3 4a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/>
+  </symbol>
   <symbol id="grade" viewBox="0 0 16 16">
 	  <path d="M9.669.864 8 0 6.331.864l-1.858.282-.842 1.68-1.337 1.32L2.6 6l-.306 1.854 1.337 1.32.842 1.68 1.858.282L8 12l1.669-.864 1.858-.282.842-1.68 1.337-1.32L13.4 6l.306-1.854-1.337-1.32-.842-1.68zm1.196 1.193.684 1.365 1.086 1.072L12.387 6l.248 1.506-1.086 1.072-.684 1.365-1.51.229L8 10.874l-1.355-.702-1.51-.229-.684-1.365-1.086-1.072L3.614 6l-.25-1.506 1.087-1.072.684-1.365 1.51-.229L8 1.126l1.356.702z"/>
 	  <path d="M4 11.794V16l4-1 4 1v-4.206l-2.018.306L8 13.126 6.018 12.1z"/>
@@ -176,8 +188,17 @@
 		  <li class="nav-item">
 			<a class="nav-link font-monospace" href="https://www.designbyhumans.com/shop/michaelalfox/">PACKS</a>
 		  </li>
-		  <li class="nav-item">
-			<a class="nav-link font-monospace" href="../trade/index.html">TRADES</a>
+		  <li class="nav-item dropdown">
+			<a class="nav-link font-monospace dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">TRADES</a>
+			  <ul class="dropdown-menu">
+				<li><a class="dropdown-item font-monospace" href="#">Create</a></li>
+				<li><a class="dropdown-item font-monospace" href="#">Drafts <span class="badge text-bg-red font-monospace">2</span></a></li>
+				<li><a class="dropdown-item font-monospace" href="#">Pending <span class="badge text-bg-red font-monospace">4</span></a></li>
+				<li><a class="dropdown-item font-monospace" href="#">Registry</a></li>
+				<hr>
+				<li><a class="dropdown-item font-monospace" href="#">Your Block</a></li>
+				<li><a class="dropdown-item font-monospace" href="#">Browse Block</a></li>
+			  </ul>
 		  </li>
 		  <li class="nav-item dropdown">
 			<a class="nav-link font-monospace dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">SERIES</a>
@@ -221,6 +242,12 @@
 		  </ul>
 		  
 		  <hr class="sidebar-hr">
+		  
+		  <div class="d-grid col-12 px-3 mx-auto mt-1 mb-3">
+			  <button class="btn btn-aggro btn-sm" type="button">
+				Add to Trade
+			  </button>
+		  </div>
 	
 		  <h6 class="sidebar-heading1 d-flex align-items-center px-3 mt-2 text-uppercase font-monospace">
 			<span class="sidebar-border">Champion Name</span>
@@ -282,26 +309,38 @@
 		  <h6 class="sidebar-info d-flex align-items-center px-3 mb-2 font-monospace">
 			<span>2023</span>
 		  </h6>
+		  <h6 class="sidebar-heading1 d-flex align-items-center px-3 mt-2 text-uppercase font-monospace">
+			<span class="sidebar-border">Identification Number</span>
+		  </h6>
+		  <h6 class="sidebar-info d-flex align-items-center px-3 mb-2 font-monospace">
+			<span>C-S1-E1-02935</span>
+		  </h6>
+		  <h6 class="sidebar-heading1 d-flex align-items-center px-3 mt-2 text-uppercase font-monospace">
+			<span class="sidebar-border">Owner</span>
+		  </h6>
+		  <h6 class="sidebar-info d-flex align-items-center px-3 mb-2 font-monospace">
+			<span><a href="">michaelalfox</a></span>
+		  </h6>
 		</div>
 	  </div>
 	</div>
 
 	<main class="col-md-8 ms-sm-auto col-lg-8 px-md-4">
 	  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 btn-bar">
-		  <h1 class="h2">Trade Proposal</h2><span class="badge badge-trade text-bg-blue font-monospace">#3127</span>
+		  <h1 class="h2">Trade Proposal</h2><span class="badge badge-trade text-bg-blue font-monospace">#3127.3</span>
 		  <div class="btn-toolbar mb-2 mb-md-0">
 			
-				<button class="btn btn-sm btn-red-trade ms-2 font-monospace" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+				<button class="btn btn-sm btn-red-trade ms-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 				  <svg class="bi"><use xlink:href="#decline"/></svg>
 				  Decline
 				</button>
 
-				<button class="btn btn-sm btn-yellow-trade ms-2 font-monospace" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+				<button class="btn btn-sm btn-yellow-trade ms-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 				  <svg class="bi"><use xlink:href="#pencil"/></svg>
 				  Modify
 				</button>
 		
-				<button class="btn btn-sm btn-green-trade ms-2 font-monospace" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+				<button class="btn btn-sm btn-green-trade ms-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 				  <svg class="bi"><use xlink:href="#accept"/></svg>
 				  Accept
 				</button>
@@ -314,14 +353,14 @@
 		  <div class="row justify-content-between">
 			  <div class="col-md-6 col-lg-6">
 			  
-			  <div class="trade-user"><a href="#"><img src="../img/logo.svg" alt="Logo" width="24" height="24" class="d-inline-block logo-shadow2"></a><a href="">krainboltgreene</a></div>
+			  <div class="trade-user mb-3"><a href="#"><img src="../img/logo.svg" alt="Logo" width="24" height="24" class="d-inline-block logo-trade"></a><a href="">krainboltgreene</a></div>
 			  
 			  
 			  
-			  <div class="accordion accordion-flush" id="accordionPanelsStayOpenExample">
+			  <div class="accordion accordion-flush mb-3" id="accordionPanelsStayOpenExample">
 				<div class="accordion-item">
 				  <h2 class="accordion-header">
-					<button class="accordion-button collapsed accordion-champion" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="false" aria-controls="panelsStayOpen-collapseOne">
+					<button class="accordion-button collapsed accordion-text" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="false" aria-controls="panelsStayOpen-collapseOne">
 				      Barbatos, the Condemned<br>
 					</button>
 					<div class="accordion-stats font-monospace"><span class="badge-common"><img src="../img/mythical.png" class=" img-fluid" style="width: auto; height: auto; max-width: 30px;" alt="..."></span><span class="badge badge-normal">Full Art</span> <span class="badge badge-normal">Holo V</span> <span class="badge badge-rainbow"><span class="text-rainbow">Rainbow Frame</span></span> <span class="badge badge-gold"><span class="text-gold">1st Ed.</span></span> <span class="badge badge-normal">1 of 1</span></div>
@@ -368,11 +407,11 @@
 							</table>
 							
 							<div class="d-grid gap-2 mx-auto">
-								  <button class="btn btn-sm btn-yellow-trade font-monospace" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+								  <button class="btn btn-sm btn-yellow-trade" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 									<svg class="bi"><use xlink:href="#replace"/></svg>
 									Replace
 								  </button>
-								  <button class="btn btn-sm btn-red-trade font-monospace" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+								  <button class="btn btn-sm btn-red-trade" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 									<svg class="bi"><use xlink:href="#remove"/></svg>
 									Remove
 								  </button>
@@ -385,7 +424,7 @@
 				</div>
 				<div class="accordion-item">
 				  <h2 class="accordion-header">
-					<button class="accordion-button collapsed accordion-champion" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+					<button class="accordion-button collapsed accordion-text" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
 					  Baal, the Brutal<br>
 					</button>
 					<div class="accordion-stats font-monospace"><span class="badge-common"><img src="../img/legendary.png" class=" img-fluid" style="width: auto; height: auto; max-width: 30px;" alt="..."></span><span class="badge badge-normal">Full Art</span> <span class="badge badge-normal">Holo V</span> <span class="badge badge-gold"><span class="text-gold">Gold Frame</span></span> <span class="badge badge-gold"><span class="text-gold">1st Ed.</span></span> <span class="badge badge-normal">1 of 1</span></div>
@@ -432,11 +471,11 @@
 							</table>
 							
 							<div class="d-grid gap-2 mx-auto">
-								  <button class="btn btn-sm btn-yellow-trade font-monospace" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+								  <button class="btn btn-sm btn-yellow-trade" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 									<svg class="bi"><use xlink:href="#replace"/></svg>
 									Replace
 								  </button>
-								  <button class="btn btn-sm btn-red-trade font-monospace" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+								  <button class="btn btn-sm btn-red-trade" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 									<svg class="bi"><use xlink:href="#remove"/></svg>
 									Remove
 								  </button>
@@ -449,7 +488,7 @@
 				</div>
 				<div class="accordion-item">
 				  <h2 class="accordion-header">
-					<button class="accordion-button collapsed accordion-champion" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
+					<button class="accordion-button collapsed accordion-text" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
 					  Honos, the Bloody
 					</button>
 					<div class="accordion-stats font-monospace"><span class="badge-common"><img src="../img/legendary.png" class=" img-fluid" style="width: auto; height: auto; max-width: 30px;" alt="..."></span><span class="badge badge-normal">Full Art</span> <span class="badge badge-normal">Holo V</span> <span class="badge badge-rainbow"><span class="text-rainbow">Rainbow Frame</span></span> <span class="badge badge-gold"><span class="text-gold">1st Ed.</span></span> <span class="badge badge-normal">1 of 1</span></div>
@@ -497,11 +536,11 @@
 							
 							
 							<div class="d-grid gap-2 mx-auto">
-								  <button class="btn btn-sm btn-yellow-trade font-monospace" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+								  <button class="btn btn-sm btn-yellow-trade" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 									<svg class="bi"><use xlink:href="#replace"/></svg>
 									Replace
 								  </button>
-								  <button class="btn btn-sm btn-red-trade font-monospace" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+								  <button class="btn btn-sm btn-red-trade" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 									<svg class="bi"><use xlink:href="#remove"/></svg>
 									Remove
 								  </button>
@@ -519,12 +558,12 @@
 			  
 			  
 			  <div class="col-md-6 col-lg-6">
-				<div class="trade-user"><a href="#"><img src="../img/logo.svg" alt="Logo" width="24" height="24" class="d-inline-block logo-shadow2"></a><a href="">michaelalfox</a></div>
+				<div class="trade-user mb-3"><a href="#"><img src="../img/logo.svg" alt="Logo" width="24" height="24" class="d-inline-block logo-trade"></a><a href="">michaelalfox</a></div>
 				
-		       <div class="accordion accordion-flush" id="accordionPanelsStayOpenExample">
+		       <div class="accordion" id="accordionPanelsStayOpenExample">
 				   <div class="accordion-item">
 					 <h2 class="accordion-header">
-					   <button class="accordion-button collapsed accordion-champion" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseFour" aria-expanded="false" aria-controls="panelsStayOpen-collapseFour">
+					   <button class="accordion-button collapsed accordion-text" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseFour" aria-expanded="false" aria-controls="panelsStayOpen-collapseFour">
 						 Hinn, the Jealous<br>
 					   </button>
 					   <div class="accordion-stats font-monospace"><span class="badge-common"><img src="../img/mythical.png" class=" img-fluid" style="width: auto; height: auto; max-width: 30px;" alt="..."></span><span class="badge badge-normal">Full Art</span> <span class="badge badge-normal">Holo V</span> <span class="badge badge-rainbow"><span class="text-rainbow">Rainbow Frame</span></span> <span class="badge badge-gold"><span class="text-gold">1st Ed.</span></span> <span class="badge badge-normal">1 of 1</span></div>
@@ -571,11 +610,11 @@
 							   </table>
 							   
 							   <div class="d-grid gap-2 mx-auto">
-									 <button class="btn btn-sm btn-yellow-trade font-monospace" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+									 <button class="btn btn-sm btn-yellow-trade" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 									   <svg class="bi"><use xlink:href="#replace"/></svg>
 									   Replace
 									 </button>
-									 <button class="btn btn-sm btn-red-trade font-monospace" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+									 <button class="btn btn-sm btn-red-trade" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 									   <svg class="bi"><use xlink:href="#remove"/></svg>
 									   Remove
 									 </button>
@@ -588,7 +627,7 @@
 				   </div>
 				   <div class="accordion-item">
 					 <h2 class="accordion-header">
-					   <button class="accordion-button collapsed accordion-champion" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseFive" aria-expanded="false" aria-controls="panelsStayOpen-collapseFive">
+					   <button class="accordion-button collapsed accordion-text" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseFive" aria-expanded="false" aria-controls="panelsStayOpen-collapseFive">
 						 Maalik, the Solemn<br>
 					   </button>
 					   <div class="accordion-stats font-monospace"><span class="badge-common"><img src="../img/legendary.png" class=" img-fluid" style="width: auto; height: auto; max-width: 30px;" alt="..."></span><span class="badge badge-normal">Full Art</span> <span class="badge badge-normal">Holo V</span> <span class="badge badge-gold"><span class="text-gold">Gold Frame</span></span> <span class="badge badge-gold"><span class="text-gold">1st Ed.</span></span> <span class="badge badge-normal">1 of 1</span></div>
@@ -635,11 +674,11 @@
 							   </table>
 							   
 							   <div class="d-grid gap-2 mx-auto">
-									 <button class="btn btn-sm btn-yellow-trade font-monospace" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+									 <button class="btn btn-sm btn-yellow-trade" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 									   <svg class="bi"><use xlink:href="#replace"/></svg>
 									   Replace
 									 </button>
-									 <button class="btn btn-sm btn-red-trade font-monospace" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+									 <button class="btn btn-sm btn-red-trade" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 									   <svg class="bi"><use xlink:href="#remove"/></svg>
 									   Remove
 									 </button>
@@ -652,7 +691,7 @@
 				   </div>
 				   <div class="accordion-item">
 					 <h2 class="accordion-header">
-					   <button class="accordion-button collapsed accordion-champion" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseSix" aria-expanded="false" aria-controls="panelsStayOpen-collapseSix">
+					   <button class="accordion-button collapsed accordion-text" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseSix" aria-expanded="false" aria-controls="panelsStayOpen-collapseSix">
 						 Lemures, the Earnest
 					   </button>
 					   <div class="accordion-stats font-monospace"><span class="badge-common"><img src="../img/legendary.png" class=" img-fluid" style="width: auto; height: auto; max-width: 30px;" alt="..."></span><span class="badge badge-normal">Full Art</span> <span class="badge badge-normal">Holo V</span> <span class="badge badge-rainbow"><span class="text-rainbow">Rainbow Frame</span></span> <span class="badge badge-gold"><span class="text-gold">1st Ed.</span></span> <span class="badge badge-normal">1 of 1</span></div>
@@ -700,11 +739,11 @@
 							   
 							   
 							   <div class="d-grid gap-2 mx-auto">
-									 <button class="btn btn-sm btn-yellow-trade font-monospace" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+									 <button class="btn btn-sm btn-yellow-trade" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 									   <svg class="bi"><use xlink:href="#replace"/></svg>
 									   Replace
 									 </button>
-									 <button class="btn btn-sm btn-red-trade font-monospace" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+									 <button class="btn btn-sm btn-red-trade" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 									   <svg class="bi"><use xlink:href="#remove"/></svg>
 									   Remove
 									 </button>
@@ -717,37 +756,54 @@
 				   </div>
 				 </div>
 		  
-		  
 		      </div>
 		
-			
-		
 		  </div>
-		  
 		
-		  
 		  <div class="row justify-content-between">
 				<div class="col-md-12 col-lg-12">
 			  
-				<div class="accordion accordion-flush" id="accordionPanelsStayOpenExample">
+				<div class="accordion-grey" id="accordionPanelsStayOpenExample">
 				  <div class="accordion-item">
 					<h2 class="accordion-header">
-					  <button class="accordion-button collapsed accordion-champion" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseSeven" aria-expanded="false" aria-controls="panelsStayOpen-collapseSeven">
-						<div class="col-4">krainboltgreene's collection</div>
-						<div class="col-8">
-					    <div class="input-group input-group-sm font-monospace">
-							 <input type="text" class="form-control search2" style="border: 1px solid #FFFFFF;" placeholder="Champion" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-						   </div>
-						</div>
-						
+					  <button class="accordion-button-grey collapsed accordion-text-collection" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseSeven" aria-expanded="false" aria-controls="panelsStayOpen-collapseSeven">
+						<div class="col-12 align-middle"><img src="../img/logo.svg" alt="Logo" width="24" height="24" class="d-inline-block logo-collection"> krainboltgreene's collection</div>
 					  </button>
+					  
 					</h2>
 					<div id="panelsStayOpen-collapseSeven" class="accordion-collapse collapse">
-					  <div class="accordion-body">
+						
+						<div class="accordion-stats-grey">
+							
+							<div class="row">
+							  
+							<div class="col-5">
+							
+							<div class="btn-toolbar d-inline-flex gap-2 py-1">
+							  <button type="button" class="btn btn-outline-light btn-sm inactive" data-bs-toggle="button" aria-pressed="true"><svg class="bi"><use xlink:href="#bullseye"/></svg> Block</button>
+							  <button type="button" class="btn btn-outline-light btn-sm active" data-bs-toggle="button" aria-pressed="true"><svg class="bi"><use xlink:href="#cards"/></svg> Cards</button>
+							  <button type="button" class="btn btn-outline-light btn-sm inactive" data-bs-toggle="button" aria-pressed="true"><svg class="bi"><use xlink:href="#packs"/></svg> Packs</button>
+							  <button type="button" class="btn btn-outline-light btn-sm inactive" data-bs-toggle="button" aria-pressed="true"><svg class="bi"><use xlink:href="#coin"/></svg> Coins</button>
+							</div>
+							
+							</div>
+							<div class="col-7">
+							
+							<div class="input-group input-group-sm py-1 font-monospace">
+								 <input type="text" class="form-control search2" style="border: 1px solid #FFFFFF;" placeholder="Champion" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+							</div>
+							
+							</div>
+							
+							</div>
+							  
+						  </div>
+						
+					  <div class="accordion-body-grey">
 						<div class="row">
 							
 							
-							<div class="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 btn-bar">
+							<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 btn-bar">
 							  
 							  <div class="btn-toolbar mb-2">
 							
@@ -853,28 +909,28 @@
 						
 						<div class="row">
 							<div class="col-auto mb-4" style="width: auto; height: auto; max-width: 223px;">
-							  <img src="../img/card3.png" class=" img-fluid"  alt="...">
+							  <img src="../img/card3.png" class="img-fluid card-inactive2"  alt="...">
 							</div>
 							<div class="col-auto mb-4" style="width: auto; height: auto; max-width: 223px;">
-							  <img src="../img/card3.png" class=" img-fluid"  alt="...">
+							  <img src="../img/card3.png" class="img-fluid card-inactive2"  alt="...">
 						    </div>
 						    <div class="col-auto mb-4" style="width: auto; height: auto; max-width: 223px;">
-							  <img src="../img/card3.png" class=" img-fluid"  alt="...">
+							  <img src="../img/card3.png" class="img-fluid card-inactive2"  alt="...">
 							</div>
 						    <div class="col-auto mb-4" style="width: auto; height: auto; max-width: 223px;">
-						      <img src="../img/card3.png" class=" img-fluid"  alt="...">
+						      <img src="../img/card3.png" class="img-fluid card-inactive2"  alt="...">
 							</div>
 							<div class="col-auto mb-4" style="width: auto; height: auto; max-width: 223px;">
-							  <img src="../img/card3.png" class=" img-fluid"  alt="...">
+							  <img src="../img/card3.png" class="img-fluid card-inactive2"  alt="...">
 							</div>
 							<div class="col-auto mb-4" style="width: auto; height: auto; max-width: 223px;">
-							  <img src="../img/card3.png" class=" img-fluid"  alt="...">
+							  <img src="../img/card3.png" class="img-fluid card-inactive2"  alt="...">
 							</div>
 							<div class="col-auto mb-4" style="width: auto; height: auto; max-width: 223px;">
-							  <img src="../img/card3.png" class=" img-fluid"  alt="...">
+							  <img src="../img/card3.png" class="img-fluid card-inactive2"  alt="...">
 							</div>
 							<div class="col-auto mb-4" style="width: auto; height: auto; max-width: 223px;">
-							  <img src="../img/card3.png" class=" img-fluid"  alt="...">
+							  <img src="../img/card3.png" class="img-fluid card-inactive2"  alt="...">
 							</div>
 					    </div>
 						
@@ -885,22 +941,44 @@
 				  </div>
 				  <div class="accordion-item">
 					  <h2 class="accordion-header">
-						<button class="accordion-button collapsed accordion-champion" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseEight" aria-expanded="false" aria-controls="panelsStayOpen-collapseEight">
-						  <div class="col-4">michaelalfox's collection</div>
-						  <div class="col-8">
-						  <div class="input-group input-group-sm font-monospace">
-							   <input type="text" class="form-control search2" style="border: 1px solid #FFFFFF;" placeholder="Champion" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-							 </div>
-						  </div>
-						  
+						<button class="accordion-button-grey collapsed accordion-text-collection" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseEight" aria-expanded="false" aria-controls="panelsStayOpen-collapseEight">
+						  <div class="col-12 align-middle"><img src="../img/logo.svg" alt="Logo" width="24" height="24" class="d-inline-block logo-collection"> michaelalfox's collection</div>
 						</button>
+						
 					  </h2>
 					  <div id="panelsStayOpen-collapseEight" class="accordion-collapse collapse">
+						  
+						  <div class="accordion-stats-grey">
+							
+							<div class="row">
+							  
+							<div class="col-5">
+							
+							<div class="btn-toolbar d-inline-flex gap-2 py-1">
+							  <button type="button" class="btn btn-outline-light btn-sm inactive" data-bs-toggle="button" aria-pressed="true"><svg class="bi"><use xlink:href="#bullseye"/></svg> Block</button>
+							  <button type="button" class="btn btn-outline-light btn-sm inactive" data-bs-toggle="button" aria-pressed="true"><svg class="bi"><use xlink:href="#cards"/></svg> Cards</button>
+							  <button type="button" class="btn btn-outline-light btn-sm active" data-bs-toggle="button" aria-pressed="true"><svg class="bi"><use xlink:href="#packs"/></svg> Packs</button>
+							  <button type="button" class="btn btn-outline-light btn-sm inactive" data-bs-toggle="button" aria-pressed="true"><svg class="bi"><use xlink:href="#coin"/></svg> Coins</button>
+							</div>
+							
+							</div>
+							<div class="col-7">
+							
+							<div class="input-group input-group-sm py-1 font-monospace">
+								 <input type="text" class="form-control search2" style="border: 1px solid #FFFFFF;" placeholder="Champion" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+							</div>
+							
+							</div>
+							
+							</div>
+							  
+						  </div>
+						  
 						<div class="accordion-body">
 						  <div class="row">
 							  
 							  
-							  <div class="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 btn-bar">
+							  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 btn-bar">
 								
 								<div class="btn-toolbar mb-2">
 							  
@@ -926,77 +1004,7 @@
 									<li><a class="dropdown-item" href="#">2nd Edition</a></li>
 									<li><a class="dropdown-item" href="#">3rd Edition</a></li>
 								  </ul>
-								</div>
-							  
-								  <div class="dropdown">
-									  <button class="btn btn-sm btn-outline-light ms-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-										<svg class="bi"><use xlink:href="#stars"/></svg>
-										All Rarities
-									  </button>
-									  <ul class="dropdown-menu">
-										<li><a class="dropdown-item" href="#">Common</a></li>
-										<li><a class="dropdown-item" href="#">Uncommon</a></li>
-										<li><a class="dropdown-item" href="#">Rare</a></li>
-										<li><a class="dropdown-item" href="#">Epic</a></li>
-										<li><a class="dropdown-item" href="#">Legendary</a></li>
-										<li><a class="dropdown-item" href="#">Mythical</a></li>
-									  </ul>
-									</div>
-								  
-									<div class="dropdown">
-										<button class="btn btn-sm btn-outline-light ms-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-										  <svg class="bi"><use xlink:href="#brush"/></svg>
-										  All Art
-										</button>
-										<ul class="dropdown-menu">
-										  <li><a class="dropdown-item" href="#">Basic Art</a></li>
-										  <li><a class="dropdown-item" href="#">Full Art</a></li>
-										</ul>
-									  </div>
-									  <div class="dropdown">
-										  <button class="btn btn-sm btn-outline-light ms-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-											<svg class="bi"><use xlink:href="#holo"/></svg>
-											All Holos
-										  </button>
-										  <ul class="dropdown-menu">
-											<li><a class="dropdown-item" href="#">Holo 1</a></li>
-											<li><a class="dropdown-item" href="#">Holo 2</a></li>
-											<li><a class="dropdown-item" href="#">Holo 3</a></li>
-											<li><a class="dropdown-item" href="#">Holo 4</a></li>
-											<li><a class="dropdown-item" href="#">Holo 5</a></li>
-											<li><a class="dropdown-item" href="#">Holo 6</a></li>
-										  </ul>
-										</div>
-										<div class="dropdown">
-											<button class="btn btn-sm btn-outline-light ms-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-											  <svg class="bi"><use xlink:href="#frame"/></svg>
-											  All Frames
-											</button>
-											<ul class="dropdown-menu">
-											  <li><a class="dropdown-item" href="#">Basic</a></li>
-											  <li><a class="dropdown-item" href="#">Gold</a></li>
-											  <li><a class="dropdown-item" href="#">Rainbow</a></li>
-											</ul>
-										  </div>
-									  <div class="dropdown">
-										<button class="btn btn-sm btn-outline-light ms-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-										  <svg class="bi"><use xlink:href="#grade"/></svg>
-										  All Grades
-										</button>
-										<ul class="dropdown-menu">
-										  <li><a class="dropdown-item" href="#">OCA 1</a></li>
-										  <li><a class="dropdown-item" href="#">OCA 2</a></li>
-										  <li><a class="dropdown-item" href="#">OCA 3</a></li>
-										  <li><a class="dropdown-item" href="#">OCA 4</a></li>
-										  <li><a class="dropdown-item" href="#">OCA 5</a></li>
-										  <li><a class="dropdown-item" href="#">OCA 6</a></li>
-										  <li><a class="dropdown-item" href="#">OCA 7</a></li>
-										  <li><a class="dropdown-item" href="#">OCA 8</a></li>
-										  <li><a class="dropdown-item" href="#">OCA 9</a></li>
-										  <li><a class="dropdown-item" href="#">OCA 10</a></li>
-										</ul>
-									  </div>
-								  
+								</div>		  
 								</div>
 							  </div>
 							  
@@ -1006,28 +1014,28 @@
 						  
 						  <div class="row">
 							  <div class="col-auto mb-4" style="width: auto; height: auto; max-width: 223px;">
-								<img src="../img/card3.png" class=" img-fluid"  alt="...">
+								<img src="../img/cardback.png" class="img-fluid card-inactive2"  alt="...">
 							  </div>
 							  <div class="col-auto mb-4" style="width: auto; height: auto; max-width: 223px;">
-								<img src="../img/card3.png" class=" img-fluid"  alt="...">
+								<img src="../img/cardback.png" class="img-fluid card-inactive2"  alt="...">
 							  </div>
 							  <div class="col-auto mb-4" style="width: auto; height: auto; max-width: 223px;">
-								<img src="../img/card3.png" class=" img-fluid"  alt="...">
+								<img src="../img/cardback.png" class="img-fluid card-inactive2"  alt="...">
 							  </div>
 							  <div class="col-auto mb-4" style="width: auto; height: auto; max-width: 223px;">
-								<img src="../img/card3.png" class=" img-fluid"  alt="...">
+								<img src="../img/cardback.png" class="img-fluid card-inactive2"  alt="...">
 							  </div>
 							  <div class="col-auto mb-4" style="width: auto; height: auto; max-width: 223px;">
-								<img src="../img/card3.png" class=" img-fluid"  alt="...">
+								<img src="../img/cardback.png" class="img-fluid card-inactive2"  alt="...">
 							  </div>
 							  <div class="col-auto mb-4" style="width: auto; height: auto; max-width: 223px;">
-								<img src="../img/card3.png" class=" img-fluid"  alt="...">
+								<img src="../img/cardback.png" class="img-fluid card-inactive2"  alt="...">
 							  </div>
 							  <div class="col-auto mb-4" style="width: auto; height: auto; max-width: 223px;">
-								<img src="../img/card3.png" class=" img-fluid"  alt="...">
+								<img src="../img/cardback.png" class="img-fluid card-inactive2"  alt="...">
 							  </div>
 							  <div class="col-auto mb-4" style="width: auto; height: auto; max-width: 223px;">
-								<img src="../img/card3.png" class=" img-fluid"  alt="...">
+								<img src="../img/cardback.png" class="img-fluid card-inactive2"  alt="...">
 							  </div>
 						  </div>
 						  
@@ -1041,6 +1049,163 @@
 				</div>
 			
 			</div>
+			
+			
+			<div class="row justify-content-between">
+			<div class="col-md-12 col-lg-12">
+			
+			<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 btn-bar">
+			  <h1 class="h3">Proposal History</h3>
+			</div>
+			
+			</div>
+			</div>
+			<div class="row justify-content-between">
+				<div class="col-md-12 col-lg-12">
+			  
+				<div class="accordion accordion-grey mb-4" id="accordionPanelsStayOpenExample">
+				  
+				  <div class="accordion-item">
+					  <h2 class="accordion-header">
+						<button class="accordion-button-grey collapsed accordion-text-collection" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTen" aria-expanded="false" aria-controls="panelsStayOpen-collapseTen">
+						  <div class="col-12 align-middle"><span class="iteration-number d-inline-block">2</span> Proposal Iteration <span class="badge badge-grey text-bg-blue align-middle font-monospace">3127.2</span></div>
+						</button>
+					  </h2>
+					  <div id="panelsStayOpen-collapseTen" class="accordion-collapse collapse">
+						<div class="accordion-body-grey">
+						  
+						  
+						  <div class="row justify-content-between pt-2">
+							<div class="col-6 pe-2">
+							  <table class="table table-sm table-history table-hover font-monospace">
+								<thead>
+								  <tr>
+									<th colspan="2" class="sidebar-heading2 px-2" style="color: #CCC;">KRAINBOLTGREENE'S ASSETS</th>
+								  </tr>
+								</thead>
+								<tbody>
+								  <tr>
+									<th scope="row" class="col-3 ps-2"><a href="">S2-E1-00001</a></th>
+									<td class="col-9">Barbatos, the Condemned (Legendary)</td>
+								  </tr>
+								  <tr>
+									<th scope="row" class="ps-2"><a href="">S1-E2-09028</a></th>
+									 <td>Barbatos, the Condemned (Mythical)</td>
+								  </tr>
+								  <tr>
+									<th scope="row" class="ps-2"><a href="">S1-E2-07551</a></th>
+									<td>Barbatos, the Condemned (Epic)</td>
+								  </tr>
+								</tbody>
+							  </table>
+							</div>
+							<div class="col-6 ps-2">
+								<table class="table table-sm table-history table-hover font-monospace">
+								  <thead>
+									<tr>
+									  <th colspan="2" class="sidebar-heading2 px-2" style="color: #CCC;">MICHAELALFOX'S ASSETS</th>
+									</tr>
+								  </thead>
+								  <tbody>
+									<tr>
+									  <th scope="row" class="col-3 ps-2"><a href="">S1-E1-14208</a></th>
+									  <td class="col-9">Barbatos, the Condemned (Legendary)</td>
+									</tr>
+									<tr>
+									  <th scope="row" class="ps-2"><a href="">S1-E1-11017</a></th>
+									   <td>Barbatos, the Condemned (Mythical)</td>
+									</tr>
+									<tr>
+									  <th scope="row" class="ps-2"><a href="">S1-E2-07551</a></th>
+									  <td>Barbatos, the Condemned (Epic)</td>
+									</tr>
+								  </tbody>
+								</table> 
+							  </div>
+							</div>
+						  
+						  
+						  
+						</div>
+					  </div>
+					</div>
+					<div class="accordion-item">
+						<h2 class="accordion-header">
+						  <button class="accordion-button-grey collapsed accordion-text-collection" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseEleven" aria-expanded="false" aria-controls="panelsStayOpen-collapseEleven">
+							<div class="col-12 align-middle"><span class="iteration-number d-inline-block">1</span> Proposal Iteration <span class="badge badge-grey text-bg-blue align-middle font-monospace">3127.1</span></div>
+						  </button>
+						</h2>
+						<div id="panelsStayOpen-collapseEleven" class="accordion-collapse collapse">
+						  <div class="accordion-body-grey">
+							
+							
+							<div class="row justify-content-between pt-2">
+							  <div class="col-6 pe-2">
+								<table class="table table-sm table-history table-hover font-monospace">
+								  <thead>
+									<tr>
+									  <th colspan="2" class="sidebar-heading2 px-2" style="color: #CCC;">KRAINBOLTGREENE'S ASSETS</th>
+									</tr>
+								  </thead>
+								  <tbody>
+									<tr>
+									  <th scope="row" class="col-3 ps-2"><a href="">S2-E1-00001</a></th>
+									  <td class="col-9">Barbatos, the Condemned (Legendary)</td>
+									</tr>
+									<tr>
+									  <th scope="row" class="ps-2"><a href="">S1-E2-09028</a></th>
+									   <td>Barbatos, the Condemned (Mythical)</td>
+									</tr>
+									<tr>
+									  <th scope="row" class="ps-2"><a href="">S1-E2-07551</a></th>
+									  <td>Barbatos, the Condemned (Epic)</td>
+									</tr>
+								  </tbody>
+								</table>
+							  </div>
+							  <div class="col-6 ps-2">
+								  <table class="table table-sm table-history table-hover font-monospace">
+									<thead>
+									  <tr>
+										<th colspan="2" class="sidebar-heading2 px-2" style="color: #CCC;">MICHAELALFOX'S ASSETS</th>
+									  </tr>
+									</thead>
+									<tbody>
+									  <tr>
+										<th scope="row" class="col-3 ps-2"><a href="">S1-E1-14208</a></th>
+										<td class="col-9">Barbatos, the Condemned (Legendary)</td>
+									  </tr>
+									  <tr>
+										<th scope="row" class="ps-2"><a href="">S1-E1-11017</a></th>
+										 <td>Barbatos, the Condemned (Mythical)</td>
+									  </tr>
+									  <tr>
+										<th scope="row" class="ps-2"><a href="">S1-E2-07551</a></th>
+										<td>Barbatos, the Condemned (Epic)</td>
+									  </tr>
+									</tbody>
+								  </table> 
+								</div>
+							  </div>
+							
+							
+							
+						  </div>
+						</div>
+					  </div>
+				</div>
+				
+				</div>
+			
+			</div>
+			
+			
+			
+			
+			
+			
+			
+			
 		  
 		</div>
 
@@ -1058,57 +1223,26 @@
 			<li class="nav-item">
 			  <div class=" d-flex align-items-center gap-2 sidebar-header">
 				<svg class="bi"><use xlink:href="#circle-info"/></svg>
-				Card Information
+				Pack Information
 			  </div>
 			</li>
 		  </ul>
 		  
 		  <hr class="sidebar-hr">
-	
+		  
+		  <div class="d-grid col-12 px-3 mx-auto mt-1 mb-3">
+				<button class="btn btn-aggro btn-sm" type="button">
+				  Add to Trade
+				</button>
+		  </div>	 
 		  <h6 class="sidebar-heading1 d-flex align-items-center px-3 mt-2 text-uppercase font-monospace">
-			<span class="sidebar-border">Champion Name</span>
+			<span class="sidebar-border">Pack Number</span>
 		  </h6>
 		  <h6 class="sidebar-info d-flex align-items-center px-3 mb-2 font-monospace">
-			  <span>Barbatos, the Condemned</span>
+			<span>185 / 2368</span>
 		  </h6>
 		  <h6 class="sidebar-heading1 d-flex align-items-center px-3 mt-2 text-uppercase font-monospace">
-			<span class="sidebar-border">Plant Type</span>
-		  </h6>
-		  <h6 class="sidebar-info d-flex align-items-center px-3 mb-2 font-monospace">
-			<span>Pepper</span>
-		  </h6>
-		  <h6 class="sidebar-heading1 d-flex align-items-center px-3 mt-2 text-uppercase font-monospace">
-			<span class="sidebar-border">Plant Variety</span>
-		  </h6>
-		  <h6 class="sidebar-info d-flex align-items-center px-3 mb-2 font-monospace">
-			<span>Devil's Tongue</span>
-		  </h6>
-		  <h6 class="sidebar-heading1 d-flex align-items-center px-3 mt-2 text-uppercase font-monospace">
-			<span class="sidebar-border">Rarity</span>
-		  </h6>
-		  <h6 class="sidebar-info d-flex align-items-center px-3 mb-2 font-monospace">
-			<span>Mythical</span>
-		  </h6>
-		  <h6 class="sidebar-heading1 d-flex align-items-center px-3 mt-2 text-uppercase font-monospace">
-		   <span class="sidebar-border">Frame</span>
-		  </h6>
-		  <h6 class="sidebar-info d-flex align-items-center px-3 mb-2 font-monospace">
-			<span>Rainbow</span>
-		  </h6>
-		  <h6 class="sidebar-heading1 d-flex align-items-center px-3 mt-2 text-uppercase font-monospace">
-			<span class="sidebar-border">Art</span>
-		  </h6>
-		  <h6 class="sidebar-info d-flex align-items-center px-3 mb-2 font-monospace">
-			<span>Full Art</span>
-		  </h6>
-		  <h6 class="sidebar-heading1 d-flex align-items-center px-3 mt-2 text-uppercase font-monospace">
-			<span class="sidebar-border">Card Number</span>
-		  </h6>
-		  <h6 class="sidebar-info d-flex align-items-center px-3 mb-2 font-monospace">
-			<span>18 / 64</span>
-		  </h6>
-		  <h6 class="sidebar-heading1 d-flex align-items-center px-3 mt-2 text-uppercase font-monospace">
-			<span class="sidebar-border">Card Edition</span>
+			<span class="sidebar-border">Pack Edition</span>
 		  </h6>
 		  <h6 class="sidebar-info d-flex align-items-center px-3 mb-2 font-monospace">
 			<span>1st Edition</span>
@@ -1125,6 +1259,19 @@
 		  <h6 class="sidebar-info d-flex align-items-center px-3 mb-2 font-monospace">
 			<span>2023</span>
 		  </h6>
+		  <h6 class="sidebar-heading1 d-flex align-items-center px-3 mt-2 text-uppercase font-monospace">
+			<span class="sidebar-border">Identification Number</span>
+		  </h6>
+		  <h6 class="sidebar-info d-flex align-items-center px-3 mb-2 font-monospace">
+			<span>P-S1-E1-0185</span>
+		  </h6>
+		  <h6 class="sidebar-heading1 d-flex align-items-center px-3 mt-2 text-uppercase font-monospace">
+			<span class="sidebar-border">Owner</span>
+		  </h6>
+		  <h6 class="sidebar-info d-flex align-items-center px-3 mb-2 font-monospace">
+			<span><a href="">michaelalfox</a></span>
+		  </h6>
+		  
 		</div>
 	  </div>
 	</div>
@@ -1138,5 +1285,6 @@
 	<script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.2/dist/chart.umd.js" integrity="sha384-eI7PSr3L1XLISH8JdDII5YN/njoSsxfbrkCTnJrzXt+ENP5MOVBxD+l6sEG4zoLp" crossorigin="anonymous"></script>
 	<script src="../js/dashboard.js"></script>
 	<script src="../js/sidebar.js"></script>
+	
 </body>
 </html>
