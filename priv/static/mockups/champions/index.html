@@ -134,48 +134,49 @@
 </svg>
 
 <header data-bs-theme="dark">	
-  <nav class="navbar navbar-expand-md fixed-top nav-shadow navbar-malf">
+  <nav class="navbar navbar-expand-md fixed-top nav-shadow navbar-malf px-3">
 	<div class="container-fluid">
 	  <a class="logo-shadow" href="#"><img src="../img/logo.svg" alt="Logo" width="30" height="24" class="d-inline-block align-text-top"></a>
 	  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-		  <span class="navbar-toggler-icon"></span>
-		</button>
+		<span class="navbar-toggler-icon"></span>
+	  </button>
 	  <div class="collapse navbar-collapse" id="navbarCollapse">
 		<ul class="navbar-nav me-auto mb-2 mb-md-0"> 
 		  <li class="nav-item">
-			<a class="nav-link font-monospace" href="#">CHAMPIONS</a>
+			<a class="nav-link font-monospace" href="../champions/index.html">CHAMPIONS</a>
 		  </li>
 		  <li class="nav-item">
-			<a class="nav-link font-monospace" href="#">MATCHES</a>
+			<a class="nav-link font-monospace" href="../matches/index.html">MATCHES</a>
 		  </li>
 		  <li class="nav-item">
-			<a class="nav-link font-monospace" href="#">STANDINGS</a>
+			<a class="nav-link font-monospace" href="../standings/index.html">STANDINGS</a>
+		  </li>
+		  <div class="vr"></div>
+		  <li class="nav-item">
+			<a class="nav-link font-monospace" href="../cards/index.html">CARDS</a>
 		  </li>
 		  <li class="nav-item">
-			<a class="nav-link font-monospace" href="#">CARDS</a>
-		  </li>
-		  <li class="nav-item">
-			<a class="nav-link font-monospace" href="https://www.designbyhumans.com/shop/michaelalfox/">PACKS</a>
-		  </li>
-		  <li class="nav-item">
-			<a class="nav-link font-monospace" href="#">TRADES</a>
+			<a class="nav-link font-monospace" href="../packs/index.html">PACKS</a>
 		  </li>
 		  <li class="nav-item dropdown">
-			<a class="nav-link font-monospace dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">SERIES</a>
-			  <ul class="dropdown-menu">
-				<li><a class="dropdown-item font-monospace" href="#">Twitter</a></li>
-				<li><a class="dropdown-item font-monospace" href="#">Twitch</a></li>
-				<li><a class="dropdown-item font-monospace" href="#">YouTube</a></li>
-				<li><a class="dropdown-item font-monospace" href="#">Instagram</a></li>
-			  </ul>
-		  </li>
-		  <li class="nav-item">
-			<a class="nav-link font-monospace" href="#">PLANTS</a>
+			<a class="nav-link font-monospace dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">TRADES</a>
+			<ul class="dropdown-menu">
+			  <li><a class="dropdown-item font-monospace" href="../trade-create/index.html">Create</a></li>
+			  <li><a class="dropdown-item font-monospace" href="../trade-drafts/index.html">Drafts <span class="badge text-bg-red font-monospace">2</span></a></li>
+			  <li><a class="dropdown-item font-monospace" href="../trade-pending/index.html">Pending <span class="badge text-bg-red font-monospace">4</span></a></li>
+			  <li><a class="dropdown-item font-monospace" href="../trade-redister/index.html">Registry</a></li>
+			  <hr>
+			  <li><a class="dropdown-item font-monospace" href="../trade-block/index.html">Your Block</a></li>
+			  <li><a class="dropdown-item font-monospace" href="../browse-trade-block/index.html">Browse Block</a></li>
+			</ul>
 		  </li>	
 		</ul>
 		<ul class="navbar-nav my-2 my-md-0 mr-md-3"> 
 		  <li class="nav-item">
-			  <a class="btn btn-red btn-sm font-monospace" role="button" href="#"><svg class="bi"><use xlink:href="#person"/></svg> AUTHENTICATE</a>
+			<a class="btn btn-red btn-sm font-monospace" role="button" href="#"><svg class="bi"><use xlink:href="#person"/></svg> AUTHENTICATE</a>
+		  </li>
+		  <li class="nav-item ms-3">
+			<a class="btn btn-blue btn-sm font-monospace" role="button" href="../about/index.html"><svg class="bi"><use xlink:href="#circle-info"/></svg> ABOUT</a>
 		  </li>
 		</ul>
 	  </div>
@@ -185,119 +186,137 @@
 
 <div class="container-fluid">
   <div class="row">
-	<div class="sidebar col-md-3 col-lg-2 p-0 sidebar-background">
+	  
+	<div class="sidebar col-2 p-0 sidebar-background">
 	  <div class="offcanvas-md offcanvas-end sidebar-background" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
 		<div class="offcanvas-header">
 		  <h5 class="offcanvas-title" id="sidebarMenuLabel">Aggroculture</h5>
 		  <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebarMenu" aria-label="Close"></button>
 		</div>
-		<div class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto">
+		<div class="offcanvas-body d-md-flex flex-column p-0 pt-3 overflow-y-auto">
 		  <ul class="nav flex-column">
 			<li class="nav-item">
 			  <div class=" d-flex align-items-center gap-2 sidebar-header">
-				<svg class="bi"><use xlink:href="#chart"/></svg>
-				Champion Statistics
-			  </div>
+				<svg class="bi"><use xlink:href="#chart"/></svg> Champion Statistics</div>
 			</li>
 		  </ul>
-		  
 		  <hr class="sidebar-hr">
-	
-	      <div class="col-12 mt-1 px-3">
-	
-	      <table class="table table-sm table-aggro table-hover font-monospace">
-			<thead>
-			  <tr>
-				<th colspan="2" class="sidebar-heading2" style="color: #CCC; background-color: #212528;">SEASON STATISTICS</th>
-			  </tr>
-			</thead>
-			<tbody>
-			  <tr>
-				<th scope="row">Division</th>
-				<td>Division A</td>
-			  </tr>
-			  <tr>
-				<th scope="row">Div. Position</th>
-				 <td>3 / 8</td>
-			  </tr>
-			  <tr>
-				<th scope="row">Battles</th>
-				<td>9 / 12</td>
-			  </tr>
-			  <tr>
-				<th scope="row">Victories</th>
-				<td>17</td>
-			  </tr>
-			  <tr>
-				<th scope="row">Points</th>
-				<td>29</td>
-			  </tr>
-			</tbody>
-		  </table>
-		  
+		  <div class="sidebar-content px-4 mb-3">
+			  
+			<div class="col-12">
+			
+			  <table class="table table-sm table-aggro table-hover font-monospace">
+				<thead>
+				  <tr>
+					<th colspan="2" class="sidebar-heading2" style="color: #CCC; background-color: #212528;">SEASON STATISTICS</th>
+				  </tr>
+				</thead>
+				<tbody>
+				  <tr>
+					<th scope="row">Division</th>
+					<td>Division A</td>
+				  </tr>
+				  <tr>
+					<th scope="row">Div. Position</th>
+					 <td>3 / 8</td>
+				  </tr>
+				  <tr>
+					<th scope="row">Battles</th>
+					<td>9 / 12</td>
+				  </tr>
+				  <tr>
+					<th scope="row">Victories</th>
+					<td>17</td>
+				  </tr>
+				  <tr>
+					<th scope="row">Points</th>
+					<td>29</td>
+				  </tr>
+				</tbody>
+			  </table>
+			  
+			  </div>  
+			  
+			  <div class="d-grid col-12 mt-1 mb-3">
+				  <button class="btn btn-aggro btn-sm" type="button">
+					Upgrade Champion
+				  </button>
+			  </div>
+			  
+			
+		  <h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
+			  <span class="sidebar-border">Champion Name</span>
+			</h6>
+			<h6 class="sidebar-info d-flex align-items-center font-monospace">
+				<span>Barbatos, the Condemned</span>
+			</h6>
+			<h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
+			  <span class="sidebar-border">Plant Type</span>
+			</h6>
+			<h6 class="sidebar-info d-flex align-items-center font-monospace">
+			  <span>Pepper</span>
+			</h6>
+			<h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
+			  <span class="sidebar-border">Plant Variety</span>
+			</h6>
+			<h6 class="sidebar-info d-flex align-items-center font-monospace">
+			  <span>Devil's Tongue</span>
+			</h6>
+			<h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
+			  <span class="sidebar-border">Rarity</span>
+			</h6>
+			<h6 class="sidebar-info d-flex align-items-center font-monospace">
+			  <span>Mythical</span>
+			</h6>
+			<h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
+			 <span class="sidebar-border">Frame</span>
+			</h6>
+			<h6 class="sidebar-info d-flex align-items-center font-monospace">
+			  <span>Rainbow</span>
+			</h6>
+			<h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
+			  <span class="sidebar-border">Art</span>
+			</h6>
+			<h6 class="sidebar-info d-flex align-items-center font-monospace">
+			  <span>Full Art</span>
+			</h6>
+			<h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
+			  <span class="sidebar-border">Card Number</span>
+			</h6>
+			<h6 class="sidebar-info d-flex align-items-center font-monospace">
+			  <span>18 / 64</span>
+			</h6>
+			<h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
+			  <span class="sidebar-border">Card Edition</span>
+			</h6>
+			<h6 class="sidebar-info d-flex align-items-center font-monospace">
+			  <span>1st Edition</span>
+			</h6>
+			<h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
+			  <span class="sidebar-border">Series</span>
+			</h6>
+			<h6 class="sidebar-info d-flex align-items-center font-monospace">
+			  <span>Season 1</span>
+			</h6>
+			<h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
+			  <span class="sidebar-border">Year</span>
+			</h6>
+			<h6 class="sidebar-info d-flex align-items-center font-monospace">
+			  <span>2023</span>
+			</h6>
+			<h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
+				<span class="sidebar-border">Identification Number</span>
+			  </h6>
+			  <h6 class="sidebar-info d-flex align-items-center font-monospace">
+				<span>C-S1-E1-02935</span>
+			  </h6>
+			  <h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
+				<span class="sidebar-border">Owner</span>
+			  </h6>
+			  <h6 class="sidebar-info d-flex align-items-center font-monospace">
+				<span><a href="">michaelalfox</a></span>
+			  </h6>
 		  </div>
-		  
-		  <div class="d-grid col-12 px-3 mx-auto mt-1 mb-3">
-				<button class="btn btn-aggro btn-sm" type="button">
-				  Upgrade Champion
-				</button>
-			</div>
-	
-	
-		  <h6 class="sidebar-heading1 d-flex align-items-center px-3 mt-2 text-uppercase font-monospace">
-			<span class="sidebar-border">Champion Name</span>
-		  </h6>
-		  <h6 class="sidebar-info d-flex align-items-center px-3 mb-2 font-monospace">
-			  <span>Barbatos, the Condemned</span>
-		  </h6>
-		  <h6 class="sidebar-heading1 d-flex align-items-center px-3 mt-2 text-uppercase font-monospace">
-			<span class="sidebar-border">Plant Type</span>
-		  </h6>
-		  <h6 class="sidebar-info d-flex align-items-center px-3 mb-2 font-monospace">
-			<span>Pepper</span>
-		  </h6>
-		  <h6 class="sidebar-heading1 d-flex align-items-center px-3 mt-2 text-uppercase font-monospace">
-			<span class="sidebar-border">Plant Variety</span>
-		  </h6>
-		  <h6 class="sidebar-info d-flex align-items-center px-3 mb-2 font-monospace">
-			<span>Devil's Tongue</span>
-		  </h6>
-		  <h6 class="sidebar-heading1 d-flex align-items-center px-3 mt-2 text-uppercase font-monospace">
-			<span class="sidebar-border">Rarity</span>
-		  </h6>
-		  <h6 class="sidebar-info d-flex align-items-center px-3 mb-2 font-monospace">
-			<span>Mythical</span>
-		  </h6>
-		  <h6 class="sidebar-heading1 d-flex align-items-center px-3 mt-2 text-uppercase font-monospace">
-		   <span class="sidebar-border">Frame</span>
-		  </h6>
-		  <h6 class="sidebar-info d-flex align-items-center px-3 mb-2 font-monospace">
-			<span>Gold</span>
-		  </h6>
-		  <h6 class="sidebar-heading1 d-flex align-items-center px-3 mt-2 text-uppercase font-monospace">
-			<span class="sidebar-border">Art</span>
-		  </h6>
-		  <h6 class="sidebar-info d-flex align-items-center px-3 mb-2 font-monospace">
-			<span>Full Art</span>
-		  </h6>
-		  <h6 class="sidebar-heading1 d-flex align-items-center px-3 mt-2 text-uppercase font-monospace">
-			<span class="sidebar-border">Card Number</span>
-		  </h6>
-		  <h6 class="sidebar-info d-flex align-items-center px-3 mb-2 font-monospace">
-			<span>18 / 64</span>
-		  </h6>
-		  <h6 class="sidebar-heading1 d-flex align-items-center px-3 mt-2 text-uppercase font-monospace">
-			<span class="sidebar-border">Series</span>
-		  </h6>
-		  <h6 class="sidebar-info d-flex align-items-center px-3 mb-2 font-monospace">
-			<span>Season 1</span>
-		  </h6>
-		  <h6 class="sidebar-heading1 d-flex align-items-center px-3 mt-2 text-uppercase font-monospace">
-			<span class="sidebar-border">Year</span>
-		  </h6>
-		  <h6 class="sidebar-info d-flex align-items-center px-3 mb-2 font-monospace">
-			<span>2023</span>
-		  </h6>
 		</div>
 	  </div>
 	</div>
@@ -426,6 +445,22 @@
 			<div class="col-auto" style="width: auto; height: auto; max-width: 230px;">
 			  <img src="../img/card4.png" class=" img-fluid card-inactive"  alt="...">
 			</div>
+			
+			<div class="col-12">
+			  <footer class="d-flex flex-wrap justify-content-between align-items-center pb-2 pt-4">
+				<p class="col-md-4 mb-0 text-body-footer ">&copy; 2023 Aggroculture</p>
+				<a href="/" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+				  <img src="../img/logo.svg" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+				</a>
+				<ul class="nav col-md-4 justify-content-end">
+				  <li class="nav-item"><a href="../about/index.html" class="nav-link px-2 text-body-footer">About</a></li>
+				  <li class="nav-item"><a href="../how-to-play/index.html" class="nav-link px-2 text-body-footer">How to Play</a></li>
+				  <li class="nav-item"><a href="../faq/index.html" class="nav-link px-2 text-body-footer">FAQ</a></li>
+				</ul>
+			  </footer>
+			</div>
+			
+			
 		  </div>
 		</div>
 

@@ -117,6 +117,8 @@ body {
 
 .logo-shadow {
   filter: drop-shadow(0px 0px 2px #00000050);
+  margin-left: 0px;
+  padding-left: 0px;
   margin-right: 16px;
   margin-top: -1px;
   margin-bottom: 3px;
@@ -153,7 +155,7 @@ body {
   color: #FFFFFF;
   font-size: 18px;
   font-weight: 500;
-  padding-left: 1rem;
+  padding-left: 1.8rem;
   padding-right: 1rem;
   padding-top: 0.5rem;
   padding-bottom: 3px;
@@ -206,11 +208,13 @@ h1 > small {
 
 .sidebar-heading {
   color: #CCCCCC;
+  text-transform: uppercase;
 }
 
 .sidebar-border {
   width: 100%; 
   padding-bottom: 2px;
+  margin-top: 6px;
   border-bottom: 1px solid #212528;
 }
 
@@ -232,6 +236,7 @@ h1 > small {
   color: #CCCCCC;
   font-size: 12px;
   font-weight: bold;
+  text-transform: uppercase;
 }
 
 .sidebar-heading2 {
@@ -1073,12 +1078,32 @@ display: block !important;
 }
 
 .add-asset {
-  background-color: #3C0456;
+  background: rgb(60,4,86);
+  background: linear-gradient(0deg, rgba(60,4,86,1) 0%, rgba(41,0,63,1) 100%);
   color: #55067F;
   text-shadow: 0px -1px 0px rgba(41,0,63,0.5);
   padding: 0px;
   border: 1px solid #55067F;
   border-radius: 6px;
+}
+
+.add-asset-block {
+  background: rgb(60,4,86);
+  background: linear-gradient(0deg, rgba(60,4,86,1) 0%, rgba(41,0,63,1) 100%);
+  color: #55067F;
+  text-shadow: 0px -1px 0px rgba(41,0,63,0.5);
+  margin-top: 6px;
+  border: 1px solid #55067F;
+  border-radius: 6px;
+  width: 207px;
+  height: 288px;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.add-asset-text {
+  margin: auto;
+  line-height: 250px;
 }
 
 /* ACCORDION */
@@ -1585,11 +1610,15 @@ display: block !important;
 }
 
 .faq-link {
-  color: #FDD667;
+  color: #FFFFFF;
+  background-color: #313538;
+  border: 1px solid #414548;
   border-radius: 3px;
+  padding: 8px;
 }
+
 .faq-link:active {
-  color: #FDD667;
+  color: #FFFFFF;
 }
 
 .faq-link:focus {
@@ -1648,3 +1677,6 @@ display: block !important;
   margin: 5px 0px 5px 0px;;
 }
 
+.sidebar-content {
+  padding-top: 1px;
+}

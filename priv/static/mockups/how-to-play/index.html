@@ -229,39 +229,42 @@
 
 <div class="container-fluid">
   <div class="row">
-	<div class="sidebar col-md-2 col-lg-2 p-0 sidebar-background">
-	  <div class="offcanvas-md offcanvas-start sidebar-background" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
+	<div class="sidebar col-2 p-0 sidebar-background">
+	  <div class="offcanvas-md offcanvas-end sidebar-background" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
 		<div class="offcanvas-header">
 		  <h5 class="offcanvas-title" id="sidebarMenuLabel">Aggroculture</h5>
 		  <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebarMenu" aria-label="Close"></button>
 		</div>
-		<div class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto">
+		<div class="offcanvas-body d-md-flex flex-column p-0 pt-3 overflow-y-auto">
 		  <ul class="nav flex-column">
 			<li class="nav-item">
 			  <div class=" d-flex align-items-center gap-2 sidebar-header">
-				<svg class="bi"><use xlink:href="#lightning"/></svg>
-				Shortcuts
-			  </div>
+				<svg class="bi"><use xlink:href="#lightning"/></svg> Shortcuts</div>
 			</li>
 		  </ul>
 		  <hr class="sidebar-hr">
-		  <ul class="nav flex-column mx-3 pb-0">
-			<li class="nav-item">
-			  <a class="nav-link faq-link" href="#question_1">How to Play 1</a>
-			</li>
-			<li class="nav-item">
-			  <a class="nav-link faq-link" href="#question_2">How to Play 2</a>
-			</li>
-			<li class="nav-item">
-			  <a class="nav-link faq-link" href="#question_3">How to Play 3</a>
-			</li>
-			<li class="nav-item">
-			  <a class="nav-link faq-link" href="#question_4">How to Play 4</a>
-			</li>
-		  </ul>
+		  <div class="sidebar-content px-4">
+			<ul class="nav flex-column pb-0 mt-1">
+				<li class="nav-item">
+				  <a class="nav-link faq-link mb-2" href="#question_1">How to Play 1</a>
+				</li>
+				<li class="nav-item">
+				  <a class="nav-link faq-link mb-2" href="#question_2">How to Play 2</a>
+				</li>
+				<li class="nav-item">
+				  <a class="nav-link faq-link mb-2" href="#question_3">How to Play 3</a>
+				</li>
+				<li class="nav-item">
+				  <a class="nav-link faq-link mb-2" href="#question_4">How to Play 4</a>
+				</li>
+			  </ul>  
+			
+			  
+		 
+		  </div>
 		</div>
 	  </div>
-	</div>
+	</div> 
 	<main class="col-md-10 px-md-4 pb-0 mb-0">
 	  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 btn-bar">
 		<h1 class="h2">How to Play</h2>
@@ -305,7 +308,7 @@
 		  </div>
 		</div> 
 		<div class="col-12">
-		  <footer class="d-flex flex-wrap justify-content-between align-items-center py-2">
+		  <footer class="d-flex flex-wrap justify-content-between align-items-center pb-2 pt-4">
 			<p class="col-md-4 mb-0 text-body-footer ">&copy; 2023 Aggroculture</p>
 		
 			<a href="/" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
