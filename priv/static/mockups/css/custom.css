@@ -923,17 +923,17 @@ h1 > small {
 
 .table-standings {
   --bs-table-color: #fff;
-  --bs-table-bg: #3C0456;
-  --bs-table-border-color: #55067F;
+  --bs-table-bg: #313538;
+  --bs-table-border-color: #414548;
   --bs-table-striped-bg: #2c3034;
   --bs-table-striped-color: #fff;
-  --bs-table-active-bg: #373b3e;
+  --bs-table-active-bg: #313538;
   --bs-table-active-color: #fff;
-  --bs-table-hover-bg: #55067F;
+  --bs-table-hover-bg: #212528;
   --bs-table-hover-color: #fff;
   color: var(--bs-table-color);
   border-color: var(--bs-table-border-color);
-  border-left: 1px solid #55067F;
+  border-left: 1px solid #414548;
 }
 
 .table-standings td {
@@ -1030,11 +1030,96 @@ display: block !important;
   border-radius: 4px;
   padding: 4px;
   margin: 0px;
-  margin-right: 7px;
+  margin-right: 4px;
   width: 36px;
   height: 36px;
-  line-height: 26px;
+  line-height: 30px;
   text-align: center;
+}
+
+.logo-collection2 {
+  filter: drop-shadow(0px 0px 2px #00000050);
+  background-color: #111518;
+  border-radius: 4px;
+  padding: 4px;
+  margin: 0px;
+  margin-top: 2px;
+  margin-right: 4px;
+  width: 28px;
+  height: 28px;
+  line-height: 38px;
+  text-align: center;
+}
+
+.logo-collection3 {
+  filter: drop-shadow(0px 0px 2px #00000050);
+  border-radius: 4px;
+  margin: 0px;
+  padding: 0px;
+  margin-right: 4px;
+  width: 18px;
+  height: 18px;
+  line-height: 36px;
+}
+
+.logo-collection4 {
+  filter: drop-shadow(0px 0px 2px #00000050);
+  background-color: #111518;
+  border-radius: 4px;
+  padding: 4px;
+  margin: 0px;
+  margin-top: 2px;
+  min-width: 240px;
+}
+
+.date-back {
+  filter: drop-shadow(0px 0px 2px #00000050);
+  background-color: #111518;
+  border-radius: 4px;
+  padding: 1px 7px 0px 7px;
+  margin: 0px;
+  margin-top: 2px;
+  height: 28px;
+  min-width: 110px;
+  line-height: 28px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 400;
+  text-transform: none;
+}
+
+.date-back a {
+  color: #FFFFFF;
+  text-decoration: none;
+}
+
+.date-back a:hover {
+  color: #FDD667;
+}
+
+.date-back-view {
+  filter: drop-shadow(0px 0px 2px #00000050);
+  background-color: #111518;
+  border-radius: 4px;
+  padding: 1px 7px 0px 7px;
+  margin: 0px;
+  margin-top: 2px;
+  height: 28px;
+  min-width: 30px;
+  line-height: 28px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 400;
+  text-transform: none;
+}
+
+.date-back-view a {
+  color: #FFFFFF;
+  text-decoration: none;
+}
+
+.date-back-view a:hover {
+  color: #FDD667;
 }
 
 .iteration-number {
@@ -1044,10 +1129,37 @@ display: block !important;
   padding: 4px;
   margin: 1px;
   margin-right: 7px;
-  width: 36px;
+  min-width: 36px;
   height: 36px;
-  line-height: 26px;
+  line-height: 30px;
   text-align: center;
+}
+
+.iteration-status-green {
+  background-color: #1EEC91;
+  padding-left: 8px;
+  padding-right: 8px;
+  margin-right: 30px;
+}
+
+.iteration-status-yellow {
+  background-color: #FDD667;
+  padding-left: 8px;
+  padding-right: 8px;
+  margin-right: 30px;
+}
+
+.iteration-status-red {
+  background-color: #EC1E79;
+  padding-left: 8px;
+  padding-right: 8px;
+  margin-right: 30px;
+}
+
+.trade-registry-text {
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: none;
 }
 
 .logo-trade {
