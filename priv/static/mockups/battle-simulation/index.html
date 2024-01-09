@@ -7,7 +7,7 @@
 	<meta name="description" content="">
 	<meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
 	<meta name="generator" content="Hugo 0.118.2">
-	<title>Trade Creation · Aggroculture</title>
+	<title>Battle Simulation · Aggroculture</title>
 
 	<link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/dashboard/">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
@@ -82,6 +82,9 @@
   <symbol id="remove" viewBox="0 0 16 16">
 	  <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
 	  <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+  </symbol>
+  <symbol id="chart" viewBox="0 0 16 16">
+	<path d="M4 11H2v3h2v-3zm5-4H7v7h2V7zm5-5v12h-2V2h2zm-2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1h-2zM6 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7zm-5 4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-3z"/>
   </symbol>
   <symbol id="replace" viewBox="0 0 16 16">
 	  <path fill-rule="evenodd" d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5m14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5"/>
@@ -227,536 +230,6 @@
 
 <div class="container-fluid">
   <div class="row">
-	<div class="sidebar col-2 p-0 pb-3 sidebar-background">
-	  <div class="offcanvas-md offcanvas-end sidebar-background" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
-		<div class="offcanvas-header">
-		  <h5 class="offcanvas-title" id="sidebarMenuLabel">Aggroculture</h5>
-		  <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebarMenu" aria-label="Close"></button>
-		</div>
-		<div class="offcanvas-body d-md-flex flex-column p-0 pt-3 overflow-y-auto">
-		  <ul class="nav flex-column">
-			<li class="nav-item">
-			  <div class=" d-flex align-items-center gap-2 sidebar-header">
-				<svg class="bi"><use xlink:href="#circle-info"/></svg> Card Information</div>
-			</li>
-		  </ul>
-		  <hr class="sidebar-hr">
-		  <div class="sidebar-content px-4">
-			  
-			<div class="d-grid col-12 gap-2 mt-1 mb-3">
-				<button class="btn btn-aggro btn-sm" type="button"> Add to Trade</button>
-			  </div> 
-			
-		  <h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
-			  <span class="sidebar-border">Champion Name</span>
-			</h6>
-			<h6 class="sidebar-info d-flex align-items-center font-monospace">
-				<span>Barbatos, the Condemned</span>
-			</h6>
-			<h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
-			  <span class="sidebar-border">Plant Type</span>
-			</h6>
-			<h6 class="sidebar-info d-flex align-items-center font-monospace">
-			  <span>Pepper</span>
-			</h6>
-			<h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
-			  <span class="sidebar-border">Plant Variety</span>
-			</h6>
-			<h6 class="sidebar-info d-flex align-items-center font-monospace">
-			  <span>Devil's Tongue</span>
-			</h6>
-			<h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
-			  <span class="sidebar-border">Rarity</span>
-			</h6>
-			<h6 class="sidebar-info d-flex align-items-center font-monospace">
-			  <span>Mythical</span>
-			</h6>
-			<h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
-			 <span class="sidebar-border">Frame</span>
-			</h6>
-			<h6 class="sidebar-info d-flex align-items-center font-monospace">
-			  <span>Rainbow</span>
-			</h6>
-			<h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
-			  <span class="sidebar-border">Art</span>
-			</h6>
-			<h6 class="sidebar-info d-flex align-items-center font-monospace">
-			  <span>Full Art</span>
-			</h6>
-			<h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
-			  <span class="sidebar-border">Card Number</span>
-			</h6>
-			<h6 class="sidebar-info d-flex align-items-center font-monospace">
-			  <span>18 / 64</span>
-			</h6>
-			<h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
-			  <span class="sidebar-border">Card Edition</span>
-			</h6>
-			<h6 class="sidebar-info d-flex align-items-center font-monospace">
-			  <span>1st Edition</span>
-			</h6>
-			<h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
-			  <span class="sidebar-border">Series</span>
-			</h6>
-			<h6 class="sidebar-info d-flex align-items-center font-monospace">
-			  <span>Season 1</span>
-			</h6>
-			<h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
-			  <span class="sidebar-border">Year</span>
-			</h6>
-			<h6 class="sidebar-info d-flex align-items-center font-monospace">
-			  <span>2023</span>
-			</h6>
-			<h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
-				<span class="sidebar-border">Identification Number</span>
-			  </h6>
-			  <h6 class="sidebar-info d-flex align-items-center font-monospace">
-				<span>C-S1-E1-02935</span>
-			  </h6>
-			  <h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
-				<span class="sidebar-border">Owner</span>
-			  </h6>
-			  <h6 class="sidebar-info d-flex align-items-center font-monospace">
-				<span><a href="">michaelalfox</a></span>
-			  </h6>
-		  </div>
-		</div>
-	  </div>
-	</div>
-
-	<main class="col-8 px-md-4">
-	  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 btn-bar">
-		  <h1 class="h2">Trade Creation</h2><span class="badge badge-trade text-bg-orange font-monospace" style="margin-left: -334px;">DRAFT#1183</span>
-		  <div class="btn-toolbar mb-2 mb-md-0">
-			
-				<button class="btn btn-sm btn-red-trade ms-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-				  <svg class="bi"><use xlink:href="#remove"/></svg>
-				  Delete
-				</button>
-
-				<button class="btn btn-sm btn-yellow-trade ms-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-				  <svg class="bi"><use xlink:href="#save"/></svg>
-				  Save
-				</button>
-		
-				<button class="btn btn-sm btn-green-trade ms-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-				  <svg class="bi"><use xlink:href="#submit"/></svg>
-				  Submit
-				</button>
-
-			
-		  </div>
-		</div>
-	  
-	  <div class="container" style="padding: 0px;">
-		  <div class="row justify-content-between">
-			  
-			  <div class="col-12">
-			  
-			  <div class="alert alert-aggro mt-1" role="alert">
-				Find a collector and browse their assets below -- select the asset(s) and click "Add to Trade" in the sidebar. Alternatively, search for specific assets throughout all collectors. You may only add assets from one collector per trade. Once you're done adding assets, click "Submit" near the top right. 
-				<hr>
-				Read the <a href="">FAQ</a> for more information.
-			  </div>
-
-			  </div>
-			  
-			  <div class="col-md-6 col-lg-6">
-			  
-			  <div class="trade-user shadow-sm mb-3"><a href="#"><img src="../img/logo.svg" alt="Logo" width="24" height="24" class="d-inline-block logo-trade"></a><a href="">krainboltgreene</a></div>
-			  		  
-				  <div class="h4 add-asset align-middle shadow-sm text-center p-3 mb-3">+ ADD ASSETS</div>
-				  
-				  </svg>
-			
-			  
-			  
-			  </div>
-			  
-			  
-			  <div class="col-md-6 col-lg-6">
-				<div class="trade-user shadow-sm mb-3"><a href="#"><img src="../img/logo.svg" alt="Logo" width="24" height="24" class="d-inline-block logo-trade"></a><a href="">Find Trade Partner</a></div>
-				
-				<div class="h4 add-asset align-middle shadow-sm text-center p-3 mb-3">+ ADD ASSETS</div>
-				
-		       
-		  
-		  
-		      </div>
-		
-			
-		
-		  </div>
-		  
-		
-		  
-		  <div class="row justify-content-between">
-				<div class="col-md-12 col-lg-12">
-			  
-				<div class="accordion-grey mb-4" id="accordionPanelsStayOpenExample">
-				  <div class="accordion-item">
-					<h2 class="accordion-header">
-					  <button class="accordion-button-grey collapsed accordion-text" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseSeven" aria-expanded="false" aria-controls="panelsStayOpen-collapseSeven">
-						<div class="col-12">krainboltgreene's Collection</div>
-					  </button>
-					</h2>
-					<div id="panelsStayOpen-collapseSeven" class="accordion-collapse collapse">
-						
-						<div class="accordion-stats-grey">
-							
-							<div class="row">
-							  
-							<div class="col-5">
-							
-							<div class="btn-toolbar d-inline-flex gap-2 py-1">
-							  <button type="button" class="btn btn-outline-light btn-sm inactive" data-bs-toggle="button" aria-pressed="true"><svg class="bi"><use xlink:href="#bullseye"/></svg> Block</button>
-							  <button type="button" class="btn btn-outline-light btn-sm active" data-bs-toggle="button" aria-pressed="true"><svg class="bi"><use xlink:href="#cards"/></svg> Cards</button>
-							  <button type="button" class="btn btn-outline-light btn-sm inactive" data-bs-toggle="button" aria-pressed="true"><svg class="bi"><use xlink:href="#packs"/></svg> Packs</button>
-							  <button type="button" class="btn btn-outline-light btn-sm inactive" data-bs-toggle="button" aria-pressed="true"><svg class="bi"><use xlink:href="#coin"/></svg> Coins</button>
-							</div>
-							
-							</div>
-							<div class="col-7">
-							
-							<div class="input-group input-group-sm py-1 font-monospace">
-								 <input type="text" class="form-control search2" style="border: 1px solid #FFFFFF;" placeholder="Champion" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-							</div>
-							
-							</div>
-							
-							</div>
-							  
-						  </div>
-						
-					  <div class="accordion-body-grey">
-						<div class="row">
-							
-							
-							<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 btn-bar">
-							  
-							  <div class="btn-toolbar mb-2">
-							
-							<div class="dropdown">
-								<button class="btn btn-sm btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-								  <svg class="bi"><use xlink:href="#moon"/></svg>
-								  All Series
-								</button>
-								<ul class="dropdown-menu">
-								  <li><a class="dropdown-item" href="#">Season 1</a></li>
-								  <li><a class="dropdown-item" href="#">Season 2</a></li>
-								  <li><a class="dropdown-item" href="#">Season 3</a></li>
-								</ul>
-							  </div>
-							
-							<div class="dropdown">
-								<button class="btn btn-sm btn-outline-light ms-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-								  <svg class="bi"><use xlink:href="#layers"/></svg>
-								  All Editions
-								</button>
-								<ul class="dropdown-menu">
-								  <li><a class="dropdown-item" href="#">1st Edition</a></li>
-								  <li><a class="dropdown-item" href="#">2nd Edition</a></li>
-								  <li><a class="dropdown-item" href="#">3rd Edition</a></li>
-								</ul>
-							  </div>
-							
-								<div class="dropdown">
-									<button class="btn btn-sm btn-outline-light ms-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-									  <svg class="bi"><use xlink:href="#stars"/></svg>
-									  All Rarities
-									</button>
-									<ul class="dropdown-menu">
-									  <li><a class="dropdown-item" href="#">Common</a></li>
-									  <li><a class="dropdown-item" href="#">Uncommon</a></li>
-									  <li><a class="dropdown-item" href="#">Rare</a></li>
-									  <li><a class="dropdown-item" href="#">Epic</a></li>
-									  <li><a class="dropdown-item" href="#">Legendary</a></li>
-									  <li><a class="dropdown-item" href="#">Mythical</a></li>
-									</ul>
-								  </div>
-								
-								  <div class="dropdown">
-									  <button class="btn btn-sm btn-outline-light ms-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-										<svg class="bi"><use xlink:href="#brush"/></svg>
-										All Art
-									  </button>
-									  <ul class="dropdown-menu">
-										<li><a class="dropdown-item" href="#">Basic Art</a></li>
-										<li><a class="dropdown-item" href="#">Full Art</a></li>
-									  </ul>
-									</div>
-									<div class="dropdown">
-										<button class="btn btn-sm btn-outline-light ms-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-										  <svg class="bi"><use xlink:href="#holo"/></svg>
-										  All Holos
-										</button>
-										<ul class="dropdown-menu">
-										  <li><a class="dropdown-item" href="#">Holo 1</a></li>
-										  <li><a class="dropdown-item" href="#">Holo 2</a></li>
-										  <li><a class="dropdown-item" href="#">Holo 3</a></li>
-										  <li><a class="dropdown-item" href="#">Holo 4</a></li>
-										  <li><a class="dropdown-item" href="#">Holo 5</a></li>
-										  <li><a class="dropdown-item" href="#">Holo 6</a></li>
-										</ul>
-									  </div>
-									  <div class="dropdown">
-										  <button class="btn btn-sm btn-outline-light ms-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-											<svg class="bi"><use xlink:href="#frame"/></svg>
-											All Frames
-										  </button>
-										  <ul class="dropdown-menu">
-											<li><a class="dropdown-item" href="#">Basic</a></li>
-											<li><a class="dropdown-item" href="#">Gold</a></li>
-											<li><a class="dropdown-item" href="#">Rainbow</a></li>
-										  </ul>
-										</div>
-									<div class="dropdown">
-									  <button class="btn btn-sm btn-outline-light ms-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-										<svg class="bi"><use xlink:href="#grade"/></svg>
-										All Grades
-									  </button>
-									  <ul class="dropdown-menu">
-										<li><a class="dropdown-item" href="#">OCA 1</a></li>
-										<li><a class="dropdown-item" href="#">OCA 2</a></li>
-										<li><a class="dropdown-item" href="#">OCA 3</a></li>
-										<li><a class="dropdown-item" href="#">OCA 4</a></li>
-										<li><a class="dropdown-item" href="#">OCA 5</a></li>
-										<li><a class="dropdown-item" href="#">OCA 6</a></li>
-										<li><a class="dropdown-item" href="#">OCA 7</a></li>
-										<li><a class="dropdown-item" href="#">OCA 8</a></li>
-										<li><a class="dropdown-item" href="#">OCA 9</a></li>
-										<li><a class="dropdown-item" href="#">OCA 10</a></li>
-									  </ul>
-									</div>
-								
-							  </div>
-							</div>
-							
-							
-							
-						</div>
-						
-						<div class="row">
-							<div class="col-auto mb-4" style="width: auto; height: auto; max-width: 223px;">
-							  <img src="../img/card3.png" class="img-fluid card-inactive2"  alt="...">
-							</div>
-							<div class="col-auto mb-4" style="width: auto; height: auto; max-width: 223px;">
-							  <img src="../img/card3.png" class="img-fluid card-inactive2"  alt="...">
-						    </div>
-						    <div class="col-auto mb-4" style="width: auto; height: auto; max-width: 223px;">
-							  <img src="../img/card3.png" class="img-fluid card-inactive2"  alt="...">
-							</div>
-						    <div class="col-auto mb-4" style="width: auto; height: auto; max-width: 223px;">
-						      <img src="../img/card3.png" class="img-fluid card-inactive2"  alt="...">
-							</div>
-							<div class="col-auto mb-4" style="width: auto; height: auto; max-width: 223px;">
-							  <img src="../img/card3.png" class="img-fluid card-inactive2"  alt="...">
-							</div>
-							<div class="col-auto mb-4" style="width: auto; height: auto; max-width: 223px;">
-							  <img src="../img/card3.png" class="img-fluid card-inactive2"  alt="...">
-							</div>
-							<div class="col-auto mb-4" style="width: auto; height: auto; max-width: 223px;">
-							  <img src="../img/card3.png" class="img-fluid card-inactive2"  alt="...">
-							</div>
-							<div class="col-auto mb-4" style="width: auto; height: auto; max-width: 223px;">
-							  <img src="../img/card3.png" class="img-fluid card-inactive2"  alt="...">
-							</div>
-					    </div>
-						
-						
-						
-					  </div>
-					</div>
-				  </div>
-				  <div class="accordion-item">
-					  <h2 class="accordion-header">
-						<button class="accordion-button-grey collapsed accordion-text" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseEight" aria-expanded="false" aria-controls="panelsStayOpen-collapseEight">
-						  <div class="col-12">Browse Collectors</div>
-						</button>
-						
-					  </h2>
-					  <div id="panelsStayOpen-collapseEight" class="accordion-collapse collapse">
-						  
-						  <div class="accordion-stats-grey">
-							
-							<div class="row ps-2">
-							  
-							<div class="col-12">
-							
-							<div class="input-group input-group-sm py-1 font-monospace">
-								 <input type="text" class="form-control search2" style="border: 1px solid #FFFFFF;" placeholder="Collector" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-							</div>
-							
-							</div>
-							
-							</div>
-							  
-						  </div>
-						  
-						<div class="accordion-body-grey">
-						  
-						  <div class="row">
-							  <div class="col-auto mb-4" style="width: auto; height: auto; max-width: 223px;">
-								<img src="../img/cardback.png" class="img-fluid card-inactive2"  alt="...">
-							  </div>
-							  <div class="col-auto mb-4" style="width: auto; height: auto; max-width: 223px;">
-								<img src="../img/cardback.png" class="img-fluid card-inactive2"  alt="...">
-							  </div>
-							  <div class="col-auto mb-4" style="width: auto; height: auto; max-width: 223px;">
-								<img src="../img/cardback.png" class="img-fluid card-inactive2"  alt="...">
-							  </div>
-							  <div class="col-auto mb-4" style="width: auto; height: auto; max-width: 223px;">
-								<img src="../img/cardback.png" class="img-fluid card-inactive2"  alt="...">
-							  </div>
-							  <div class="col-auto mb-4" style="width: auto; height: auto; max-width: 223px;">
-								<img src="../img/cardback.png" class="img-fluid card-inactive2"  alt="...">
-							  </div>
-							  <div class="col-auto mb-4" style="width: auto; height: auto; max-width: 223px;">
-								<img src="../img/cardback.png" class="img-fluid card-inactive2"  alt="...">
-							  </div>
-							  <div class="col-auto mb-4" style="width: auto; height: auto; max-width: 223px;">
-								<img src="../img/cardback.png" class="img-fluid card-inactive2"  alt="...">
-							  </div>
-							  <div class="col-auto mb-4" style="width: auto; height: auto; max-width: 223px;">
-								<img src="../img/cardback.png" class="img-fluid card-inactive2"  alt="...">
-							  </div>
-						  </div>
-						  
-						  
-						  
-						</div>
-					  </div>
-					</div>
-					<div class="accordion-item">
-					  <h2 class="accordion-header">
-						<button class="accordion-button-grey collapsed accordion-text" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseNine" aria-expanded="false" aria-controls="panelsStayOpen-collapseNine">
-						  <div class="col-12">Browse Block / Cards / Packs</div>
-						</button>
-						
-					  </h2>
-					  <div id="panelsStayOpen-collapseNine" class="accordion-collapse collapse">
-						  
-						  <div class="accordion-stats-grey">
-							
-							<div class="row">
-							  
-							<div class="col-4">
-							
-							<div class="btn-toolbar d-inline-flex gap-2 py-1">
-							  <button type="button" class="btn btn-outline-light btn-sm inactive" data-bs-toggle="button" aria-pressed="true"><svg class="bi"><use xlink:href="#bullseye"/></svg> Block</button>
-							  <button type="button" class="btn btn-outline-light btn-sm inactive" data-bs-toggle="button" aria-pressed="true"><svg class="bi"><use xlink:href="#cards"/></svg> Cards</button>
-							  <button type="button" class="btn btn-outline-light btn-sm active" data-bs-toggle="button" aria-pressed="true"><svg class="bi"><use xlink:href="#packs"/></svg> Packs</button>
-							</div>
-							
-							</div>
-							<div class="col-8">
-							
-							<div class="input-group input-group-sm py-1 font-monospace">
-								 <input type="text" class="form-control search2" style="border: 1px solid #FFFFFF;" placeholder="Champion" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-							</div>
-							
-							</div>
-							
-							</div>
-							  
-						  </div>
-						  
-						<div class="accordion-body-grey">
-						  <div class="row">
-							  
-							  
-							  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 btn-bar">
-								
-								<div class="btn-toolbar mb-2">
-							  
-							  <div class="dropdown">
-								  <button class="btn btn-sm btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-									<svg class="bi"><use xlink:href="#moon"/></svg>
-									All Series
-								  </button>
-								  <ul class="dropdown-menu">
-									<li><a class="dropdown-item" href="#">Season 1</a></li>
-									<li><a class="dropdown-item" href="#">Season 2</a></li>
-									<li><a class="dropdown-item" href="#">Season 3</a></li>
-								  </ul>
-								</div>
-							  
-							  <div class="dropdown">
-								  <button class="btn btn-sm btn-outline-light ms-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-									<svg class="bi"><use xlink:href="#layers"/></svg>
-									All Editions
-								  </button>
-								  <ul class="dropdown-menu">
-									<li><a class="dropdown-item" href="#">1st Edition</a></li>
-									<li><a class="dropdown-item" href="#">2nd Edition</a></li>
-									<li><a class="dropdown-item" href="#">3rd Edition</a></li>
-								  </ul>
-								</div>		  
-								</div>
-							  </div>
-							  
-							  
-							  
-						  </div>
-						  
-						  <div class="row">
-							  <div class="col-auto mb-4" style="width: auto; height: auto; max-width: 223px;">
-								<img src="../img/cardback.png" class="img-fluid card-inactive2"  alt="...">
-							  </div>
-							  <div class="col-auto mb-4" style="width: auto; height: auto; max-width: 223px;">
-								<img src="../img/cardback.png" class="img-fluid card-inactive2"  alt="...">
-							  </div>
-							  <div class="col-auto mb-4" style="width: auto; height: auto; max-width: 223px;">
-								<img src="../img/cardback.png" class="img-fluid card-inactive2"  alt="...">
-							  </div>
-							  <div class="col-auto mb-4" style="width: auto; height: auto; max-width: 223px;">
-								<img src="../img/cardback.png" class="img-fluid card-inactive2"  alt="...">
-							  </div>
-							  <div class="col-auto mb-4" style="width: auto; height: auto; max-width: 223px;">
-								<img src="../img/cardback.png" class="img-fluid card-inactive2"  alt="...">
-							  </div>
-							  <div class="col-auto mb-4" style="width: auto; height: auto; max-width: 223px;">
-								<img src="../img/cardback.png" class="img-fluid card-inactive2"  alt="...">
-							  </div>
-							  <div class="col-auto mb-4" style="width: auto; height: auto; max-width: 223px;">
-								<img src="../img/cardback.png" class="img-fluid card-inactive2"  alt="...">
-							  </div>
-							  <div class="col-auto mb-4" style="width: auto; height: auto; max-width: 223px;">
-								<img src="../img/cardback.png" class="img-fluid card-inactive2"  alt="...">
-							  </div>
-						  </div>
-						  
-						  
-						  
-						</div>
-					  </div>
-					</div>
-				</div>
-				
-				</div>
-				
-				<div class="col-12">
-					<footer class="d-flex flex-wrap justify-content-between align-items-center pb-3 pt-1">
-					  <p class="col-md-4 mb-0 text-body-footer ">&copy; 2023 Aggroculture</p>
-					  <a href="/" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-						<img src="../img/logo.svg" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
-					  </a>
-					  <ul class="nav col-md-4 justify-content-end">
-						<li class="nav-item"><a href="../about/index.html" class="nav-link px-2 text-body-footer">About</a></li>
-						<li class="nav-item"><a href="../how-to-play/index.html" class="nav-link px-2 text-body-footer">How to Play</a></li>
-						<li class="nav-item"><a href="../faq/index.html" class="nav-link px-2 text-body-footer">FAQ</a></li>
-					  </ul>
-					</footer>
-				  </div>
-				
-			
-			</div>
-		  
-		</div>
-
-	</main>	
-	
-	
 	<div class="sidebar col-2 p-0 sidebar-background">
 	  <div class="offcanvas-md offcanvas-end sidebar-background" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
 		<div class="offcanvas-header">
@@ -767,66 +240,477 @@
 		  <ul class="nav flex-column">
 			<li class="nav-item">
 			  <div class=" d-flex align-items-center gap-2 sidebar-header">
-				<svg class="bi"><use xlink:href="#circle-info"/></svg> Pack Information</div>
+				<svg class="bi"><use xlink:href="#chart"/></svg> Champion Statistics</div>
 			</li>
 		  </ul>
 		  <hr class="sidebar-hr">
-		  <div class="sidebar-content px-4">
+		  <div class="sidebar-content px-4 mt-1 mb-3">  
+			<div class="col-12">
+			  <table class="table table-sm table-aggro table-hover font-monospace">
+				<thead>
+				  <tr>
+					<th colspan="2" class="sidebar-heading2 px-2">Barbatos, the Condemned</th>
+				  </tr>
+				</thead>
+				<tbody>
+				  <tr>
+					<th scope="row" class="ps-2">Division</th>
+					<td class="pe-2">Division A</td>
+				  </tr>
+				  <tr>
+					<th scope="row" class="ps-2">Div. Position</th>
+					 <td class="pe-2">3 / 8</td>
+				  </tr>
+				  <tr>
+					<th scope="row" class="ps-2">Battles</th>
+					<td class="pe-2">9 / 12</td>
+				  </tr>
+				  <tr>
+					<th scope="row" class="ps-2">Victories</th>
+					<td class="pe-2">17</td>
+				  </tr>
+				  <tr>
+					<th scope="row" class="ps-2">Points</th>
+					<td class="pe-2">29</td>
+				  </tr>
+				</tbody>
+			  </table>
 			  
-			<div class="d-grid col-12 gap-2 mt-1 mb-3">
-				<button class="btn btn-aggro btn-sm" type="button"> Add to Trade</button>
-			  </div> 
-			  
-			  <h6 class="sidebar-heading1 d-flex align-items-center font-monospace">
-				<span class="sidebar-border">Pack Number</span>
-			  </h6>
-			  <h6 class="sidebar-info d-flex align-items-center font-monospace">
-				<span>185 / 2368</span>
-			  </h6>
-			  <h6 class="sidebar-heading1 d-flex align-items-center font-monospace">
-				<span class="sidebar-border">Pack Edition</span>
-			  </h6>
-			  <h6 class="sidebar-info d-flex align-items-center font-monospace">
-				<span>1st Edition</span>
-			  </h6>
-			  <h6 class="sidebar-heading1 d-flex align-items-center font-monospace">
-				<span class="sidebar-border">Series</span>
-			  </h6>
-			  <h6 class="sidebar-info d-flex align-items-center font-monospace">
-				<span>Season 1</span>
-			  </h6>
-			  <h6 class="sidebar-heading1 d-flex align-items-center font-monospace">
-				<span class="sidebar-border">Year</span>
-			  </h6>
-			  <h6 class="sidebar-info d-flex align-items-center font-monospace">
-				<span>2023</span>
-			  </h6>
-			  <h6 class="sidebar-heading1 d-flex align-items-center font-monospace">
-				<span class="sidebar-border">Identification Number</span>
-			  </h6>
-			  <h6 class="sidebar-info d-flex align-items-center font-monospace">
-				<span>P-S1-E1-0185</span>
-			  </h6>
-			  <h6 class="sidebar-heading1 d-flex align-items-center font-monospace">
-				<span class="sidebar-border">Owner</span>
-			  </h6>
-			  <h6 class="sidebar-info d-flex align-items-center font-monospace">
-				<span><a href="">michaelalfox</a></span>
-			  </h6>
-		
+			  <table class="table table-sm table-aggro table-hover font-monospace">
+			    <thead>
+				  <tr>
+					<th colspan="2" class="sidebar-heading2 px-2">Barbatos, the Condemned</th>
+				  </tr>
+				</thead>
+				<tbody>
+				  <tr>
+					<th scope="row" class="ps-2">Division</th>
+					<td class="pe-2">Division A</td>
+				  </tr>
+				  <tr>
+					<th scope="row" class="ps-2">Div. Position</th>
+					<td class="pe-2">3 / 8</td>
+				  </tr>
+				  <tr>
+					<th scope="row" class="ps-2">Battles</th>
+					<td class="pe-2">9 / 12</td>
+				  </tr>
+				  <tr>
+				  <th scope="row" class="ps-2">Victories</th>
+					<td class="pe-2">17</td>
+				  </tr>
+				  <tr>
+					<th scope="row" class="ps-2">Points</th>
+					<td class="pe-2">29</td>
+				  </tr>
+				</tbody>
+			  </table>
+			</div>  
 		  </div>
 		</div>
 	  </div>
 	</div>
+
+	<main class="col-7 px-4">
+	  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 btn-bar">
+		<h1 class="h2">Battle Simulation</h1><span class="badge badge-trade text-bg-orange font-monospace" style="margin-left: -205px;">5 / 12</span>
+		<div class="btn-toolbar mb-md-0">
+		  <button class="btn btn-sm btn-outline-light ms-2" type="button" data-bs-toggle="aria" aria-expanded="false">
+		    Sim Turn
+		  </button>	
+		  <button class="btn btn-sm btn-outline-light ms-2" type="button" data-bs-toggle="aria" aria-expanded="false">
+		    Sim Fight
+		  </button>
+		  <button class="btn btn-sm btn-outline-light ms-2" type="button" data-bs-toggle="aria" aria-expanded="false">
+			Sim Round
+		  </button>
+	    </div>
+	  </div>
+	  
+		<div class="row mx-0 mb-3 pt-3 pb-1 vs-card-back">
+		  <div class="col-5">
+			  <div class="col-auto mx-auto" style="width: auto; height: auto; max-width: 230px;">
+				<img src="../img/card4.png" class=" img-fluid card-inactive"  alt="...">
+			  </div>
 	
+			  <div class="col-5">
+				  <div class="roll-back mt-3 mb-2 pb-3">
+				  <div class="roll-tag">TURN 7: ATTACK ROLLS</div>
+				  <div class="row">
+				  <div class="col-6">
+				  <div class="card roll-card-str mt-3 mb-4">
+					<div class="card-body">
+					  <p class="roll-title">152</p>
+					</div>
+				  </div>
+				  
+				  <div class="stat-roll-tag col-4 offset-4">
+					STR
+				  </div>
+				  </div>
+				  <div class="col-6">
+				  <div class="card roll-card-spd mt-3 mb-4">
+					  <div class="card-body">
+						<p class="roll-title">7</p>
+					  </div>
+					</div>
+					
+					<div class="stat-roll-tag col-4 offset-4">
+					  SPD
+					</div>
+				  </div>
+				  </div>
+				  <div class="row">
+					<div class="stat-roll-power mt-3">
+					  PWR: 1064
+					</div> 
+				  </div>
+				  
+				  </div>
+				</div>
+			  
+			</div>
+			
+			<div class="col-2">
+			  <div class="col-auto m-auto d-flex align-items-center" style="width: auto; height: auto; max-width: 230px;">
+				<img src="../img/vs.svg" alt="Logo" width="60" height="60" class="vs mx-auto">
+			  </div> 
+			</div>
+			
+			<div class="col-5">
+			  <div class="col-auto m-auto" style="width: auto; height: auto; max-width: 230px;">
+				<img src="../img/card4.png" class=" img-fluid card-inactive"  alt="...">
+			  </div>
+			  
+			  <div class="col-5">
+				<div class="roll-back mt-3 mb-2 pb-3">
+				<div class="roll-tag">TURN 7: DEFEND ROLLS</div>
+				<div class="row">
+				<div class="col-6">
+				<div class="card roll-card-str mt-3 mb-4">
+				  <div class="card-body">
+					<p class="roll-title">152</p>
+				  </div>
+				</div>
+				
+				<div class="stat-roll-tag col-4 offset-4">
+				  STR
+				</div>
+				</div>
+				<div class="col-6">
+				<div class="card roll-card-spd mt-3 mb-4">
+					<div class="card-body">
+					  <p class="roll-title">7</p>
+					</div>
+				  </div>
+				  
+				  <div class="stat-roll-tag col-4 offset-4">
+					SPD
+				  </div>
+				</div>
+				</div>
+				<div class="row">
+				  <div class="stat-roll-power mt-3">
+					PWR: 1064
+				  </div> 
+				</div>
+				
+				</div>
+			  </div>
+			  
+			  
+			  
+			</div>
+		</div>
+		<div class="row">
+		  <div class="col-12">  
+			<div class="alert alert-aggro mt-1" role="alert">
+			  <strong>Turn 7</strong>: <i>Barbatos pummelled Jinn with a flurry of punches.</i><br>
+			  Barbatos used 3.2 END // Jin used 4.7 END
+			  <hr>
+			  <strong>Turn 6</strong>: <i>Barbatos pummelled Jinn with a flurry of punches.</i><br>
+			  Barbatos used 3.2 END // Jin used 4.7 END
+			  <hr>
+			  <strong>Turn 5</strong>: <i>Barbatos pummelled Jinn with a flurry of punches.</i><br>
+			  Barbatos used 3.2 END // Jin used 4.7 END
+			  <hr>
+			  <strong>Turn 4</strong>: <i>Barbatos pummelled Jinn with a flurry of punches.</i><br>
+			  Barbatos used 3.2 END // Jin used 4.7 END
+			  <hr>
+			  <strong>Turn 3</strong>: <i>Barbatos pummelled Jinn with a flurry of punches.</i><br>
+			  Barbatos used 3.2 END // Jin used 4.7 END
+			  <hr>
+			  <strong>Turn 2</strong>: <i>Barbatos pummelled Jinn with a flurry of punches.</i><br>
+			  Barbatos used 3.2 END // Jin used 4.7 END
+			  <hr>
+			  <strong>Turn 1</strong>: <i>Barbatos pummelled Jinn with a flurry of punches.</i><br>
+			  Barbatos used 3.2 END // Jin used 4.7 END
+			</div>
+		  </div>
+		</div>
+		<div class="row">
+		  <div class="col-12">
+			<footer class="d-flex flex-wrap justify-content-between align-items-center pb-3 pt-1">
+			  <p class="col-md-4 mb-0 text-body-footer ">&copy; 2023 Aggroculture</p>
+			  <a href="/" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+			  <img src="../img/logo.svg" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+			  </a>
+			  <ul class="nav col-md-4 justify-content-end">
+				<li class="nav-item"><a href="../about/index.html" class="nav-link px-2 text-body-footer">About</a></li>
+				<li class="nav-item"><a href="../how-to-play/index.html" class="nav-link px-2 text-body-footer">How to Play</a></li>
+				<li class="nav-item"><a href="../faq/index.html" class="nav-link px-2 text-body-footer">FAQ</a></li>
+			  </ul>
+			</footer>
+		  </div>	
+		</div>  
 	
+	</main>	
 	
+    <div class="sidebar-right col-3 p-0 pb-3 sidebar-background">
+	  <div class="offcanvas-md offcanvas-end sidebar-background" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
+		<div class="offcanvas-header">
+		  <h5 class="offcanvas-title" id="sidebarMenuLabel">Aggroculture</h5>
+		  <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebarMenu" aria-label="Close"></button>
+		</div>
+		<div class="offcanvas-body d-md-flex flex-column p-0 pt-3 overflow-y-auto">
+		  <ul class="nav flex-column">
+			<li class="nav-item">
+			  <div class=" d-flex align-items-center gap-2 sidebar-header">
+				<svg class="bi"><use xlink:href="#123"/></svg> Round 1
+			  </div>
+			</li>
+		  </ul>
+		  <hr class="sidebar-hr">
+		  <div class="sidebar-content px-4">
+			<div class="accordion accordion-rounds mt-1 mb-2" id="accordionPanelsStayOpenExample">  
+			  <div class="accordion-item">
+				<h2 class="accordion-header">
+				  <button class="accordion-button-grey collapsed accordion-text-collection-2" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="false" aria-controls="panelsStayOpen-collapseOne">
+				    <div class="col-11 align-middle"><span class="round-number d-inline-block beb-blue">Northern Conference</span></div>
+				  </button>
+				</h2>
+				<div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse">
+				  <div class="accordion-body-grey">
+					<div class="row justify-content-between pt-3 px-1">
+					  <table class="table table-sm table-rounds table-hover font-monospace">
+						<thead>
+						  <tr>
+							<th colspan="1" class="sidebar-heading2 px-2">DIVISION A</th>
+						  </tr>
+						</thead>
+						<tbody>
+						  <tr>
+							<th scope="row" class="col-5 ps-2"><span class="beb-green-color">W</span> Barbatos vs. Jinn <span class="beb-red-color">L</span></th>
+						  </tr>
+						  <tr>
+						    <th scope="row" class="col-5 ps-2"><span class="beb-red-color">L</span> Barbatos vs. Jinn <span class="beb-green-color">W</span></th>
+						  </tr>
+						  <tr>
+							<th scope="row" class="col-5 ps-2"><span class="beb-red-color">L</span> Barbatos vs. Jinn <span class="beb-green-color">W</span></th>
+						  </tr>
+						  <tr>
+						    <th scope="row" class="col-5 ps-2" style="background-color: #943BFF;">Barbatos vs. Jinn</th>
+						  </tr>
+						</tbody>
+						<thead>
+						  <tr>
+						    <th colspan="1" class="sidebar-heading2 px-2">DIVISION B</th>
+						  </tr>
+						</thead>
+						<tbody>			
+						  <tr>
+							<th scope="row" class="col-5 ps-2">Barbatos vs. Jinn</th>
+						  </tr>
+						  <tr>
+							<th scope="row" class="col-5 ps-2">Barbatos vs. Jinn</th>
+						  </tr>
+						  <tr>
+							<th scope="row" class="col-5 ps-2">Barbatos vs. Jinn</th>
+						  </tr>
+						  <tr>
+							<th scope="row" class="col-5 ps-2">Barbatos vs. Jinn</th>
+						  </tr>			
+						</tbody>
+					  </table>
+				    </div>
+				  </div>
+				</div>
+			  </div>
+			</div>
+			<div class="accordion accordion-rounds mt-1 mb-2" id="accordionPanelsStayOpenExample">  
+			  <div class="accordion-item">
+				<h2 class="accordion-header">
+				  <button class="accordion-button-grey collapsed accordion-text-collection-2" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+					<div class="col-11 align-middle"><span class="round-number d-inline-block beb-yellow">Eastern Conference</span></div>
+				  </button>
+				</h2>
+				<div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
+				  <div class="accordion-body-grey">
+					<div class="row justify-content-between pt-3 px-1">
+					  <table class="table table-sm table-rounds table-hover font-monospace">
+						<thead>
+						  <tr>
+							<th colspan="1" class="sidebar-heading2 px-2">DIVISION C</th>
+						  </tr>
+						</thead>
+						<tbody>
+						  <tr>
+							<th scope="row" class="col-5 ps-2">Barbatos vs. Jinn</th>
+						  </tr>
+						  <tr>
+							<th scope="row" class="col-5 ps-2">Barbatos vs. Jinn</th>
+						  </tr>
+						  <tr>
+							<th scope="row" class="col-5 ps-2">Barbatos vs. Jinn</th>
+						  </tr>
+						  <tr>
+							<th scope="row" class="col-5 ps-2">Barbatos vs. Jinn</th>
+						  </tr>
+						</tbody>
+						<thead>
+						  <tr>
+							<th colspan="1" class="sidebar-heading2 px-2">DIVISION D</th>
+						  </tr>
+						</thead>
+						<tbody>			
+						  <tr>
+							<th scope="row" class="col-5 ps-2">Barbatos vs. Jinn</th>
+						  </tr>
+						  <tr>
+							<th scope="row" class="col-5 ps-2">Barbatos vs. Jinn</th>
+						  </tr>
+						  <tr>
+							<th scope="row" class="col-5 ps-2">Barbatos vs. Jinn</th>
+						  </tr>
+						  <tr>
+							<th scope="row" class="col-5 ps-2">Barbatos vs. Jinn</th>
+						  </tr>			
+						</tbody>
+					  </table>
+					</div>
+				  </div>
+				</div>
+			  </div>
+			</div>
+			<div class="accordion accordion-rounds mt-1 mb-2" id="accordionPanelsStayOpenExample">  
+			  <div class="accordion-item">
+				<h2 class="accordion-header">
+				  <button class="accordion-button-grey collapsed accordion-text-collection-2" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
+					<div class="col-11 align-middle"><span class="round-number d-inline-block beb-green">Southern Conference</span></div>
+				  </button>
+				</h2>
+				<div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse">
+				  <div class="accordion-body-grey">
+					<div class="row justify-content-between pt-3 px-1">
+					  <table class="table table-sm table-rounds table-hover font-monospace">
+						<thead>
+						  <tr>
+							<th colspan="1" class="sidebar-heading2 px-2">DIVISION E</th>
+						  </tr>
+						</thead>
+						<tbody>
+						  <tr>
+							<th scope="row" class="col-5 ps-2">Barbatos vs. Jinn</th>
+						  </tr>
+						  <tr>
+							<th scope="row" class="col-5 ps-2">Barbatos vs. Jinn</th>
+						  </tr>
+						  <tr>
+							<th scope="row" class="col-5 ps-2">Barbatos vs. Jinn</th>
+						  </tr>
+						  <tr>
+							<th scope="row" class="col-5 ps-2">Barbatos vs. Jinn</th>
+						  </tr>
+						</tbody>
+						<thead>
+						  <tr>
+							<th colspan="1" class="sidebar-heading2 px-2">DIVISION F</th>
+						  </tr>
+						</thead>
+						<tbody>			
+						  <tr>
+							<th scope="row" class="col-5 ps-2">Barbatos vs. Jinn</th>
+						  </tr>
+						  <tr>
+							<th scope="row" class="col-5 ps-2">Barbatos vs. Jinn</th>
+						  </tr>
+						  <tr>
+							<th scope="row" class="col-5 ps-2">Barbatos vs. Jinn</th>
+						  </tr>
+						  <tr>
+							<th scope="row" class="col-5 ps-2">Barbatos vs. Jinn</th>
+						  </tr>			
+						</tbody>
+					  </table>
+					</div>
+				  </div>
+				</div>
+			  </div>
+			</div>
+			<div class="accordion accordion-rounds mt-1 mb-2" id="accordionPanelsStayOpenExample">  
+			  <div class="accordion-item">
+				<h2 class="accordion-header">
+				  <button class="accordion-button-grey collapsed accordion-text-collection-2" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseFour" aria-expanded="false" aria-controls="panelsStayOpen-collapseFour">
+					<div class="col-11 align-middle"><span class="round-number d-inline-block beb-red">Western Conference</span></div>
+				  </button>
+				</h2>
+				<div id="panelsStayOpen-collapseFour" class="accordion-collapse collapse">
+				  <div class="accordion-body-grey">
+					<div class="row justify-content-between pt-3 px-1">
+					  <table class="table table-sm table-rounds table-hover font-monospace">
+						<thead>
+						  <tr>
+							<th colspan="1" class="sidebar-heading2 px-2">DIVISION H</th>
+						  </tr>
+						</thead>
+						<tbody>
+						  <tr>
+							<th scope="row" class="col-5 ps-2">Barbatos vs. Jinn</th>
+						  </tr>
+						  <tr>
+							<th scope="row" class="col-5 ps-2">Barbatos vs. Jinn</th>
+						  </tr>
+						  <tr>
+							<th scope="row" class="col-5 ps-2">Barbatos vs. Jinn</th>
+						  </tr>
+						  <tr>
+							<th scope="row" class="col-5 ps-2">Barbatos vs. Jinn</th>
+						  </tr>
+						</tbody>
+						<thead>
+						  <tr>
+							<th colspan="1" class="sidebar-heading2 px-2">DIVISION H</th>
+						  </tr>
+						</thead>
+						<tbody>			
+						  <tr>
+							<th scope="row" class="col-5 ps-2">Barbatos vs. Jinn</th>
+						  </tr>
+						  <tr>
+							<th scope="row" class="col-5 ps-2">Barbatos vs. Jinn</th>
+						  </tr>
+						  <tr>
+							<th scope="row" class="col-5 ps-2">Barbatos vs. Jinn</th>
+						  </tr>
+						  <tr>
+							<th scope="row" class="col-5 ps-2">Barbatos vs. Jinn</th>
+						  </tr>			
+						</tbody>
+					  </table>
+					</div>
+				  </div>
+				</div>
+			  </div>
+			</div>
+		  </div>
+		</div>
+	  </div>
+	</div>
   </div>
 </div>
 <script src="../js/bootstrap.bundle.min.js"></script>
-
-	<script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.2/dist/chart.umd.js" integrity="sha384-eI7PSr3L1XLISH8JdDII5YN/njoSsxfbrkCTnJrzXt+ENP5MOVBxD+l6sEG4zoLp" crossorigin="anonymous"></script>
-	<script src="../js/dashboard.js"></script>
-	<script src="../js/sidebar.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.2/dist/chart.umd.js" integrity="sha384-eI7PSr3L1XLISH8JdDII5YN/njoSsxfbrkCTnJrzXt+ENP5MOVBxD+l6sEG4zoLp" crossorigin="anonymous"></script>
+<script src="../js/dashboard.js"></script>
+<script src="../js/sidebar.js"></script>
 </body>
 </html>
