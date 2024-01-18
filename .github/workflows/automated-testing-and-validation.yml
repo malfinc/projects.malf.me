@@ -57,7 +57,7 @@ jobs:
         with:
           otp-version: 26.0
           elixir-version: 1.15
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: |
             deps
@@ -83,7 +83,7 @@ jobs:
         with:
           otp-version: 26.0
           elixir-version: 1.15
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: |
             deps
@@ -103,7 +103,7 @@ jobs:
         with:
           otp-version: 26.0
           elixir-version: 1.15
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: |
             deps
@@ -124,7 +124,7 @@ jobs:
         with:
           otp-version: 26.0
           elixir-version: 1.15
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: |
             deps
@@ -145,13 +145,13 @@ jobs:
         with:
           otp-version: 26.0
           elixir-version: 1.15
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: |
             deps
             _build
           key: ${{ runner.os }}-${{ steps.beam.outputs.elixir-version }}-${{ steps.beam.outputs.otp-version }}-deps-${{ hashFiles('**/mix.lock') }}
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         id: plt_cache
         with:
           path: |
