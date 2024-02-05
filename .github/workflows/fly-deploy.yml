@@ -32,9 +32,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: superfly/flyctl-actions/setup-flyctl@1.4
+      - uses: superfly/flyctl-actions/setup-flyctl@1.5
       - name: Push Release To Fly.io
-        uses: superfly/flyctl-actions@1.4
+        uses: superfly/flyctl-actions@1.5
         with:
           args: "deploy"
         env:
