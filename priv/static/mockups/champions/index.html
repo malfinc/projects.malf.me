@@ -187,7 +187,7 @@
 <div class="container-fluid">
   <div class="row">
 	  
-	<div class="sidebar col-2 p-0 sidebar-background">
+	<div class="sidebar col-3 p-0 sidebar-background">
 	  <div class="offcanvas-md offcanvas-end sidebar-background" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
 		<div class="offcanvas-header">
 		  <h5 class="offcanvas-title" id="sidebarMenuLabel">Aggroculture</h5>
@@ -206,38 +206,41 @@
 			<div class="col-12">
 			
 			  <table class="table table-sm table-aggro table-hover font-monospace">
-				<thead>
-				  <tr>
-					<th colspan="2" class="sidebar-heading2" style="color: #CCC; background-color: #212528;">SEASON STATISTICS</th>
-				  </tr>
-				</thead>
-				<tbody>
-				  <tr>
-					<th scope="row">Division</th>
-					<td>Division A</td>
-				  </tr>
-				  <tr>
-					<th scope="row">Div. Position</th>
-					 <td>3 / 8</td>
-				  </tr>
-				  <tr>
-					<th scope="row">Battles</th>
-					<td>9 / 12</td>
-				  </tr>
-				  <tr>
-					<th scope="row">Victories</th>
-					<td>17</td>
-				  </tr>
-				  <tr>
-					<th scope="row">Points</th>
-					<td>29</td>
-				  </tr>
-				</tbody>
-			  </table>
+				  <thead>
+					<tr>
+					  <th colspan="2" class="sidebar-heading2 px-2">SEASON STATISTICS</th>
+					</tr>
+				  </thead>
+				  <tbody>
+					<tr>
+					  <th scope="row" class="ps-2">Division</th>
+					  <td class="pe-2">Division A</td>
+					</tr>
+					<tr>
+					  <th scope="row" class="ps-2">Div. Position</th>
+					   <td class="pe-2">3 / 8</td>
+					</tr>
+					<tr>
+					  <th scope="row" class="ps-2">Battles</th>
+					  <td class="pe-2">9 / 12</td>
+					</tr>
+					<tr>
+					  <th scope="row" class="ps-2">Victories</th>
+					  <td class="pe-2">17</td>
+					</tr>
+					<tr>
+					  <th scope="row" class="ps-2">Points</th>
+					  <td class="pe-2">29</td>
+					</tr>
+				  </tbody>
+				</table>
 			  
 			  </div>  
 			  
-			  <div class="d-grid col-12 mt-1 mb-3">
+			  <div class="d-grid col-12 mt-1 mb-3 gap-2">
+				  <button class="btn btn-aggro btn-sm" type="button">
+					Sponsor Champion
+				  </button>
 				  <button class="btn btn-aggro btn-sm" type="button">
 					Upgrade Champion
 				  </button>
@@ -281,16 +284,10 @@
 			  <span>Full Art</span>
 			</h6>
 			<h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
-			  <span class="sidebar-border">Card Number</span>
+			  <span class="sidebar-border">Champion Number</span>
 			</h6>
 			<h6 class="sidebar-info d-flex align-items-center font-monospace">
 			  <span>18 / 64</span>
-			</h6>
-			<h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
-			  <span class="sidebar-border">Card Edition</span>
-			</h6>
-			<h6 class="sidebar-info d-flex align-items-center font-monospace">
-			  <span>1st Edition</span>
 			</h6>
 			<h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
 			  <span class="sidebar-border">Series</span>
@@ -305,23 +302,17 @@
 			  <span>2023</span>
 			</h6>
 			<h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
-				<span class="sidebar-border">Identification Number</span>
-			  </h6>
-			  <h6 class="sidebar-info d-flex align-items-center font-monospace">
-				<span>C-S1-E1-02935</span>
-			  </h6>
-			  <h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
-				<span class="sidebar-border">Owner</span>
-			  </h6>
-			  <h6 class="sidebar-info d-flex align-items-center font-monospace">
-				<span><a href="">michaelalfox</a></span>
-			  </h6>
+			  <span class="sidebar-border">Sponsors</span>
+			</h6>
+			<h6 class="sidebar-info d-flex align-items-center font-monospace">
+			  <span><a href="">michaelalfox</a></span>
+			</h6>
 		  </div>
 		</div>
 	  </div>
 	</div>
 
-	<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+	<main class="col-9 px-md-4">
 	  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 btn-bar">
 		  <h1 class="h2">Champions</h1>
 		  <div class="btn-toolbar mb-2 mb-md-0">
@@ -335,8 +326,8 @@
 				  All Conferences
 				</button>
 				<ul class="dropdown-menu">
-				  <li><a class="dropdown-item" href="#"><svg class="bi"><use xlink:href="#1circle"/></svg> Conference 1</a></li>
-				  <li><a class="dropdown-item" href="#"><svg class="bi"><use xlink:href="#2circle"/></svg> Conference 2</a></li>
+				  <li><a class="dropdown-item" href="#">Conference 1</a></li>
+				  <li><a class="dropdown-item" href="#">Conference 2</a></li>
 				</ul>
 			</div>
 			<div class="dropdown">
@@ -345,13 +336,13 @@
 				  All Divisions
 				</button>
 				<ul class="dropdown-menu">
-				  <li><a class="dropdown-item" href="#"><svg class="bi"><use xlink:href="#1circle"/></svg> Division A</a></li>
-				  <li><a class="dropdown-item" href="#"><svg class="bi"><use xlink:href="#2circle"/></svg> Division B</a></li>
-				  <li><a class="dropdown-item" href="#"><svg class="bi"><use xlink:href="#3circle"/></svg> Division C</a></li>
-				  <li><a class="dropdown-item" href="#"><svg class="bi"><use xlink:href="#1circle"/></svg> Division D</a></li>
-				  <li><a class="dropdown-item" href="#"><svg class="bi"><use xlink:href="#2circle"/></svg> Division E</a></li>
-				  <li><a class="dropdown-item" href="#"><svg class="bi"><use xlink:href="#3circle"/></svg> Division F</a></li>
-				  <li><a class="dropdown-item" href="#"><svg class="bi"><use xlink:href="#1circle"/></svg> Division G</a></li>
+				  <li><a class="dropdown-item" href="#">Division A</a></li>
+				  <li><a class="dropdown-item" href="#">Division B</a></li>
+				  <li><a class="dropdown-item" href="#">Division C</a></li>
+				  <li><a class="dropdown-item" href="#">Division D</a></li>
+				  <li><a class="dropdown-item" href="#">Division E</a></li>
+				  <li><a class="dropdown-item" href="#">Division F</a></li>
+				  <li><a class="dropdown-item" href="#">Division G</a></li>
 				</ul>
 			</div>
 			<div class="dropdown">
@@ -360,9 +351,9 @@
 				  All Series
 				</button>
 				<ul class="dropdown-menu">
-				  <li><a class="dropdown-item" href="#"><svg class="bi"><use xlink:href="#1circle"/></svg> Season 1</a></li>
-				  <li><a class="dropdown-item" href="#"><svg class="bi"><use xlink:href="#2circle"/></svg> Season 2</a></li>
-				  <li><a class="dropdown-item" href="#"><svg class="bi"><use xlink:href="#3circle"/></svg> Season 3</a></li>
+				  <li><a class="dropdown-item" href="#">Season 1</a></li>
+				  <li><a class="dropdown-item" href="#">Season 2</a></li>
+				  <li><a class="dropdown-item" href="#">Season 3</a></li>
 				</ul>
 			  </div>
 			<div class="dropdown">
