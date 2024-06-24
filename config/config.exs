@@ -9,7 +9,7 @@ import Config
 
 config :core,
   ecto_repos: [Core.Repo],
-  generators: [binary_id: true],
+  generators: [timestamp_type: :utc_datetime, binary_id: true]
   application_name: "Michael Al Fox",
   support_email_address: "support@www.malf.me",
   theme_color: "#ffffff",
@@ -68,12 +68,12 @@ config :esbuild,
 
 # Configure tailwind (the version is required)
 config :tailwind,
-  version: "3.3.2",
-  default: [
+  version: "3.4.3",
+  core: [
     args: ~w(
       --config=tailwind.config.js
-      --input=css/application.css
-      --output=../priv/static/assets/application.css
+      --input=css/app.css
+      --output=../priv/static/assets/app.css
     ),
     cd: Path.expand("../assets", __DIR__)
   ]
