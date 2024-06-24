@@ -9,7 +9,7 @@ import Config
 
 config :core,
   ecto_repos: [Core.Repo],
-  generators: [timestamp_type: :utc_datetime, binary_id: true]
+  generators: [timestamp_type: :utc_datetime, binary_id: true],
   application_name: "Michael Al Fox",
   support_email_address: "support@www.malf.me",
   theme_color: "#ffffff",
@@ -79,13 +79,9 @@ config :tailwind,
   ]
 
 # Configures Elixir's Logger
-import IO
-
-# Configures Elixir's Logger
 config :logger, :console,
-  format: "$metadata[$level] #{IO.ANSI.bright()}$message#{IO.ANSI.normal()}\n",
-  metadata: [:request_id],
-  color: :enabled
+  format: "$time $metadata[$level] $message\n",
+  metadata: [:request_id]
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
