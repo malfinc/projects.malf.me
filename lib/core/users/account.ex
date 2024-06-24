@@ -1,14 +1,6 @@
 defmodule Core.Users.Account do
   @moduledoc false
   use Ecto.Schema
-  import Estate, only: [state_machines: 2]
-
-  state_machines(
-    Core.Repo,
-    onboarding_state: [
-      complete: [converted: "completed"]
-    ]
-  )
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id

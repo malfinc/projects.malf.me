@@ -64,7 +64,7 @@ defmodule Core.Users.AccountToken do
   """
   def verify_session_token_query(token) do
     query =
-      from token in token_and_context_query(token, "session"),
+      from token in by_token_and_context_query(token, "session"),
         join: account in assoc(token, :account),
         where: token.inserted_at > ago(@session_validity_in_days, "day"),
         select: account
@@ -122,7 +122,7 @@ defmodule Core.Users.AccountToken do
         days = days_for_context(context)
 
         query =
-          from token in token_and_context_query(hashed_token, context),
+          from token in by_token_and_context_query(hashed_token, context),
             join: account in assoc(token, :account),
             where:
               token.inserted_at > ago(^days, "day") and token.sent_to == account.email_address,
@@ -158,7 +158,7 @@ defmodule Core.Users.AccountToken do
         hashed_token = :crypto.hash(@hash_algorithm, decoded_token)
 
         query =
-          from token in token_and_context_query(hashed_token, context),
+          from token in by_token_and_context_query(hashed_token, context),
             where: token.inserted_at > ago(@change_email_validity_in_days, "day")
 
         {:ok, query}
@@ -171,18 +171,18 @@ defmodule Core.Users.AccountToken do
   @doc """
   Returns the token struct for the given token value and context.
   """
-  def token_and_context_query(token, context) do
+  def by_token_and_context_query(token, context) do
     from Core.Users.AccountToken, where: [token: ^token, context: ^context]
   end
 
   @doc """
   Gets all tokens for the given account for the given contexts.
   """
-  def account_and_contexts_query(account, :all) do
+  def by_account_and_contexts_query(account, :all) do
     from t in Core.Users.AccountToken, where: t.account_id == ^account.id
   end
 
-  def account_and_contexts_query(account, [_ | _] = contexts) do
+  def by_account_and_contexts_query(account, [_ | _] = contexts) do
     from t in Core.Users.AccountToken,
       where: t.account_id == ^account.id and t.context in ^contexts
   end
