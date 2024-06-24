@@ -1,10 +1,6 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
-@import "bootstrap";
-@import "./phoenix.css";
-@import "./form.css";
-@import "./card.css";
 
 /* This file is for your main application CSS */
 :root {
@@ -30,8 +26,7 @@ main {
   margin-top: 4.5rem;
   max-width: 80vw;
   min-height: 110vh;
-  font-family: 'Montserrat', 'Myriad Pro', Calibri, Helvetica,
-    Arial, sans-serif;
+  font-family: "Montserrat", "Myriad Pro", Calibri, Helvetica, Arial, sans-serif;
 }
 
 .nav-shadow {
