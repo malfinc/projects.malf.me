@@ -636,10 +636,38 @@ h1 > small {
   margin-bottom: 20px;
 }
 
+.total-tag {
+  position: relative;
+  z-index: 1;
+  background-color: #FFFFFF;
+  color: #111518;
+  border-radius: 6px;
+  font-size: 14px;
+  line-height: 18px;
+  padding: 4px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bold;
+  text-align: center;
+  max-width: 140px;
+  margin: 0 auto;
+  margin-top: -42px;
+  margin-bottom: 20px;
+}
+
 .attribute-title {
   margin: 0 auto;
   text-align: center;
   font-size: 60px;
+  color: #FFFFFF;
+  text-shadow: 0px 0px 3px #111518;
+  font-family: 'Calistoga', cursive;
+}
+
+.attribute-total {
+  margin: 0 auto;
+  text-align: center;
+  font-size: 36px;
+  line-height: 88px;
   color: #FFFFFF;
   text-shadow: 0px 0px 3px #111518;
   font-family: 'Calistoga', cursive;
@@ -1665,6 +1693,11 @@ display: block !important;
   background-size: var(--bs-accordion-btn-icon-width);
   transition: var(--bs-accordion-btn-icon-transition);
 }
+
+.accordion-grey-btn-icon {
+  color: #cc1100;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .accordion-button-grey::after {
     transition: none;
@@ -1762,7 +1795,6 @@ display: block !important;
 .accordion-text-collection {
   font-size: 18px;
   font-weight: 600;
-  text-transform: uppercase;
   padding: 4px 20px 4px 4px;
   text-shadow: 0px 1px 3px rgba(0,0,0,0.2);
 }
