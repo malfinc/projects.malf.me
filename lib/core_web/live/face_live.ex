@@ -3,7 +3,7 @@ defmodule CoreWeb.FaceLive do
   use Phoenix.LiveView,
     layout: {CoreWeb.LayoutView, :face}
 
-  use Phoenix.HTML
+  use Phoenix.Component
 
   @impl true
   def mount(_params, _session, socket) do
