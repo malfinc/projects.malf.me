@@ -9,11 +9,7 @@ defmodule Core.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps(),
-      dialyzer: [
-        plt_add_apps: [:mix],
-        plt_file: {:no_warn, "priv/plts/dialyzer.plt"}
-      ]
+      deps: deps()
     ]
   end
 
@@ -23,7 +19,7 @@ defmodule Core.MixProject do
   def application do
     [
       mod: {Core.Application, []},
-      extra_applications: [:logger, :runtime_tools, :os_mon]
+      extra_applications: [:logger, :runtime_tools]
     ]
   end
 
