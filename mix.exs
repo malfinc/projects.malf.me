@@ -109,12 +109,11 @@ defmodule Core.MixProject do
         "test"
       ],
       "assets.setup": [
-        "tailwind.install --if-missing",
         "esbuild.install --if-missing",
         "cmd --cd assets/ npm install"
       ],
-      "assets.build": ["assets.setup", "tailwind default", "esbuild default"],
-      "assets.deploy": ["tailwind default --minify", "esbuild default --minify", "phx.digest"],
+      "assets.build": ["assets.setup", "esbuild default"],
+      "assets.deploy": ["esbuild default --minify", "phx.digest"],
       check: ["compile", "credo", "dialyzer --quiet"]
     ]
   end

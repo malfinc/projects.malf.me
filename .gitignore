@@ -37,4 +37,6 @@ npm-debug.log
 
 # Master key should never be in version control
 priv/secrets/master.key
+
+# An artfact of the OS
 .DS_Store

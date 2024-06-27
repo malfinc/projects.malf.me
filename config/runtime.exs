@@ -20,22 +20,27 @@ if System.get_env("PHX_SERVER") do
   config :core, CoreWeb.Endpoint, server: true
 end
 
-Application.put_env(
-  :core,
-  :secrets,
-  EncryptedSecrets.read!()[Mix.env()]
-)
+:ok =
+  if config_env() == :prod do
+    Application.put_env(
+      :core,
+      :secrets,
+      EncryptedSecrets.read!()[Mix.env()]
+    )
+  else
+    Application.put_env(
+      :core,
+      :secrets,
+      %{}
+    )
+  end
 
 config :ueberauth, Ueberauth.Strategy.Twitch.OAuth,
-  client_id: Application.get_env(:core, :secrets)[:TWITCH_CLIENT_ID],
-  client_secret: Application.get_env(:core, :secrets)[:TWITCH_CLIENT_SECRET],
-  redirect_uri: Application.get_env(:core, :secrets)[:TWITCH_REDIRECT_URI]
+  client_id: Application.get_env(:core, :secrets)["twitch"]["client_id"],
+  client_secret: Application.get_env(:core, :secrets)["twitch"]["client_secret"],
+  redirect_uri: Application.get_env(:core, :secrets)["twitch"]["redirect_uri"]
 
 if config_env() == :prod do
-  # Configure Sentry, the service we use to alert us to issues in the application
-  config :sentry,
-    dsn: System.get_env("SENTRY_DSN")
-
   database_url =
     System.get_env("DATABASE_URL") ||
       raise """

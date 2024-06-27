@@ -15,9 +15,12 @@ defmodule Core.Gameplay do
   use EctoInterface, [Core.Gameplay.Division, :divisions, :division]
   use EctoInterface, [Core.Gameplay.Conference, :conferences, :conference]
 
+  @doc """
+  Given a `season`, `rarity`, and a pack count
+  """
   @spec odds(Core.Gameplay.Season.t(), Core.Gameplay.Rarity.t(), pos_integer()) :: float
   def odds(season, rarity, packs)
-      when is_struct(rarity, Core.Gameplay.Rarity) and is_integer(packs) do
+      when is_struct(rarity, Core.Gameplay.Rarity) and is_integer(packs) and packs > 0 do
     total_packs = count_cards() / 6
     cards = Core.Repo.preload(list_cards(), [:rarity])
     distribution = card_rarity_distribution(season, cards)

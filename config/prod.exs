@@ -27,10 +27,16 @@ config :logger,
 config :oban, log_level: :warning
 
 config :sentry,
+  http_client: Core.SentryClient,
+  dsn: "https://1468a3cb118c4b60ba1fb36432428af4@o1184787.ingest.us.sentry.io/4504448048365568",
   environment_name: :prod,
   enable_source_code_context: true,
   root_source_code_paths: [File.cwd!()],
-  included_environments: [:prod]
+  integrations: [
+    oban: [
+      capture_errors: true
+    ]
+  ]
 
 # Runtime production configuration, including reading
 # of environment variables, is done on config/runtime.exs.

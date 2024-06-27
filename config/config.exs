@@ -77,11 +77,6 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
-# Configure Sentry, the service we use to alert us to issues in the application
-config :sentry,
-  environment_name: Mix.env(),
-  included_environments: [:prod]
-
 config :core, :twitch, webhook_path: "twitch/webhooks"
 
 config :core, Oban,
