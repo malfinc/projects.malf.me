@@ -147,24 +147,21 @@
 		  <li class="nav-item">
 			<a class="nav-link font-monospace" href="../standings/index.html">STANDINGS</a>
 		  </li>
+		  <li class="nav-item dropdown">
+			  <a class="nav-link font-monospace dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">TRADES</a>
+			  <ul class="dropdown-menu">
+				<li><a class="dropdown-item font-monospace" href="../trade-create/index.html">Create</a></li>
+				<li><a class="dropdown-item font-monospace" href="../trade-drafts/index.html">Drafts <span class="badge text-bg-red font-monospace">2</span></a></li>
+				<li><a class="dropdown-item font-monospace" href="../trade-pending/index.html">Pending <span class="badge text-bg-red font-monospace">4</span></a></li>
+				<li><a class="dropdown-item font-monospace" href="../trade-redister/index.html">Registry</a></li>
+				<hr>
+				<li><a class="dropdown-item font-monospace" href="../trade-block/index.html">Your Block</a></li>
+				<li><a class="dropdown-item font-monospace" href="../browse-trade-block/index.html">Browse Block</a></li>
+			  </ul>
+			</li>
 		  <div class="vr"></div>
 		  <li class="nav-item">
-			<a class="nav-link font-monospace" href="../cards/index.html">CARDS</a>
-		  </li>
-		  <li class="nav-item">
-			<a class="nav-link font-monospace" href="../packs/index.html">PACKS</a>
-		  </li>
-		  <li class="nav-item dropdown">
-			<a class="nav-link font-monospace dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">TRADES</a>
-			<ul class="dropdown-menu">
-			  <li><a class="dropdown-item font-monospace" href="../trade-create/index.html">Create</a></li>
-			  <li><a class="dropdown-item font-monospace" href="../trade-drafts/index.html">Drafts <span class="badge text-bg-red font-monospace">2</span></a></li>
-			  <li><a class="dropdown-item font-monospace" href="../trade-pending/index.html">Pending <span class="badge text-bg-red font-monospace">4</span></a></li>
-			  <li><a class="dropdown-item font-monospace" href="../trade-redister/index.html">Registry</a></li>
-			  <hr>
-			  <li><a class="dropdown-item font-monospace" href="../trade-block/index.html">Your Block</a></li>
-			  <li><a class="dropdown-item font-monospace" href="../browse-trade-block/index.html">Browse Block</a></li>
-			</ul>
+				<a class="nav-link font-monospace" href="../user-packs-self/index.html">USERNAME</a>
 		  </li>
 		</ul>
 		<div class="btn-toolbar mb-0 mb-md-0 me-3">
@@ -188,67 +185,7 @@
 <div class="container-fluid">
   <div class="row">
 	  
-	<div class="sidebar col-2 p-0 sidebar-background">
-	  <div class="offcanvas-md offcanvas-end sidebar-background" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
-		<div class="offcanvas-header">
-		  <h5 class="offcanvas-title" id="sidebarMenuLabel">Aggroculture</h5>
-		  <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebarMenu" aria-label="Close"></button>
-		</div>
-		<div class="offcanvas-body d-md-flex flex-column p-0 pt-3 overflow-y-auto">
-		  <ul class="nav flex-column">
-			<li class="nav-item">
-			  <div class=" d-flex align-items-center gap-2 sidebar-header">
-				<svg class="bi"><use xlink:href="#wand"/></svg> Card Modifications</div>
-			</li>
-		  </ul>
-		  <hr class="sidebar-hr">
-		  <div class="sidebar-content px-4">
-		  <div class="col-12 mb-3">
-			<img src="../img/card4.png" class="img-fluid" alt="...">
-		  </div>
-		  
-		  
-		  <div class="d-grid gap-2 col-12 mb-3">
-			  <div class="btn-group">
-				<button class="btn btn-aggro btn-sm" type="button">
-				  Holographic
-				</button>
-				<button type="button" class="btn btn-sm btn-aggro" aria-expanded="false" style="max-width: 50px;" disabled>
-				  <span class="badge text-bg-yellow font-monospace">1 C</span>
-				</button>
-			  </div>
-			  <div class="btn-group">
-				<button class="btn btn-aggro btn-sm" type="button">
-				  Full Art
-				</button>
-				<button type="button" class="btn btn-sm btn-aggro" aria-expanded="false" style="max-width: 50px;" disabled>
-				  <span class="badge text-bg-yellow font-monospace">1 C</span>
-				</button>
-			  </div>
-			  <div class="btn-group">
-				<button class="btn btn-aggro btn-sm" type="button">
-				  Gold Frame
-				</button>
-				<button type="button" class="btn btn-sm btn-aggro" aria-expanded="false" style="max-width: 50px;" disabled>
-				  <span class="badge text-bg-yellow font-monospace">1 C</span>
-				</button>
-			  </div>
-			  <div class="btn-group">
-				<button class="btn btn-aggro btn-sm" type="button">
-				  Rainbow Frame
-				</button>
-				<button type="button" class="btn btn-sm btn-aggro" aria-expanded="false" style="max-width: 50px;" disabled>
-				  <span class="badge text-bg-yellow font-monospace">1 C</span>
-				</button>
-			  </div>
-			</div>
-			
-		  </div>
-		</div>
-	  </div>
-	</div>
 	
-
 	<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
 	  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 btn-bar">
 		  <h1 class="h2">Barbatos, the Condemned</h1>
@@ -604,6 +541,67 @@
 		</div>
 
 	</main>
+	
+	<div class="sidebar col-2 p-0 sidebar-background">
+	  <div class="offcanvas-md offcanvas-end sidebar-background" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
+		<div class="offcanvas-header">
+		  <h5 class="offcanvas-title" id="sidebarMenuLabel">Aggroculture</h5>
+		  <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebarMenu" aria-label="Close"></button>
+		</div>
+		<div class="offcanvas-body d-md-flex flex-column p-0 pt-3 overflow-y-auto">
+		  <ul class="nav flex-column">
+			<li class="nav-item">
+			  <div class=" d-flex align-items-center gap-2 sidebar-header">
+				<svg class="bi"><use xlink:href="#wand"/></svg> Card Modifications</div>
+			</li>
+		  </ul>
+		  <hr class="sidebar-hr">
+		  <div class="sidebar-content px-4">
+		  <div class="col-12 mb-3">
+			<img src="../img/card4.png" class="img-fluid" alt="...">
+		  </div>
+		  
+		  
+		  <div class="d-grid gap-2 col-12 mb-3">
+			  <div class="btn-group">
+				<button class="btn btn-aggro btn-sm" type="button">
+				  Holographic
+				</button>
+				<button type="button" class="btn btn-sm btn-aggro" aria-expanded="false" style="max-width: 50px;" disabled>
+				  <span class="badge text-bg-yellow font-monospace">1 C</span>
+				</button>
+			  </div>
+			  <div class="btn-group">
+				<button class="btn btn-aggro btn-sm" type="button">
+				  Full Art
+				</button>
+				<button type="button" class="btn btn-sm btn-aggro" aria-expanded="false" style="max-width: 50px;" disabled>
+				  <span class="badge text-bg-yellow font-monospace">1 C</span>
+				</button>
+			  </div>
+			  <div class="btn-group">
+				<button class="btn btn-aggro btn-sm" type="button">
+				  Gold Frame
+				</button>
+				<button type="button" class="btn btn-sm btn-aggro" aria-expanded="false" style="max-width: 50px;" disabled>
+				  <span class="badge text-bg-yellow font-monospace">1 C</span>
+				</button>
+			  </div>
+			  <div class="btn-group">
+				<button class="btn btn-aggro btn-sm" type="button">
+				  Rainbow Frame
+				</button>
+				<button type="button" class="btn btn-sm btn-aggro" aria-expanded="false" style="max-width: 50px;" disabled>
+				  <span class="badge text-bg-yellow font-monospace">1 C</span>
+				</button>
+			  </div>
+			</div>
+			
+		  </div>
+		</div>
+	  </div>
+	</div>
+	
   </div>
 </div>
 <script src="../js/bootstrap.bundle.min.js"></script>

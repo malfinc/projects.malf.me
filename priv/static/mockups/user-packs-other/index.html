@@ -7,7 +7,7 @@
 	<meta name="description" content="">
 	<meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
 	<meta name="generator" content="Hugo 0.118.2">
-	<title>Opening Pack · Aggroculture</title>
+	<title>User · Aggroculture</title>
 
 	<link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/dashboard/">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
@@ -47,6 +47,9 @@
   <symbol id="stars" viewBox="0 0 16 16">
 	<path d="M7.657 6.247c.11-.33.576-.33.686 0l.645 1.937a2.89 2.89 0 0 0 1.829 1.828l1.936.645c.33.11.33.576 0 .686l-1.937.645a2.89 2.89 0 0 0-1.828 1.829l-.645 1.936a.361.361 0 0 1-.686 0l-.645-1.937a2.89 2.89 0 0 0-1.828-1.828l-1.937-.645a.361.361 0 0 1 0-.686l1.937-.645a2.89 2.89 0 0 0 1.828-1.828l.645-1.937zM3.794 1.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387A1.734 1.734 0 0 0 4.593 5.69l-.387 1.162a.217.217 0 0 1-.412 0L3.407 5.69A1.734 1.734 0 0 0 2.31 4.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387A1.734 1.734 0 0 0 3.407 2.31l.387-1.162zM10.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732L9.1 2.137a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L10.863.1z"/>
   </symbol>
+  <symbol id="question-circle" viewBox="0 0 16 16">
+	<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.496 6.033h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286a.237.237 0 0 0 .241.247zm2.325 6.443c.61 0 1.029-.394 1.029-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94 0 .533.425.927 1.01.927z"/>
+  </symbol> 
   <symbol id="layers" viewBox="0 0 16 16">
 	<path d="M8.235 1.559a.5.5 0 0 0-.47 0l-7.5 4a.5.5 0 0 0 0 .882L3.188 8 .264 9.559a.5.5 0 0 0 0 .882l7.5 4a.5.5 0 0 0 .47 0l7.5-4a.5.5 0 0 0 0-.882L12.813 8l2.922-1.559a.5.5 0 0 0 0-.882l-7.5-4zm3.515 7.008L14.438 10 8 13.433 1.562 10 4.25 8.567l3.515 1.874a.5.5 0 0 0 .47 0l3.515-1.874zM8 9.433 1.562 6 8 2.567 14.438 6 8 9.433z"/>
   </symbol>
@@ -126,7 +129,7 @@
 	<div class="container-fluid">
 	  <a class="logo-shadow" href="#"><img src="../img/logo.svg" alt="Logo" width="30" height="24" class="d-inline-block align-text-top"></a>
 	  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-	    <span class="navbar-toggler-icon"></span>
+		<span class="navbar-toggler-icon"></span>
 	  </button>
 	  <div class="collapse navbar-collapse" id="navbarCollapse">
 		<ul class="navbar-nav me-auto mb-2 mb-md-0"> 
@@ -139,25 +142,22 @@
 		  <li class="nav-item">
 			<a class="nav-link font-monospace" href="../standings/index.html">STANDINGS</a>
 		  </li>
+		  <li class="nav-item dropdown">
+			  <a class="nav-link font-monospace dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">TRADES</a>
+			  <ul class="dropdown-menu">
+				<li><a class="dropdown-item font-monospace" href="#">Create</a></li>
+				<li><a class="dropdown-item font-monospace" href="#">Drafts <span class="badge text-bg-red font-monospace">2</span></a></li>
+				<li><a class="dropdown-item font-monospace" href="#">Pending <span class="badge text-bg-red font-monospace">4</span></a></li>
+				<li><a class="dropdown-item font-monospace" href="#">Registry</a></li>
+				<hr>
+				<li><a class="dropdown-item font-monospace" href="#">Your Block</a></li>
+				<li><a class="dropdown-item font-monospace" href="#">Browse Block</a></li>
+			  </ul>
+			</li>	
 		  <div class="vr"></div>
 		  <li class="nav-item">
-		    <a class="nav-link font-monospace" href="../cards/index.html">CARDS</a>
+			<a class="nav-link font-monospace" href="../user-packs-self/index.html">USERNAME</a>
 		  </li>
-		  <li class="nav-item">
-			<a class="nav-link font-monospace" href="../packs/index.html">PACKS</a>
-		  </li>
-		  <li class="nav-item dropdown">
-			<a class="nav-link font-monospace dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">TRADES</a>
-			<ul class="dropdown-menu">
-			  <li><a class="dropdown-item font-monospace" href="#">Create</a></li>
-			  <li><a class="dropdown-item font-monospace" href="#">Drafts <span class="badge text-bg-red font-monospace">2</span></a></li>
-			  <li><a class="dropdown-item font-monospace" href="#">Pending <span class="badge text-bg-red font-monospace">4</span></a></li>
-			  <li><a class="dropdown-item font-monospace" href="#">Registry</a></li>
-			  <hr>
-			  <li><a class="dropdown-item font-monospace" href="#">Your Block</a></li>
-			  <li><a class="dropdown-item font-monospace" href="#">Browse Block</a></li>
-			</ul>
-		  </li>	
 		</ul>
 		<div class="btn-toolbar mb-0 mb-md-0 me-3">
 		  <div class="input-group input-group-sm">
@@ -179,229 +179,196 @@
 
 <div class="container-fluid">
   <div class="row">	
-	<main class="col-12 px-3" style="background-color: #111518;">
-	  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center px-2 pt-3 pb-3 mb-3 pack-bar">
-	    <div class="pack-header">Opening Pack: <a href="">P-S1-E1-0185</a></div>
-	  </div>
-	  <div class="row p-0 m-0 mb-2 justify-content-between">
-	    <div class="col-2" style="width: auto; height: auto; max-width: 230px;">
-		  <img src="../img/hinn.png" class="img-fluid card-inactive"  alt="...">
-	    </div>
-		<div class="col-2" style="width: auto; height: auto; max-width: 230px;">
-		  <img src="../img/maalik.png" class="img-fluid card-inactive"  alt="...">
-		</div>
-		<div class="col-2" style="width: auto; height: auto; max-width: 230px;">
-		  <img src="../img/baal.png" class="img-fluid card-inactive"  alt="...">
-	    </div>
-		<div class="col-2" style="width: auto; height: auto; max-width: 230px;">
-	      <img src="../img/honos.png" class="img-fluid card-inactive"  alt="...">
-	    </div>
-		<div class="col-2" style="width: auto; height: auto; max-width: 230px;">
-		  <img src="../img/lemures.png" class="img-fluid card-inactive"  alt="...">
-	    </div>
-		<div class="col-2" style="width: auto; height: auto; max-width: 230px;">
-		  <img src="../img/cardback.png" class="img-fluid card-inactive"  alt="...">
-		</div>
-	  </div>
-	</main>	
-	<div class="empty-block"></div>
-  </div>
-  <div class="row">
-	  
-	
-	<div class="sidebar col-2 p-0 sidebar-background">
-	  <div class="offcanvas-md offcanvas-end sidebar-background" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
-		<div class="offcanvas-header">
-		  <h5 class="offcanvas-title" id="sidebarMenuLabel">Aggroculture</h5>
-		  <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebarMenu" aria-label="Close"></button>
-		</div>
-		<div class="offcanvas-body d-md-flex flex-column p-0 pt-3 overflow-y-auto">
-		  <ul class="nav flex-column">
-			<li class="nav-item">
-			  <div class=" d-flex align-items-center gap-2 sidebar-header">
-				<svg class="bi"><use xlink:href="#coin"/></svg> Buy Packs</div>
-			</li>
-		  </ul>
-		  <hr class="sidebar-hr">
-		  <div class="sidebar-content px-4">
-			  
-			<h6 class="sidebar-heading d-flex align-items-center mt-2 mb-2 font-monospace">
-				<span>S3 - 1st Ed.  <span class="badge text-bg-red font-monospace" style="margin-left: 5px;">2167 Left</span></span>
-			  </h6>
-			  <div class="d-grid gap-2 col-12">
-				<div class="btn-group">
-				  <button class="btn btn-aggro btn-sm" type="button">1 Pack</button>
-				  <button type="button" class="btn btn-sm btn-aggro" aria-expanded="false" style="max-width: 50px;" disabled>
-					<span class="badge text-bg-yellow font-monospace">1 C</span>
-				  </button>
-				</div>
-				<div class="btn-group">
-				  <button class="btn btn-aggro btn-sm" type="button">5 Packs</button>
-				  <button type="button" class="btn btn-sm btn-aggro" aria-expanded="false" style="max-width: 50px;" disabled>
-					<span class="badge text-bg-yellow font-monospace">4 C</span>
-				  </button>
-				</div>
-				<div class="btn-group">
-				  <button class="btn btn-aggro btn-sm" type="button">10 Packs</button>
-				  <button type="button" class="btn btn-sm btn-aggro" aria-expanded="false" style="max-width: 50px;" disabled>
-					<span class="badge text-bg-yellow font-monospace">7 C</span>
-				  </button>
-				</div>
-			  </div>
-			  <h6 class="sidebar-heading d-flex align-items-center mt-4 mb-2 font-monospace">
-				<span>S2 - 2nd Ed.  <span class="badge text-bg-red font-monospace" style="margin-left: 5px;">367 Left</span></span>
-			  </h6>
-			  <div class="d-grid gap-2 col-12">
-				<div class="btn-group">
-				  <button class="btn btn-aggro btn-sm" type="button">1 Pack</button>
-				  <button type="button" class="btn btn-sm btn-aggro" aria-expanded="false" style="max-width: 50px;" disabled>
-					 <span class="badge text-bg-yellow font-monospace">1 C</span>
-				  </button>
-				</div>
-				<div class="btn-group">
-				  <button class="btn btn-aggro btn-sm" type="button">5 Packs</button>
-				  <button type="button" class="btn btn-sm btn-aggro" aria-expanded="false" style="max-width: 50px;" disabled>
-					<span class="badge text-bg-yellow font-monospace">4 C</span>
-				  </button>
-				</div>
-				<div class="btn-group">
-				  <button class="btn btn-aggro btn-sm" type="button">10 Packs</button>
-				  <button type="button" class="btn btn-sm btn-aggro" aria-expanded="false" style="max-width: 50px;" disabled>
-					<span class="badge text-bg-yellow font-monospace">7 C</span>
-				  </button>
-				</div>
-			  </div>
-			  <h6 class="sidebar-heading d-flex align-items-center mt-4 mb-2 text-uppercase font-monospace">
-				<span>S1 - 4th Ed. <span class="badge text-bg-red font-monospace" style="margin-left: 5px;">241 Left</span></span>
-			  </h6>  
-			  <div class="d-grid gap-2 col-12">
-				<div class="btn-group">
-				  <button class="btn btn-aggro btn-sm" type="button">1 Pack</button>
-				  <button type="button" class="btn btn-sm btn-aggro" aria-expanded="false" style="max-width: 50px;" disabled>
-					<span class="badge text-bg-yellow font-monospace">1 C</span>
-				  </button>
-				</div>
-				<div class="btn-group">
-				  <button class="btn btn-aggro btn-sm" type="button">5 Packs</button>
-				  <button type="button" class="btn btn-sm btn-aggro" aria-expanded="false" style="max-width: 50px;" disabled>
-					<span class="badge text-bg-yellow font-monospace">4 C</span>
-				  </button>
-				</div>
-				<div class="btn-group">
-				  <button class="btn btn-aggro btn-sm" type="button">10 Packs</button>
-				  <button type="button" class="btn btn-sm btn-aggro" aria-expanded="false" style="max-width: 50px;" disabled>
-					<span class="badge text-bg-yellow font-monospace">7 C</span>
-				  </button>
-				</div>
-			  </div>
+	  <main class="col-12 px-4" style="background-color: #111518;">
+		  
+		<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-2 pb-0 mt-1 mb-2 me-1">
+			<h1 class="h2">Username</h1>
+			<div class="btn-toolbar mb-2 mb-md-0">
+  
+			  <button type="button" class="btn btn-outline-light btn-sm ms-2 inactive" data-bs-toggle="button" aria-pressed="true">Cards</button>
+			  <button type="button" class="btn btn-outline-light btn-sm ms-2 inactive" data-bs-toggle="button" aria-pressed="true">Packs</button>
+			  <button class="btn btn-outline-light btn-sm ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTradeBlock" aria-expanded="false" aria-controls="collapseTradeBlock">
+				Trade Block
+			  </button>
+			  <button type="button" class="btn btn-outline-light btn-sm ms-2 inactive" data-bs-toggle="button" aria-pressed="true">Sponsored Champions</button>
+			</div>
+		  </div> 
+		
+		<div class="collapse" id="collapseTradeBlock">
+		
+		
+		<div class="row p-0 m-0 mb-4 justify-content-between">
+		  
+		  <h1 class="h4 header-box">Trade Block <small><span data-bs-toggle="tooltip" data-bs-title="The trade block is where users can promote cards and packs in their collection that they're more willing to trade."><svg class="bi"><use xlink:href="#question-circle"/></svg></span></small></h1>
+			
+		  <div class="col-2" style="width: auto; height: auto; max-width: 230px;">
+			<img src="../img/hinn.png" class="img-fluid card-inactive"  alt="...">
+			<div class="d-grid col-6 offset-3">
+			  <button class="btn btn-sm btn-green-trade" type="button" data-bs-toggle="dropdown" aria-expanded="false">Create Trade</button>
+			</div>
+		  </div>
+		  <div class="col-2" style="width: auto; height: auto; max-width: 230px;">
+			<img src="../img/baal.png" class="img-fluid card-inactive"  alt="...">
+			<div class="d-grid col-6 offset-3">
+			  <button class="btn btn-sm btn-green-trade" type="button" data-bs-toggle="dropdown" aria-expanded="false">Create Trade</button>
+			</div>
+		  </div>
+		  <div class="col-2">
+			<div class="h4 add-asset-block shadow-sm text-center p-3">
+			  <div class="add-asset-text">+ ADD ASSET</div>
+			</div>
+		  </div>
+		  <div class="col-2" style="height: auto; width: 230px;">
+			<div class="h4 add-asset-block shadow-sm text-center p-3">
+			  <div class="add-asset-text">+ ADD ASSET</div>
+			</div>
+		  </div>
+		  <div class="col-2" style="height: auto; width: 230px;">
+			<div class="h4 add-asset-block shadow-sm text-center p-3">
+			  <div class="add-asset-text">+ ADD ASSET</div>
+			</div>
+		  </div>
+		  <div class="col-2" style="height: auto; width: 230px;">
+			<div class="h4 add-asset-block shadow-sm text-center p-3">
+			  <div class="add-asset-text">+ ADD ASSET</div>
+			</div>
 		  </div>
 		</div>
-	  </div>
-	</div> 
+		
+		</div>
+  
+		
+		
+		
+	  </main>	
+	  <div class="empty-block"></div>
+	</div>
 	
-	<main class="col-8 px-md-4">
+	
+	
+	
+	
+	
+  <div class="row">
+	<main class="col-10 px-md-4">
 	  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 btn-bar">
 		<h1 class="h2">Pack Library</h1>
 		<div class="btn-toolbar mb-2 mb-md-0">
-		  <button type="button" class="btn btn-outline-light btn-sm ms-2 inactive" data-bs-toggle="button" aria-pressed="true">All Packs</button>
 		  <div class="dropdown">
-			<button class="btn btn-sm btn-outline-light ms-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-			  <svg class="bi"><use xlink:href="#layers"/></svg> All Editions</button>
+			  <button class="btn btn-sm btn-outline-light ms-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+				<svg class="bi"><use xlink:href="#stars"/></svg>
+				All Rarities
+			  </button>
 			  <ul class="dropdown-menu">
-			    <li><a class="dropdown-item" href="#">1st Edition</a></li>
+				<li><a class="dropdown-item" href="#">Common</a></li>
+				<li><a class="dropdown-item" href="#">Uncommon</a></li>
+				<li><a class="dropdown-item" href="#">Rare</a></li>
+				<li><a class="dropdown-item" href="#">Epic</a></li>
+				<li><a class="dropdown-item" href="#">Legendary</a></li>
+				<li><a class="dropdown-item" href="#">Mythical</a></li>
+			  </ul>
+			</div>
+			<div class="dropdown">
+			  <button class="btn btn-sm btn-outline-light ms-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+				<svg class="bi"><use xlink:href="#layers"/></svg> All Editions
+			  </button>
+			  <ul class="dropdown-menu">
+				<li><a class="dropdown-item" href="#">1st Edition</a></li>
 				<li><a class="dropdown-item" href="#">2nd Edition</a></li>
 				<li><a class="dropdown-item" href="#">3rd Edition</a></li>
 			  </ul>
-		  </div>
-		  <div class="dropdown">
-			<button class="btn btn-sm btn-outline-light ms-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-			  <svg class="bi"><use xlink:href="#moon"/></svg> All Series</button>
+			</div>
+			<div class="dropdown">
+			  <button class="btn btn-sm btn-outline-light ms-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+				<svg class="bi"><use xlink:href="#moon"/></svg> All Series
+			  </button>
 			  <ul class="dropdown-menu">
 				<li><a class="dropdown-item" href="#">Season 1</a></li>
 				<li><a class="dropdown-item" href="#">Season 2</a></li>
 				<li><a class="dropdown-item" href="#">Season 3</a></li>
 			  </ul>
-		  </div>
-		  <div class="dropdown">
-			<button class="btn btn-sm btn-outline-light ms-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-			<svg class="bi"><use xlink:href="#grid33"/></svg> 12</button>
+			</div>
+			<div class="dropdown">
+			  <button class="btn btn-sm btn-outline-light ms-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+				<svg class="bi"><use xlink:href="#grid33"/></svg> 12
+			  </button>
 			  <ul class="dropdown-menu">
 				<li><a class="dropdown-item" href="#"><svg class="bi"><use xlink:href="#grid33"/></svg> 24</a></li>
 				<li><a class="dropdown-item" href="#"><svg class="bi"><use xlink:href="#grid33"/></svg> 36</a></li>
 				<li><a class="dropdown-item" href="#"><svg class="bi"><use xlink:href="#grid33"/></svg> 48</a></li>
 			  </ul>
-		  </div> 
+			</div>
 		</div>
-	  </div> 
+	  </div>
 	  <div class="container" style="padding: 0px;">
 		<div class="row justify-content-between">
 		  <div class="col-auto" style="width: auto; height: auto; max-width: 230px;">
-			<img src="../img/cardback.png" class=" img-fluid card-inactive"  alt="...">
+		    <img src="../img/cardback.png" class=" img-fluid card-inactive"  alt="...">
 		  </div>
 		  <div class="col-auto" style="width: auto; height: auto; max-width: 230px;">
 			<img src="../img/cardback.png" class=" img-fluid card-active"  alt="...">
 		  </div>
 		  <div class="col-auto" style="width: auto; height: auto; max-width: 230px;">
+			<img src="../img/cardback.png" class=" img-fluid card-inactive"  alt="...">
+		  </div>
+		  <div class="col-auto" style="width: auto; height: auto; max-width: 230px;">
+			<img src="../img/cardback.png" class=" img-fluid card-inactive"  alt="...">
+		  </div>
+		  <div class="col-auto" style="width: auto; height: auto; max-width: 230px;">
 		    <img src="../img/cardback.png" class=" img-fluid card-inactive"  alt="...">
+		  </div>
+		  <div class="col-auto" style="width: auto; height: auto; max-width: 230px;">
+			<img src="../img/cardback.png" class=" img-fluid card-inactive"  alt="...">
+		  </div>
+		  <div class="col-auto" style="width: auto; height: auto; max-width: 230px;">
+			<img src="../img/cardback.png" class=" img-fluid card-inactive"  alt="...">
+		  </div>
+		  <div class="col-auto" style="width: auto; height: auto; max-width: 230px;">
+			<img src="../img/cardback.png" class=" img-fluid card-inactive"  alt="...">
+		  </div>
+		  <div class="col-auto" style="width: auto; height: auto; max-width: 230px;">
+			<img src="../img/cardback.png" class=" img-fluid card-inactive"  alt="...">
+		  </div>
+		  <div class="col-auto" style="width: auto; height: auto; max-width: 230px;">
+			<img src="../img/cardback.png" class=" img-fluid card-inactive"  alt="...">
+		  </div>
+		  <div class="col-auto" style="width: auto; height: auto; max-width: 230px;">
+			<img src="../img/cardback.png" class=" img-fluid card-inactive"  alt="...">
+		  </div>
+	      <div class="col-auto" style="width: auto; height: auto; max-width: 230px;">
+		    <img src="../img/cardback.png" class=" img-fluid card-inactive"  alt="...">
+		  </div>
+		  <div class="col-auto" style="width: auto; height: auto; max-width: 230px;">
+			<img src="../img/cardback.png" class=" img-fluid card-inactive"  alt="...">
+		  </div>
+		  <div class="col-auto" style="width: auto; height: auto; max-width: 230px;">
+			<img src="../img/cardback.png" class=" img-fluid card-inactive"  alt="...">
+		  </div>
+		  <div class="col-auto" style="width: auto; height: auto; max-width: 230px;">
+			<img src="../img/cardback.png" class=" img-fluid card-inactive"  alt="...">
+		  </div>
+		  <div class="col-auto" style="width: auto; height: auto; max-width: 230px;">
+			<img src="../img/cardback.png" class=" img-fluid card-inactive"  alt="...">
+		  </div>
+		  <div class="col-auto" style="width: auto; height: auto; max-width: 230px;">
+			<img src="../img/cardback.png" class=" img-fluid card-inactive"  alt="...">
+		  </div>
+		  <div class="col-auto" style="width: auto; height: auto; max-width: 230px;">
+			<img src="../img/cardback.png" class=" img-fluid card-inactive"  alt="...">
+		  </div>
+		  <div class="col-auto" style="width: auto; height: auto; max-width: 230px;">
+			<img src="../img/cardback.png" class=" img-fluid card-inactive"  alt="...">
+		  </div>
+		  <div class="col-auto" style="width: auto; height: auto; max-width: 230px;">
+			<img src="../img/cardback.png" class=" img-fluid card-inactive"  alt="...">
 	      </div>
-		  <div class="col-auto" style="width: auto; height: auto; max-width: 230px;">
-		    <img src="../img/cardback.png" class=" img-fluid card-inactive"  alt="...">
-		  </div>
-		  <div class="col-auto" style="width: auto; height: auto; max-width: 230px;">
-			<img src="../img/cardback.png" class=" img-fluid card-inactive"  alt="...">
-		  </div>
-		  <div class="col-auto" style="width: auto; height: auto; max-width: 230px;">
-			<img src="../img/cardback.png" class=" img-fluid card-inactive"  alt="...">
-		  </div>
-		  <div class="col-auto" style="width: auto; height: auto; max-width: 230px;">
-		    <img src="../img/cardback.png" class=" img-fluid card-inactive"  alt="...">
-		  </div>
-		  <div class="col-auto" style="width: auto; height: auto; max-width: 230px;">
-			<img src="../img/cardback.png" class=" img-fluid card-inactive"  alt="...">
-		  </div>
-		  <div class="col-auto" style="width: auto; height: auto; max-width: 230px;">
-			<img src="../img/cardback.png" class=" img-fluid card-inactive"  alt="...">
-		  </div>
-		  <div class="col-auto" style="width: auto; height: auto; max-width: 230px;">
-			<img src="../img/cardback.png" class=" img-fluid card-inactive"  alt="...">
-		  </div>
-		  <div class="col-auto" style="width: auto; height: auto; max-width: 230px;">
-			<img src="../img/cardback.png" class=" img-fluid card-inactive"  alt="...">
-		  </div>
-		  <div class="col-auto" style="width: auto; height: auto; max-width: 230px;">
-			<img src="../img/cardback.png" class=" img-fluid card-inactive"  alt="...">
-		  </div>
-		  <div class="col-auto" style="width: auto; height: auto; max-width: 230px;">
-			<img src="../img/cardback.png" class=" img-fluid card-inactive"  alt="...">
-		  </div>
-		  <div class="col-auto" style="width: auto; height: auto; max-width: 230px;">
-			<img src="../img/cardback.png" class=" img-fluid card-inactive"  alt="...">
-		  </div>
-		  <div class="col-auto" style="width: auto; height: auto; max-width: 230px;">
-			<img src="../img/cardback.png" class=" img-fluid card-inactive"  alt="...">
-		  </div>
-		  <div class="col-auto" style="width: auto; height: auto; max-width: 230px;">
-			<img src="../img/cardback.png" class=" img-fluid card-inactive"  alt="...">
-		  </div>
-		  <div class="col-auto" style="width: auto; height: auto; max-width: 230px;">
-			<img src="../img/cardback.png" class=" img-fluid card-inactive"  alt="...">
-		  </div>
-		  <div class="col-auto" style="width: auto; height: auto; max-width: 230px;">
-			<img src="../img/cardback.png" class=" img-fluid card-inactive"  alt="...">
-		  </div>
-		  <div class="col-auto" style="width: auto; height: auto; max-width: 230px;">
-			<img src="../img/cardback.png" class=" img-fluid card-inactive"  alt="...">
-		  </div>
-		  <div class="col-auto" style="width: auto; height: auto; max-width: 230px;">
-			<img src="../img/cardback.png" class=" img-fluid card-inactive"  alt="...">
-		  </div>
 		  <div class="col-auto" style="width: auto; height: auto; max-width: 230px;">
 			<img src="../img/cardback.png" class=" img-fluid card-inactive"  alt="...">
 		  </div>
 		  <div class="col-12">
-			<footer class="d-flex flex-wrap justify-content-between align-items-center pb-3 pt-1">
+			<footer class="d-flex flex-wrap justify-content-between align-items-center pb-2 pt-4">
 			  <p class="col-md-4 mb-0 text-body-footer ">&copy; 2023 Aggroculture</p>
-		      <a href="/" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+			  <a href="/" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
 				<img src="../img/logo.svg" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
 			  </a>
 			  <ul class="nav col-md-4 justify-content-end">
@@ -414,7 +381,6 @@
 		</div>
 	  </div>
 	</main>
-	
 	<div class="sidebar col-2 p-0 sidebar-background">
 	  <div class="offcanvas-md offcanvas-end sidebar-background" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
 		<div class="offcanvas-header">
@@ -430,60 +396,61 @@
 		  </ul>
 		  <hr class="sidebar-hr">
 		  <div class="sidebar-content px-4">
-			  
-			<div class="d-grid col-12 gap-2 mt-1 mb-3">
-				<button class="btn btn-aggro btn-sm" type="button"> Open Pack</button>
-				<button class="btn btn-aggro btn-sm" type="button"> Create Trade</button>
-				<button class="btn btn-aggro btn-sm" type="button"> Add to Block</button>
-			  </div> 
-			  
-			  <h6 class="sidebar-heading1 d-flex align-items-center font-monospace">
-				<span class="sidebar-border">Pack Number</span>
-			  </h6>
-			  <h6 class="sidebar-info d-flex align-items-center font-monospace">
-				<span>185 / 2368</span>
-			  </h6>
-			  <h6 class="sidebar-heading1 d-flex align-items-center font-monospace">
-				<span class="sidebar-border">Pack Edition</span>
-			  </h6>
-			  <h6 class="sidebar-info d-flex align-items-center font-monospace">
-				<span>1st Edition</span>
-			  </h6>
-			  <h6 class="sidebar-heading1 d-flex align-items-center font-monospace">
-				<span class="sidebar-border">Series</span>
-			  </h6>
-			  <h6 class="sidebar-info d-flex align-items-center font-monospace">
-				<span>Season 1</span>
-			  </h6>
-			  <h6 class="sidebar-heading1 d-flex align-items-center font-monospace">
-				<span class="sidebar-border">Year</span>
-			  </h6>
-			  <h6 class="sidebar-info d-flex align-items-center font-monospace">
-				<span>2023</span>
-			  </h6>
-			  <h6 class="sidebar-heading1 d-flex align-items-center font-monospace">
-				<span class="sidebar-border">Identification Number</span>
-			  </h6>
-			  <h6 class="sidebar-info d-flex align-items-center font-monospace">
-				<span>P-S1-E1-0185</span>
-			  </h6>
-			  <h6 class="sidebar-heading1 d-flex align-items-center font-monospace">
-				<span class="sidebar-border">Owner</span>
-			  </h6>
-			  <h6 class="sidebar-info d-flex align-items-center font-monospace">
-				<span><a href="">michaelalfox</a></span>
-			  </h6>
-		
-		  </div>
+				
+			  <div class="d-grid col-12 gap-2 mt-1 mb-3">
+				  <button class="btn btn-aggro btn-sm" type="button"> Create Trade</button>
+				</div> 
+				
+				<h6 class="sidebar-heading1 d-flex align-items-center font-monospace">
+				  <span class="sidebar-border">Pack Number</span>
+				</h6>
+				<h6 class="sidebar-info d-flex align-items-center font-monospace">
+				  <span>185 / 2368</span>
+				</h6>
+				<h6 class="sidebar-heading1 d-flex align-items-center font-monospace">
+				  <span class="sidebar-border">Pack Edition</span>
+				</h6>
+				<h6 class="sidebar-info d-flex align-items-center font-monospace">
+				  <span>1st Edition</span>
+				</h6>
+				<h6 class="sidebar-heading1 d-flex align-items-center font-monospace">
+				  <span class="sidebar-border">Series</span>
+				</h6>
+				<h6 class="sidebar-info d-flex align-items-center font-monospace">
+				  <span>Season 1</span>
+				</h6>
+				<h6 class="sidebar-heading1 d-flex align-items-center font-monospace">
+				  <span class="sidebar-border">Year</span>
+				</h6>
+				<h6 class="sidebar-info d-flex align-items-center font-monospace">
+				  <span>2023</span>
+				</h6>
+				<h6 class="sidebar-heading1 d-flex align-items-center font-monospace">
+				  <span class="sidebar-border">Identification Number</span>
+				</h6>
+				<h6 class="sidebar-info d-flex align-items-center font-monospace">
+				  <span>P-S1-E1-0185</span>
+				</h6>
+				<h6 class="sidebar-heading1 d-flex align-items-center font-monospace">
+				  <span class="sidebar-border">Owner</span>
+				</h6>
+				<h6 class="sidebar-info d-flex align-items-center font-monospace">
+				  <span><a href="">michaelalfox</a></span>
+				</h6>
+		  
+			</div>
 		</div>
 	  </div>
-	</div> 
+	</div>
   </div>
 </div>
 
 <script src="../js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.2/dist/chart.umd.js" integrity="sha384-eI7PSr3L1XLISH8JdDII5YN/njoSsxfbrkCTnJrzXt+ENP5MOVBxD+l6sEG4zoLp" crossorigin="anonymous"></script>
 <script src="../js/dashboard.js"></script>
+
+<script> const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))</script>
 
 </body>
 </html>
