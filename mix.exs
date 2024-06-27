@@ -39,7 +39,7 @@ defmodule Core.MixProject do
       {:postgrex, "~> 0.18.0"},
       {:phoenix_html, "~> 4.0"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:phoenix_live_view, "1.0.0-rc.5", override: true},
+      {:phoenix_live_view, "1.0.0-rc.6", override: true},
       {:floki, "~> 0.36", only: :test},
       {:phoenix_live_dashboard, "~> 0.8.0"},
       {:esbuild, "~> 0.8.0", runtime: Mix.env() == :dev},
