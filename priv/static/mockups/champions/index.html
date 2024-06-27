@@ -151,26 +151,28 @@
 		  <li class="nav-item">
 			<a class="nav-link font-monospace" href="../standings/index.html">STANDINGS</a>
 		  </li>
+		  <li class="nav-item dropdown">
+			  <a class="nav-link font-monospace dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">TRADES</a>
+			  <ul class="dropdown-menu">
+				<li><a class="dropdown-item font-monospace" href="../trade-create/index.html">Create</a></li>
+				<li><a class="dropdown-item font-monospace" href="../trade-drafts/index.html">Drafts <span class="badge text-bg-red font-monospace">2</span></a></li>
+				<li><a class="dropdown-item font-monospace" href="../trade-pending/index.html">Pending <span class="badge text-bg-red font-monospace">4</span></a></li>
+				<li><a class="dropdown-item font-monospace" href="../trade-redister/index.html">Registry</a></li>
+				<hr>
+				<li><a class="dropdown-item font-monospace" href="../trade-block/index.html">Your Block</a></li>
+				<li><a class="dropdown-item font-monospace" href="../browse-trade-block/index.html">Browse Block</a></li>
+			  </ul>
+			</li>	
 		  <div class="vr"></div>
 		  <li class="nav-item">
-			<a class="nav-link font-monospace" href="../cards/index.html">CARDS</a>
+			<a class="nav-link font-monospace" href="../user-packs-self/index.html">USERNAME</a>
 		  </li>
-		  <li class="nav-item">
-			<a class="nav-link font-monospace" href="../packs/index.html">PACKS</a>
-		  </li>
-		  <li class="nav-item dropdown">
-			<a class="nav-link font-monospace dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">TRADES</a>
-			<ul class="dropdown-menu">
-			  <li><a class="dropdown-item font-monospace" href="../trade-create/index.html">Create</a></li>
-			  <li><a class="dropdown-item font-monospace" href="../trade-drafts/index.html">Drafts <span class="badge text-bg-red font-monospace">2</span></a></li>
-			  <li><a class="dropdown-item font-monospace" href="../trade-pending/index.html">Pending <span class="badge text-bg-red font-monospace">4</span></a></li>
-			  <li><a class="dropdown-item font-monospace" href="../trade-redister/index.html">Registry</a></li>
-			  <hr>
-			  <li><a class="dropdown-item font-monospace" href="../trade-block/index.html">Your Block</a></li>
-			  <li><a class="dropdown-item font-monospace" href="../browse-trade-block/index.html">Browse Block</a></li>
-			</ul>
-		  </li>	
 		</ul>
+		<div class="btn-toolbar mb-0 mb-md-0 me-3">
+		  <div class="input-group input-group-sm">
+			<input type="text" class="form-control search1" style="border: 1px solid #FFFFFF;max-height: 31px;" placeholder="Users" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+		  </div>
+		</div>
 		<ul class="navbar-nav my-2 my-md-0 mr-md-3"> 
 		  <li class="nav-item">
 			<a class="btn btn-red btn-sm font-monospace" role="button" href="#"><svg class="bi"><use xlink:href="#person"/></svg> AUTHENTICATE</a>
@@ -186,132 +188,6 @@
 
 <div class="container-fluid">
   <div class="row">
-	  
-	<div class="sidebar col-3 p-0 sidebar-background">
-	  <div class="offcanvas-md offcanvas-end sidebar-background" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
-		<div class="offcanvas-header">
-		  <h5 class="offcanvas-title" id="sidebarMenuLabel">Aggroculture</h5>
-		  <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebarMenu" aria-label="Close"></button>
-		</div>
-		<div class="offcanvas-body d-md-flex flex-column p-0 pt-3 overflow-y-auto">
-		  <ul class="nav flex-column">
-			<li class="nav-item">
-			  <div class=" d-flex align-items-center gap-2 sidebar-header">
-				<svg class="bi"><use xlink:href="#chart"/></svg> Champion Statistics</div>
-			</li>
-		  </ul>
-		  <hr class="sidebar-hr">
-		  <div class="sidebar-content px-4 mb-3">
-			  
-			<div class="col-12">
-			
-			  <table class="table table-sm table-aggro table-hover font-monospace">
-				  <thead>
-					<tr>
-					  <th colspan="2" class="sidebar-heading2 px-2">SEASON STATISTICS</th>
-					</tr>
-				  </thead>
-				  <tbody>
-					<tr>
-					  <th scope="row" class="ps-2">Division</th>
-					  <td class="pe-2">Division A</td>
-					</tr>
-					<tr>
-					  <th scope="row" class="ps-2">Div. Position</th>
-					   <td class="pe-2">3 / 8</td>
-					</tr>
-					<tr>
-					  <th scope="row" class="ps-2">Battles</th>
-					  <td class="pe-2">9 / 12</td>
-					</tr>
-					<tr>
-					  <th scope="row" class="ps-2">Victories</th>
-					  <td class="pe-2">17</td>
-					</tr>
-					<tr>
-					  <th scope="row" class="ps-2">Points</th>
-					  <td class="pe-2">29</td>
-					</tr>
-				  </tbody>
-				</table>
-			  
-			  </div>  
-			  
-			  <div class="d-grid col-12 mt-1 mb-3 gap-2">
-				  <button class="btn btn-aggro btn-sm" type="button">
-					Sponsor Champion
-				  </button>
-				  <button class="btn btn-aggro btn-sm" type="button">
-					Upgrade Champion
-				  </button>
-			  </div>
-			  
-			
-		  <h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
-			  <span class="sidebar-border">Champion Name</span>
-			</h6>
-			<h6 class="sidebar-info d-flex align-items-center font-monospace">
-				<span>Barbatos, the Condemned</span>
-			</h6>
-			<h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
-			  <span class="sidebar-border">Plant Type</span>
-			</h6>
-			<h6 class="sidebar-info d-flex align-items-center font-monospace">
-			  <span>Pepper</span>
-			</h6>
-			<h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
-			  <span class="sidebar-border">Plant Variety</span>
-			</h6>
-			<h6 class="sidebar-info d-flex align-items-center font-monospace">
-			  <span>Devil's Tongue</span>
-			</h6>
-			<h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
-			  <span class="sidebar-border">Rarity</span>
-			</h6>
-			<h6 class="sidebar-info d-flex align-items-center font-monospace">
-			  <span>Mythical</span>
-			</h6>
-			<h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
-			 <span class="sidebar-border">Frame</span>
-			</h6>
-			<h6 class="sidebar-info d-flex align-items-center font-monospace">
-			  <span>Rainbow</span>
-			</h6>
-			<h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
-			  <span class="sidebar-border">Art</span>
-			</h6>
-			<h6 class="sidebar-info d-flex align-items-center font-monospace">
-			  <span>Full Art</span>
-			</h6>
-			<h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
-			  <span class="sidebar-border">Champion Number</span>
-			</h6>
-			<h6 class="sidebar-info d-flex align-items-center font-monospace">
-			  <span>18 / 64</span>
-			</h6>
-			<h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
-			  <span class="sidebar-border">Series</span>
-			</h6>
-			<h6 class="sidebar-info d-flex align-items-center font-monospace">
-			  <span>Season 1</span>
-			</h6>
-			<h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
-			  <span class="sidebar-border">Year</span>
-			</h6>
-			<h6 class="sidebar-info d-flex align-items-center font-monospace">
-			  <span>2023</span>
-			</h6>
-			<h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
-			  <span class="sidebar-border">Sponsors</span>
-			</h6>
-			<h6 class="sidebar-info d-flex align-items-center font-monospace">
-			  <span><a href="">michaelalfox</a></span>
-			</h6>
-		  </div>
-		</div>
-	  </div>
-	</div>
-
 	<main class="col-9 px-md-4">
 	  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 btn-bar">
 		  <h1 class="h2">Champions</h1>
@@ -320,6 +196,7 @@
 			<div class="input-group input-group-sm">
 				 <input type="text" class="form-control search1" style="border: 1px solid #FFFFFF;" placeholder="Champion" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
 			   </div>
+			  <button type="button" class="btn btn-outline-light btn-sm ms-2 inactive" data-bs-toggle="button" aria-pressed="true">Sponsored</button>
 			<div class="dropdown">
 				<button class="btn btn-sm btn-outline-light ms-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 				  <svg class="bi"><use xlink:href="#globe"/></svg>
@@ -456,6 +333,131 @@
 		</div>
 
 	</main>
+	<div class="sidebar col-3 p-0 sidebar-background">
+	  <div class="offcanvas-md offcanvas-end sidebar-background" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
+		<div class="offcanvas-header">
+		  <h5 class="offcanvas-title" id="sidebarMenuLabel">Aggroculture</h5>
+		  <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebarMenu" aria-label="Close"></button>
+		</div>
+		<div class="offcanvas-body d-md-flex flex-column p-0 pt-3 overflow-y-auto">
+		  <ul class="nav flex-column">
+			<li class="nav-item">
+			  <div class=" d-flex align-items-center gap-2 sidebar-header">
+				<svg class="bi"><use xlink:href="#chart"/></svg> Champion Statistics</div>
+			</li>
+		  </ul>
+		  <hr class="sidebar-hr">
+		  <div class="sidebar-content px-4 mb-3">
+			  
+			<div class="col-12">
+			
+			  <table class="table table-sm table-aggro table-hover font-monospace">
+				  <thead>
+					<tr>
+					  <th colspan="2" class="sidebar-heading2 px-2">SEASON STATISTICS</th>
+					</tr>
+				  </thead>
+				  <tbody>
+					<tr>
+					  <th scope="row" class="ps-2">Division</th>
+					  <td class="pe-2">Division A</td>
+					</tr>
+					<tr>
+					  <th scope="row" class="ps-2">Div. Position</th>
+					   <td class="pe-2">3 / 8</td>
+					</tr>
+					<tr>
+					  <th scope="row" class="ps-2">Battles</th>
+					  <td class="pe-2">9 / 12</td>
+					</tr>
+					<tr>
+					  <th scope="row" class="ps-2">Victories</th>
+					  <td class="pe-2">17</td>
+					</tr>
+					<tr>
+					  <th scope="row" class="ps-2">Points</th>
+					  <td class="pe-2">29</td>
+					</tr>
+				  </tbody>
+				</table>
+			  
+			  </div>  
+			  
+			  <div class="d-grid col-12 mt-1 mb-3 gap-2">
+				  <button class="btn btn-aggro btn-sm" type="button">
+					Sponsor Champion
+				  </button>
+				  <button class="btn btn-aggro btn-sm" type="button">
+					Upgrade Champion
+				  </button>
+			  </div>
+			  
+			
+		  <h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
+			  <span class="sidebar-border">Champion Name</span>
+			</h6>
+			<h6 class="sidebar-info d-flex align-items-center font-monospace">
+				<span>Barbatos, the Condemned</span>
+			</h6>
+			<h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
+			  <span class="sidebar-border">Plant Type</span>
+			</h6>
+			<h6 class="sidebar-info d-flex align-items-center font-monospace">
+			  <span>Pepper</span>
+			</h6>
+			<h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
+			  <span class="sidebar-border">Plant Variety</span>
+			</h6>
+			<h6 class="sidebar-info d-flex align-items-center font-monospace">
+			  <span>Devil's Tongue</span>
+			</h6>
+			<h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
+			  <span class="sidebar-border">Rarity</span>
+			</h6>
+			<h6 class="sidebar-info d-flex align-items-center font-monospace">
+			  <span>Mythical</span>
+			</h6>
+			<h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
+			 <span class="sidebar-border">Frame</span>
+			</h6>
+			<h6 class="sidebar-info d-flex align-items-center font-monospace">
+			  <span>Rainbow</span>
+			</h6>
+			<h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
+			  <span class="sidebar-border">Art</span>
+			</h6>
+			<h6 class="sidebar-info d-flex align-items-center font-monospace">
+			  <span>Full Art</span>
+			</h6>
+			<h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
+			  <span class="sidebar-border">Champion Number</span>
+			</h6>
+			<h6 class="sidebar-info d-flex align-items-center font-monospace">
+			  <span>18 / 64</span>
+			</h6>
+			<h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
+			  <span class="sidebar-border">Series</span>
+			</h6>
+			<h6 class="sidebar-info d-flex align-items-center font-monospace">
+			  <span>Season 1</span>
+			</h6>
+			<h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
+			  <span class="sidebar-border">Year</span>
+			</h6>
+			<h6 class="sidebar-info d-flex align-items-center font-monospace">
+			  <span>2023</span>
+			</h6>
+			<h6 class="sidebar-heading1 d-flex align-items-center text-uppercase font-monospace">
+			  <span class="sidebar-border">Sponsors</span>
+			</h6>
+			<h6 class="sidebar-info d-flex align-items-center font-monospace">
+			  <span><a href="">michaelalfox</a></span>
+			</h6>
+		  </div>
+		</div>
+	  </div>
+	</div>
+	
   </div>
 </div>
 <script src="../js/bootstrap.bundle.min.js"></script>
