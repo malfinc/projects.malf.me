@@ -115,7 +115,9 @@ defmodule Core.Gameplay do
   """
   @spec fight(Core.Gameplay.Match.t()) :: list(tuple())
   def fight(%Core.Gameplay.Match{left_champion: left_champion, right_champion: right_champion}) do
-    Stream.unfold(Enum.map([left_champion, right_champion], &as_combatants/1), &clash/1)
+    [left_champion, right_champion]
+    |> Enum.map(&as_combatants/1)
+    |> Stream.unfold(&clash/1)
     |> Enum.to_list()
   end
 
