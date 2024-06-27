@@ -98,9 +98,22 @@ defmodule CoreWeb.VoteLive do
   def render(%{live_action: :list} = assigns) do
     ~H"""
     <h1>Votes for <.link href={~p"/halls/#{@hall.id}"}><%= Pretty.get(@hall, :name) %></.link></h1>
-    <div :if={@changeset.changes[:primary_nomination] || @changeset.changes[:secondary_nomination] || @changeset.changes[:tertiary_nomination]} class="mt-3 mb-3 row g-3"></div>
+    <div
+      :if={
+        @changeset.changes[:primary_nomination] || @changeset.changes[:secondary_nomination] ||
+          @changeset.changes[:tertiary_nomination]
+      }
+      class="mt-3 mb-3 row g-3"
+    >
+    </div>
     <div :if={length(@records) > 0} class="mt-3 mb-3 row g-3">
-      <.render_vote :for={{key, label} <- priorities()} :if={@changeset.changes[key]} key={key} label={label} nomination={@changeset.changes[key].data} />
+      <.render_vote
+        :for={{key, label} <- priorities()}
+        :if={@changeset.changes[key]}
+        key={key}
+        label={label}
+        nomination={@changeset.changes[key].data}
+      />
       <div :for={record <- @records} :if={!nomination_has_vote?(@changeset, record)} class="col-auto">
         <div class="card text-bg-green shadow-sm" style="max-width: 200px;">
           <img src={record.box_art_url} class="card-img-top" alt="The box art for the game" />
@@ -109,7 +122,16 @@ defmodule CoreWeb.VoteLive do
           </div>
           <div class="card-body text-center">
             <div class="d-grid gap-2" role="group" aria-label="Vote weights">
-              <.button :for={{key, label} <- priorities()} :if={priority_unused?(@changeset, key)} phx-click="pick_priority" phx-value-id={record.id} value={key} usable_icon="check-to-slot" class="btn-sm" type="button">
+              <.button
+                :for={{key, label} <- priorities()}
+                :if={priority_unused?(@changeset, key)}
+                phx-click="pick_priority"
+                phx-value-id={record.id}
+                value={key}
+                usable_icon="check-to-slot"
+                class="btn-sm"
+                type="button"
+              >
                 <%= label %>
               </.button>
             </div>
@@ -134,7 +156,17 @@ defmodule CoreWeb.VoteLive do
         </div>
         <div class="card-body text-center">
           <div class="d-grid gap-2">
-            <.button phx-click="unpick_priority" phx-value-id={@nomination.id} value={@key} as="outline-danger" usable_icon="xmark" class="btn-sm" type="button">Reset <%= @label %></.button>
+            <.button
+              phx-click="unpick_priority"
+              phx-value-id={@nomination.id}
+              value={@key}
+              as="outline-danger"
+              usable_icon="xmark"
+              class="btn-sm"
+              type="button"
+            >
+              Reset <%= @label %>
+            </.button>
           </div>
         </div>
       </div>

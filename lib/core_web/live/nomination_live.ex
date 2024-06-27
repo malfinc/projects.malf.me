@@ -118,8 +118,16 @@ defmodule CoreWeb.NominationLive do
           Phoenix.LiveView.Rendered.t()
   def render(%{live_action: :list} = assigns) do
     ~H"""
-    <h1>Nominations for <.link href={~p"/halls/#{@hall.id}"}><%= Pretty.get(@hall, :name) %></.link></h1>
-    <.simple_form :if={@current_account && !@nominated?} for={@form} phx-change="search" phx-submit="search" data-bs-theme="light">
+    <h1>
+      Nominations for <.link href={~p"/halls/#{@hall.id}"}><%= Pretty.get(@hall, :name) %></.link>
+    </h1>
+    <.simple_form
+      :if={@current_account && !@nominated?}
+      for={@form}
+      phx-change="search"
+      phx-submit="search"
+      data-bs-theme="light"
+    >
       <.input field={@form[:query]} label="Search Games" type="text" phx-debounce="450" />
     </.simple_form>
     <div :if={length(@results) > 0} class="mt-3 mb-3 row g-3">
@@ -131,16 +139,42 @@ defmodule CoreWeb.NominationLive do
           </div>
           <div class="card-body text-center">
             <div class="d-grid gap-2">
-              <.button :if={result["nomination"] && result["nomination"].state == "nominated"} class="btn-sm" usable_icon="square-check" disabled as="light">
+              <.button
+                :if={result["nomination"] && result["nomination"].state == "nominated"}
+                class="btn-sm"
+                usable_icon="square-check"
+                disabled
+                as="light"
+              >
                 Nominated
               </.button>
-              <.button :if={result["nomination"] && result["nomination"].state == "vetoed"} class="btn-sm" usable_icon="square-xmark" disabled as="danger">
+              <.button
+                :if={result["nomination"] && result["nomination"].state == "vetoed"}
+                class="btn-sm"
+                usable_icon="square-xmark"
+                disabled
+                as="danger"
+              >
                 Vetoed
               </.button>
-              <.button :if={result["nomination"] && result["nomination"].state == "completed"} class="btn-sm" usable_icon="circle-check" disabled as="success">
+              <.button
+                :if={result["nomination"] && result["nomination"].state == "completed"}
+                class="btn-sm"
+                usable_icon="circle-check"
+                disabled
+                as="success"
+              >
                 Completed
               </.button>
-              <.button :if={!result["nomination"]} class="btn-sm" usable_icon="check-to-slot" phx-click="nominate" phx-value-id={result["id"]} phx-value-box-art-url={result["box_art_url"]} phx-value-name={result["name"]}>
+              <.button
+                :if={!result["nomination"]}
+                class="btn-sm"
+                usable_icon="check-to-slot"
+                phx-click="nominate"
+                phx-value-id={result["id"]}
+                phx-value-box-art-url={result["box_art_url"]}
+                phx-value-name={result["name"]}
+              >
                 Nominate
               </.button>
             </div>

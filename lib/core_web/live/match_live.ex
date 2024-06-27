@@ -97,13 +97,17 @@ defmodule CoreWeb.MatchLive do
     <h1>Matches</h1>
     <div :for={{weekly, matches_by_conference} <- @records} style="padding-left: 25px;">
       <h2>Week <%= weekly.position %></h2>
-      <div :for={{conference, matches_by_division} <- matches_by_conference} style="padding-left: 25px;">
+      <div
+        :for={{conference, matches_by_division} <- matches_by_conference}
+        style="padding-left: 25px;"
+      >
         <h3><%= conference.name %> Conference</h3>
         <div :for={{division, matches} <- matches_by_division} style="padding-left: 25px;">
           <h4><%= division.name %> Division</h4>
           <ul>
             <li :for={match <- matches}>
-              <%= Pretty.get(match, :name) %> (winner <%= match.winning_champion.name %>) <.link href={~p"/lop/matches/#{match.id}"}>View</.link>
+              <%= Pretty.get(match, :name) %> (winner <%= match.winning_champion.name %>)
+              <.link href={~p"/lop/matches/#{match.id}"}>View</.link>
             </li>
           </ul>
         </div>
@@ -117,7 +121,14 @@ defmodule CoreWeb.MatchLive do
     ~H"""
     <h1><%= Pretty.get(@record, :name) %></h1>
     <section style="display: grid; grid-template-columns: 3fr 1fr 3fr; place-items: center">
-      <.champion champion={@record.left_champion} winner={@record.winning_champion == @record.left_champion} /> Vs <.champion champion={@record.right_champion} winner={@record.winning_champion == @record.right_champion} />
+      <.champion
+        champion={@record.left_champion}
+        winner={@record.winning_champion == @record.left_champion}
+      /> Vs
+      <.champion
+        champion={@record.right_champion}
+        winner={@record.winning_champion == @record.right_champion}
+      />
     </section>
     <p :for={round <- @record.rounds}>
       <%= round %>

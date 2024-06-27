@@ -68,6 +68,7 @@ config :esbuild,
 
 # Configures Elixir's Logger
 import IO
+
 config :logger, :console,
   format: "$metadata[$level] #{IO.ANSI.bright()}$message#{IO.ANSI.normal()}\n",
   metadata: [:request_id],

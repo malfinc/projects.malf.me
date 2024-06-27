@@ -98,7 +98,13 @@ defmodule CoreWeb.HallLive do
     ~H"""
     <%= if Core.Users.has_permission?(@current_account, "global", "administrator") do %>
       <h2>New Hall</h2>
-      <.simple_form for={@form} phx-change="validate" phx-submit="save" class="mb-3" data-bs-theme="light">
+      <.simple_form
+        for={@form}
+        phx-change="validate"
+        phx-submit="save"
+        class="mb-3"
+        data-bs-theme="light"
+      >
         <div class="row">
           <div class="col">
             <.input field={@form[:name]} type="text" label="Name" required />
@@ -111,7 +117,12 @@ defmodule CoreWeb.HallLive do
           </div>
         </div>
         <:actions>
-          <.button phx-disable-with="Creating..." type="submit" class="btn btn-primary" usable_icon="plus">
+          <.button
+            phx-disable-with="Creating..."
+            type="submit"
+            class="btn btn-primary"
+            usable_icon="plus"
+          >
             Create Hall
           </.button>
         </:actions>
@@ -159,7 +170,11 @@ defmodule CoreWeb.HallLive do
             </div>
           </div>
           <div :if={hall[:winner]} class="card text-bg-green shadow-sm" style="max-width: 200px;">
-            <img src={hall.winner.external_box_art_url} class="card-img-top" alt="The box art for the game" />
+            <img
+              src={hall.winner.external_box_art_url}
+              class="card-img-top"
+              alt="The box art for the game"
+            />
             <div class="card-header text-center">
               <h6>
                 <strong>
@@ -204,9 +219,16 @@ defmodule CoreWeb.HallLive do
     <h1><%= Pretty.get(@record, :name) %></h1>
 
     <ul class="mt-3">
-      <li :if={@record.state == "nominating"}><.link href={~p"/halls/#{@record.id}/nominations"}>Nominations</.link> (<%= length(@record.nominations) %>)</li>
-      <li :if={@record.state == "voting"}><.link href={"/halls/#{@record.id}/votes"}>Votes</.link></li>
-      <li :if={@record.state == "started"}><.link href={"/halls/#{@record.id}/results"}>Results</.link></li>
+      <li :if={@record.state == "nominating"}>
+        <.link href={~p"/halls/#{@record.id}/nominations"}>Nominations</.link>
+        (<%= length(@record.nominations) %>)
+      </li>
+      <li :if={@record.state == "voting"}>
+        <.link href={"/halls/#{@record.id}/votes"}>Votes</.link>
+      </li>
+      <li :if={@record.state == "started"}>
+        <.link href={"/halls/#{@record.id}/results"}>Results</.link>
+      </li>
     </ul>
 
     <div :if={Core.Users.has_permission?(@current_account, "global", "administrator")} class="mt-3">

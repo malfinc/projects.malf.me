@@ -63,8 +63,15 @@ defmodule CoreWeb.AdminPageLive do
     <p>
       The administrative dashboard.
     </p>
-    <.button class="btn-primary" phx-click="award_points" usable_icon="coin">Give me 1000 Coin</.button>
-    <.link class="btn btn-primary" href={~p"/auth/twitch?scope=user:read:email bits:read channel:read:redemptions channel:read:subscriptions"}>
+    <.button class="btn-primary" phx-click="award_points" usable_icon="coin">
+      Give me 1000 Coin
+    </.button>
+    <.link
+      class="btn btn-primary"
+      href={
+        ~p"/auth/twitch?scope=user:read:email bits:read channel:read:redemptions channel:read:subscriptions"
+      }
+    >
       <.icon as="fa-twitch" /> Reauthenticate via Twitch
     </.link>
     """

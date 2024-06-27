@@ -60,7 +60,14 @@ defmodule CoreWeb.CoreComponents do
       <p><%= msg %></p>
       <hr :if={@context} />
       <p :if={@context} class="mb-0"><%= @context %></p>
-      <.button :if={@close} class="btn-close" data-bs-dismiss="alert" aria-label={gettext("close")} usable_icon="x-mark-solid"></.button>
+      <.button
+        :if={@close}
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label={gettext("close")}
+        usable_icon="x-mark-solid"
+      >
+      </.button>
     </div>
     """
   end
@@ -85,7 +92,8 @@ defmodule CoreWeb.CoreComponents do
       </.flash>
 
       <.flash id="server-error" kind={:error} title="Something went wrong!" hidden>
-        Hang in there while we get back on track <.icon as="arrow-path" class="ml-1 h-3 w-3 animate-spin" />
+        Hang in there while we get back on track
+        <.icon as="arrow-path" class="ml-1 h-3 w-3 animate-spin" />
       </.flash>
     </div>
     """
@@ -207,9 +215,17 @@ defmodule CoreWeb.CoreComponents do
             </th>
           </tr>
         </thead>
-        <tbody id={@id} phx-update={match?(%Phoenix.LiveView.LiveStream{}, @rows) && "stream"} class="relative divide-y divide-zinc-100 border-t border-zinc-200 text-sm leading-6 text-zinc-700">
+        <tbody
+          id={@id}
+          phx-update={match?(%Phoenix.LiveView.LiveStream{}, @rows) && "stream"}
+          class="relative divide-y divide-zinc-100 border-t border-zinc-200 text-sm leading-6 text-zinc-700"
+        >
           <tr :for={row <- @rows} id={@row_id && @row_id.(row)} class="group hover:bg-zinc-50">
-            <td :for={{col, i} <- Enum.with_index(@col)} phx-click={@row_click && @row_click.(row)} class={["relative p-0", @row_click && "hover:cursor-pointer"]}>
+            <td
+              :for={{col, i} <- Enum.with_index(@col)}
+              phx-click={@row_click && @row_click.(row)}
+              class={["relative p-0", @row_click && "hover:cursor-pointer"]}
+            >
               <div class="block py-4 pr-6">
                 <span class="absolute -inset-y-px right-0 -left-4 group-hover:bg-zinc-50" />
                 <span class={["relative", i == 0 && "font-semibold text-zinc-900"]}>
@@ -220,7 +236,10 @@ defmodule CoreWeb.CoreComponents do
             <td :if={@action != []} class="relative w-14 p-0">
               <div class="relative whitespace-nowrap py-4 text-right text-sm font-medium">
                 <span class="absolute -inset-y-px -right-4 left-0 group-hover:bg-zinc-50" />
-                <span :for={action <- @action} class="relative ml-4 font-semibold leading-6 text-zinc-900 hover:text-zinc-700">
+                <span
+                  :for={action <- @action}
+                  class="relative ml-4 font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
+                >
                   <%= render_slot(action, @row_item.(row)) %>
                 </span>
               </div>
@@ -252,8 +271,15 @@ defmodule CoreWeb.CoreComponents do
     <div class="my-2">
       <dl class="-my-4 divide-y divide-zinc-100">
         <div :for={item <- @item} class="flex gap-4 py-4 leading-6">
-          <dt :if={item[:title]} class="w-1/4 flex-none text-zinc-500 hover:text-highlight-500"><%= item.title %></dt>
-          <dt :if={item[:icon]} class="w-1/4 flex-none text-zinc-500 hover:text-highlight-500 text-right"><.icon {item.icon} /></dt>
+          <dt :if={item[:title]} class="w-1/4 flex-none text-zinc-500 hover:text-highlight-500">
+            <%= item.title %>
+          </dt>
+          <dt
+            :if={item[:icon]}
+            class="w-1/4 flex-none text-zinc-500 hover:text-highlight-500 text-right"
+          >
+            <.icon {item.icon} />
+          </dt>
           <dd class="w-3/4 text-zinc-700"><%= render_slot(item) %></dd>
         </div>
       </dl>
@@ -278,7 +304,12 @@ defmodule CoreWeb.CoreComponents do
 
   def loading_text_indicator(assigns) do
     ~H"""
-    <.icon :for={number <- 1..@size} as="square-full" modifiers="fa-fade text-highlight-500" style={"--fa-animation-duration: 3s; --fa-fade-opacity: 0.2; --fa-animation-delay: #{number / 2.0}s"} />
+    <.icon
+      :for={number <- 1..@size}
+      as="square-full"
+      modifiers="fa-fade text-highlight-500"
+      style={"--fa-animation-duration: 3s; --fa-fade-opacity: 0.2; --fa-animation-delay: #{number / 2.0}s"}
+    />
     """
   end
 
@@ -318,8 +349,21 @@ defmodule CoreWeb.CoreComponents do
     ~H"""
     <header class="bg-dark-500">
       <div class="mx-auto max-w-7xl py-2 px-3">
-        <h1 id="page_title" class="text-2xl font-bold leading-tight tracking-tight text-highlight-500" {@rest}><%= render_slot(@inner_block) %></h1>
-        <p :if={assigns[:subtitle]} id="page_subtitle" class="text-sm font-semibold leading-tight tracking-tight text-highlight-600" {@rest}><%= @subtitle %></p>
+        <h1
+          id="page_title"
+          class="text-2xl font-bold leading-tight tracking-tight text-highlight-500"
+          {@rest}
+        >
+          <%= render_slot(@inner_block) %>
+        </h1>
+        <p
+          :if={assigns[:subtitle]}
+          id="page_subtitle"
+          class="text-sm font-semibold leading-tight tracking-tight text-highlight-600"
+          {@rest}
+        >
+          <%= @subtitle %>
+        </p>
       </div>
     </header>
     """
@@ -346,12 +390,18 @@ defmodule CoreWeb.CoreComponents do
         <div :if={assigns[:tab]} class="mt-4">
           <nav class="-mb-px flex space-x-8">
             <!-- Current: "border-indigo-500 text-indigo-600", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" -->
-            <.link :for={tab <- @tab} patch={tab.patch} class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 whitespace-nowrap border-b-2 px-1 pb-2 text-sm font-medium">
+            <.link
+              :for={tab <- @tab}
+              patch={tab.patch}
+              class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 whitespace-nowrap border-b-2 px-1 pb-2 text-sm font-medium"
+            >
               <%= render_slot(tab) %>
             </.link>
           </nav>
         </div>
-        <p :if={render_slot(@subtitle)} class="ml-2 mt-1 truncate text-sm text-gray-500"><%= render_slot(@subtitle) %></p>
+        <p :if={render_slot(@subtitle)} class="ml-2 mt-1 truncate text-sm text-gray-500">
+          <%= render_slot(@subtitle) %>
+        </p>
       </div>
     </div>
     """
@@ -384,10 +434,18 @@ defmodule CoreWeb.CoreComponents do
 
   def card(assigns) do
     ~H"""
-    <li class="max-w-sm rounded overflow-shadow-lg border-dark-500 bg-white flex flex-col items-center border-2 border-contrast-500" {@rest}>
+    <li
+      class="max-w-sm rounded overflow-shadow-lg border-dark-500 bg-white flex flex-col items-center border-2 border-contrast-500"
+      {@rest}
+    >
       <div class="px-6 py-4 basis-3/4 flex flex-col justify-center">
         <%= render_slot(@image) %>
-        <img :if={@image_url} class="mx-auto h-32 w-32 flex-shrink-0" src={@image_url} alt={@image_alt} />
+        <img
+          :if={@image_url}
+          class="mx-auto h-32 w-32 flex-shrink-0"
+          src={@image_url}
+          alt={@image_alt}
+        />
         <%= render_slot(@title) %>
         <%= render_slot(@inner_block) %>
       </div>
