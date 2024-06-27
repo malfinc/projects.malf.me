@@ -1,5 +1,5 @@
 defmodule CoreWeb.AccountLoginLive do
-  use CoreWeb, {:live_view, :empty}
+  use CoreWeb, [:live_view, layout: :empty]
 
   def mount(_params, _session, socket) do
     socket
