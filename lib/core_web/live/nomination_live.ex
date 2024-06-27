@@ -4,7 +4,7 @@ defmodule CoreWeb.NominationLive do
   import Ecto.Query
 
   defp list_records(_assigns, params) do
-    Core.Content.list_nominations(fn nominations ->
+    Core.Content.list_nominations_by(fn nominations ->
       from(
         nominations,
         where: [

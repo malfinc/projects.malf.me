@@ -4,7 +4,7 @@ defmodule CoreWeb.SeasonLive do
   import Ecto.Query
 
   defp list_records(_assigns, _params) do
-    Core.Gameplay.list_seasons(fn seasons -> order_by(seasons, asc: :position) end)
+    Core.Gameplay.list_seasons_by(fn seasons -> order_by(seasons, asc: :position) end)
     |> Core.Repo.preload([])
   end
 

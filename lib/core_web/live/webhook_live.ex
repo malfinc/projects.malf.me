@@ -4,7 +4,7 @@ defmodule CoreWeb.WebhookLive do
   import Ecto.Query
 
   def list_records(_assigns, _params) do
-    Core.Content.list_webhooks(fn schema ->
+    Core.Content.list_webhooks_by(fn schema ->
       from(schema, order_by: [desc: :updated_at], preload: [])
     end)
   end

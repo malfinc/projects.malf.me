@@ -10,7 +10,7 @@ defmodule CoreWeb.PackLive do
         []
 
       season ->
-        Core.Gameplay.list_packs(fn packs ->
+        Core.Gameplay.list_packs_by(fn packs ->
           from(
             packs,
             where: [

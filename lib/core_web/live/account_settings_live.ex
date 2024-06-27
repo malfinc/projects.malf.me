@@ -40,7 +40,7 @@ defmodule CoreWeb.AccountSettingsLive do
       )
       |> assign(
         :coin_transactions,
-        Core.Gameplay.list_coin_transactions(fn coins ->
+        Core.Gameplay.list_coin_transactions_by(fn coins ->
           from(
             coins,
             where: [

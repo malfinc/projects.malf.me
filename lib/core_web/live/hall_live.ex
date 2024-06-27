@@ -4,7 +4,7 @@ defmodule CoreWeb.HallLive do
   import Ecto.Query
 
   defp list_records(_assigns, _params, category) do
-    Core.Content.list_halls(fn halls ->
+    Core.Content.list_halls_by(fn halls ->
       from(halls, where: [category: ^category], limit: 6, preload: [])
     end)
   end

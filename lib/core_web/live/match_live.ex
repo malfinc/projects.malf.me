@@ -5,7 +5,7 @@ defmodule CoreWeb.MatchLive do
   import Ecto.Query
 
   defp list_records(_assigns, _params) do
-    Core.Gameplay.list_matches(fn matches ->
+    Core.Gameplay.list_matches_by(fn matches ->
       from(
         match in matches,
         # Switch to assoc

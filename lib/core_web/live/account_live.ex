@@ -4,7 +4,7 @@ defmodule CoreWeb.AccountLive do
   import Ecto.Query
 
   def list_records(_assigns, _params) do
-    Core.Users.list_accounts(fn schema ->
+    Core.Users.list_accounts_by(fn schema ->
       from(schema, order_by: [desc: :updated_at], preload: [])
     end)
   end
