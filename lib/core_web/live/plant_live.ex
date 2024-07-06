@@ -87,13 +87,23 @@ defmodule CoreWeb.PlantLive do
       No seasons setup yet.
     </p>
 
-    <.simple_form :if={Core.Users.has_permission?(@current_account, "global", "administrator")} for={@form} phx-change="validate" phx-submit="save">
+    <.simple_form
+      :if={Core.Users.has_permission?(@current_account, "global", "administrator")}
+      for={@form}
+      phx-change="validate"
+      phx-submit="save"
+    >
       <.input field={@form[:name]} type="text" label="Name" required />
       <.input field={@form[:species]} type="text" label="Species" required />
       <.input field={@form[:image_uri]} type="text" label="Image URI" required />
       <.input field={@form[:rarity_symbol]} type="text" label="Rarity Symbol (SVG)" required />
       <:actions>
-        <.button phx-disable-with="Planting..." type="submit" class="btn btn-primary" usable_icon="plant">
+        <.button
+          phx-disable-with="Planting..."
+          type="submit"
+          class="btn btn-primary"
+          usable_icon="plant"
+        >
           Spawn Plant
         </.button>
       </:actions>

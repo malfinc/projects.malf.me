@@ -40,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:15.1
+        image: postgres:15.5
         ports:
           - 5432:5432
         env:
@@ -55,8 +55,8 @@ jobs:
       - uses: erlef/setup-beam@v1
         id: beam
         with:
-          otp-version: 26.0
-          elixir-version: 1.15
+          otp-version: 27.0
+          elixir-version: 1.17
       - uses: actions/cache@v3
         with:
           path: |
@@ -81,8 +81,8 @@ jobs:
       - uses: erlef/setup-beam@v1
         id: beam
         with:
-          otp-version: 26.0
-          elixir-version: 1.15
+          otp-version: 27.0
+          elixir-version: 1.17
       - uses: actions/cache@v3
         with:
           path: |
@@ -101,8 +101,8 @@ jobs:
       - uses: erlef/setup-beam@v1
         id: beam
         with:
-          otp-version: 26.0
-          elixir-version: 1.15
+          otp-version: 27.0
+          elixir-version: 1.17
       - uses: actions/cache@v3
         with:
           path: |
@@ -122,8 +122,8 @@ jobs:
       - uses: erlef/setup-beam@v1
         id: beam
         with:
-          otp-version: 26.0
-          elixir-version: 1.15
+          otp-version: 27.0
+          elixir-version: 1.17
       - uses: actions/cache@v3
         with:
           path: |
@@ -143,8 +143,8 @@ jobs:
       - uses: erlef/setup-beam@v1
         id: beam
         with:
-          otp-version: 26.0
-          elixir-version: 1.15
+          otp-version: 27.0
+          elixir-version: 1.17
       - uses: actions/cache@v3
         with:
           path: |

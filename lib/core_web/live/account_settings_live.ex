@@ -8,7 +8,8 @@ defmodule CoreWeb.AccountSettingsLive do
     <h1>Account</h1>
     <h2 id="wallet">Wallet</h2>
     <p>
-      You currently have <.icon as="fa-coins" /> <%= :erlang.float_to_binary(@total_balance, decimals: 2) %> coins
+      You currently have
+      <.icon as="fa-coins" /> <%= :erlang.float_to_binary(@total_balance, decimals: 2) %> coins
     </p>
 
     <h3 id="transactions">Transactions</h3>
@@ -39,7 +40,7 @@ defmodule CoreWeb.AccountSettingsLive do
       )
       |> assign(
         :coin_transactions,
-        Core.Gameplay.list_coin_transactions(fn coins ->
+        Core.Gameplay.list_coin_transactions_by(fn coins ->
           from(
             coins,
             where: [

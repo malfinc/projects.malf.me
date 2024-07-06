@@ -7,7 +7,7 @@ defmodule Mix.Tasks.Postgres.Setup do
     System.cmd("which", ["initdb"])
     |> case do
       {_, 0} -> "initdb"
-      _ -> "/usr/lib/postgresql/13/bin/initdb"
+      _ -> "/usr/lib/postgresql/15/bin/initdb"
     end
     |> System.cmd(["--username=postgres", "tmp/postgres/data"], into: IO.stream())
   end

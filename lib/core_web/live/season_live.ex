@@ -4,7 +4,7 @@ defmodule CoreWeb.SeasonLive do
   import Ecto.Query
 
   defp list_records(_assigns, _params) do
-    Core.Gameplay.list_seasons(fn seasons -> order_by(seasons, asc: :position) end)
+    Core.Gameplay.list_seasons_by(fn seasons -> order_by(seasons, asc: :position) end)
     |> Core.Repo.preload([])
   end
 
@@ -105,13 +105,31 @@ defmodule CoreWeb.SeasonLive do
       No seasons setup yet.
     </p>
 
-    <.simple_form :if={Core.Users.has_permission?(@current_account, "global", "administrator")} for={@form} phx-submit="save" phx-change="validate">
-      <h2 :if={Core.Users.has_permission?(@current_account, "global", "administrator")}>New Season</h2>
+    <.simple_form
+      :if={Core.Users.has_permission?(@current_account, "global", "administrator")}
+      for={@form}
+      phx-submit="save"
+      phx-change="validate"
+    >
+      <h2 :if={Core.Users.has_permission?(@current_account, "global", "administrator")}>
+        New Season
+      </h2>
       <%!-- Select instead --%>
-      <.input :for={plant <- @plants} field={@form[:plants]} type="checkbox" checked={false} label={plant.name} />
+      <.input
+        :for={plant <- @plants}
+        field={@form[:plants]}
+        type="checkbox"
+        checked={false}
+        label={plant.name}
+      />
 
       <:actions>
-        <.button phx-disable-with="Starting..." type="submit" class="btn btn-primary" usable_icon="fireworks">
+        <.button
+          phx-disable-with="Starting..."
+          type="submit"
+          class="btn btn-primary"
+          usable_icon="fireworks"
+        >
           Start Season
         </.button>
       </:actions>
@@ -133,7 +151,8 @@ defmodule CoreWeb.SeasonLive do
     <h2>Champions</h2>
     <ul>
       <li :for={champion <- @record.champions}>
-        <.link href={~p"/lop/champions/#{champion.id}"}><%= champion.name %></.link> (<%= champion.plant.name %>)
+        <.link href={~p"/lop/champions/#{champion.id}"}><%= champion.name %></.link>
+        (<%= champion.plant.name %>)
       </li>
     </ul>
     """

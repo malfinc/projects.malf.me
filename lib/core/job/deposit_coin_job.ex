@@ -13,9 +13,7 @@ defmodule Core.Job.DepositCoinJob do
     {:cancel, "No twitch_user_id given, we can't allocate points"}
   end
 
-  def perform(%Oban.Job{
-        args: %{"twitch_user_id" => twitch_user_id, "value" => value, "reason" => reason}
-      }) do
+  def perform(%Oban.Job{args: %{"twitch_user_id" => twitch_user_id, "value" => value} = args}) do
     from(
       accounts in Core.Users.Account,
       where: accounts.provider_id == ^twitch_user_id,
@@ -30,27 +28,7 @@ defmodule Core.Job.DepositCoinJob do
         Core.Gameplay.create_coin_transaction(%{
           account: account,
           value: value,
-          reason: reason
-        })
-    end
-  end
-
-  def perform(%Oban.Job{args: %{"twitch_user_id" => twitch_user_id, "value" => value}}) do
-    from(
-      accounts in Core.Users.Account,
-      where: accounts.provider_id == ^twitch_user_id,
-      limit: 1
-    )
-    |> Core.Repo.one()
-    |> case do
-      nil ->
-        {:snooze, 86_400}
-
-      account ->
-        Core.Gameplay.create_coin_transaction(%{
-          account: account,
-          value: value,
-          reason: "unknown"
+          reason: Map.get(args, "reason", "unknown")
         })
     end
   end

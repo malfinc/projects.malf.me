@@ -39,8 +39,18 @@ defmodule CoreWeb.FormComponents do
     ~H"""
     <.form :let={f} for={@for} as={@as} {@rest}>
       <%= render_slot(@inner_block, f) %>
-      <h3 :if={render_slot(@title)} class="text-2xl font-semibold leading-7 text-gray-900 border-b border-gray-200"><%= render_slot(@title) %> <span :if={render_slot(@subtitle)} class="text-sm ml-3 text-gray-500"><%= render_slot(@subtitle) %></span></h3>
-      <p :if={render_slot(@description)} class="mt-1 text-sm leading-6 text-gray-600"><%= render_slot(@description) %></p>
+      <h3
+        :if={render_slot(@title)}
+        class="text-2xl font-semibold leading-7 text-gray-900 border-b border-gray-200"
+      >
+        <%= render_slot(@title) %>
+        <span :if={render_slot(@subtitle)} class="text-sm ml-3 text-gray-500">
+          <%= render_slot(@subtitle) %>
+        </span>
+      </h3>
+      <p :if={render_slot(@description)} class="mt-1 text-sm leading-6 text-gray-600">
+        <%= render_slot(@description) %>
+      </p>
       <div :for={action <- @actions} class="actionset mt-3">
         <%= render_slot(action, f) %>
       </div>
@@ -117,9 +127,19 @@ defmodule CoreWeb.FormComponents do
     ~H"""
     <div class="form-check" phx-feedback-for={@name}>
       <input type="hidden" name={@name} value="false" />
-      <input type="checkbox" id={@id} name={@name} value="true" checked={@checked} class={"form-check-input #{unless(Enum.empty?(@errors), do: "is-invalid")}"} {@rest} />
+      <input
+        type="checkbox"
+        id={@id}
+        name={@name}
+        value="true"
+        checked={@checked}
+        class={"form-check-input #{unless(Enum.empty?(@errors), do: "is-invalid")}"}
+        {@rest}
+      />
       <label class="form-check-label"><%= @label %></label>
-      <div :if={@details || @rest[:required]} class="form-text"><span :if={@rest[:required]} class="italic">Required.</span> <%= @details %></div>
+      <div :if={@details || @rest[:required]} class="form-text">
+        <span :if={@rest[:required]} class="italic">Required.</span> <%= @details %>
+      </div>
       <.error :for={msg <- @errors} describing={@id}><%= msg %></.error>
     </div>
     """
@@ -129,11 +149,20 @@ defmodule CoreWeb.FormComponents do
     ~H"""
     <div phx-feedback-for={@name} class="mb-3">
       <.label for={@id}><%= @label %></.label>
-      <select id={@id} name={@name} class={"form-select #{unless(Enum.empty?(@errors), do: "is-invalid")}"} multiple={@multiple} aria-describedby={"#{@id}-feedback"} {@rest}>
+      <select
+        id={@id}
+        name={@name}
+        class={"form-select #{unless(Enum.empty?(@errors), do: "is-invalid")}"}
+        multiple={@multiple}
+        aria-describedby={"#{@id}-feedback"}
+        {@rest}
+      >
         <option :if={@prompt} value=""><%= @prompt %></option>
         <%= Phoenix.HTML.Form.options_for_select(@options, @value) %>
       </select>
-      <div :if={@details || @rest[:required]} class="form-text"><span :if={@rest[:required]} class="italic">Required.</span> <%= @details %></div>
+      <div :if={@details || @rest[:required]} class="form-text">
+        <span :if={@rest[:required]} class="italic">Required.</span> <%= @details %>
+      </div>
       <.error :for={msg <- @errors} describing={@id}><%= msg %></.error>
     </div>
     """
@@ -143,8 +172,16 @@ defmodule CoreWeb.FormComponents do
     ~H"""
     <div phx-feedback-for={@name} class="mb-3">
       <.label for={@id}><%= @label %></.label>
-      <textarea id={@id} name={@name} class={"form-control #{unless(Enum.empty?(@errors), do: "is-invalid")}"} aria-describedby={"#{@id}-feedback"} {@rest}><%= Phoenix.HTML.Form.normalize_value("textarea", @value) %></textarea>
-      <div :if={@details || @rest[:required]} class="form-text"><span :if={@rest[:required]} class="italic">Required.</span> <%= @details %></div>
+      <textarea
+        id={@id}
+        name={@name}
+        class={"form-control #{unless(Enum.empty?(@errors), do: "is-invalid")}"}
+        aria-describedby={"#{@id}-feedback"}
+        {@rest}
+      ><%= Phoenix.HTML.Form.normalize_value("textarea", @value) %></textarea>
+      <div :if={@details || @rest[:required]} class="form-text">
+        <span :if={@rest[:required]} class="italic">Required.</span> <%= @details %>
+      </div>
       <.error :for={msg <- @errors} describing={@id}><%= msg %></.error>
     </div>
     """
@@ -155,7 +192,15 @@ defmodule CoreWeb.FormComponents do
     ~H"""
     <div phx-feedback-for={@name} class="mb-3">
       <.label for={@id}><%= @label %></.label>
-      <input type={@type} name={@name} id={@id} value={Phoenix.HTML.Form.normalize_value(@type, @value)} class={"form-control #{unless(Enum.empty?(@errors), do: "is-invalid")}"} aria-describedby={"#{@id}-feedback"} {@rest} />
+      <input
+        type={@type}
+        name={@name}
+        id={@id}
+        value={Phoenix.HTML.Form.normalize_value(@type, @value)}
+        class={"form-control #{unless(Enum.empty?(@errors), do: "is-invalid")}"}
+        aria-describedby={"#{@id}-feedback"}
+        {@rest}
+      />
       <div :if={@details} class="form-text"><%= @details %></div>
       <.error :for={msg <- @errors} describing={@id}><%= msg %></.error>
     </div>
@@ -184,7 +229,10 @@ defmodule CoreWeb.FormComponents do
 
   def error(assigns) do
     ~H"""
-    <div id={if(@describing, do: "#{@describing}_feedback")} class="phx-no-feedback:hidden invalid-feedback">
+    <div
+      id={if(@describing, do: "#{@describing}_feedback")}
+      class="phx-no-feedback:hidden invalid-feedback"
+    >
       <%= render_slot(@inner_block) %>
     </div>
     """

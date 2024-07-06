@@ -9,11 +9,7 @@ defmodule Core.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps(),
-      dialyzer: [
-        plt_add_apps: [:mix],
-        plt_file: {:no_warn, "priv/plts/dialyzer.plt"}
-      ]
+      deps: deps()
     ]
   end
 
@@ -23,7 +19,7 @@ defmodule Core.MixProject do
   def application do
     [
       mod: {Core.Application, []},
-      extra_applications: [:logger, :runtime_tools, :os_mon]
+      extra_applications: [:logger, :runtime_tools]
     ]
   end
 
@@ -40,42 +36,37 @@ defmodule Core.MixProject do
       {:phoenix, "~> 1.7", override: true},
       {:phoenix_ecto, "~> 4.4"},
       {:ecto_sql, "~> 3.10"},
-      {:postgrex, "~> 0.17.1"},
-      {:phoenix_html, "~> 3.3"},
+      {:postgrex, "~> 0.18.0"},
+      {:phoenix_html, "~> 4.0"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:phoenix_live_view, "~> 0.20.0"},
-      {:floki, "~> 0.35.2", only: :test},
+      {:phoenix_live_view, "1.0.0-rc.6", override: true},
+      {:floki, "~> 0.36", only: :test},
       {:phoenix_live_dashboard, "~> 0.8.0"},
       {:esbuild, "~> 0.8.0", runtime: Mix.env() == :dev},
-      {:tailwind, "~> 0.2.0", runtime: Mix.env() == :dev},
       {:swoosh, "~> 1.3"},
-      {:finch, "~> 0.16.0"},
-      {:telemetry_metrics, "~> 0.6.0"},
+      {:finch, "~> 0.18.0"},
+      {:telemetry_metrics, "~> 1.0"},
       {:telemetry_poller, "~> 1.0"},
-      {:gettext, "~> 0.23.1"},
+      {:gettext, "~> 0.24.0"},
       {:jason, "~> 1.2"},
-      {:plug_cowboy, "~> 2.5"},
       {:cors_plug, "~> 3.0"},
       {:credo, "~> 1.4", only: :dev, runtime: false},
-      {:dialyxir, "~> 1.0", only: :dev, runtime: false},
-      {:ecto_psql_extras, "~> 0.7.0"},
+      {:ecto_psql_extras, "~> 0.8.0"},
       {:inflex, "~> 2.1"},
       {:earmark, "~> 1.4"},
       {:plug_telemetry_server_timing, "~> 0.3.0"},
       {:slugy, "~> 4.1"},
       {:oban, "~> 2.14"},
       {:hackney, "~> 1.18"},
-      {:sentry, "~> 9.0"},
+      {:sentry, "~> 10.6"},
       {:timex, "~> 3.7"},
-      {:estate, "~> 1.0"},
-      {:ex_doc, "~> 0.27", only: :dev, runtime: false},
       {:paper_trail, "~> 1.0"},
       {:ueberauth, "~> 0.7"},
-      {:ueberauth_twitch, "~> 0.1.0"},
+      {:ueberauth_twitch, "~> 0.2.0"},
       {:bandit, "~> 1.0"},
       {:ex_machina, "~> 2.7", only: :test},
       {:ecto_function, "~> 1.0"},
-      {:ecto_interface, "~> 1.0"},
+      {:ecto_interface, "~> 2.3"},
       {:encrypted_secrets, "~> 0.3.0"}
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
@@ -118,12 +109,11 @@ defmodule Core.MixProject do
         "test"
       ],
       "assets.setup": [
-        "tailwind.install --if-missing",
         "esbuild.install --if-missing",
         "cmd --cd assets/ npm install"
       ],
-      "assets.build": ["assets.setup", "tailwind default", "esbuild default"],
-      "assets.deploy": ["tailwind default --minify", "esbuild default --minify", "phx.digest"],
+      "assets.build": ["assets.setup", "esbuild default"],
+      "assets.deploy": ["esbuild default --minify", "phx.digest"],
       check: ["compile", "credo", "dialyzer --quiet"]
     ]
   end

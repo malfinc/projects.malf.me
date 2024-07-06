@@ -16,26 +16,31 @@ import Config
 #
 # Alternatively, you can use `mix phx.gen.release` to generate a `bin/server`
 # script that automatically sets the env var above.
-if System.get_env("PHX_SERVER") && System.get_env("RELEASE_NAME") do
+if System.get_env("PHX_SERVER") do
   config :core, CoreWeb.Endpoint, server: true
 end
 
-Application.put_env(
-  :core,
-  :secrets,
-  EncryptedSecrets.read!()[Mix.env()]
-)
+:ok =
+  if config_env() == :prod do
+    Application.put_env(
+      :core,
+      :secrets,
+      EncryptedSecrets.read!()[Mix.env()]
+    )
+  else
+    Application.put_env(
+      :core,
+      :secrets,
+      %{}
+    )
+  end
 
 config :ueberauth, Ueberauth.Strategy.Twitch.OAuth,
-  client_id: Application.get_env(:core, :secrets)[:TWITCH_CLIENT_ID],
-  client_secret: Application.get_env(:core, :secrets)[:TWITCH_CLIENT_SECRET],
-  redirect_uri: Application.get_env(:core, :secrets)[:TWITCH_REDIRECT_URI]
+  client_id: Application.get_env(:core, :secrets)["twitch"]["client_id"],
+  client_secret: Application.get_env(:core, :secrets)["twitch"]["client_secret"],
+  redirect_uri: Application.get_env(:core, :secrets)["twitch"]["redirect_uri"]
 
 if config_env() == :prod do
-  # Configure Sentry, the service we use to alert us to issues in the application
-  config :sentry,
-    dsn: System.get_env("SENTRY_DSN")
-
   database_url =
     System.get_env("DATABASE_URL") ||
       raise """
@@ -66,12 +71,14 @@ if config_env() == :prod do
   host = System.get_env("PHX_HOST") || "example.com"
   port = String.to_integer(System.get_env("PORT") || "4000")
 
+  config :core, :dns_cluster_query, System.get_env("DNS_CLUSTER_QUERY")
+
   config :core, CoreWeb.Endpoint,
     url: [host: host, port: 443],
     http: [
       # Enable IPv6 and bind on all interfaces.
       # Set it to  {0, 0, 0, 0, 0, 0, 0, 1} for local network only access.
-      # See the documentation on https://hexdocs.pm/plug_cowboy/Plug.Cowboy.html
+      # See the documentation on https://hexdocs.pm/bandit/Bandit.html#t:options/0
       # for details about using IPv6 vs IPv4 and loopback vs public addresses.
       ip: {0, 0, 0, 0, 0, 0, 0, 0},
       port: port
@@ -102,8 +109,8 @@ if config_env() == :prod do
   # "priv/ssl/server.key". For all supported SSL configuration
   # options, see https://hexdocs.pm/plug/Plug.SSL.html#configure/1
   #
-  # We also recommend setting `force_ssl` in your endpoint, ensuring
-  # no data is ever sent via http, always redirecting to https:
+  # We also recommend setting `force_ssl` in your config/prod.exs,
+  # ensuring no data is ever sent via http, always redirecting to https:
   #
   #     config :core, CoreWeb.Endpoint,
   #       force_ssl: [hsts: true]

@@ -43,8 +43,8 @@ jobs:
       - uses: erlef/setup-beam@v1
         id: beam
         with:
-          otp-version: 26.0
-          elixir-version: 1.15
+          otp-version: 27.0
+          elixir-version: 1.17
       - uses: actions/cache@v3
         with:
           path: |
@@ -61,7 +61,7 @@ jobs:
         uses: actions/upload-pages-artifact@v2
         with:
           # Upload entire repository
-          path: 'doc'
+          path: "doc"
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2

@@ -12,7 +12,6 @@ However in order to contribute as an individual you'll be interfacing with these
   - [postgresql](https://www.postgresql.org/) as a general database
   - [elixir](https://elixir-lang.org/) as the core programming language of the application
   - [javascript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) as the core programming language of the browser
-  - [tailwind](https://tailwindcss.com/) as the way we use CSS to style properties
   - [bootstrap](https://getbootstrap.com/) as the core set of styled components
   - [phoenix](https://www.phoenixframework.org/) as the web framework of the backend
   - [htmx](https://www.fantasyworldgenerator.com/admin) as the browser interactive interface

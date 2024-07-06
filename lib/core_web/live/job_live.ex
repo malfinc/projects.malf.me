@@ -220,7 +220,10 @@ defmodule CoreWeb.JobLive do
     </p>
 
     <dl :for={[worker] <- @workers} :if={@stats == worker} class="mt-5 grid grid-cols-1 gap-5">
-      <div :for={[state, count] <- count_by_state(worker)} class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow">
+      <div
+        :for={[state, count] <- count_by_state(worker)}
+        class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow"
+      >
         <dt class="truncate text-sm font-medium text-gray-500"><%= state %></dt>
         <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900"><%= count %></dd>
       </div>
@@ -228,16 +231,27 @@ defmodule CoreWeb.JobLive do
 
     <.section_title id="load">
       Queue Load
-      <:tab :for={oban_queue <- @queues} patch={~p"/admin/jobs?load=#{oban_queue.queue}"}><%= oban_queue.queue %></:tab>
+      <:tab :for={oban_queue <- @queues} patch={~p"/admin/jobs?load=#{oban_queue.queue}"}>
+        <%= oban_queue.queue %>
+      </:tab>
     </.section_title>
 
     <p :if={@load == nil}>
       Select a worker to see the queue load.
     </p>
 
-    <dl :for={oban_queue <- @queues} :if={@load == oban_queue.queue} class="mt-5 grid grid-cols-1 gap-5">
-      <div :for={job <- running_per_queue(oban_queue)} class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow">
-        <dt class="truncate text-sm font-medium text-gray-500"><%= job.state %> (<%= job.attempt %>/<%= job.max_attempts %>) on <%= oban_queue.node %></dt>
+    <dl
+      :for={oban_queue <- @queues}
+      :if={@load == oban_queue.queue}
+      class="mt-5 grid grid-cols-1 gap-5"
+    >
+      <div
+        :for={job <- running_per_queue(oban_queue)}
+        class="overflow-hidden rounded-lg bg-white px-4 py-5 shadow"
+      >
+        <dt class="truncate text-sm font-medium text-gray-500">
+          <%= job.state %> (<%= job.attempt %>/<%= job.max_attempts %>) on <%= oban_queue.node %>
+        </dt>
         <dd class="mt-1 text-3xl font-semibold tracking-tight text-gray-900">
           <.link patch={~p"/admin/jobs/#{job.id}"}>
             #<%= job.id %>
@@ -291,21 +305,31 @@ defmodule CoreWeb.JobLive do
                 <table class="min-w-full divide-y divide-gray-300 my-8">
                   <thead>
                     <tr>
-                      <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold">Core.Randomizer</th>
-                      <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold">Property</th>
+                      <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold">
+                        Core.Randomizer
+                      </th>
+                      <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold">
+                        Property
+                      </th>
                     </tr>
                   </thead>
                   <tbody class="divide-y divide-gray-200">
                     <tr>
-                      <td class="whitespace-nowrap px-3 py-4 text-sm"><%= job.args["randomizer"] %></td>
+                      <td class="whitespace-nowrap px-3 py-4 text-sm">
+                        <%= job.args["randomizer"] %>
+                      </td>
                       <td class="whitespace-nowrap px-3 py-4 text-sm"><%= job.args["property"] %></td>
                     </tr>
                   </tbody>
                 </table>
             <% end %>
           </td>
-          <td class="whitespace-nowrap px-3 py-4 text-sm"><%= job.attempt %>/<%= job.max_attempts %></td>
-          <td class="whitespace-nowrap px-3 py-4 text-sm"><time datetime={job.inserted_at}><%= Timex.from_now(job.inserted_at) %></time></td>
+          <td class="whitespace-nowrap px-3 py-4 text-sm">
+            <%= job.attempt %>/<%= job.max_attempts %>
+          </td>
+          <td class="whitespace-nowrap px-3 py-4 text-sm">
+            <time datetime={job.inserted_at}><%= Timex.from_now(job.inserted_at) %></time>
+          </td>
           <td class="whitespace-nowrap px-3 py-4 text-sm">
             <section>
               <.button type="button" phx-click="retry" phx-value-id={job.id} usable_icon="recycle">
@@ -358,7 +382,11 @@ defmodule CoreWeb.JobLive do
           <div :if={@record.attempted_by} class="px-4 py-6">
             <dt class="text-sm font-medium leading-6 text-gray-900">Attempted By</dt>
             <dd class="mt-1 text-sm leading-6 text-gray-700">
-              <ul :for={node <- @record.attempted_by} role="list" class="divide-y divide-gray-100 rounded-md border border-gray-200">
+              <ul
+                :for={node <- @record.attempted_by}
+                role="list"
+                class="divide-y divide-gray-100 rounded-md border border-gray-200"
+              >
                 <li class="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
                   <div class="ml-4 flex-shrink-0">
                     <.icon as="computer" />
@@ -371,7 +399,11 @@ defmodule CoreWeb.JobLive do
           <div :if={@record.errors} class="px-4 py-6">
             <dt id="errors" class="text-sm font-medium leading-6 text-gray-900">Errors</dt>
             <dd class="mt-1 text-sm leading-6 text-gray-700">
-              <ul :for={error <- Enum.reverse(@record.errors)} role="list" class="divide-y divide-gray-100 rounded-md border border-gray-200">
+              <ul
+                :for={error <- Enum.reverse(@record.errors)}
+                role="list"
+                class="divide-y divide-gray-100 rounded-md border border-gray-200"
+              >
                 <li class="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
                   <div class="ml-4 flex-shrink-0 max-w-full">
                     <.icon as="clock" />
@@ -425,7 +457,10 @@ defmodule CoreWeb.JobLive do
           <div :if={@record.attempted_at} class="px-4 py-6">
             <dt class="text-sm font-medium leading-6 text-gray-900">Attempts</dt>
             <dd class="mt-1 text-sm leading-6 text-gray-700">
-              <%= @record.attempt %> of <%= @record.max_attempts %> (last attempt <time title={@record.attempted_at} datetime={@record.attempted_at}><%= Timex.from_now(@record.attempted_at) %></time>)
+              <%= @record.attempt %> of <%= @record.max_attempts %> (last attempt <time
+                title={@record.attempted_at}
+                datetime={@record.attempted_at}
+              ><%= Timex.from_now(@record.attempted_at) %></time>)
             </dd>
           </div>
         </dl>

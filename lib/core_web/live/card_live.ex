@@ -10,7 +10,7 @@ defmodule CoreWeb.CardLive do
         []
 
       season ->
-        Core.Gameplay.list_cards(fn cards ->
+        Core.Gameplay.list_cards_by(fn cards ->
           from(
             card in cards,
             where: [

@@ -10,7 +10,7 @@ defmodule CoreWeb.PackLive do
         []
 
       season ->
-        Core.Gameplay.list_packs(fn packs ->
+        Core.Gameplay.list_packs_by(fn packs ->
           from(
             packs,
             where: [
@@ -136,16 +136,36 @@ defmodule CoreWeb.PackLive do
     <h1>Unopened Packs</h1>
 
     <section class="btn-group" role="group" aria-label="Purchase packs">
-      <.button class="btn-primary" phx-click="purchase_packs" phx-value-amount={1} usable_icon="receipt">
+      <.button
+        class="btn-primary"
+        phx-click="purchase_packs"
+        phx-value-amount={1}
+        usable_icon="receipt"
+      >
         Purchase 1 Pack
       </.button>
-      <.button class="btn-primary" phx-click="purchase_packs" phx-value-amount={2} usable_icon="receipt">
+      <.button
+        class="btn-primary"
+        phx-click="purchase_packs"
+        phx-value-amount={2}
+        usable_icon="receipt"
+      >
         2 Packs
       </.button>
-      <.button class="btn-primary" phx-click="purchase_packs" phx-value-amount={6} usable_icon="receipt">
+      <.button
+        class="btn-primary"
+        phx-click="purchase_packs"
+        phx-value-amount={6}
+        usable_icon="receipt"
+      >
         6 Packs
       </.button>
-      <.button class="btn-primary" phx-click="purchase_packs" phx-value-amount={15} usable_icon="receipt">
+      <.button
+        class="btn-primary"
+        phx-click="purchase_packs"
+        phx-value-amount={15}
+        usable_icon="receipt"
+      >
         15 Packs
       </.button>
     </section>
@@ -153,7 +173,11 @@ defmodule CoreWeb.PackLive do
     <hr />
 
     <%= if Enum.any?(@records) do %>
-      <section id="UnopenedCardPacks" phx-hook="UnopenedCardPacks" class="collection collection--packs">
+      <section
+        id="UnopenedCardPacks"
+        phx-hook="UnopenedCardPacks"
+        class="collection collection--packs"
+      >
         <.pack :for={pack <- @records} pack={pack} />
       </section>
     <% else %>

@@ -111,7 +111,16 @@ defmodule CoreWeb.RarityLive do
           <td class="text-end">
             <%= rarity.season_pick_rate %>
           </td>
-          <td :for={count <- rarity.pack_slot_caps |> Enum.with_index() |> Enum.sort_by(&elem(&1, 1)) |> Enum.map(&elem(&1, 0))} class="text-end">
+          <td
+            :for={
+              count <-
+                rarity.pack_slot_caps
+                |> Enum.with_index()
+                |> Enum.sort_by(&elem(&1, 1))
+                |> Enum.map(&elem(&1, 0))
+            }
+            class="text-end"
+          >
             <%= count %>
           </td>
           <td class="text-end">
@@ -134,9 +143,19 @@ defmodule CoreWeb.RarityLive do
     <.simple_form for={@form} phx-change="validate" phx-submit="save">
       <.input label="Name" field={@form[:name]} type="text" />
       <.input label="Color" field={@form[:color]} type="text" />
-      <.input label="Season Pick Rate" field={@form[:season_pick_rate]} type="number" details="How many cards of this rarity will be generated per season." />
+      <.input
+        label="Season Pick Rate"
+        field={@form[:season_pick_rate]}
+        type="number"
+        details="How many cards of this rarity will be generated per season."
+      />
       <.input label="Holographic Rate" field={@form[:holographic_rate]} type="number" />
-      <.input label="Full Art Rate" field={@form[:full_art_rate]} type="number" details="Remember that this rate is a percentage of the Holographic Rate." />
+      <.input
+        label="Full Art Rate"
+        field={@form[:full_art_rate]}
+        type="number"
+        details="Remember that this rate is a percentage of the Holographic Rate."
+      />
 
       <:actions>
         <.button phx-disable-with="Saving..." type="submit" class="btn btn-primary" usable_icon="save">

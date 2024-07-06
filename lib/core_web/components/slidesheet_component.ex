@@ -28,7 +28,12 @@ defmodule CoreWeb.SlidesheetComponent do
   @spec render(any()) :: Phoenix.LiveView.Rendered.t()
   def render(assigns) do
     ~H"""
-    <div class={["relative z-10", @hidden && "hidden"]} aria-labelledby={@label} role="dialog" aria-modal="true">
+    <div
+      class={["relative z-10", @hidden && "hidden"]}
+      aria-labelledby={@label}
+      role="dialog"
+      aria-modal="true"
+    >
       <!-- Background backdrop, show/hide based on slide-over state. -->
       <div class="fixed inset-0 opacity-40 bg-black"></div>
 
@@ -51,7 +56,12 @@ defmodule CoreWeb.SlidesheetComponent do
                   <div class="flex items-start justify-between">
                     <h2 class="text-base font-semibold leading-6 text-gray-900"><%= @label %></h2>
                     <div class="ml-3 flex h-7 items-center">
-                      <button phx-click="close" phx-target={@myself} type="button" class="relative rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                      <button
+                        phx-click="close"
+                        phx-target={@myself}
+                        type="button"
+                        class="relative rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                      >
                         <span class="absolute -inset-2.5"></span>
                         <span class="sr-only">Close panel</span>
                         <.icon as="times" />

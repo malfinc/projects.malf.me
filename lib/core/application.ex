@@ -7,6 +7,9 @@ defmodule Core.Application do
 
   @impl true
   def start(_type, _args) do
+    :logger.add_handler(:sentry_handler, Sentry.LoggerHandler, %{})
+    Core.SentryObanReporter.attach()
+
     children = [
       # Start the Telemetry supervisor
       CoreWeb.Telemetry,
@@ -45,16 +48,6 @@ defmodule Core.Application do
 
     # Setup oban to log to stdout
     :ok = Oban.Telemetry.attach_default_logger(Application.get_env(:oban, :log_level, :debug))
-
-    :ok =
-      :telemetry.attach(
-        "oban-errors",
-        [:oban, :job, :exception],
-        &Utilities.ErrorReporting.handle_event/4,
-        []
-      )
-
-    Logger.add_backend(Sentry.LoggerBackend)
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options

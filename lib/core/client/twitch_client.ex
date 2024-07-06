@@ -22,7 +22,7 @@ defmodule Core.Client.TwitchClient do
       |> URI.merge("/helix/search/categories")
       |> URI.append_query(URI.encode_query(%{"query" => name})),
       [
-        {"Client-Id", System.get_env("TWITCH_CLIENT_ID")},
+        {"Client-Id", Application.get_env(:core, :secrets)["twitch"]["client_id"]},
         {"Authorization", "Bearer #{token}"}
         | @common_headers
       ]
@@ -42,7 +42,7 @@ defmodule Core.Client.TwitchClient do
         {"Content-Type", "application/x-www-form-urlencoded"}
         | @common_headers
       ],
-      "client_id=#{System.get_env("TWITCH_CLIENT_ID")}&token=#{access_token}"
+      "client_id=#{Application.get_env(:core, :secrets)["twitch"]["client_id"]}&token=#{access_token}"
     )
     |> Finch.request(Core.Finch)
     |> case do
@@ -59,7 +59,7 @@ defmodule Core.Client.TwitchClient do
         {"Content-Type", "application/x-www-form-urlencoded"}
         | @common_headers
       ],
-      "client_id=#{System.get_env("TWITCH_CLIENT_ID")}&client_secret=#{System.get_env("TWITCH_CLIENT_SECRET")}&grant_type=client_credentials"
+      "client_id=#{Application.get_env(:core, :secrets)["twitch"]["client_id"]}&client_secret=#{Application.get_env(:core, :secrets)["twitch"]["client_secret"]}&grant_type=client_credentials"
     )
     |> Finch.request(Core.Finch)
     |> case do
@@ -77,7 +77,7 @@ defmodule Core.Client.TwitchClient do
       |> URI.merge("/helix/eventsub/subscriptions")
       |> URI.append_query(URI.encode_query(%{"id" => event_subscription_id})),
       [
-        {"Client-Id", System.get_env("TWITCH_CLIENT_ID")},
+        {"Client-Id", Application.get_env(:core, :secrets)["twitch"]["client_id"]},
         {"Authorization", "Bearer #{token}"}
         | @common_headers
       ]
@@ -91,7 +91,7 @@ defmodule Core.Client.TwitchClient do
       @origin_uri
       |> URI.merge("/helix/eventsub/subscriptions"),
       [
-        {"Client-Id", System.get_env("TWITCH_CLIENT_ID")},
+        {"Client-Id", Application.get_env(:core, :secrets)["twitch"]["client_id"]},
         {"Authorization", "Bearer #{token}"}
         | @common_headers
       ]
@@ -116,7 +116,7 @@ defmodule Core.Client.TwitchClient do
       |> URI.merge("/helix/eventsub/subscriptions"),
       [
         {"Content-Type", "application/json"},
-        {"Client-Id", System.get_env("TWITCH_CLIENT_ID")},
+        {"Client-Id", Application.get_env(:core, :secrets)["twitch"]["client_id"]},
         {"Authorization", "Bearer #{token}"}
         | @common_headers
       ],

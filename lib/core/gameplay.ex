@@ -15,9 +15,12 @@ defmodule Core.Gameplay do
   use EctoInterface, [Core.Gameplay.Division, :divisions, :division]
   use EctoInterface, [Core.Gameplay.Conference, :conferences, :conference]
 
+  @doc """
+  Given a `season`, `rarity`, and a pack count
+  """
   @spec odds(Core.Gameplay.Season.t(), Core.Gameplay.Rarity.t(), pos_integer()) :: float
   def odds(season, rarity, packs)
-      when is_struct(rarity, Core.Gameplay.Rarity) and is_integer(packs) do
+      when is_struct(rarity, Core.Gameplay.Rarity) and is_integer(packs) and packs > 0 do
     total_packs = count_cards() / 6
     cards = Core.Repo.preload(list_cards(), [:rarity])
     distribution = card_rarity_distribution(season, cards)
@@ -115,7 +118,9 @@ defmodule Core.Gameplay do
   """
   @spec fight(Core.Gameplay.Match.t()) :: list(tuple())
   def fight(%Core.Gameplay.Match{left_champion: left_champion, right_champion: right_champion}) do
-    Stream.unfold(Enum.map([left_champion, right_champion], &as_combatants/1), &clash/1)
+    [left_champion, right_champion]
+    |> Enum.map(&as_combatants/1)
+    |> Stream.unfold(&clash/1)
     |> Enum.to_list()
   end
 
